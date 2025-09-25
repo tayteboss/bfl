@@ -1,0 +1,10 @@
+{
+  "sections": {
+    "main": {
+      "type": "drop-off",
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

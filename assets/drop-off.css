@@ -1,0 +1,13 @@
+.drop-off-wrapper {
+  padding: 10px;
+  width: 100dvw;
+  height: 100dvh;
+}
+
+.drop-off-map {
+  border: solid 1px black;
+  border-radius: 15px;
+  height: 98%;
+  width: 98%;
+  margin: auto;
+}

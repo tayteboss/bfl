@@ -56,9 +56,15 @@
             </fieldset>
           {% endif %}
 
-                    <div class="product-qty-container product-form__input product-form__quantity">
-            <label for="Quantity-{{ section.id }}" class="form-label"> quantity </label>
+          <div class="product-qty-container product-form__input product-form__quantity">
+            <label for="Quantity-{{ section.id }}" class="form-label">quantity</label>
+
             <div class="quantity-input-wrapper">
+              <button type="button" class="quantity-btn quantity-btn--minus" name="minus">
+                <span class="svg-wrapper">
+                  {{- 'icon-minus.svg' | inline_asset_content -}}
+                </span>
+              </button>
               <input
                 id="Quantity-{{ section.id }}"
                 name="quantity"
@@ -71,6 +77,9 @@
                 step="{{ product.selected_or_first_available_variant.quantity_rule.increment | default: 1 }}"
                 value="{{ product.selected_or_first_available_variant.quantity_rule.min | default: 1 }}"
               >
+              <button type="button" class="quantity-btn quantity-btn--plus" name="plus">
+                <span class="svg-wrapper">{{- 'icon-plus.svg' | inline_asset_content -}}</span>
+              </button>
             </div>
           </div>
 
@@ -80,7 +89,6 @@
             section_id: section.id,
             show_pickup_availability: true
           -%}
-
         {% endform %}
       </div>
     </div>
@@ -91,6 +99,55 @@
 
   <script type="application/json" data-selected-variant>
     {{ product.selected_or_first_available_variant | json }}
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.quantity-input-wrapper').forEach((wrapper) => {
+        const input = wrapper.querySelector('.quantity-input');
+        const minusBtn = wrapper.querySelector('.quantity-btn--minus');
+        const plusBtn = wrapper.querySelector('.quantity-btn--plus');
+
+        const step = parseInt(input.step) || 1;
+        const min = parseInt(input.min) || 1;
+        const max = parseInt(input.max) || Infinity;
+
+        // Update button disabled states
+        function updateButtons() {
+          let value = parseInt(input.value) || min;
+
+          minusBtn.disabled = value <= min;
+          plusBtn.disabled = value >= max;
+        }
+
+        // Initial state
+        updateButtons();
+
+        minusBtn.addEventListener('click', () => {
+          let value = parseInt(input.value) || min;
+
+          if (value > min) {
+            input.value = value - step;
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+            updateButtons();
+          }
+        });
+
+        plusBtn.addEventListener('click', () => {
+          let value = parseInt(input.value) || min;
+
+          if (value < max) {
+            input.value = value + step;
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+            updateButtons();
+          }
+        });
+
+        // Also update when user types directly
+        input.addEventListener('input', updateButtons);
+        input.addEventListener('change', updateButtons);
+      });
+    });
   </script>
 </product-info>
 

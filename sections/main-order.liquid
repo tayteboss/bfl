@@ -21,6 +21,76 @@
   </div>
 
   <div>
+    <h2>Current Orders</h2>
+    {% assign has_current_orders = false %}
+    <table role="table" class="order-history">
+      <thead>
+        <tr>
+          <th>Order</th>
+          <th>Date</th>
+          <th>Payment</th>
+          <th>Fulfillment</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in customer.orders %}
+          {% if order.fulfillment_status != 'fulfilled' or order.financial_status != 'paid' %}
+            {% assign has_current_orders = true %}
+            <tr>
+              <td>
+                <a href="{{ order.customer_url }}">{{ order.name }}</a>
+              </td>
+              <td>{{ order.created_at | time_tag: format: 'date' }}</td>
+              <td>{{ order.financial_status_label }}</td>
+              <td>{{ order.fulfillment_status_label }}</td>
+              <td>{{ order.total_net_amount | money_with_currency }}</td>
+            </tr>
+          {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+    {% unless has_current_orders %}
+      <p>No current orders.</p>
+    {% endunless %}
+  </div>
+
+  <div>
+    <h2>Past Orders</h2>
+    {% assign has_past_orders = false %}
+    <table role="table" class="order-history">
+      <thead>
+        <tr>
+          <th>Order</th>
+          <th>Date</th>
+          <th>Payment</th>
+          <th>Fulfillment</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in customer.orders %}
+          {% if order.fulfillment_status == 'fulfilled' and order.financial_status == 'paid' %}
+            {% assign has_past_orders = true %}
+            <tr>
+              <td>
+                <a href="{{ order.customer_url }}">{{ order.name }}</a>
+              </td>
+              <td>{{ order.created_at | time_tag: format: 'date' }}</td>
+              <td>{{ order.financial_status_label }}</td>
+              <td>{{ order.fulfillment_status_label }}</td>
+              <td>{{ order.total_net_amount | money_with_currency }}</td>
+            </tr>
+          {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+    {% unless has_past_orders %}
+      <p>No past orders.</p>
+    {% endunless %}
+  </div>
+
+  <div>
     <div>
       <h2>{{ 'customer.order.title' | t: name: order.name }}</h2>
       {%- assign order_date = order.created_at | time_tag: format: 'date_at_time' -%}

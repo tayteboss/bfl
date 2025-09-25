@@ -1,470 +1,495 @@
 {{ 'send-rolls-form.css' | asset_url | stylesheet_tag }}
 
-<section class="film-service">
-  <div class="film-service-inner">
-    <h2>{{ section.settings.heading }}</h2>
+<product-info
+  id="MainProduct-{{ section.id }}"
+  data-section="{{ section.id }}"
+  data-product-id="{{ product.id }}"
+  data-update-url="true"
+  data-url="{{ product.url }}"
+>
+  <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
 
-    <form method="post" action="{{ routes.cart_add_url }}" id="film-service-form">
-      <!-- Shopify needs this hidden field -->
-      <input type="hidden" name="id" value="{{ all_products[section.settings.product].variants.first.id }}">
+  <section id="ProductInfo-{{ section.id }}" class="film-service">
+    {%- assign product_form_id = 'product-form-' | append: section.id -%}
 
-      <!-- Store Selector -->
-      <fieldset>
-        <legend>{{ section.settings.store_label }}</legend>
-        {% for block in section.blocks %}
-          {% if block.type == 'store' %}
-            <label>
-              <input
-                type="radio"
-                name="properties[Store]"
-                value="{{ block.settings.name }}"
-                {% if forloop.first %}
-                  checked
-                {% endif %}
-              >
-              {{ block.settings.name }}
-            </label>
-          {% endif %}
-        {% endfor %}
-      </fieldset>
+    <div class="film-service-inner">
+      <h2>{{ section.settings.heading }}</h2>
 
-      <!-- Service -->
-      <fieldset>
-        <legend>{{ section.settings.service_label }}</legend>
-        {% for block in section.blocks %}
-          {% if block.type == 'service' %}
-            <label>
-              <input
-                type="radio"
-                name="properties[Service]"
-                value="{{ block.settings.value }}"
-                {% if forloop.first %}
-                  checked
-                {% endif %}
-              >
-              {{ block.settings.label }}
-            </label>
-          {% endif %}
-        {% endfor %}
-        <!-- Accordion -->
-        <div class="accordion">
-          {{ section.settings.help_label_service }}
-          <div class="accordion-items-wrapper">
-            {{ section.settings.help_sub_label_service }}
-            {% for block in section.blocks %}
-              {% if block.type == 'service' %}
-                <div class="help-div">
-                  {% if block.settings.help_image %}
-                    <span>
-                      <img
-                        src="{{ block.settings.help_image  | image_url }}"
-                        width="auto"
-                        height="auto"
-                        alt="Help Image"
-                        class="help-image"
-                      >
-                    </span>
+      <form method="post" action="{{ routes.cart_add_url }}" id="film-service-form">
+        <!-- Shopify needs this hidden field -->
+        <input type="hidden" name="id" value="{{ all_products[section.settings.product].variants.first.id }}">
+
+        <!-- Store Selector -->
+        <fieldset>
+          <legend>{{ section.settings.store_label }}</legend>
+          {% for block in section.blocks %}
+            {% if block.type == 'store' %}
+              <label>
+                <input
+                  type="radio"
+                  name="properties[Store]"
+                  value="{{ block.settings.name }}"
+                  {% if forloop.first %}
+                    checked
                   {% endif %}
-                  <div class="help-text-div">
-                    <p>{{- block.settings.help_subtitle }}</p>
-                    <p>{{- block.settings.help_text }}</p>
-                  </div>
-                </div>
-              {% endif %}
-            {% endfor %}
-          </div>
-        </div>
-      </fieldset>
+                >
+                {{ block.settings.name }}
+              </label>
+            {% endif %}
+          {% endfor %}
+        </fieldset>
 
-      <!-- Film Format -->
-      <fieldset>
-        <legend>{{ section.settings.format_label }}</legend>
-        {% for block in section.blocks %}
-          {% if block.type == 'film_format' %}
-            <label>
-              <input
-                type="radio"
-                name="properties[Film Format]"
-                value="{{ block.settings.value }}"
-                {% if forloop.first %}
-                  checked
-                {% endif %}
-              >
-              {{ block.settings.label }}
-            </label>
-          {% endif %}
-        {% endfor %}
-        <!-- Accordion -->
-        <div class="accordion">
-          {{ section.settings.help_label_format }}
-          <div class="accordion-items-wrapper">
-            {{ section.settings.help_sub_label_format }}
-            {% for block in section.blocks %}
-              {% if block.type == 'film_format' %}
-                <div class="help-div">
-                  {% if block.settings.help_image %}
-                    <span>
-                      <img
-                        src="{{ block.settings.help_image  | image_url }}"
-                        width="auto"
-                        height="auto"
-                        alt="Help Image"
-                        class="help-image"
-                      >
-                    </span>
+        <!-- Service -->
+        <fieldset>
+          <legend>{{ section.settings.service_label }}</legend>
+          {% for block in section.blocks %}
+            {% if block.type == 'service' %}
+              <label>
+                <input
+                  type="radio"
+                  name="properties[Service]"
+                  value="{{ block.settings.value }}"
+                  {% if forloop.first %}
+                    checked
                   {% endif %}
-                  <div class="help-text-div">
-                    <p>{{- block.settings.help_subtitle }}</p>
-                    <p>{{- block.settings.help_text }}</p>
-                  </div>
-                </div>
-              {% endif %}
-            {% endfor %}
-          </div>
-        </div>
-      </fieldset>
-
-      <!-- Process -->
-      <fieldset>
-        <legend>{{ section.settings.process_label }}</legend>
-        {% for block in section.blocks %}
-          {% if block.type == 'process_option' %}
-            <label>
-              <input
-                type="radio"
-                name="properties[Process]"
-                value="{{ block.settings.value }}"
-                {% if forloop.first %}
-                  checked
-                {% endif %}
-              >
-              {{ block.settings.label }}
-            </label>
-          {% endif %}
-        {% endfor %}
-        <!-- Accordion -->
-        <div class="accordion">
-          {{ section.settings.help_label_process }}
-          <div class="accordion-items-wrapper">
-            {{ section.settings.help_sub_label_process }}
-            {% for block in section.blocks %}
-              {% if block.type == 'process_option' %}
-                <div class="help-div">
-                  {% if block.settings.help_image %}
-                    <span>
-                      <img
-                        src="{{ block.settings.help_image  | image_url }}"
-                        width="auto"
-                        height="auto"
-                        alt="Help Image"
-                        class="help-image"
-                      >
-                    </span>
-                  {% endif %}
-                  <div class="help-text-div">
-                    <p>{{- block.settings.help_subtitle }}</p>
-                    <p>{{- block.settings.help_text }}</p>
-                  </div>
-                </div>
-              {% endif %}
-            {% endfor %}
-          </div>
-        </div>
-      </fieldset>
-
-      <!-- Rolls -->
-      <fieldset>
-        <legend>{{ section.settings.rolls_label }}</legend>
-        <input type="number" name="properties[Number of Rolls]" value="1" min="1" id="rolls-input">
-      </fieldset>
-
-      <!-- Scanner -->
-      <fieldset>
-        <legend>{{ section.settings.scanning_label }}</legend>
-        {% for block in section.blocks %}
-          {% if block.type == 'scanner' %}
-            <label>
-              <input
-                type="radio"
-                name="properties[Scanner]"
-                value="{{ block.settings.value }}"
-                {% if forloop.first %}
-                  checked
-                {% endif %}
-              >
-              {{ block.settings.label }}
-            </label>
-          {% endif %}
-        {% endfor %}
-        <!-- Accordion -->
-        <div class="accordion">
-          {{ section.settings.help_label_scanner }}
-          <div class="accordion-items-wrapper">
-            {{ section.settings.help_sub_label_scanning }}
-            {% for block in section.blocks %}
-              {% if block.type == 'scanner' %}
-                {% if block.settings.help_image %}
-                  <div class="help-div-scanner">
-                    <span>
-                      <img
-                        src="{{ block.settings.help_image  | image_url }}"
-                        width="auto"
-                        height="auto"
-                        alt="Help Image"
-                        class="help-image-scanner"
-                      >
-                    </span>
-                  </div>
-                {% endif %}
-              {% endif %}
-            {% endfor %}
-            <div class="help-text-wrapper">
+                >
+                {{ block.settings.label }}
+              </label>
+            {% endif %}
+          {% endfor %}
+          <!-- Accordion -->
+          <div class="accordion">
+            {{ section.settings.help_label_service }}
+            <div class="accordion-items-wrapper">
+              {{ section.settings.help_sub_label_service }}
               {% for block in section.blocks %}
-                {% if block.type == 'scanner' %}
-                  <div class="help-text-div">
-                    <p>{{- block.settings.help_subtitle }}</p>
-                    {{ block.settings.help_text }}
+                {% if block.type == 'service' %}
+                  <div class="help-div">
+                    {% if block.settings.help_image %}
+                      <span>
+                        <img
+                          src="{{ block.settings.help_image  | image_url }}"
+                          width="auto"
+                          height="auto"
+                          alt="Help Image"
+                          class="help-image"
+                        >
+                      </span>
+                    {% endif %}
+                    <div class="help-text-div">
+                      <p>{{- block.settings.help_subtitle }}</p>
+                      <p>{{- block.settings.help_text }}</p>
+                    </div>
                   </div>
                 {% endif %}
               {% endfor %}
             </div>
           </div>
-        </div>
-      </fieldset>
+        </fieldset>
 
-      <!-- Resolution -->
-      <fieldset>
-        <legend>{{ section.settings.resolution_label }}</legend>
-        {% for block in section.blocks %}
-          {% if block.type == 'resolution' %}
-            <label>
-              <input
-                type="radio"
-                name="properties[Resolution]"
-                value="{{ block.settings.value }}"
-                {% if forloop.first %}
-                  checked
-                {% endif %}
-              >
-              {{ block.settings.label }}
-            </label>
-          {% endif %}
-        {% endfor %}
-        <!-- Accordion -->
-        <div class="accordion">
-          {{ section.settings.help_label_resolution }}
-          <div class="accordion-items-wrapper">
-            {{ section.settings.help_sub_label_resolution }}
-            {% for block in section.blocks %}
-              {% if block.type == 'resolution' %}
-                <div class="help-div">
-                  {% if block.settings.help_image %}
-                    <span>
-                      <img
-                        src="{{ block.settings.help_image  | image_url }}"
-                        width="auto"
-                        height="auto"
-                        alt="Help Image"
-                        class="help-image"
-                      >
-                    </span>
-                  {% endif %}
-                  <div class="help-text-div">
-                    <p>{{- block.settings.help_subtitle }}</p>
-                    <p>{{- block.settings.help_text }}</p>
-                  </div>
-                </div>
-              {% endif %}
-            {% endfor %}
-          </div>
-        </div>
-      </fieldset>
-
-      <!-- Printing -->
-      <fieldset>
-        <legend>{{ section.settings.printing_label }}</legend>
-        {% for block in section.blocks %}
-          {% if block.type == 'printing' %}
-            <label>
-              <input
-                type="radio"
-                name="properties[Printing]"
-                value="{{ block.settings.value }}"
-                {% if forloop.first %}
-                  checked
-                {% endif %}
-              >
-              {{ block.settings.label }}
-            </label>
-          {% endif %}
-        {% endfor %}
-        <!-- Accordion -->
-        <div class="accordion">
-          {{ section.settings.help_label_printing }}
-          <div class="accordion-items-wrapper">
-            {{ section.settings.help_sub_label_printing }}
-            {% for block in section.blocks %}
-              {% if block.type == 'printing' %}
-                <div class="help-div">
-                  {% if block.settings.help_image %}
-                    <span>
-                      <img
-                        src="{{ block.settings.help_image  | image_url }}"
-                        width="auto"
-                        height="auto"
-                        alt="Help Image"
-                        class="help-image"
-                      >
-                    </span>
-                  {% endif %}
-                  <div class="help-text-div">
-                    <p>{{- block.settings.help_subtitle }}</p>
-                    <p>{{- block.settings.help_text }}</p>
-                  </div>
-                </div>
-              {% endif %}
-            {% endfor %}
-          </div>
-        </div>
-      </fieldset>
-
-      <!-- Add-ons -->
-      <fieldset>
-        <legend>{{ section.settings.addons_label }}</legend>
-        {% for block in section.blocks %}
-          {% if block.type == 'addon' %}
-            <label>
-              <input
-                type="checkbox"
-                name="properties[{{ block.settings.label }}]"
-                value="{{ block.settings.value }}"
-                data-price="{{ block.settings.price }}"
-                {% if block.settings.is_discount %}
-                  data-discount="true" data-discount-percent="{{ block.settings.discount_percent }}"
-                {% endif %}
-              >
-              {{ block.settings.label }}
-              {% if block.settings.is_discount %}
-                ({{ block.settings.discount_percent }}%)
-              {% elsif block.settings.price > 0 %}
-                (+${{ block.settings.price }}/roll)
-              {% endif %}
-            </label>
-          {% endif %}
-        {% endfor %}
-      </fieldset>
-
-      <!-- Delivery -->
-      <fieldset>
-        <legend>{{ section.settings.delivery_label }}</legend>
-        {% for block in section.blocks %}
-          {% if block.type == 'delivery' %}
-            <label>
-              <input
-                type="radio"
-                name="properties[Delivery]"
-                value="{{ block.settings.value }}"
-                {% if forloop.first %}
-                  checked
-                {% endif %}
-              >
-              {{ block.settings.label }}
-            </label>
-          {% endif %}
-        {% endfor %}
-        <div>
-          {{ section.settings.help_label_delivery }}
+        <!-- Film Format -->
+        <fieldset>
+          <legend>{{ section.settings.format_label }}</legend>
           {% for block in section.blocks %}
-            {% if block.type == 'delivery' %}
-              <div class="help-div">
-                {% if block.settings.help_image %}
-                  <span>
-                    <img
-                      src="{{ block.settings.help_image  | image_url }}"
-                      width="auto"
-                      height="auto"
-                      alt="Help Image"
-                      class="help-image"
-                    >
-                  </span>
-                {% endif %}
-                <div class="help-text-div">
-                  <p>{{- block.settings.help_subtitle }}</p>
-                  <p>{{- block.settings.help_text }}</p>
-                </div>
-              </div>
+            {% if block.type == 'film_format' %}
+              <label>
+                <input
+                  type="radio"
+                  name="properties[Film Format]"
+                  value="{{ block.settings.value }}"
+                  {% if forloop.first %}
+                    checked
+                  {% endif %}
+                >
+                {{ block.settings.label }}
+              </label>
             {% endif %}
           {% endfor %}
-        </div>
-      </fieldset>
+          <!-- Accordion -->
+          <div class="accordion">
+            {{ section.settings.help_label_format }}
+            <div class="accordion-items-wrapper">
+              {{ section.settings.help_sub_label_format }}
+              {% for block in section.blocks %}
+                {% if block.type == 'film_format' %}
+                  <div class="help-div">
+                    {% if block.settings.help_image %}
+                      <span>
+                        <img
+                          src="{{ block.settings.help_image  | image_url }}"
+                          width="auto"
+                          height="auto"
+                          alt="Help Image"
+                          class="help-image"
+                        >
+                      </span>
+                    {% endif %}
+                    <div class="help-text-div">
+                      <p>{{- block.settings.help_subtitle }}</p>
+                      <p>{{- block.settings.help_text }}</p>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </fieldset>
 
-      <!-- Order Summary -->
-      <div class="order-summary-wrapper">
-        <div id="order-summary" class="order-summary">
-          <h3>{{ section.settings.summary_label }}</h3>
-          <p>Subtotal: <span id="subtotal">$0.00</span></p>
-          <p>Discounts: <span id="discounts">-$0.00</span></p>
-          {% comment %}
-            <p>
-              <strong>Total: <span id="total">$0.00</span></strong>
-            </p>
-          {% endcomment %}
-          <button type="submit"><span id="total">$0.00</span></button>
-        </div>
-        <details>
-          <summary>Hide Details (-)???</summary>
-          <div class="summary-details">
-            <p>Store</p>
-            <p id="summary-store"></p>
+        <!-- Process -->
+        <fieldset>
+          <legend>{{ section.settings.process_label }}</legend>
+          {% for block in section.blocks %}
+            {% if block.type == 'process_option' %}
+              <label>
+                <input
+                  type="radio"
+                  name="properties[Process]"
+                  value="{{ block.settings.value }}"
+                  {% if forloop.first %}
+                    checked
+                  {% endif %}
+                >
+                {{ block.settings.label }}
+              </label>
+            {% endif %}
+          {% endfor %}
+          <!-- Accordion -->
+          <div class="accordion">
+            {{ section.settings.help_label_process }}
+            <div class="accordion-items-wrapper">
+              {{ section.settings.help_sub_label_process }}
+              {% for block in section.blocks %}
+                {% if block.type == 'process_option' %}
+                  <div class="help-div">
+                    {% if block.settings.help_image %}
+                      <span>
+                        <img
+                          src="{{ block.settings.help_image  | image_url }}"
+                          width="auto"
+                          height="auto"
+                          alt="Help Image"
+                          class="help-image"
+                        >
+                      </span>
+                    {% endif %}
+                    <div class="help-text-div">
+                      <p>{{- block.settings.help_subtitle }}</p>
+                      <p>{{- block.settings.help_text }}</p>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
           </div>
-          <div class="summary-details">
-            <p>Service</p>
-            <p id="summary-service"></p>
-          </div>
-          <div class="summary-details">
-            <p>Film</p>
-            <p id="summary-film"></p>
-          </div>
-          <div class="summary-details">
-            <p>Process</p>
-            <p id="summary-process"></p>
-          </div>
-          <div class="summary-details">
-            <p>Number of rolls</p>
-            <p id="summary-rolls"></p>
-          </div>
-          <div class="summary-details">
-            <p>Scanner</p>
-            <p id="summary-scanner"></p>
-          </div>
-          <div class="summary-details">
-            <p>Resolution</p>
-            <p id="summary-resolution"></p>
-          </div>
+        </fieldset>
 
-          <!-- Dynamic Add-ons -->
+        <!-- Rolls -->
+        <fieldset>
+          <legend>{{ section.settings.rolls_label }}</legend>
+          <input type="number" name="properties[Number of Rolls]" value="1" min="1" id="rolls-input">
+        </fieldset>
+
+        <!-- Scanner -->
+        <fieldset>
+          <legend>{{ section.settings.scanning_label }}</legend>
+          {% for block in section.blocks %}
+            {% if block.type == 'scanner' %}
+              <label>
+                <input
+                  type="radio"
+                  name="properties[Scanner]"
+                  value="{{ block.settings.value }}"
+                  {% if forloop.first %}
+                    checked
+                  {% endif %}
+                >
+                {{ block.settings.label }}
+              </label>
+            {% endif %}
+          {% endfor %}
+          <!-- Accordion -->
+          <div class="accordion">
+            {{ section.settings.help_label_scanner }}
+            <div class="accordion-items-wrapper">
+              {{ section.settings.help_sub_label_scanning }}
+              {% for block in section.blocks %}
+                {% if block.type == 'scanner' %}
+                  {% if block.settings.help_image %}
+                    <div class="help-div-scanner">
+                      <span>
+                        <img
+                          src="{{ block.settings.help_image  | image_url }}"
+                          width="auto"
+                          height="auto"
+                          alt="Help Image"
+                          class="help-image-scanner"
+                        >
+                      </span>
+                    </div>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+              <div class="help-text-wrapper">
+                {% for block in section.blocks %}
+                  {% if block.type == 'scanner' %}
+                    <div class="help-text-div">
+                      <p>{{- block.settings.help_subtitle }}</p>
+                      {{ block.settings.help_text }}
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Resolution -->
+        <fieldset>
+          <legend>{{ section.settings.resolution_label }}</legend>
+          {% for block in section.blocks %}
+            {% if block.type == 'resolution' %}
+              <label>
+                <input
+                  type="radio"
+                  name="properties[Resolution]"
+                  value="{{ block.settings.value }}"
+                  {% if forloop.first %}
+                    checked
+                  {% endif %}
+                >
+                {{ block.settings.label }}
+              </label>
+            {% endif %}
+          {% endfor %}
+          <!-- Accordion -->
+          <div class="accordion">
+            {{ section.settings.help_label_resolution }}
+            <div class="accordion-items-wrapper">
+              {{ section.settings.help_sub_label_resolution }}
+              {% for block in section.blocks %}
+                {% if block.type == 'resolution' %}
+                  <div class="help-div">
+                    {% if block.settings.help_image %}
+                      <span>
+                        <img
+                          src="{{ block.settings.help_image  | image_url }}"
+                          width="auto"
+                          height="auto"
+                          alt="Help Image"
+                          class="help-image"
+                        >
+                      </span>
+                    {% endif %}
+                    <div class="help-text-div">
+                      <p>{{- block.settings.help_subtitle }}</p>
+                      <p>{{- block.settings.help_text }}</p>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Printing -->
+        <fieldset>
+          <legend>{{ section.settings.printing_label }}</legend>
+          {% for block in section.blocks %}
+            {% if block.type == 'printing' %}
+              <label>
+                <input
+                  type="radio"
+                  name="properties[Printing]"
+                  value="{{ block.settings.value }}"
+                  {% if forloop.first %}
+                    checked
+                  {% endif %}
+                >
+                {{ block.settings.label }}
+              </label>
+            {% endif %}
+          {% endfor %}
+          <!-- Accordion -->
+          <div class="accordion">
+            {{ section.settings.help_label_printing }}
+            <div class="accordion-items-wrapper">
+              {{ section.settings.help_sub_label_printing }}
+              {% for block in section.blocks %}
+                {% if block.type == 'printing' %}
+                  <div class="help-div">
+                    {% if block.settings.help_image %}
+                      <span>
+                        <img
+                          src="{{ block.settings.help_image  | image_url }}"
+                          width="auto"
+                          height="auto"
+                          alt="Help Image"
+                          class="help-image"
+                        >
+                      </span>
+                    {% endif %}
+                    <div class="help-text-div">
+                      <p>{{- block.settings.help_subtitle }}</p>
+                      <p>{{- block.settings.help_text }}</p>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Add-ons -->
+        <fieldset>
+          <legend>{{ section.settings.addons_label }}</legend>
           {% for block in section.blocks %}
             {% if block.type == 'addon' %}
-              <div class="summary-details">
-                <p>{{ block.settings.label }}</p>
-                <p id="summary-addon-{{ block.id }}"></p>
-              </div>
+              <label>
+                <input
+                  type="checkbox"
+                  name="properties[{{ block.settings.label }}]"
+                  value="{{ block.settings.value }}"
+                  data-price="{{ block.settings.price }}"
+                  {% if block.settings.is_discount %}
+                    data-discount="true" data-discount-percent="{{ block.settings.discount_percent }}"
+                  {% endif %}
+                >
+                {{ block.settings.label }}
+                {% if block.settings.is_discount %}
+                  ({{ block.settings.discount_percent }}%)
+                {% elsif block.settings.price > 0 %}
+                  (+${{ block.settings.price }}/roll)
+                {% endif %}
+              </label>
             {% endif %}
           {% endfor %}
+        </fieldset>
 
-          <div class="summary-details">
-            <p>Prints?</p>
-            <p id="summary-prints"></p>
+        <!-- Delivery -->
+        <fieldset>
+          <legend>{{ section.settings.delivery_label }}</legend>
+          {% for block in section.blocks %}
+            {% if block.type == 'delivery' %}
+              <label>
+                <input
+                  type="radio"
+                  name="properties[Delivery]"
+                  value="{{ block.settings.value }}"
+                  {% if forloop.first %}
+                    checked
+                  {% endif %}
+                >
+                {{ block.settings.label }}
+              </label>
+            {% endif %}
+          {% endfor %}
+          <div>
+            {{ section.settings.help_label_delivery }}
+            {% for block in section.blocks %}
+              {% if block.type == 'delivery' %}
+                <div class="help-div">
+                  {% if block.settings.help_image %}
+                    <span>
+                      <img
+                        src="{{ block.settings.help_image  | image_url }}"
+                        width="auto"
+                        height="auto"
+                        alt="Help Image"
+                        class="help-image"
+                      >
+                    </span>
+                  {% endif %}
+                  <div class="help-text-div">
+                    <p>{{- block.settings.help_subtitle }}</p>
+                    <p>{{- block.settings.help_text }}</p>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
           </div>
-          <div class="summary-details">
-            <p>Delivery method</p>
-            <p id="summary-delivery"></p>
+        </fieldset>
+
+        <!-- Order Summary -->
+        <div class="order-summary-wrapper">
+          <div id="order-summary" class="order-summary">
+            <h3>{{ section.settings.summary_label }}</h3>
+            <p>Subtotal: <span id="subtotal">$0.00</span></p>
+            <p>Discounts: <span id="discounts">-$0.00</span></p>
+            <p>Total: <span id="total">-$0.00</span></p>
+
+            <button type="submit"><span id="total">$0.00</span></button>
+
+            {%- render 'buy-buttons',
+              product: product,
+              product_form_id: product_form_id,
+              section_id: section.id,
+              show_pickup_availability: true
+            -%}
           </div>
-        </details>
-      </div>
-    </form>
-  </div>
-</section>
+          <details>
+            <summary>Hide Details (-)???</summary>
+            <div class="summary-details">
+              <p>Store</p>
+              <p id="summary-store"></p>
+            </div>
+            <div class="summary-details">
+              <p>Service</p>
+              <p id="summary-service"></p>
+            </div>
+            <div class="summary-details">
+              <p>Film</p>
+              <p id="summary-film"></p>
+            </div>
+            <div class="summary-details">
+              <p>Process</p>
+              <p id="summary-process"></p>
+            </div>
+            <div class="summary-details">
+              <p>Number of rolls</p>
+              <p id="summary-rolls"></p>
+            </div>
+            <div class="summary-details">
+              <p>Scanner</p>
+              <p id="summary-scanner"></p>
+            </div>
+            <div class="summary-details">
+              <p>Resolution</p>
+              <p id="summary-resolution"></p>
+            </div>
+
+            <!-- Dynamic Add-ons -->
+            {% for block in section.blocks %}
+              {% if block.type == 'addon' %}
+                <div class="summary-details">
+                  <p>{{ block.settings.label }}</p>
+                  <p id="summary-addon-{{ block.id }}"></p>
+                </div>
+              {% endif %}
+            {% endfor %}
+
+            <div class="summary-details">
+              <p>Prints?</p>
+              <p id="summary-prints"></p>
+            </div>
+            <div class="summary-details">
+              <p>Delivery method</p>
+              <p id="summary-delivery"></p>
+            </div>
+          </details>
+        </div>
+      </form>
+    </div>
+  </section>
+</product-info>
+
+<script type="application/ld+json">
+  {{ product | structured_data }}
+</script>
+
+<script type="application/json" data-selected-variant>
+  {{ product.selected_or_first_available_variant | json }}
+</script>
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {

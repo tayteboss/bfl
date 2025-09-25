@@ -1,0 +1,18 @@
+{{ 'drop-off.css' | asset_url | stylesheet_tag }}
+
+<div class="drop-off-wrapper">
+  <div class="drop-off-map"></div>
+</div>
+
+{% schema %}
+{
+  "name": "Drop-off",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Drop-off",
+      "category": "Drop Off Page"
+    }
+  ]
+}
+{% endschema %}
