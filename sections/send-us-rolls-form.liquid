@@ -1,0 +1,988 @@
+{{ 'send-rolls-form.css' | asset_url | stylesheet_tag }}
+
+<section class="film-service">
+  <div class="film-service-inner">
+    <h2>{{ section.settings.heading }}</h2>
+
+    <form method="post" action="{{ routes.cart_add_url }}" id="film-service-form">
+      <!-- Shopify needs this hidden field -->
+      <input type="hidden" name="id" value="{{ all_products[section.settings.product].variants.first.id }}">
+
+      <!-- Store Selector -->
+      <fieldset>
+        <legend>{{ section.settings.store_label }}</legend>
+        {% for block in section.blocks %}
+          {% if block.type == 'store' %}
+            <label>
+              <input
+                type="radio"
+                name="properties[Store]"
+                value="{{ block.settings.name }}"
+                {% if forloop.first %}
+                  checked
+                {% endif %}
+              >
+              {{ block.settings.name }}
+            </label>
+          {% endif %}
+        {% endfor %}
+      </fieldset>
+
+      <!-- Service -->
+      <fieldset>
+        <legend>{{ section.settings.service_label }}</legend>
+        {% for block in section.blocks %}
+          {% if block.type == 'service' %}
+            <label>
+              <input
+                type="radio"
+                name="properties[Service]"
+                value="{{ block.settings.value }}"
+                {% if forloop.first %}
+                  checked
+                {% endif %}
+              >
+              {{ block.settings.label }}
+            </label>
+          {% endif %}
+        {% endfor %}
+        <!-- Accordion -->
+        <div class="accordion">
+          {{ section.settings.help_label_service }}
+          <div class="accordion-items-wrapper">
+            {{ section.settings.help_sub_label_service }}
+            {% for block in section.blocks %}
+              {% if block.type == 'service' %}
+                <div class="help-div">
+                  {% if block.settings.help_image %}
+                    <span>
+                      <img
+                        src="{{ block.settings.help_image  | image_url }}"
+                        width="auto"
+                        height="auto"
+                        alt="Help Image"
+                        class="help-image"
+                      >
+                    </span>
+                  {% endif %}
+                  <div class="help-text-div">
+                    <p>{{- block.settings.help_subtitle }}</p>
+                    <p>{{- block.settings.help_text }}</p>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Film Format -->
+      <fieldset>
+        <legend>{{ section.settings.format_label }}</legend>
+        {% for block in section.blocks %}
+          {% if block.type == 'film_format' %}
+            <label>
+              <input
+                type="radio"
+                name="properties[Film Format]"
+                value="{{ block.settings.value }}"
+                {% if forloop.first %}
+                  checked
+                {% endif %}
+              >
+              {{ block.settings.label }}
+            </label>
+          {% endif %}
+        {% endfor %}
+        <!-- Accordion -->
+        <div class="accordion">
+          {{ section.settings.help_label_format }}
+          <div class="accordion-items-wrapper">
+            {{ section.settings.help_sub_label_format }}
+            {% for block in section.blocks %}
+              {% if block.type == 'film_format' %}
+                <div class="help-div">
+                  {% if block.settings.help_image %}
+                    <span>
+                      <img
+                        src="{{ block.settings.help_image  | image_url }}"
+                        width="auto"
+                        height="auto"
+                        alt="Help Image"
+                        class="help-image"
+                      >
+                    </span>
+                  {% endif %}
+                  <div class="help-text-div">
+                    <p>{{- block.settings.help_subtitle }}</p>
+                    <p>{{- block.settings.help_text }}</p>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Process -->
+      <fieldset>
+        <legend>{{ section.settings.process_label }}</legend>
+        {% for block in section.blocks %}
+          {% if block.type == 'process_option' %}
+            <label>
+              <input
+                type="radio"
+                name="properties[Process]"
+                value="{{ block.settings.value }}"
+                {% if forloop.first %}
+                  checked
+                {% endif %}
+              >
+              {{ block.settings.label }}
+            </label>
+          {% endif %}
+        {% endfor %}
+        <!-- Accordion -->
+        <div class="accordion">
+          {{ section.settings.help_label_process }}
+          <div class="accordion-items-wrapper">
+            {{ section.settings.help_sub_label_process }}
+            {% for block in section.blocks %}
+              {% if block.type == 'process_option' %}
+                <div class="help-div">
+                  {% if block.settings.help_image %}
+                    <span>
+                      <img
+                        src="{{ block.settings.help_image  | image_url }}"
+                        width="auto"
+                        height="auto"
+                        alt="Help Image"
+                        class="help-image"
+                      >
+                    </span>
+                  {% endif %}
+                  <div class="help-text-div">
+                    <p>{{- block.settings.help_subtitle }}</p>
+                    <p>{{- block.settings.help_text }}</p>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Rolls -->
+      <fieldset>
+        <legend>{{ section.settings.rolls_label }}</legend>
+        <input type="number" name="properties[Number of Rolls]" value="1" min="1" id="rolls-input">
+      </fieldset>
+
+      <!-- Scanner -->
+      <fieldset>
+        <legend>{{ section.settings.scanning_label }}</legend>
+        {% for block in section.blocks %}
+          {% if block.type == 'scanner' %}
+            <label>
+              <input
+                type="radio"
+                name="properties[Scanner]"
+                value="{{ block.settings.value }}"
+                {% if forloop.first %}
+                  checked
+                {% endif %}
+              >
+              {{ block.settings.label }}
+            </label>
+          {% endif %}
+        {% endfor %}
+        <!-- Accordion -->
+        <div class="accordion">
+          {{ section.settings.help_label_scanner }}
+          <div class="accordion-items-wrapper">
+            {{ section.settings.help_sub_label_scanning }}
+            {% for block in section.blocks %}
+              {% if block.type == 'scanner' %}
+                {% if block.settings.help_image %}
+                  <div class="help-div-scanner">
+                    <span>
+                      <img
+                        src="{{ block.settings.help_image  | image_url }}"
+                        width="auto"
+                        height="auto"
+                        alt="Help Image"
+                        class="help-image-scanner"
+                      >
+                    </span>
+                  </div>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+            <div class="help-text-wrapper">
+              {% for block in section.blocks %}
+                {% if block.type == 'scanner' %}
+                  <div class="help-text-div">
+                    <p>{{- block.settings.help_subtitle }}</p>
+                    {{ block.settings.help_text }}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Resolution -->
+      <fieldset>
+        <legend>{{ section.settings.resolution_label }}</legend>
+        {% for block in section.blocks %}
+          {% if block.type == 'resolution' %}
+            <label>
+              <input
+                type="radio"
+                name="properties[Resolution]"
+                value="{{ block.settings.value }}"
+                {% if forloop.first %}
+                  checked
+                {% endif %}
+              >
+              {{ block.settings.label }}
+            </label>
+          {% endif %}
+        {% endfor %}
+        <!-- Accordion -->
+        <div class="accordion">
+          {{ section.settings.help_label_resolution }}
+          <div class="accordion-items-wrapper">
+            {{ section.settings.help_sub_label_resolution }}
+            {% for block in section.blocks %}
+              {% if block.type == 'resolution' %}
+                <div class="help-div">
+                  {% if block.settings.help_image %}
+                    <span>
+                      <img
+                        src="{{ block.settings.help_image  | image_url }}"
+                        width="auto"
+                        height="auto"
+                        alt="Help Image"
+                        class="help-image"
+                      >
+                    </span>
+                  {% endif %}
+                  <div class="help-text-div">
+                    <p>{{- block.settings.help_subtitle }}</p>
+                    <p>{{- block.settings.help_text }}</p>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Printing -->
+      <fieldset>
+        <legend>{{ section.settings.printing_label }}</legend>
+        {% for block in section.blocks %}
+          {% if block.type == 'printing' %}
+            <label>
+              <input
+                type="radio"
+                name="properties[Printing]"
+                value="{{ block.settings.value }}"
+                {% if forloop.first %}
+                  checked
+                {% endif %}
+              >
+              {{ block.settings.label }}
+            </label>
+          {% endif %}
+        {% endfor %}
+        <!-- Accordion -->
+        <div class="accordion">
+          {{ section.settings.help_label_printing }}
+          <div class="accordion-items-wrapper">
+            {{ section.settings.help_sub_label_printing }}
+            {% for block in section.blocks %}
+              {% if block.type == 'printing' %}
+                <div class="help-div">
+                  {% if block.settings.help_image %}
+                    <span>
+                      <img
+                        src="{{ block.settings.help_image  | image_url }}"
+                        width="auto"
+                        height="auto"
+                        alt="Help Image"
+                        class="help-image"
+                      >
+                    </span>
+                  {% endif %}
+                  <div class="help-text-div">
+                    <p>{{- block.settings.help_subtitle }}</p>
+                    <p>{{- block.settings.help_text }}</p>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Add-ons -->
+      <fieldset>
+        <legend>{{ section.settings.addons_label }}</legend>
+        {% for block in section.blocks %}
+          {% if block.type == 'addon' %}
+            <label>
+              <input
+                type="checkbox"
+                name="properties[{{ block.settings.label }}]"
+                value="{{ block.settings.value }}"
+                data-price="{{ block.settings.price }}"
+                {% if block.settings.is_discount %}
+                  data-discount="true" data-discount-percent="{{ block.settings.discount_percent }}"
+                {% endif %}
+              >
+              {{ block.settings.label }}
+              {% if block.settings.is_discount %}
+                ({{ block.settings.discount_percent }}%)
+              {% elsif block.settings.price > 0 %}
+                (+${{ block.settings.price }}/roll)
+              {% endif %}
+            </label>
+          {% endif %}
+        {% endfor %}
+      </fieldset>
+
+      <!-- Delivery -->
+      <fieldset>
+        <legend>{{ section.settings.delivery_label }}</legend>
+        {% for block in section.blocks %}
+          {% if block.type == 'delivery' %}
+            <label>
+              <input
+                type="radio"
+                name="properties[Delivery]"
+                value="{{ block.settings.value }}"
+                {% if forloop.first %}
+                  checked
+                {% endif %}
+              >
+              {{ block.settings.label }}
+            </label>
+          {% endif %}
+        {% endfor %}
+        <div>
+          {{ section.settings.help_label_delivery }}
+          {% for block in section.blocks %}
+            {% if block.type == 'delivery' %}
+              <div class="help-div">
+                {% if block.settings.help_image %}
+                  <span>
+                    <img
+                      src="{{ block.settings.help_image  | image_url }}"
+                      width="auto"
+                      height="auto"
+                      alt="Help Image"
+                      class="help-image"
+                    >
+                  </span>
+                {% endif %}
+                <div class="help-text-div">
+                  <p>{{- block.settings.help_subtitle }}</p>
+                  <p>{{- block.settings.help_text }}</p>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </fieldset>
+
+      <!-- Order Summary -->
+      <div class="order-summary-wrapper">
+        <div id="order-summary" class="order-summary">
+          <h3>{{ section.settings.summary_label }}</h3>
+          <p>Subtotal: <span id="subtotal">$0.00</span></p>
+          <p>Discounts: <span id="discounts">-$0.00</span></p>
+          {% comment %}
+            <p>
+              <strong>Total: <span id="total">$0.00</span></strong>
+            </p>
+          {% endcomment %}
+          <button type="submit"><span id="total">$0.00</span></button>
+        </div>
+        <details>
+          <summary>Hide Details (-)???</summary>
+          <div class="summary-details">
+            <p>Store</p>
+            <p id="summary-store"></p>
+          </div>
+          <div class="summary-details">
+            <p>Service</p>
+            <p id="summary-service"></p>
+          </div>
+          <div class="summary-details">
+            <p>Film</p>
+            <p id="summary-film"></p>
+          </div>
+          <div class="summary-details">
+            <p>Process</p>
+            <p id="summary-process"></p>
+          </div>
+          <div class="summary-details">
+            <p>Number of rolls</p>
+            <p id="summary-rolls"></p>
+          </div>
+          <div class="summary-details">
+            <p>Scanner</p>
+            <p id="summary-scanner"></p>
+          </div>
+          <div class="summary-details">
+            <p>Resolution</p>
+            <p id="summary-resolution"></p>
+          </div>
+
+          <!-- Dynamic Add-ons -->
+          {% for block in section.blocks %}
+            {% if block.type == 'addon' %}
+              <div class="summary-details">
+                <p>{{ block.settings.label }}</p>
+                <p id="summary-addon-{{ block.id }}"></p>
+              </div>
+            {% endif %}
+          {% endfor %}
+
+          <div class="summary-details">
+            <p>Prints?</p>
+            <p id="summary-prints"></p>
+          </div>
+          <div class="summary-details">
+            <p>Delivery method</p>
+            <p id="summary-delivery"></p>
+          </div>
+        </details>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById("film-service-form");
+    const rollsInput = document.getElementById("rolls-input");
+    const subtotalEl = document.getElementById("subtotal");
+    const discountsEl = document.getElementById("discounts");
+    const totalEl = document.getElementById("total");
+
+    function updateSummary() {
+      let basePrice = {{ section.settings.base_price | default: 14 }};
+      let rolls = parseInt(rollsInput.value) || 1;
+      let subtotal = basePrice * rolls;
+      let discount = 0;
+
+      form.querySelectorAll("input[type='checkbox'][name^='properties']:checked").forEach(input => {
+        let price = parseFloat(input.dataset.price) || 0;
+        let isDiscount = input.dataset.discount === "true";
+
+        if (isDiscount) {
+          let percent = parseFloat(input.dataset.discountPercent) || 0;
+          discount += subtotal * (percent / 100);
+        } else {
+          subtotal += price * rolls;
+        }
+      });
+
+      let total = subtotal - discount;
+      subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+      discountsEl.textContent = `-$${discount.toFixed(2)}`;
+      totalEl.textContent = `$${total.toFixed(2)}`;
+    }
+
+    function updateSelections() {
+      let store = form.querySelector("input[name='properties[Store]']:checked");
+      document.getElementById("summary-store").textContent = store ? store.value : "–";
+
+      let service = form.querySelector("input[name='properties[Service]']:checked");
+      document.getElementById("summary-service").textContent = service ? service.value : "–";
+
+      let film = form.querySelector("input[name='properties[Film Format]']:checked");
+      document.getElementById("summary-film").textContent = film ? film.value : "–";
+
+      let process = form.querySelector("input[name='properties[Process]']:checked");
+      document.getElementById("summary-process").textContent = process ? process.value : "–";
+
+      document.getElementById("summary-rolls").textContent = rollsInput.value || "–";
+
+      let scanner = form.querySelector("input[name='properties[Scanner]']:checked");
+      document.getElementById("summary-scanner").textContent = scanner ? scanner.value : "–";
+
+      let resolution = form.querySelector("input[name='properties[Resolution]']:checked");
+      document.getElementById("summary-resolution").textContent = resolution ? resolution.value : "–";
+
+      // Dynamic Add-ons
+      form.querySelectorAll("input[type='checkbox'][name^='properties']").forEach(input => {
+        let safeId = input.name.replace("properties[", "").replace("]", "").replace(/\s+/g, "-").toLowerCase();
+        let span = document.getElementById("summary-addon-" + input.getAttribute("id") || safeId);
+        if (span) {
+          span.textContent = input.checked ? "Yes" : "No";
+        }
+      });
+
+      let prints = form.querySelector("input[name='properties[Printing]']:checked");
+      document.getElementById("summary-prints").textContent = prints ? prints.value : "–";
+
+      let delivery = form.querySelector("input[name='properties[Delivery]']:checked");
+      document.getElementById("summary-delivery").textContent = delivery ? delivery.value : "–";
+    }
+
+    form.addEventListener("change", function() {
+      updateSelections();
+      updateSummary();
+    });
+    rollsInput.addEventListener("input", function() {
+      updateSelections();
+      updateSummary();
+    });
+
+    updateSelections();
+    updateSummary();
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Send Rolls Form",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Film Service Product"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Film Development & Scanning"
+    },
+    {
+      "type": "number",
+      "id": "base_price",
+      "label": "Base Price per Roll",
+      "default": 14
+    },
+    {
+      "type": "text",
+      "id": "store_label",
+      "label": "Store Label",
+      "default": "Select Store"
+    },
+    {
+      "type": "text",
+      "id": "service_label",
+      "label": "Service Label",
+      "default": "Choose Service"
+    },
+    {
+      "type": "text",
+      "id": "help_label_service",
+      "label": "Help title for service"
+    },
+    {
+      "type": "text",
+      "id": "help_sub_label_service",
+      "label": "Help subtitle for service"
+    },
+    {
+      "type": "text",
+      "id": "format_label",
+      "label": "Film Format Label",
+      "default": "Film Format"
+    },
+    {
+      "type": "text",
+      "id": "help_label_format",
+      "label": "Help title for film format"
+    },
+    {
+      "type": "text",
+      "id": "help_sub_label_format",
+      "label": "Help subtitle for format"
+    },
+    {
+      "type": "text",
+      "id": "process_label",
+      "label": "Process Label",
+      "default": "Process"
+    },
+    {
+      "type": "text",
+      "id": "help_label_process",
+      "label": "Help title for process"
+    },
+    {
+      "type": "text",
+      "id": "help_sub_label_process",
+      "label": "Help subtitle for process"
+    },
+    {
+      "type": "text",
+      "id": "rolls_label",
+      "label": "Rolls Label",
+      "default": "How many rolls?"
+    },
+    {
+      "type": "text",
+      "id": "scanning_label",
+      "label": "Scanning Label",
+      "default": "Scanning"
+    },
+    {
+      "type": "text",
+      "id": "help_label_scanner",
+      "label": "Help title for scanning"
+    },
+    {
+      "type": "text",
+      "id": "help_sub_label_scanning",
+      "label": "Help subtitle for scanning"
+    },
+    {
+      "type": "text",
+      "id": "resolution_label",
+      "label": "Resolution Label",
+      "default": "Resolution"
+    },
+    {
+      "type": "text",
+      "id": "help_label_resolution",
+      "label": "Help title for resolution"
+    },
+    {
+      "type": "text",
+      "id": "help_sub_label_resolution",
+      "label": "Help subtitle for resolution"
+    },
+    {
+      "type": "text",
+      "id": "printing_label",
+      "label": "Printing Label",
+      "default": "Printing"
+    },
+    {
+      "type": "text",
+      "id": "help_label_printing",
+      "label": "Help title for printing"
+    },
+    {
+      "type": "text",
+      "id": "help_sub_label_printing",
+      "label": "Help subtitle for printing"
+    },
+    {
+      "type": "text",
+      "id": "addons_label",
+      "label": "Add-ons Label",
+      "default": "Extras"
+    },
+    {
+      "type": "text",
+      "id": "delivery_label",
+      "label": "Delivery Label",
+      "default": "Delivery"
+    },
+    {
+      "type": "text",
+      "id": "help_label_delivery",
+      "label": "Help title for delivery"
+    },
+    {
+      "type": "text",
+      "id": "summary_label",
+      "label": "Summary Label",
+      "default": "Order Summary"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "store",
+      "name": "Store Location",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Store Name",
+          "default": "Miami"
+        }
+      ]
+    },
+    {
+      "type": "service",
+      "name": "Service Option",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Option Label",
+          "default": "Develop + Scan"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Option Value",
+          "default": "Develop + Scan"
+        },
+        {
+          "type": "image_picker",
+          "id": "help_image",
+          "label": "Help icon"
+        },
+        {
+          "type": "text",
+          "id": "help_subtitle",
+          "label": "Help title"
+        },
+        {
+          "type": "textarea",
+          "id": "help_text",
+          "label": "Help text"
+        }
+      ]
+    },
+    {
+      "type": "film_format",
+      "name": "Film Format Option",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Option Label",
+          "default": "35mm"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Option Value",
+          "default": "35mm"
+        },
+        {
+          "type": "image_picker",
+          "id": "help_image",
+          "label": "Help icon"
+        },
+        {
+          "type": "text",
+          "id": "help_subtitle",
+          "label": "Help title"
+        },
+        {
+          "type": "textarea",
+          "id": "help_text",
+          "label": "Help text"
+        }
+      ]
+    },
+    {
+      "type": "process_option",
+      "name": "Process Option",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Option Label",
+          "default": "Black & White"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Option Value",
+          "default": "B&W"
+        },
+        {
+          "type": "image_picker",
+          "id": "help_image",
+          "label": "Help icon"
+        },
+        {
+          "type": "text",
+          "id": "help_subtitle",
+          "label": "Help title"
+        },
+        {
+          "type": "textarea",
+          "id": "help_text",
+          "label": "Help text"
+        }
+      ]
+    },
+    {
+      "type": "scanner",
+      "name": "Scanner Option",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Option Label",
+          "default": "Noritsu HS-1800"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Option Value",
+          "default": "Noritsu HS-1800"
+        },
+        {
+          "type": "image_picker",
+          "id": "help_image",
+          "label": "Help icon"
+        },
+        {
+          "type": "text",
+          "id": "help_subtitle",
+          "label": "Help title"
+        },
+        {
+          "type": "richtext",
+          "id": "help_text",
+          "label": "Help text"
+        }
+      ]
+    },
+    {
+      "type": "resolution",
+      "name": "Resolution Option",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Option Label",
+          "default": "Standard"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Option Value",
+          "default": "Standard"
+        },
+        {
+          "type": "image_picker",
+          "id": "help_image",
+          "label": "Help icon"
+        },
+        {
+          "type": "text",
+          "id": "help_subtitle",
+          "label": "Help title"
+        },
+        {
+          "type": "textarea",
+          "id": "help_text",
+          "label": "Help text"
+        }
+      ]
+    },
+    {
+      "type": "printing",
+      "name": "Printing Option",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Option Label",
+          "default": "Yes"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Option Value",
+          "default": "Yes"
+        },
+        {
+          "type": "image_picker",
+          "id": "help_image",
+          "label": "Help icon"
+        },
+        {
+          "type": "text",
+          "id": "help_subtitle",
+          "label": "Help title"
+        },
+        {
+          "type": "textarea",
+          "id": "help_text",
+          "label": "Help text"
+        }
+      ]
+    },
+    {
+      "type": "delivery",
+      "name": "Delivery Option",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Option Label",
+          "default": "Mail-in"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Option Value",
+          "default": "Mail-in"
+        },
+        {
+          "type": "image_picker",
+          "id": "help_image",
+          "label": "Help icon"
+        },
+        {
+          "type": "text",
+          "id": "help_subtitle",
+          "label": "Help title"
+        },
+        {
+          "type": "textarea",
+          "id": "help_text",
+          "label": "Help text"
+        }
+      ]
+    },
+    {
+      "type": "addon",
+      "name": "Add-on",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Add-on Label",
+          "default": "Contact Sheet PDF"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Add-on Value",
+          "default": "Yes"
+        },
+        {
+          "type": "number",
+          "id": "price",
+          "label": "Add-on Price Per Roll",
+          "default": 5
+        },
+        {
+          "type": "checkbox",
+          "id": "is_discount",
+          "label": "Is Discount?",
+          "default": false
+        },
+        {
+          "type": "number",
+          "id": "discount_percent",
+          "label": "Discount % (if discount)",
+          "default": 20
+        }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Send Rolls Form" }]
+}
+{% endschema %}

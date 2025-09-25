@@ -1,0 +1,13 @@
+/* light css just to position the image */
+.send-rolls-div {
+  position: relative;
+}
+
+.send-rolls-circle {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 200px;
+  height: auto;
+}

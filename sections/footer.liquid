@@ -1,0 +1,74 @@
+{{ 'footer.css' | asset_url | stylesheet_tag }}
+
+<footer class="footer-div">
+  <div class="footer-links">
+    <p>Quick Links</p>
+    {% for link in section.settings.menu.links %}
+      {{ link.title | link_to: link.url }}
+    {% endfor %}
+  </div>
+  <div class="footer-links">
+    <p>Customer Care</p>
+    {% for link in section.settings['second-menu'].links %}
+      {{ link.title | link_to: link.url }}
+    {% endfor %}
+  </div>
+  <div class="footer-links">
+    <p>Stores</p>
+    <div>
+      <p>Miami (HQ)</p>
+      <p>2214 NW 1st Pl, Miami</p>
+      <p>+1 (305) 721-0284</p>
+    </div>
+    <div>
+      <p>Chicago</p>
+      <p>1001 N Winchester Ave</p>
+      <p>+1 (305) 721-0284</p>
+    </div>
+    <div>
+      <p>Atlanta Lab</p>
+      <p>2214 NW 1st Pl, Miami</p>
+      <p>+1 (305) 721-0284</p>
+    </div>
+    <div>
+      <p>Orlando</p>
+      <p>2214 NW 1st Pl, Miami</p>
+      <p>+1 (305) 721-0284</p>
+    </div>
+  </div>
+  <div class="footer-links newsletter-container">
+    <p>Join our newsletter</p>
+  </div>
+  <a href="{{ routes.root_url }}">
+    <img
+      src="{{ section.settings.logo | image_url }}"
+      alt="logo"
+      width="auto"
+      height="auto"
+      class="footer-logo"
+    >
+  </a>
+</footer>
+
+{% schema %}
+{
+  "name": "footer",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "t:labels.menu"
+    },
+    {
+      "type": "link_list",
+      "id": "second-menu",
+      "label": "t:labels.menu"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Footer Logo"
+    }
+  ]
+}
+{% endschema %}

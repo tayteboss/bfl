@@ -1,0 +1,49 @@
+{{ 'carousel.css' | asset_url | stylesheet_tag }}
+
+<div class="image-carousel">
+  {% for block in section.blocks %}
+    <div class="image-carousel-item" {{ block.shopify_attributes }}>
+      {% if block.settings.image != blank %}
+        <img
+          src="{{ block.settings.image | image_url }}"
+          alt="{{ block.settings.alt | escape }}"
+          loading="lazy"
+          width="auto"
+          height="auto"
+        >
+      {% endif %}
+    </div>
+  {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "Image Carousel",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Carousel Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Alt text",
+          "default": "Carousel image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image Carousel",
+      "category": "Homepage"
+    }
+  ]
+}
+{% endschema %}

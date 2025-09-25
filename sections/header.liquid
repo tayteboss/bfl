@@ -1,0 +1,93 @@
+{{ 'header.css' | asset_url | stylesheet_tag }}
+
+<header>
+  <a href="{{ routes.root_url }}">
+    <img
+      src="{{ section.settings.logo | image_url }}"
+      alt="logo"
+      width="auto"
+      height="auto"
+      class="logo"
+    >
+  </a>
+
+  <div class="header-social-links">
+    <a href="">Email</a>
+    <a href="">Instagram</a>
+    <a href="">TikTok</a>
+  </div>
+
+  <p class="menu-toggle" aria-label="Open Menu">Menu</p>
+  <a class="cart-button" href="{{ routes.cart_url }}">
+    Cart
+    <span class="cart-bubble">
+      <span class="cart-number">{{ cart.item_count }}</span>
+    </span>
+    {% comment %}
+      {%- if cart.item_count > 0 %}
+        <span class="cart-bubble">
+          <span class="cart-number">{{ cart.item_count }}</span>
+        </span>
+      {%- endif %}
+    {% endcomment %}
+  </a>
+
+  <div class="menu-overlay" id="menuOverlay">
+    <p class="menu-close" aria-label="Close Menu">Close</p>
+    <nav class="menu-nav">
+      {% for link in section.settings.navigation.links %}
+        <a href="{{ link.url }}">{{ link.title }}</a>
+      {% endfor %}
+      {% if shop.customer_accounts_enabled %}
+        <a href="{{ routes.account_url }}">My Account</a>
+      {% endif %}
+    </nav>
+    <a class="cart-button" href="{{ routes.cart_url }}">
+      Cart
+      <span class="cart-bubble">
+        <span class="cart-number">{{ cart.item_count }}</span>
+      </span>
+      {% comment %}
+        {%- if cart.item_count > 0 %}
+          <span class="cart-bubble">
+            <span class="cart-number">{{ cart.item_count }}</span>
+          </span>
+        {%- endif %}
+      {% endcomment %}
+    </a>
+  </div>
+</header>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const menuClose = document.querySelector('.menu-close');
+
+    menuToggle.addEventListener('click', () => {
+      menuOverlay.classList.add('active');
+    });
+
+    menuClose.addEventListener('click', () => {
+      menuOverlay.classList.remove('active');
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "navigation",
+      "label": "t:labels.menu"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "logo"
+    }
+  ]
+}
+{% endschema %}

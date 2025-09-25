@@ -1,0 +1,57 @@
+.services-nav {
+  display: flex;
+  gap: 5px;
+}
+
+.button {
+  padding: 8px 18px;
+  background-color: #F6F6F6;
+  border-radius: 20px;
+  width: fit-content;
+}
+
+/* ABOVE = service 'hero page' details */
+
+/* BELOW = service types */
+
+.service-div {
+  position: relative;
+  height: 400px;
+  border: black solid 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.service-hero-image {
+  width: 700px;
+  height: 500px;
+  border-radius: 15px;
+  object-fit: cover;
+  margin: 0 auto;
+}
+
+.service-info-div {
+  width: 50%;
+}
+
+.service-image-div-left {
+  position: absolute;
+  left: -200px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.service-image-div-right {
+  position: absolute;
+  right: -200px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.service-image-div-left img,
+.service-image-div-right img {
+  width: 500px;
+  height: auto;
+}

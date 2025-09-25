@@ -1,0 +1,199 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "featured_collection_wHifxE": {
+      "type": "featured-collection",
+      "blocks": {
+        "collection_EAV7rA": {
+          "type": "collection",
+          "settings": {
+            "collection": "film"
+          }
+        },
+        "collection_cxrxp8": {
+          "type": "collection",
+          "settings": {
+            "collection": "disposable-cameras"
+          }
+        },
+        "collection_GPPWN7": {
+          "type": "collection",
+          "settings": {
+            "collection": "batteries"
+          }
+        },
+        "collection_D6R9FJ": {
+          "type": "collection",
+          "settings": {
+            "collection": "polaroid"
+          }
+        },
+        "collection_MRDebf": {
+          "type": "collection",
+          "settings": {
+            "collection": "tape"
+          }
+        },
+        "collection_cXc8M4": {
+          "type": "collection",
+          "settings": {
+            "collection": "lenses"
+          }
+        },
+        "collection_iCEf98": {
+          "type": "collection",
+          "settings": {
+            "collection": "merch"
+          }
+        }
+      },
+      "block_order": [
+        "collection_EAV7rA",
+        "collection_cxrxp8",
+        "collection_GPPWN7",
+        "collection_D6R9FJ",
+        "collection_MRDebf",
+        "collection_cXc8M4",
+        "collection_iCEf98"
+      ],
+      "name": "Featured Collection",
+      "settings": {
+        "heading": "Shop Products"
+      }
+    },
+    "imagecarousel_7H8JL3": {
+      "type": "imagecarousel",
+      "blocks": {
+        "image_GGpTiX": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/a3bf6a92b61862809047a7ae287061773e9e1b01.png",
+            "alt": "Carousel image"
+          }
+        },
+        "image_KHyr8t": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/493255312d84660aace5a2cfdb2a29bbf8200074.png",
+            "alt": "Carousel image"
+          }
+        }
+      },
+      "block_order": [
+        "image_GGpTiX",
+        "image_KHyr8t"
+      ],
+      "name": "Image Carousel",
+      "settings": {}
+    },
+    "sendrollshome_aLTPmr": {
+      "type": "sendrollshome",
+      "name": "Send Rolls",
+      "settings": {
+        "heading": "Bellows began as a single pro lab in Miami and, in just a few short years, has grown into a small constellation of studios—Miami, Chicago and pop-ups in Atlanta and Orlando—processing thousands of rolls every month.",
+        "paragraph-1": "The recipe hasn’t changed: fresh chemistry mixed daily, scanners tuned by hand, and a crew of film nerds who still get goose-bumps when a perfect negative hits the light table. From one-hour C-41 to exhibition-grade drum scans, Bellows exists to bridge the gap between analogue craft and a digital-first world, giving photographers a place where curiosity is met with real expertise.",
+        "paragraph-2": "At Bellows, we’re on a mission to keep film photography alive and thriving in South Florida. We believe in the magic of the process—from loading film to developing and holding the final product in your hands. Our goal is to offer exceptional film development services while cultivating a space where photographers can express their creativity, share their passion, and celebrate the art of analog.",
+        "sendrollsimage": "shopify://shop_images/Group_6.png",
+        "button": "Send Us Your Rolls",
+        "cta": "#"
+      }
+    },
+    "walloffame_AnARbN": {
+      "type": "walloffame",
+      "blocks": {
+        "image_jUptyX": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/a4818996346ca9c32b86de4b41d75d6a8702e5f8.jpg",
+            "alt": "Carousel image",
+            "button": "@blueroom",
+            "cta": "https://www.instagram.com/blueroom.studios/"
+          }
+        },
+        "image_7Uq47d": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/2f529b174b6214c2ec5f84a1e769474c31d7c7c9.png",
+            "alt": "Carousel image",
+            "button": "@testing",
+            "cta": "#"
+          }
+        }
+      },
+      "block_order": [
+        "image_jUptyX",
+        "image_7Uq47d"
+      ],
+      "name": "Wall of Fame",
+      "settings": {
+        "heading": "Wall of Fame",
+        "text": "Legendary frames, developed right here - updated each month."
+      }
+    },
+    "faq_9Lg4BU": {
+      "type": "faq",
+      "blocks": {
+        "faq_CFx9He": {
+          "type": "faq",
+          "settings": {
+            "faq-heading": "",
+            "question": "What is your turnaround time?",
+            "answer": "<p>Our standard turnaround is 2-3 business days.</p>"
+          }
+        },
+        "faq_Jh4Xqd": {
+          "type": "faq",
+          "settings": {
+            "faq-heading": "",
+            "question": "What is your turnaround time?",
+            "answer": "<p>Our standard turnaround is 2-3 business days.</p>"
+          }
+        },
+        "faq_qhpYMJ": {
+          "type": "faq",
+          "settings": {
+            "faq-heading": "",
+            "question": "What is your turnaround time?",
+            "answer": "<p>Our standard turnaround is 2-3 business days.</p>"
+          }
+        },
+        "faq_hKahmV": {
+          "type": "faq",
+          "settings": {
+            "faq-heading": "",
+            "question": "What is your turnaround time?",
+            "answer": "<p>Our standard turnaround is 2-3 business days.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_CFx9He",
+        "faq_Jh4Xqd",
+        "faq_qhpYMJ",
+        "faq_hKahmV"
+      ],
+      "name": "FAQ",
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "show_view_all": true,
+        "view_all_link": "shopify://pages/faq",
+        "view_all_text": "View all FAQs"
+      }
+    }
+  },
+  "order": [
+    "featured_collection_wHifxE",
+    "imagecarousel_7H8JL3",
+    "sendrollshome_aLTPmr",
+    "walloffame_AnARbN",
+    "faq_9Lg4BU"
+  ]
+}

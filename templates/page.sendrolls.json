@@ -1,0 +1,355 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "send-us-rolls-form",
+      "blocks": {
+        "store_WFtjEf": {
+          "type": "store",
+          "settings": {
+            "name": "Miami"
+          }
+        },
+        "store_eJdQRj": {
+          "type": "store",
+          "settings": {
+            "name": "Chicago"
+          }
+        },
+        "store_6qEUpL": {
+          "type": "store",
+          "settings": {
+            "name": "Orlando"
+          }
+        },
+        "store_KHhiVp": {
+          "type": "store",
+          "settings": {
+            "name": "New York City"
+          }
+        },
+        "service_Gxw7Je": {
+          "type": "service",
+          "settings": {
+            "label": "Develop + Scan",
+            "value": "Develop + Scan",
+            "help_subtitle": "",
+            "help_text": ""
+          }
+        },
+        "service_gByxga": {
+          "type": "service",
+          "settings": {
+            "label": "Develop Only",
+            "value": "Develop Only",
+            "help_subtitle": "",
+            "help_text": ""
+          }
+        },
+        "service_TbaGUA": {
+          "type": "service",
+          "settings": {
+            "label": "Scan Only*",
+            "value": "Scan Only",
+            "help_subtitle": "",
+            "help_text": ""
+          }
+        },
+        "service_GhKJGz": {
+          "type": "service",
+          "settings": {
+            "label": "Flextight Drum Scan",
+            "value": "Flextight Drum Scan",
+            "help_subtitle": "",
+            "help_text": ""
+          }
+        },
+        "film_format_ywyY9L": {
+          "type": "film_format",
+          "settings": {
+            "label": "35 mm",
+            "value": "35 mm",
+            "help_image": "shopify://shop_images/Frame_13.png",
+            "help_subtitle": "35mm",
+            "help_text": "The most common roll film, in a metal canister."
+          }
+        },
+        "film_format_YeNdeV": {
+          "type": "film_format",
+          "settings": {
+            "label": "110 mm",
+            "value": "110 mm",
+            "help_subtitle": "",
+            "help_text": ""
+          }
+        },
+        "film_format_W6gMWG": {
+          "type": "film_format",
+          "settings": {
+            "label": "120 mm",
+            "value": "120 mm",
+            "help_subtitle": "",
+            "help_text": ""
+          }
+        },
+        "film_format_McrB6V": {
+          "type": "film_format",
+          "settings": {
+            "label": "Disposable Camera",
+            "value": "Disposable Camera",
+            "help_subtitle": "",
+            "help_text": ""
+          }
+        },
+        "film_format_F4Mpey": {
+          "type": "film_format",
+          "settings": {
+            "label": "Sheet",
+            "value": "Sheet",
+            "help_subtitle": "",
+            "help_text": ""
+          }
+        },
+        "film_format_CWbBqH": {
+          "type": "film_format",
+          "settings": {
+            "label": "Instax/Polaroid",
+            "value": "Instax/Polaroid",
+            "help_subtitle": "",
+            "help_text": ""
+          }
+        },
+        "process_option_EJTPBx": {
+          "type": "process_option",
+          "settings": {
+            "label": "Black & White",
+            "value": "B&W",
+            "help_subtitle": "",
+            "help_text": ""
+          }
+        },
+        "process_option_hjfXKx": {
+          "type": "process_option",
+          "settings": {
+            "label": "Color (C-41)",
+            "value": "Color C-41",
+            "help_subtitle": "",
+            "help_text": ""
+          }
+        },
+        "process_option_HPEn7D": {
+          "type": "process_option",
+          "settings": {
+            "label": "Color (E-6 Slide)",
+            "value": "Color E-6 Slide",
+            "help_subtitle": "",
+            "help_text": ""
+          }
+        },
+        "process_option_BVxNG8": {
+          "type": "process_option",
+          "settings": {
+            "label": "Color (ECN-2)",
+            "value": "Color ECN-2",
+            "help_subtitle": "",
+            "help_text": ""
+          }
+        },
+        "process_option_gyLVUJ": {
+          "type": "process_option",
+          "settings": {
+            "label": "Sheet",
+            "value": "Sheet",
+            "help_subtitle": "",
+            "help_text": ""
+          }
+        },
+        "scanner_6GzQD8": {
+          "type": "scanner",
+          "settings": {
+            "label": "Noritsu HS-1800",
+            "value": "Noritsu HS-1800",
+            "help_image": "shopify://shop_images/Frame_13_1.png",
+            "help_subtitle": "Noritsu HS-1800",
+            "help_text": "<ul><li>Look & feel: Crisp, sharp detail with a slightly more neutral/modern colour profile.</li><li>Best for: When you want maximum fine detail, subtle tones, or need flexibility for editing.</li><li>Great with: Colour negative film, B&W film, and high-contrast scenes.</li></ul>"
+          }
+        },
+        "scanner_jcN8Q3": {
+          "type": "scanner",
+          "settings": {
+            "label": "Fuji Frontier SP-3000",
+            "value": "Fuji Frontier SP-3000",
+            "help_subtitle": "Fuji Frontier SP-3000",
+            "help_text": "<ul><li>Look & feel: Smooth, rich colour with a softer, more filmic aesthetic straight out of the scan.</li><li>Best for: Natural skin tones, warm highlights, and that classic Frontier “glow.”</li><li>Great with: Portraits, wedding photography, and any film you want to look timeless.</li></ul>"
+          }
+        },
+        "resolution_cBnpBA": {
+          "type": "resolution",
+          "settings": {
+            "label": "Archival Scan",
+            "value": "Archival Scan",
+            "help_subtitle": "",
+            "help_text": ""
+          }
+        },
+        "resolution_WFnxN8": {
+          "type": "resolution",
+          "settings": {
+            "label": "High Resolution",
+            "value": "High Resolution",
+            "help_subtitle": "",
+            "help_text": ""
+          }
+        },
+        "resolution_WyeVXh": {
+          "type": "resolution",
+          "settings": {
+            "label": "Standard",
+            "value": "Standard",
+            "help_subtitle": "",
+            "help_text": ""
+          }
+        },
+        "printing_WpwnaR": {
+          "type": "printing",
+          "settings": {
+            "label": "Yes",
+            "value": "Yes",
+            "help_subtitle": "",
+            "help_text": ""
+          }
+        },
+        "printing_PJwCEK": {
+          "type": "printing",
+          "settings": {
+            "label": "No",
+            "value": "No",
+            "help_subtitle": "",
+            "help_text": ""
+          }
+        },
+        "delivery_t3CEzq": {
+          "type": "delivery",
+          "settings": {
+            "label": "Drop-off",
+            "value": "Drop-off",
+            "help_subtitle": "",
+            "help_text": ""
+          }
+        },
+        "delivery_FVhWXX": {
+          "type": "delivery",
+          "settings": {
+            "label": "Mail-in",
+            "value": "Mail-in",
+            "help_subtitle": "",
+            "help_text": ""
+          }
+        },
+        "addon_RVxG4W": {
+          "type": "addon",
+          "settings": {
+            "label": "Contact-sheet PDF",
+            "value": "Yes",
+            "price": 5,
+            "is_discount": false,
+            "discount_percent": 20
+          }
+        },
+        "addon_DVLLXf": {
+          "type": "addon",
+          "settings": {
+            "label": "Archival sleeves",
+            "value": "Yes",
+            "price": 5,
+            "is_discount": false,
+            "discount_percent": 20
+          }
+        },
+        "addon_cpVz8D": {
+          "type": "addon",
+          "settings": {
+            "label": "Are you a student?",
+            "value": "Yes",
+            "price": 0,
+            "is_discount": true,
+            "discount_percent": 20
+          }
+        }
+      },
+      "block_order": [
+        "store_WFtjEf",
+        "store_eJdQRj",
+        "store_6qEUpL",
+        "store_KHhiVp",
+        "service_Gxw7Je",
+        "service_gByxga",
+        "service_TbaGUA",
+        "service_GhKJGz",
+        "film_format_ywyY9L",
+        "film_format_YeNdeV",
+        "film_format_W6gMWG",
+        "film_format_McrB6V",
+        "film_format_F4Mpey",
+        "film_format_CWbBqH",
+        "process_option_EJTPBx",
+        "process_option_hjfXKx",
+        "process_option_HPEn7D",
+        "process_option_BVxNG8",
+        "process_option_gyLVUJ",
+        "scanner_6GzQD8",
+        "scanner_jcN8Q3",
+        "resolution_cBnpBA",
+        "resolution_WFnxN8",
+        "resolution_WyeVXh",
+        "printing_WpwnaR",
+        "printing_PJwCEK",
+        "delivery_t3CEzq",
+        "delivery_FVhWXX",
+        "addon_RVxG4W",
+        "addon_DVLLXf",
+        "addon_cpVz8D"
+      ],
+      "settings": {
+        "product": "send-us-your-rolls",
+        "heading": "Film Development & Scanning",
+        "base_price": 14,
+        "store_label": "Select Store",
+        "service_label": "Choose Service",
+        "help_label_service": "I'm not sure what I need?",
+        "help_sub_label_service": "",
+        "format_label": "Film Format",
+        "help_label_format": "What film format do I have?",
+        "help_sub_label_format": "Film comes in different shapes and sizes. Match your film to the kinds listed below when ordering.",
+        "process_label": "Process",
+        "help_label_process": "What process should I select?",
+        "help_sub_label_process": "There is a process required to develop each film type. Check your film roll or camera for the following markings to order the best option for your images.",
+        "rolls_label": "How many rolls / sheets?",
+        "scanning_label": "Scanning",
+        "help_label_scanner": "Which scanner is right for me?",
+        "help_sub_label_scanning": "",
+        "resolution_label": "Resolution",
+        "help_label_resolution": "What resolution is right for me?",
+        "help_sub_label_resolution": "Scans are high-quality digital copies of your film. Different resolutions affect how you can use your images — from quick sharing to large-format printing. Choose the option that fits your project best.",
+        "printing_label": "Printing",
+        "help_label_printing": "What are physical prints?",
+        "help_sub_label_printing": "At Bellows Film Labs, we believe an image is completed once it’s printed. Add 4×6″ prints to see your scans in the flesh. Each set contains a print of each exposed image on your roll (blank images are skipped).",
+        "addons_label": "Extras",
+        "delivery_label": "Delivery",
+        "help_label_delivery": "About our shipping / drop off process",
+        "summary_label": "Order Summary"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

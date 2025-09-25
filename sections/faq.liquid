@@ -1,0 +1,94 @@
+{{ 'faq.css' | asset_url | stylesheet_tag }}
+
+<section class="faq-section">
+  {% if section.settings.heading != blank %}
+    <h2 class="faq-heading">{{ section.settings.heading }}</h2>
+  {% endif %}
+
+  <div class="faq-list">
+    {% for block in section.blocks %}
+      {% if block.settings['faq-heading'] %}
+        <h3>{{ block.settings['faq-heading'] }}</h3>
+      {% endif %}
+      <details class="faq-item" {{ block.shopify_attributes }}>
+        <summary class="faq-question">
+          {{ block.settings.question }}
+          <span class="faq-icon">+</span>
+        </summary>
+        <div class="faq-answer">
+          {{ block.settings.answer }}
+        </div>
+      </details>
+    {% endfor %}
+  </div>
+
+  {% if section.settings.show_view_all %}
+    <div class="faq-view-all">
+      <a href="{{ section.settings.view_all_link }}" class="faq-link">
+        {{ section.settings.view_all_text }}
+      </a>
+    </div>
+  {% endif %}
+</section>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'View all FAQs' button",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "Link for 'View all FAQs'"
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View all button text",
+      "default": "View all FAQs"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "faq-heading",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "What is your turnaround time?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Our standard turnaround is 2-3 business days.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "category": "FAQ Homepage"
+    }
+  ]
+}
+{% endschema %}

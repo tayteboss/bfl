@@ -1,0 +1,37 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "contact",
+      "blocks": {
+        "info_jbr8xW": {
+          "type": "info",
+          "settings": {
+            "heading": "Order & Account",
+            "paragraph": "<p>If something isn’t right with your order or account, we’ll help get it sorted. Before emailing, please:</p><ol><li>Check your Account Page for order history, invoices, and account details.</li><li>Visit the Order Tracking Tool to see if your film is already on the way.<br/></li></ol><p><br/>Contact us if you still need help with:</p><ul><li>An order not appearing in your account.</li><li>Payment, refund, or voucher issues.</li><li>Changing your delivery address after purchase.</li></ul>",
+            "email_icon": "E.",
+            "email": "orders@bellowsfilmlab.com"
+          }
+        }
+      },
+      "block_order": [
+        "info_jbr8xW"
+      ],
+      "settings": {
+        "heading": "Get in touch",
+        "paragraph": "<p>Whether you’re chasing down an order, curious about our film services, or looking to collaborate, we’d love to hear from you. Choose the most relevant option below so we can get you to the right person, fast. 📸 💌</p>"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

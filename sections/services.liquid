@@ -1,0 +1,76 @@
+{{ 'services.css' | asset_url | stylesheet_tag }}
+
+<section>
+  <h2>{{ section.settings.heading }}</h2>
+  <nav class="services-nav">
+    {% for block in section.blocks %}
+      <div class="button">
+        <a href="#{{ block.settings.anchor_id }}">{{ block.settings.link_text }}</a>
+      </div>
+    {% endfor %}
+  </nav>
+  <h3>{{ section.settings.subheading }}</h3>
+  <p>{{ section.settings['services-paragraph-1'] }}</p>
+  <p>{{ section.settings['services-paragraph-2'] }}</p>
+  <img
+    src="{{ section.settings.servicesimage |image_url }}"
+    width="auto"
+    height="auto"
+    class="service-hero-image"
+  >
+</section>
+
+{% schema %}
+{
+  "name": "services",
+  "max_blocks": 10,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Page Heading",
+      "default": "Our Services"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Sub Heading",
+      "default": "Bellows began as a single pro lab in Miami and, in just a few short years, has grown into a small constellation of studios—Miami, Chicago and pop-ups in Atlanta and Orlando—processing thousands of rolls every month."
+    },
+    {
+      "type": "textarea",
+      "id": "services-paragraph-1",
+      "label": "Paragraph",
+      "default": "The recipe hasn’t changed: fresh chemistry mixed daily, scanners tuned by hand, and a crew of film nerds who still get goose-bumps when a perfect negative hits the light table. From one-hour C-41 to exhibition-grade drum scans, Bellows exists to bridge the gap between analogue craft and a digital-first world, giving photographers a place where curiosity is met with real expertise."
+    },
+    {
+      "type": "textarea",
+      "id": "services-paragraph-2",
+      "label": "Paragraph",
+      "default": "At Bellows, we’re on a mission to keep film photography alive and thriving in South Florida. We believe in the magic of the process—from loading film to developing and holding the final product in your hands. Our goal is to offer exceptional film development services while cultivating a space where photographers can express their creativity, share their passion, and celebrate the art of analog."
+    },
+    {
+      "type": "image_picker",
+      "id": "servicesimage",
+      "label": "Services Main Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "service-link",
+      "name": "Service Link",
+      "settings": [
+        { "type": "text", "id": "link_text", "label": "Link Text" },
+        { "type": "text", "id": "anchor_id", "label": "Anchor ID (no spaces use '-')" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Services Details",
+      "category": "Services",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

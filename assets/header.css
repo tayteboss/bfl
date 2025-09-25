@@ -1,0 +1,109 @@
+/* These were just styles for me so I could visually set the menu up */
+
+.logo {
+  width: 100%;
+  height: auto;
+  position: relative;
+  top: 0;
+  z-index: 9999;
+  padding: 15px;
+}
+
+/* Menu button */
+.menu-toggle {
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 999;
+  mix-blend-mode: difference;
+  color: white;
+}
+
+/* Cart buttons */
+.cart-button {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  font-size: 2rem;
+  text-decoration: none;
+  z-index: 999;
+  mix-blend-mode: difference;
+
+  color: white !important;
+  /* conflicts with "a" tag styling in globals.css */
+}
+
+.cart-bubble {
+  position: relative;
+  background-color: white;
+  padding: 1px 8px;
+  border-radius: 100%;
+  font-size: 20px;
+}
+
+.cart-number {
+  color: black;
+}
+
+/* Fullscreen overlay */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  display: none;
+  /* hidden by default */
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 9999;
+}
+
+/* Active state */
+.menu-overlay.active {
+  display: flex;
+}
+
+/* Close button */
+.menu-close {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Menu links */
+.menu-nav a {
+  display: block;
+  font-size: 2rem;
+  text-decoration: none;
+  color: black;
+}
+
+.menu-nav {
+  margin-left: 1rem;
+  margin-top: 0.5rem;
+}
+
+/* Social links */
+.header-social-links {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 15px;
+  z-index: 999;
+}
+
+.header-social-links a {
+  text-decoration: underline;
+}

@@ -1,0 +1,28 @@
+.faq-nav {
+  display: flex;
+  gap: 5px;
+}
+
+.faq-button {
+  padding: 8px 18px;
+  background-color: #F6F6F6;
+  border-radius: 20px;
+  width: fit-content;
+  cursor: pointer;
+}
+
+details>summary {
+  list-style: none;
+}
+
+.faq-item {
+  background-color: #F6F6F6;
+}
+
+.faq-question {
+  cursor: pointer;
+}
+
+.faq-heading {
+  padding-top: 80px;
+}

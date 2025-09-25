@@ -1,0 +1,90 @@
+{% comment %}
+  This section is used in the collection template to render collection page
+  listing all products within a collection.
+
+  https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
+{% endcomment %}
+
+{{ 'collection.css' | asset_url | stylesheet_tag }}
+
+<h1>{{ collection.title }}</h1>
+<p>Filters go here</p>
+
+<div class="collection-products">
+  {% if section.settings['collection-image'] %}
+    <div class="collection-banner-wrapper">
+      <p class="collection-banner-text">{{ section.settings['collection-image-text'] }}</p>
+      <img
+        src="{{ section.settings['collection-image'] | image_url }}"
+        width="auto"
+        height="auto"
+        alt="Collection Image"
+        class="collection-banner-image"
+      >
+    </div>
+  {% endif %}
+  {% for product in collection.products %}
+    <a href="{{ product.url }}" target="_self">
+      <div class="product-container">
+        {% assign first_image = product.media | first %}
+        {% assign second_image = product.media[1] %}
+
+        <div class="product-image-container">
+          {% if product.metafields.custom.product_badge %}
+            <div class="product-badge">
+              {{ product.metafields.custom.product_badge | metafield_tag }}
+            </div>
+          {% endif %}
+          {% if first_image %}
+            <img
+              src="{{ first_image.src | image_url }}"
+              alt="{{ product.title }}"
+              class="product-image product-image--primary"
+              width="auto"
+              height="auto"
+            >
+          {% endif %}
+
+          {% if second_image %}
+            <img
+              src="{{ second_image.src | image_url }}"
+              alt="{{ product.title }}"
+              class="product-image product-image--secondary"
+              width="auto"
+              height="auto"
+            >
+          {% endif %}
+        </div>
+        <div class="product-brand">
+          {{ product.vendor }}
+        </div>
+        <div class="product-title">
+          {{ product.title }}
+        </div>
+        <div class="product-price">
+          {{ cart.currency.iso_code }}
+          {{ product.price | money }}
+        </div>
+      </div>
+    </a>
+  {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "collection-image-text",
+      "label": "Banner text",
+      "default": "SS25 BELLOWS MERCH COLLECTION"
+    },
+    {
+      "type": "image_picker",
+      "id": "collection-image",
+      "label": "Collection Image Banner"
+    }
+  ]
+}
+{% endschema %}

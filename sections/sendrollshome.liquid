@@ -1,0 +1,64 @@
+{{ 'sendrollshome.css' | asset_url | stylesheet_tag }}
+{% comment %} css to position the image in here ^ {% endcomment %}
+
+<section>
+  <h2>{{ section.settings.heading }}</h2>
+  <div class="send-rolls-div">
+    <p>{{ section.settings['paragraph-1'] }}</p>
+    <p>{{ section.settings['paragraph-2'] }}</p>
+    <img
+      src="{{ section.settings.sendrollsimage |image_url }}"
+      width="auto"
+      height="auto"
+      class="send-rolls-circle"
+    >
+  </div>
+  <a href="{{ section.settings.cta }}">{{ section.settings.button }}</a>
+</section>
+
+{% schema %}
+{
+  "name": "sendrollshome",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Bellows began as a single pro lab in Miami and, in just a few short years, has grown into a small constellation of studios—Miami, Chicago and pop-ups in Atlanta and Orlando—processing thousands of rolls every month."
+    },
+    {
+      "type": "textarea",
+      "id": "paragraph-1",
+      "label": "Paragraph",
+      "default": "The recipe hasn’t changed: fresh chemistry mixed daily, scanners tuned by hand, and a crew of film nerds who still get goose-bumps when a perfect negative hits the light table. From one-hour C-41 to exhibition-grade drum scans, Bellows exists to bridge the gap between analogue craft and a digital-first world, giving photographers a place where curiosity is met with real expertise."
+    },
+    {
+      "type": "textarea",
+      "id": "paragraph-2",
+      "label": "Paragraph",
+      "default": "At Bellows, we’re on a mission to keep film photography alive and thriving in South Florida. We believe in the magic of the process—from loading film to developing and holding the final product in your hands. Our goal is to offer exceptional film development services while cultivating a space where photographers can express their creativity, share their passion, and celebrate the art of analog."
+    },
+    {
+      "type": "image_picker",
+      "id": "sendrollsimage",
+      "label": "Send Rolls Circle Image"
+    },
+    {
+      "type": "text",
+      "id": "button",
+      "label": "Call to Action Name"
+    },
+    {
+      "type": "url",
+      "id": "cta",
+      "label": "Call to Action"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Send Rolls",
+      "category": "Homepage"
+    }
+  ]
+}
+{% endschema %}

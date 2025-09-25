@@ -1,0 +1,70 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "faq-page",
+      "blocks": {
+        "faq_heading_amFpTg": {
+          "type": "faq_heading",
+          "settings": {
+            "heading": "Hours & Location"
+          }
+        },
+        "faq_item_eTe4en": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Example Question?",
+            "answer": "<p>Example Answer.</p>"
+          }
+        },
+        "faq_item_KQjqW9": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Example Question?",
+            "answer": "<p>Example Answer.</p>"
+          }
+        },
+        "faq_heading_dmYtMB": {
+          "type": "faq_heading",
+          "settings": {
+            "heading": "Services"
+          }
+        },
+        "faq_item_QQfJqA": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Example Question?",
+            "answer": "<p>Example Answer.</p>"
+          }
+        },
+        "faq_item_Cz6jD4": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Example Question?",
+            "answer": "<p>Example Answer.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_heading_amFpTg",
+        "faq_item_eTe4en",
+        "faq_item_KQjqW9",
+        "faq_heading_dmYtMB",
+        "faq_item_QQfJqA",
+        "faq_item_Cz6jD4"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

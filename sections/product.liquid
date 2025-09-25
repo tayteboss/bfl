@@ -1,0 +1,105 @@
+{{ 'product.css' | asset_url | stylesheet_tag }}
+
+<product-info
+  id="MainProduct-{{ section.id }}"
+  data-section="{{ section.id }}"
+  data-product-id="{{ product.id }}"
+  data-update-url="true"
+  data-url="{{ product.url }}"
+>
+  <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
+  <section id="ProductInfo-{{ section.id }}" class="product-page">
+    {%- assign product_form_id = 'product-form-' | append: section.id -%}
+
+    <div class="product-images-wrapper">
+      {% if product.metafields.custom.product_badge %}
+        <div class="product-badge">
+          {{ product.metafields.custom.product_badge | metafield_tag }}
+        </div>
+      {% endif %}
+      {% render 'image', class: 'product-image', image: product.featured_image %}
+    </div>
+
+    <div class="product-info">
+      {{ product.vendor }}
+      <h1>{{ product.title }}</h1>
+      {{ cart.currency.iso_code }}
+      {{ product.price | money }}
+      <p>{{ product.description }}</p>
+
+      <div class="product-form">
+        {% form 'product', product %}
+          {% if product.variants.size > 1 %}
+            <fieldset class="variant-options">
+              <legend>Select Options:</legend>
+
+              {% for variant in product.variants %}
+                <input
+                  type="radio"
+                  id="variant-{{ variant.id }}"
+                  name="id"
+                  value="{{ variant.id }}"
+                  {% if forloop.first %}
+                    checked
+                  {% endif %}
+                  {% unless variant.available %}
+                    disabled
+                  {% endunless %}
+                >
+                <label for="variant-{{ variant.id }}">
+                  <span class="var-title"> {{ variant.title }} </span>
+                  <span class="exp">EXP</span>
+                </label>
+              {% endfor %}
+            </fieldset>
+          {% endif %}
+
+                    <div class="product-qty-container product-form__input product-form__quantity">
+            <label for="Quantity-{{ section.id }}" class="form-label"> quantity </label>
+            <div class="quantity-input-wrapper">
+              <input
+                id="Quantity-{{ section.id }}"
+                name="quantity"
+                type="number"
+                class="input-selector quantity-input"
+                min="{{ product.selected_or_first_available_variant.quantity_rule.min | default: 1 }}"
+                {% if product.selected_or_first_available_variant.quantity_rule.max %}
+                  max="{{ product.selected_or_first_available_variant.quantity_rule.max }}"
+                {% endif %}
+                step="{{ product.selected_or_first_available_variant.quantity_rule.increment | default: 1 }}"
+                value="{{ product.selected_or_first_available_variant.quantity_rule.min | default: 1 }}"
+              >
+            </div>
+          </div>
+
+          {%- render 'buy-buttons',
+            product: product,
+            product_form_id: product_form_id,
+            section_id: section.id,
+            show_pickup_availability: true
+          -%}
+
+        {% endform %}
+      </div>
+    </div>
+  </section>
+  <script type="application/ld+json">
+    {{ product | structured_data }}
+  </script>
+
+  <script type="application/json" data-selected-variant>
+    {{ product.selected_or_first_available_variant | json }}
+  </script>
+</product-info>
+
+{% schema %}
+{
+  "name": "product",
+  "settings": [],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

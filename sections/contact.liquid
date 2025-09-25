@@ -1,0 +1,72 @@
+{{ 'contact.css' | asset_url | stylesheet_tag }}
+
+<section>
+  <h2>{{ section.settings.heading }}</h2>
+  <nav class="contact-nav">
+    {% for block in section.blocks %}
+      <div class="button">
+        <a href="#{{ block.id }}">{{ block.settings.heading }}</a>
+      </div>
+    {% endfor %}
+  </nav>
+  <div class="contact-blurb">
+    {{ section.settings.paragraph }}
+  </div>
+  {% for block in section.blocks %}
+    <div id="{{ block.id }}" class="contact-item">
+      <h2>{{ block.settings.heading }}</h2>
+      {{ block.settings.paragraph }}
+      <span>
+        {{ block.settings.email_icon }}
+        <p>{{ block.settings.email }}</p>
+      </span>
+    </div>
+  {% endfor %}
+  <div>EMAIL FORM HERE</div>
+</section>
+
+{% schema %}
+{
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Get in touch"
+    },
+    {
+      "type": "richtext",
+      "id": "paragraph",
+      "label": "Contact blurb"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "info",
+      "name": "Contact Info",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading for contact item"
+        },
+        {
+          "type": "richtext",
+          "id": "paragraph",
+          "label": "Text (hold shift and press enter for a line break if not working)"
+        },
+        {
+          "type": "text",
+          "id": "email_icon",
+          "label": "Email icon"
+        },
+        {
+          "type": "text",
+          "id": "email",
+          "label": "Email"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

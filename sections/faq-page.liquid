@@ -1,0 +1,91 @@
+{{ 'faq.css' | asset_url | stylesheet_tag }}
+
+<section class="faq-section">
+  <h2>FAQ</h2>
+
+  <nav class="faq-nav">
+    {% for block in section.blocks %}
+      {% if block.type == 'faq_heading' %}
+        <div class="faq-button">
+          <a href="#{{ block.id }}" class="faq-nav-link">{{ block.settings.heading }}</a>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </nav>
+
+  <div class="faq-sections">
+    {% assign current_heading_id = '' %}
+    {% for block in section.blocks %}
+      {% if block.type == 'faq_heading' %}
+        <section id="{{ block.id }}" class="faq-heading">
+          <h2>{{ block.settings.heading }}</h2>
+        </section>
+        {% assign current_heading_id = block.id %}
+      {% elsif block.type == 'faq_item' %}
+        <details
+          class="faq-item"
+          {% if current_heading_id != blank %}
+            data-heading-id="{{ current_heading_id }}"
+          {% endif %}
+        >
+          <summary class="faq-question">
+            {{ block.settings.question -}}
+            <span class="faq-icon">+</span>
+          </summary>
+          <p>{{ block.settings.answer }}</p>
+        </details>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="need-help-div">
+    <p>NEED HELP?</p>
+    <p>CALL US ON +1 (305) 456 4006 OR EMAIL LAB@BELLOWSFILM.COM — A REAL HUMAN WILL REPLY WITHIN ONE BUSINESS DAY.</p>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ-Page",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "faq_heading",
+      "name": "Section Heading",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Hours & Location"
+        }
+      ]
+    },
+    {
+      "type": "faq_item",
+      "name": "Question & Answer",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Example Question?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Example Answer.</p>"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 50,
+  "presets": [
+    {
+      "name": "FAQ-Page",
+      "category": "FAQ Page"
+    }
+  ]
+}
+{% endschema %}
