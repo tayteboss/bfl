@@ -1,76 +1,67 @@
 {{ 'header.css' | asset_url | stylesheet_tag }}
 
 <header>
-  <a href="{{ routes.root_url }}">
-    <img
-      src="{{ section.settings.logo | image_url }}"
-      alt="logo"
-      width="auto"
-      height="auto"
-      class="logo"
-    >
-  </a>
+  {% render 'header-logo' %}
 
-  <div class="header-social-links">
-    <a href="">Email</a>
-    <a href="">Instagram</a>
-    <a href="">TikTok</a>
-  </div>
+  <button class="menu-toggle" aria-label="Open Menu" data-text="Menu">Menu</button>
 
-  <p class="menu-toggle" aria-label="Open Menu">Menu</p>
   <a class="cart-button" href="{{ routes.cart_url }}">
-    Cart
-    <span class="cart-bubble">
-      <span class="cart-number">{{ cart.item_count }}</span>
-    </span>
-    {% comment %}
-      {%- if cart.item_count > 0 %}
-        <span class="cart-bubble">
-          <span class="cart-number">{{ cart.item_count }}</span>
-        </span>
-      {%- endif %}
-    {% endcomment %}
+    Bag
+    <div class="cart-button__bubble">
+      <span class="cart-button__number">{{ cart.item_count }}</span>
+    </div>
   </a>
 
-  <div class="menu-overlay" id="menuOverlay">
-    <p class="menu-close" aria-label="Close Menu">Close</p>
-    <nav class="menu-nav">
+  <div class="menu-overlay" id="menu-overlay">
+    <nav class="menu-list">
       {% for link in section.settings.navigation.links %}
-        <a href="{{ link.url }}">{{ link.title }}</a>
+        <a
+          class="menu-list__item{% if link.active %} menu-list__item--active{% endif %}"
+          href="{{ link.url }}"
+        >
+          {{- link.title -}}
+        </a>
       {% endfor %}
       {% if shop.customer_accounts_enabled %}
-        <a href="{{ routes.account_url }}">My Account</a>
+        <a
+          class="menu-list__item{% if routes.account_url == request.path %} menu-list__item--active{% endif %}"
+          href="{{ routes.account_url }}"
+          >My Account</a
+        >
       {% endif %}
     </nav>
-    <a class="cart-button" href="{{ routes.cart_url }}">
-      Cart
-      <span class="cart-bubble">
-        <span class="cart-number">{{ cart.item_count }}</span>
-      </span>
-      {% comment %}
-        {%- if cart.item_count > 0 %}
-          <span class="cart-bubble">
-            <span class="cart-number">{{ cart.item_count }}</span>
-          </span>
-        {%- endif %}
-      {% endcomment %}
-    </a>
   </div>
 </header>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
+    const header = document.querySelector('header');
     const menuToggle = document.querySelector('.menu-toggle');
-    const menuOverlay = document.getElementById('menuOverlay');
-    const menuClose = document.querySelector('.menu-close');
+    const body = document.body;
 
     menuToggle.addEventListener('click', () => {
-      menuOverlay.classList.add('active');
+      header.classList.toggle('menu-open');
+      const isOpen = header.classList.contains('menu-open');
+      menuToggle.textContent = isOpen ? 'Close' : 'Menu';
+      menuToggle.setAttribute('aria-label', isOpen ? 'Close Menu' : 'Open Menu');
+
+      // Toggle overflow hidden on body to prevent scrolling
+      body.classList.toggle('overflow-hidden', isOpen);
     });
 
-    menuClose.addEventListener('click', () => {
-      menuOverlay.classList.remove('active');
-    });
+    // Toggle `scrolled` class on header when beyond threshold
+    if (window.ScrollUtils && typeof window.ScrollUtils.onScroll === 'function') {
+      const threshold = 100;
+      const updateHeaderScrollState = (y) => {
+        header.classList.toggle('scrolled', y > threshold);
+      };
+      const unsubscribe = window.ScrollUtils.onScroll(updateHeaderScrollState);
+
+      // Optional: clean up if this section is dynamically replaced
+      document.addEventListener('shopify:section:unload', () => {
+        if (typeof unsubscribe === 'function') unsubscribe();
+      });
+    }
   });
 </script>
 

@@ -1,109 +1,144 @@
-/* These were just styles for me so I could visually set the menu up */
-
-.logo {
+header {
+  position: fixed;
+  bottom: 0;
+  left: 0;
   width: 100%;
-  height: auto;
-  position: relative;
+  pointer-events: none;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+}
+
+.header__logo {
+  color: var(--color-black) !important;
+  position: fixed;
   top: 0;
-  z-index: 9999;
-  padding: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  padding: 0 24px;
+  font-size: 13.8vw;
+  line-height: 0.9;
+  text-align: center;
+  white-space: nowrap;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
 }
 
-/* Menu button */
-.menu-toggle {
-  font-size: 2rem;
-  background: none;
-  border: none;
+.scrolled .header__logo {
+  opacity: 0;
+}
+
+.menu-toggle, .cart-button {
+  font-family: var(--font-diatype-rounded-bold);
+  font-weight: 700;
+  font-size: 4.5rem;
+  line-height: 4.275rem;
+  letter-spacing: -0.09rem;
+  color: var(--color-black);
+  pointer-events: all;
   cursor: pointer;
-  position: fixed;
-  bottom: 1rem;
-  left: 1rem;
-  z-index: 999;
-  mix-blend-mode: difference;
-  color: white;
-}
-
-/* Cart buttons */
-.cart-button {
-  position: fixed;
-  bottom: 1rem;
-  right: 1rem;
-  font-size: 2rem;
-  text-decoration: none;
-  z-index: 999;
-  mix-blend-mode: difference;
-
-  color: white !important;
-  /* conflicts with "a" tag styling in globals.css */
-}
-
-.cart-bubble {
   position: relative;
-  background-color: white;
-  padding: 1px 8px;
-  border-radius: 100%;
-  font-size: 20px;
+  z-index: 50;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
 }
 
-.cart-number {
-  color: black;
+.menu-toggle:hover, .cart-button:hover {
+  opacity: 0.5;
 }
 
-/* Fullscreen overlay */
+.menu-open .menu-toggle {
+  color: var(--color-white);
+}
+
+.cart-button {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+
+.menu-open .cart-button {
+  color: var(--color-white);
+}
+
+.cart-button__bubble {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-black);
+  border-radius: 1000px;
+  height: 68px;
+  min-width: 68px;
+  padding: 0 8px;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+}
+
+.menu-open .cart-button__bubble {
+  background: var(--color-white);
+}
+
+.cart-button__number {
+  color: var(--color-white);
+  font-size: 3.5rem;
+  line-height: 0.5;
+  position: relative;
+  top: -1px;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+}
+
+.menu-open .cart-button__number {
+  color: var(--color-grey-dark);
+}
+
 .menu-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: white;
-  display: none;
-  /* hidden by default */
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(50px);
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0;
+  padding: 24px;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+}
+
+.menu-open .menu-overlay {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.menu-list {
+  display: flex;
   flex-direction: column;
   align-items: flex-start;
-  z-index: 9999;
 }
 
-/* Active state */
-.menu-overlay.active {
-  display: flex;
+.menu-list__item {
+  font-family: var(--font-diatype-rounded-heavy);
+  font-weight: 800;
+  font-size: 4rem;
+  line-height: 3.8rem;
+  letter-spacing: -0.04rem;
+  color: var(--color-white);
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
 }
 
-/* Close button */
-.menu-close {
-  position: absolute;
-  bottom: 1rem;
-  left: 1rem;
-  font-size: 2rem;
-  background: none;
-  border: none;
-  cursor: pointer;
+.menu-list__item:hover {
+  color: var(--color-yellow)
 }
 
-/* Menu links */
-.menu-nav a {
-  display: block;
-  font-size: 2rem;
-  text-decoration: none;
-  color: black;
-}
-
-.menu-nav {
-  margin-left: 1rem;
-  margin-top: 0.5rem;
-}
-
-/* Social links */
-.header-social-links {
-  position: fixed;
-  bottom: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 15px;
-  z-index: 999;
-}
-
-.header-social-links a {
-  text-decoration: underline;
+.menu-list__item--active {
+  opacity: 0.33;
+  pointer-events: none;
 }

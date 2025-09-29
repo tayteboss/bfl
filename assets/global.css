@@ -10,8 +10,8 @@
   --color-green: #81FF53;
   --color-white: #FFFFFF;
 
-  --font-diatype-rounded-heavy: 'ABC Diatype Rounded Heavy', sans-serif;
-  --font-diatype-rounded-bold: 'ABC Diatype Rounded Bold', sans-serif;
+  --font-diatype-rounded-heavy: 'ABC Diatype Rounded Heavy', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-diatype-rounded-bold: 'ABC Diatype Rounded Bold', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-gt-standard-mono: 'GT Standard Mono', sans-serif;
 
   --transition-speed-default: 250ms;
@@ -34,6 +34,12 @@
   outline: none;
   border-radius: 0;
   box-shadow: none;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+  background-color: var(--color-white);
 }
 
 ::selection {
@@ -71,53 +77,53 @@ button {
 
 .type-h1-large {
   font-family: var(--font-diatype-rounded-heavy);
-  font-size: 5rem;
-  line-height: 5.25rem;
-  letter-spacing: -0.1rem;
+  font-size: 5rem; /* 80px */
+  line-height: 5.25rem; /* 84px */
+  letter-spacing: -0.1rem; /* -1.6px */
 }
 
 .type-h2-medium {
   font-family: var(--font-diatype-rounded-heavy);
-  font-size: 3rem;
-  line-height: 3.125rem;
-  letter-spacing: -0.06rem;
+  font-size: 3rem; /* 48px */
+  line-height: 3.125rem; /* 50px */
+  letter-spacing: -0.06rem; /* -0.96px */
 }
 
 h1,
 .type-h1-small {
   font-family: var(--font-diatype-rounded-heavy);
-  font-size: 2.5rem;
-  line-height: 2.375rem;
-  letter-spacing: -0.025rem;
+  font-size: 2.5rem; /* 40px */
+  line-height: 2.375rem; /* 38px */
+  letter-spacing: -0.025rem; /* -0.4px */
 }
 
 .type-h1-x-small {
   font-family: var(--font-diatype-rounded-bold);
-  font-size: 1.5rem;
-  line-height: 1.5625rem;
-  letter-spacing: -0.03rem;
+  font-size: 1.5rem; /* 24px */
+  line-height: 1.5625rem; /* 25px */
+  letter-spacing: -0.03rem; /* -0.48px */
 }
 
 h2,
 .type-h2 {
   font-family: var(--font-diatype-rounded-bold);
-  font-size: 1.5rem;
-  line-height: 1.5rem;
+  font-size: 1.5rem; /* 24px */
+  line-height: 1.5rem; /* 24px */
 }
 
 h3,
 .type-h3 {
   font-family: var(--font-diatype-rounded-bold);
-  font-size: 0.75rem;
-  line-height: 0.75rem;
+  font-size: 0.75rem; /* 12px */
+  line-height: 0.75rem; /* 12px */
 }
 
 h4,
 .type-h4 {
   font-family: var(--font-gt-standard-mono);
   font-weight: 300;
-  font-size: 0.75rem;
-  line-height: 1rem;
+  font-size: 0.75rem; /* 12px */
+  line-height: 1rem; /* 16px */
   text-transform: uppercase;
 }
 
@@ -125,8 +131,8 @@ h5,
 .type-h5 {
   font-family: var(--font-gt-standard-mono);
   font-weight: 300;
-  font-size: 0.625rem;
-  line-height: 0.625rem;
+  font-size: 0.625rem; /* 10px */
+  line-height: 0.625rem; /* 10px */
 }
 
 h6,
@@ -134,38 +140,38 @@ h6,
 .type-tags {
   font-family: var(--font-gt-standard-mono);
   font-weight: 500;
-  font-size: 0.625rem;
-  line-height: 0.625rem;
-  letter-spacing: 0.00625rem;
+  font-size: 0.625rem; /* 10px */
+  line-height: 0.625rem; /* 10px */
+  letter-spacing: 0.00625rem; /* 0.1px */
 }
 
 .type-p-x-large {
   font-family: var(--font-gt-standard-mono);
   font-weight: 300;
-  font-size: 1.25rem;
-  line-height: 1.75rem;
+  font-size: 1.25rem; /* 20px */
+  line-height: 1.75rem; /* 28px */
 }
 
 .type-p-large {
   font-family: var(--font-gt-standard-mono);
   font-weight: 400;
-  font-size: 1rem;
-  line-height: 1.3125rem;
+  font-size: 1rem; /* 16px */
+  line-height: 1.3125rem; /* 21px */
 }
 
 p,
 .type-p {
   font-family: var(--font-gt-standard-mono);
   font-weight: 400;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.25rem; /* 20px */
 }
 
 .type-small {
   font-family: var(--font-gt-standard-mono);
   font-weight: 300;
-  font-size: 0.75rem;
-  line-height: 1rem;
+  font-size: 0.75rem; /* 12px */
+  line-height: 1rem; /* 16px */
 }
 
 a,
@@ -239,8 +245,7 @@ ul {
   padding-inline-start: 30px;
 }
 
-a,
-a:visited {
+a {
   color: var(--color-black);
   text-decoration: none;
   cursor: pointer;
@@ -268,4 +273,9 @@ a:visited {
   border: 0;
   clip: rect(0 0 0 0);
   word-wrap: normal !important;
+}
+
+.shopify-section-group-header-group {
+  position: relative;
+  z-index: 1000;
 }
