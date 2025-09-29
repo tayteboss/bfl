@@ -1,11 +1,233 @@
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+:root {
+  --color-black: #282828;
+  --color-grey-dark: #6D6D6D;
+  --color-grey-mid: #EEEEEE;
+  --color-grey-light: #F6F6F6;
+  --color-yellow: #FFF750;
+  --color-highlight: #D5F4FF;
+  --color-red: #F12020;
+  --color-blue: #43B1FB;
+  --color-green: #81FF53;
+  --color-white: #FFFFFF;
+
+  --font-diatype-rounded-heavy: 'ABC Diatype Rounded Heavy', sans-serif;
+  --font-diatype-rounded-bold: 'ABC Diatype Rounded Bold', sans-serif;
+  --font-gt-standard-mono: 'GT Standard Mono', sans-serif;
+
+  --transition-speed-default: 250ms;
+  --transition-speed-fast: 150ms;
+  --transition-speed-extra-fast: 100ms;
+  --transition-speed-slow: 500ms;
+  --transition-speed-extra-slow: 1000ms;
+  --transition-ease: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: none;
+  list-style: none;
+  background: none;
+  outline: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+::selection {
+  background-color: var(--color-highlight);
+  color: var(--color-black);
+}
+
+html {
+  font-size: 16px;
+}
+
+input,
+textarea,
+select,
+button,
+label,
 body {
-  background-color: white;
+  font-family: var(--font-diatype-rounded-bold);
+  color: var(--color-black);
+  line-height: normal;
+}
+
+strong,
+b {
+  font-weight: 900;
+}
+
+em {
+  font-style: italic;
+}
+
+button {
+  cursor: pointer;
+}
+
+.type-h1-large {
+  font-family: var(--font-diatype-rounded-heavy);
+  font-size: 5rem;
+  line-height: 5.25rem;
+  letter-spacing: -0.1rem;
+}
+
+.type-h2-medium {
+  font-family: var(--font-diatype-rounded-heavy);
+  font-size: 3rem;
+  line-height: 3.125rem;
+  letter-spacing: -0.06rem;
+}
+
+h1,
+.type-h1-small {
+  font-family: var(--font-diatype-rounded-heavy);
+  font-size: 2.5rem;
+  line-height: 2.375rem;
+  letter-spacing: -0.025rem;
+}
+
+.type-h1-x-small {
+  font-family: var(--font-diatype-rounded-bold);
+  font-size: 1.5rem;
+  line-height: 1.5625rem;
+  letter-spacing: -0.03rem;
+}
+
+h2,
+.type-h2 {
+  font-family: var(--font-diatype-rounded-bold);
+  font-size: 1.5rem;
+  line-height: 1.5rem;
+}
+
+h3,
+.type-h3 {
+  font-family: var(--font-diatype-rounded-bold);
+  font-size: 0.75rem;
+  line-height: 0.75rem;
+}
+
+h4,
+.type-h4 {
+  font-family: var(--font-gt-standard-mono);
+  font-weight: 300;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-transform: uppercase;
+}
+
+h5,
+.type-h5 {
+  font-family: var(--font-gt-standard-mono);
+  font-weight: 300;
+  font-size: 0.625rem;
+  line-height: 0.625rem;
+}
+
+h6,
+.type-h6,
+.type-tags {
+  font-family: var(--font-gt-standard-mono);
+  font-weight: 500;
+  font-size: 0.625rem;
+  line-height: 0.625rem;
+  letter-spacing: 0.00625rem;
+}
+
+.type-p-x-large {
+  font-family: var(--font-gt-standard-mono);
+  font-weight: 300;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.type-p-large {
+  font-family: var(--font-gt-standard-mono);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.3125rem;
+}
+
+p,
+.type-p {
+  font-family: var(--font-gt-standard-mono);
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.type-small {
+  font-family: var(--font-gt-standard-mono);
+  font-weight: 300;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+a,
+button,
+div {
+  font-size: 16px;
+  line-height: normal;
+}
+
+.performance {
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000;
+  transform: translate3d(0,0,0);
+  transform: translateZ(0);
+}
+
+::placeholder {
+  color: currentcolor;
+  opacity: 1;
+}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+}
+
+input[type="hidden"] {
+  display: none;
+}
+
+input,
+textarea,
+select {
+  padding: 0.125rem 0;
+  font-size: 16px;
+  width: 100%;
+  appearance: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  transition: all 0.3s ease;
+}
+
+textarea {
+  min-height: 5rem;
+}
+
+label {
+  display: inline-block;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+iframe {
+  max-width: 100%;
+  display: block;
 }
 
 img {
@@ -19,7 +241,7 @@ ul {
 
 a,
 a:visited {
-  color: #111;
+  color: var(--color-black);
   text-decoration: none;
   cursor: pointer;
 }
