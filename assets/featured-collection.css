@@ -1,3 +1,20 @@
+.featured-collection {
+
+}
+
+.featured-collection__header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 10rem;
+}
+
+.featured-collection__heading {
+  text-align: center;
+}
+
 .featured-collection-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -5,9 +22,9 @@
   justify-content: center;
 }
 
-.collection-button-wrapper {
+.collection-filters {
   display: flex;
-  gap: 6px;
+  gap: 0.5rem;
 }
 
 .collection-button {

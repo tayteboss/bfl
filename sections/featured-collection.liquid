@@ -1,19 +1,18 @@
 {{ 'featured-collection.css' | asset_url | stylesheet_tag }}
 
-<section class="featured-colleciton-section">
-  <h2>{{ section.settings.heading }}</h2>
-
-  <div class="collection-button-wrapper">
-    {% for block in section.blocks %}
-      {% assign collection = collections[block.settings.collection] %}
-      {% if collection %}
-        <a href="{{ collection.url }}" target="_self">
-          <div class="collection-button">
-            {{ collection.title }}
-          </div>
-        </a>
-      {% endif %}
-    {% endfor %}
+<section class="featured-collection">
+  <div class="featured-collection__header">
+    <h2 class="featured-collection__heading type-h1-large">{{ section.settings.heading }}</h2>
+    <div class="collection-filters">
+      {% for block in section.blocks %}
+        {% assign collection = collections[block.settings.collection] %}
+        {% if collection %}
+          <a href="{{ collection.url }}" target="_self">
+            {% render 'filter-button', title: collection.title, id: collection.id, url: collection.url %}
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
   </div>
 
   <div class="featured-collection-wrapper">

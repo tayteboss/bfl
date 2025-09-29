@@ -36,7 +36,7 @@
       });
       ticking = true;
     }
-  }, 100);
+  }, 50);
 
   function onScroll(callback) {
     if (typeof callback !== 'function') return function () {};

@@ -38,6 +38,21 @@
     const header = document.querySelector('header');
     const menuToggle = document.querySelector('.menu-toggle');
     const body = document.body;
+    const headerLogo = document.querySelector('.header__logo');
+
+    // Get and set header logo height as CSS variable
+    const updateLogoHeight = () => {
+      if (headerLogo) {
+        const logoHeight = headerLogo.offsetHeight;
+        document.documentElement.style.setProperty('--logo-height', `${logoHeight}px`);
+      }
+    };
+
+    // Initial set
+    updateLogoHeight();
+
+    // Update on resize
+    window.addEventListener('resize', updateLogoHeight);
 
     menuToggle.addEventListener('click', () => {
       header.classList.toggle('menu-open');
@@ -51,7 +66,7 @@
 
     // Toggle `scrolled` class on header when beyond threshold
     if (window.ScrollUtils && typeof window.ScrollUtils.onScroll === 'function') {
-      const threshold = 100;
+      const threshold = 300;
       const updateHeaderScrollState = (y) => {
         header.classList.toggle('scrolled', y > threshold);
       };
