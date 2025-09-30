@@ -7,23 +7,33 @@
 
 {{ 'product-card.css' | asset_url | stylesheet_tag }}
 
-<a class="product-card" href="{{ product.url }}" target="_self">
+<a
+  class="product-card"
+  href="{{ product.url }}"
+  target="_self"
+  aria-label="{{ product.title }} by {{ product.vendor }} - {{ product.price | money }}"
+  role="article"
+>
   {% assign product_image = product.media | first %}
   {% assign bg_image = product.media[1] %}
 
   <div class="product-card__image-wrapper">
     {% if product.metafields.custom.product_badge %}
-      <div class="product-badge">
+      <div class="product-badge" role="text" aria-label="Product badge: {{ product.metafields.custom.product_badge }}">
         {{ product.metafields.custom.product_badge | metafield_tag }}
       </div>
     {% endif %}
 
     <div class="product-card__image-ratio">
       {% if bg_image %}
-        <div class="product-card__bg-image-inner">
+        <div
+          class="product-card__bg-image-inner"
+          role="img"
+          aria-label="Background image for {{ product.title }}"
+        >
           <img
             src="{{ bg_image.src | image_url }}"
-            alt="{{ product.title }}"
+            alt=""
             class="product-card__bg-image"
             width="auto"
             height="auto"
@@ -31,10 +41,14 @@
         </div>
       {% endif %}
       {% if product_image %}
-        <div class="product-card__product-image">
+        <div
+          class="product-card__product-image"
+          role="img"
+          aria-label="Primary image of {{ product.title }}"
+        >
           <img
             src="{{ product_image.src | image_url }}"
-            alt="{{ product.title }}"
+            alt=""
             class="product-card__image product-card__image--primary"
             width="auto"
             height="auto"
@@ -44,14 +58,14 @@
     </div>
   </div>
   <div class="product-card-content">
-    <p class="product-card-content__brand type-h4">
+    <p class="product-card-content__brand type-h4" aria-label="Brand">
       {{ product.vendor }}
     </p>
     <p class="product-card-content__title type-p">
       {{ product.title }}
     </p>
-    <div class="product-card-content__price type-p-small">
-      <span>{{ cart.currency.iso_code }}</span>
+    <div class="product-card-content__price type-p-small" aria-label="Price">
+      <span aria-hidden="true">{{ cart.currency.iso_code }}</span>
       <span>{{ product.price | money }}</span>
     </div>
   </div>

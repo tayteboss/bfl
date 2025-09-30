@@ -1,19 +1,48 @@
 {{ 'sendrollshome.css' | asset_url | stylesheet_tag }}
-{% comment %} css to position the image in here ^ {% endcomment %}
 
-<section>
-  <h2>{{ section.settings.heading }}</h2>
-  <div class="send-rolls-div">
-    <p>{{ section.settings['paragraph-1'] }}</p>
-    <p>{{ section.settings['paragraph-2'] }}</p>
-    <img
-      src="{{ section.settings.sendrollsimage |image_url }}"
-      width="auto"
-      height="auto"
-      class="send-rolls-circle"
-    >
+<section
+  class="send-rolls-content"
+  aria-labelledby="send-rolls-heading"
+>
+  <div class="layout-wrapper">
+    <div class="layout-grid">
+      <h2 id="send-rolls-heading" class="send-rolls-content__heading type-h1-small">{{ section.settings.heading }}</h2>
+      <div class="send-rolls-content__richtext">
+        <p class="type-p-x-large">{{ section.settings['paragraph-1'] }}</p>
+        {% comment %} <p>{{ section.settings['paragraph-2'] }}</p> {% endcomment %}
+      </div>
+    </div>
+    <div class="send-rolls-content__button-wrapper">
+      <a
+        href="{{ section.settings.cta }}"
+        class="send-rolls-content__button primary-button"
+        role="button"
+        aria-label="{{ section.settings.button }}"
+      >
+        {{- section.settings.button -}}
+      </a>
+    </div>
   </div>
-  <a href="{{ section.settings.cta }}">{{ section.settings.button }}</a>
+  <a
+    href="/send-us-your-rolls"
+    aria-label="Send us your rolls"
+    class="send-rolls-content__image-link"
+  >
+    <div
+      class="send-rolls-content__image-wrapper"
+      role="img"
+      aria-label="Decorative circular image for send rolls section"
+    >
+      <img
+        src="{{ section.settings.sendrollsimage |image_url }}"
+        width="auto"
+        height="auto"
+        class="send-rolls-content__image"
+        alt="{{ section.settings.sendrollsimage.alt | default: 'Send us your rolls' }}"
+        loading="lazy"
+      >
+    </div>
+  </a>
 </section>
 
 {% schema %}

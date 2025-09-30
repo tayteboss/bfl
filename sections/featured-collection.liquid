@@ -1,23 +1,37 @@
 {{ 'collection.css' | asset_url | stylesheet_tag }}
 
-<section class="featured-collection">
+<section
+  class="featured-collection"
+  aria-labelledby="featured-collection-heading"
+>
   <div class="layout-wrapper">
     <div class="featured-collection__header">
-      <h2 class="featured-collection__heading type-h1-large">{{ section.settings.heading }}</h2>
-      <div class="collection-filters">
+      <h2
+        id="featured-collection-heading"
+        class="featured-collection__heading type-h1-large"
+      >
+        {{ section.settings.heading }}
+      </h2>
+      <div
+        class="collection-filters"
+        role="navigation"
+        aria-label="Collection filters"
+      >
         {% for block in section.blocks %}
           {% assign collection = collections[block.settings.collection] %}
           {% if collection %}
-            <a href="{{ collection.url }}" target="_self">
-              {% render 'filter-button', title: collection.title, id: collection.id, url: collection.url %}
-            </a>
+            {% render 'filter-button', title: collection.title, id: collection.id, url: collection.url %}
           {% endif %}
         {% endfor %}
       </div>
     </div>
   </div>
 
-  <div class="collection-list layout-grid layout-wrapper">
+  <div
+    class="collection-list layout-grid layout-wrapper"
+    role="region"
+    aria-label="Featured products"
+  >
     {% for product in collections.frontpage.products %}
       {% render 'product-card', product: product %}
     {% endfor %}

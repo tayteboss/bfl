@@ -7,4 +7,13 @@
 
 {{ 'filter-button.css' | asset_url | stylesheet_tag }}
 
-<span class="filter-button type-p{% if request.path contains url %} filter-button--active{% endif %}">{{ title }}</span>
+<a
+  href="{{ url }}"
+  target="_self"
+  class="filter-button type-p{% if request.path contains url %} filter-button--active{% endif %}"
+  role="button"
+  aria-pressed="{% if request.path contains url %}true{% else %}false{% endif %}"
+  aria-label="Filter by {{ title }}"
+>
+  {{- title -}}
+</a>

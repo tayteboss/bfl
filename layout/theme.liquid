@@ -21,6 +21,18 @@
 
     {% render 'meta-tags' %}
 
+    <script>
+      (function () {
+        function setLogoHeightVar() {
+          var vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+          var logoHeight = vw * 0.138 * 0.9; // matches .header__logo font-size (13.8vw) * line-height (0.9)
+          document.documentElement.style.setProperty('--logo-height', logoHeight + 'px');
+        }
+        setLogoHeightVar();
+        window.addEventListener('resize', setLogoHeightVar);
+      })();
+    </script>
+
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>

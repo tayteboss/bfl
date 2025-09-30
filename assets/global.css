@@ -411,3 +411,29 @@ main .shopify-section:first-child {
     padding-top: calc(var(--logo-height) + 80px);
   }
 }
+
+.primary-button {
+  font-size: 1.25rem;
+  padding: 1.375rem 2rem 1.3125rem;
+  color: var(--color-black);
+  background: var(--color-grey-light);
+  border-radius: 1.5rem;
+  font-family: var(--font-diatype-rounded-bold);
+  line-height: 1;
+  display: inline-block;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+
+  @media (max-width: 768px) {
+    border-radius: 1rem;
+    padding: 1.375rem 2rem 1.3125rem;
+    font-size: 1rem;
+    background: var(--color-yellow);
+  }
+}
+
+.primary-button:hover {
+  background: var(--color-yellow);
+  transform: scale(1.01);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+}

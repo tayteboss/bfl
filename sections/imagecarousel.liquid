@@ -1,20 +1,34 @@
 {{ 'imagecarousel.css' | asset_url | stylesheet_tag }}
 
-<div
+<section
   id="image-carousel-{{ section.id }}"
   data-section-id="{{ section.id }}"
+  aria-label="Image carousel"
+  role="region"
 >
   <div class="image-carousel__inner">
-    <div class="swiper js-image-carousel image-carousel">
-      <div class="swiper-wrapper">
+    <div
+      class="swiper js-image-carousel image-carousel"
+      aria-roledescription="carousel"
+    >
+      <div
+        class="swiper-wrapper"
+        aria-live="polite"
+      >
         {% for block in section.blocks %}
-          <div class="swiper-slide image-carousel-item" {{ block.shopify_attributes }}>
+          <div
+            class="swiper-slide image-carousel-item"
+            {{ block.shopify_attributes }}
+            role="group"
+            aria-roledescription="slide"
+            aria-label="Slide {{ forloop.index }} of {{ section.blocks.size }}"
+          >
             {% if block.settings.image != blank %}
               <div class="image-carousel__image-ratio">
                 <div class="image-carousel__image-inner">
                   <img
                     src="{{ block.settings.image | image_url }}"
-                    alt="{{ block.settings.alt | escape }}"
+                    alt="{{ block.settings.alt | escape | default: 'Carousel image ' | append: forloop.index }}"
                     loading="lazy"
                     width="auto"
                     height="auto"
@@ -27,7 +41,7 @@
       </div>
     </div>
   </div>
-</div>
+</section>
 
 <script>
   function initImageCarousels() {
