@@ -1,28 +1,122 @@
-.footer-div {
-  background-color: #FFF750;
-  height: 580px;
-  position: relative;
-  z-index: 9999;
-  display: flex;
-  gap: 100px;
-  padding: 20px;
+.footer {
+  background-color: var(--color-yellow);
+  padding: 1.5rem;
 }
 
-.footer-logo {
-  width: 100%;
-  height: auto;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  z-index: 9999;
-  padding: 15px;
+.layout-grid {
+  @media (max-width: 768px) {
+   row-gap: 48px;
+  }
 }
 
 .footer-links {
+  grid-column: span 2;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    grid-column: span 3;
+    order: 2;
+    gap: 1rem;
+  }
 }
 
-.newsletter-container {
-  margin-left: auto;
+.footer-links--stores {
+  grid-column: span 4;
+}
+
+.footer-links__title {
+  opacity: 0.5;
+}
+
+.footer-links__list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.375rem;
+  padding: 0;
+}
+
+.footer-address-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0;
+}
+
+.footer-links__address {
+  p {
+    opacity: 0.5;
+  }
+
+  a {
+    opacity: 0.5;
+
+    transition: all var(--transition-speed-default) var(--transition-ease);
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.footer-newsletter {
+  grid-column: span 4;
+  display: flex;
+  justify-self: flex-end;
+
+  @media (max-width: 768px) {
+    order: 1;
+    grid-column: 1 / -1;
+    justify-self: center;
+  }
+}
+
+.footer-bottom {
+  padding-top: 7.5rem;
+  grid-column: 1 / -1;
+
+  @media (max-width: 768px) {
+    order: 3;
+    padding-top: 48px;
+  }
+}
+
+.footer-bottom__top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-credits {
+  display: flex;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.footer-top-button {
+  cursor: pointer;
+  text-align: right;
+  position: relative;
+  z-index: 2;
+}
+
+.footer__logo {
+  color: var(--color-black) !important;
+  width: 100%;
+  font-size: 13.8vw;
+  line-height: 0.9;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 }

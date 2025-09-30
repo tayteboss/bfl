@@ -9,6 +9,8 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 24px;
+
+  transition: opacity var(--transition-speed-default) var(--transition-ease);
 }
 
 .header__logo {
@@ -23,6 +25,7 @@ header {
   line-height: 0.9;
   text-align: center;
   white-space: nowrap;
+  pointer-events: none;
 
   transition: all var(--transition-speed-default) var(--transition-ease);
 }
@@ -153,5 +156,15 @@ header {
 
 .menu-list__item--active {
   opacity: 0.33;
+  pointer-events: none;
+}
+
+/* Hide header near page bottom */
+body.hide-header header {
+  opacity: 0;
+}
+
+body.hide-header .menu-toggle,
+body.hide-header .cart-button {
   pointer-events: none;
 }

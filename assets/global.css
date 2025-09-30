@@ -476,3 +476,17 @@ main .shopify-section:first-child {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
   border-radius: 1rem;
 }
+
+.hover-blinking {
+  transition: all var(--transition-speed-default) var(--transition-ease);
+
+  &:hover {
+    animation: blink 150ms step-end infinite;
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
