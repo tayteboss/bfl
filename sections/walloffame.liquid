@@ -1,16 +1,17 @@
 {{ 'walloffame.css' | asset_url | stylesheet_tag }}
 
-<section class="wall-of-fame">
+<section class="wall-of-fame" aria-label="Wall of Fame Image Gallery">
   <div class="layout-wrapper">
     <div class="wall-of-fame__header-wrapper">
-      <h2 class="type-h1-large">{{ section.settings.heading }}</h2>
-      <p class="type-p-large">{{ section.settings.text }}</p>
+      <h2 class="type-h1-large" id="wall-of-fame-title">{{ section.settings.heading }}</h2>
+      <p class="type-p-large" id="wall-of-fame-description">{{ section.settings.text }}</p>
     </div>
   </div>
   <div class="image-carousel__inner">
     <div
       class="swiper js-image-carousel image-carousel"
       aria-roledescription="carousel"
+      aria-labelledby="wall-of-fame-title wall-of-fame-description"
     >
       <div
         class="swiper-wrapper"
@@ -31,12 +32,19 @@
                     src="{{ block.settings.image | image_url }}"
                     alt="{{ block.settings.alt | escape | default: 'Carousel image ' | append: forloop.index }}"
                     loading="lazy"
-                    width="auto"
-                    height="auto"
+                    width="800"
+                    height="528"
+                    decoding="async"
                   >
                   {% if block.settings.cta != blank %}
                     <div class="wall-of-fame__ig-button">
-                      <a href="{{ block.settings.cta }}" class="type-p-small">
+                      <a
+                        href="{{ block.settings.cta }}"
+                        target="_blank"
+                        class="type-p-small"
+                        rel="noopener noreferrer"
+                        aria-label="{{ block.settings.button }} (opens in new tab)"
+                      >
                         {{- block.settings.button -}}
                       </a>
                     </div>

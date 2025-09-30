@@ -1,28 +1,99 @@
-.faq-nav {
+.faq__heading {
+  text-align: center;
+  margin-bottom: 4rem;
+
+  @media (max-width: 768px) {
+    margin-bottom: 2rem;
+  }
+}
+
+.faq-list {
   display: flex;
-  gap: 5px;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 45rem;
+  margin: 0 auto;
 }
 
-.faq-button {
-  padding: 8px 18px;
-  background-color: #F6F6F6;
-  border-radius: 20px;
-  width: fit-content;
+.faq-card {
+  background: var(--color-grey-light);
+  padding: 1.25rem 1.5rem;
+  border-radius: 1.5rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
   cursor: pointer;
+
+  transition: background var(--transition-speed-default) var(--transition-ease);
+
+  @media (max-width: 768px) {
+    padding: 1rem 1.25rem;
+  }
 }
 
-details>summary {
-  list-style: none;
+.faq-card:hover {
+  background: var(--color-grey-mid);
 }
 
-.faq-item {
-  background-color: #F6F6F6;
+.faq-card[aria-expanded="true"] {
+  background: var(--color-grey-mid);
 }
 
-.faq-question {
-  cursor: pointer;
+.faq-card:hover .faq-card__indicator {
+  background: var(--color-grey-dark);
 }
 
-.faq-heading {
-  padding-top: 80px;
+.faq-card:hover .faq-card__indicator::before,
+.faq-card:hover .faq-card__indicator::after {
+  background: var(--color-white);
+}
+.faq-card__indicator {
+  position: absolute;
+  top: 1.125rem;
+  right: 1.125rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: var(--color-grey-mid);
+
+  transition: background var(--transition-speed-default) var(--transition-ease);
+}
+
+.faq-card[aria-expanded="true"] .faq-card__indicator {
+  background: var(--color-black);
+}
+
+.faq-card__indicator::before,
+.faq-card__indicator::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--color-grey-dark);
+  transition: transform 0.2s ease, opacity 0.2s ease, background var(--transition-speed-default) var(--transition-ease);
+}
+
+.faq-card[aria-expanded="true"] .faq-card__indicator::before,
+.faq-card[aria-expanded="true"] .faq-card__indicator::after {
+  background: var(--color-white);
+}
+
+.faq-card__indicator::before { width: 0.625rem; height: 0.0625rem; }
+.faq-card__indicator::after { width: 0.0625rem; height: 0.625rem; }
+
+.faq-card[aria-expanded="true"] .faq-card__indicator::after {
+  transform: translate(-50%, -50%) scaleY(0);
+}
+
+.faq-card__question {
+  text-align: center;
+  padding-right: 2rem;
+}
+
+.faq-card__inner {
+  padding: 2rem 0 0.5rem;
 }

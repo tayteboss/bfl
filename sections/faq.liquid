@@ -1,34 +1,26 @@
 {{ 'faq.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'faq.js' | asset_url }}" defer="defer"></script>
 
-<section class="faq-section">
-  {% if section.settings.heading != blank %}
-    <h2 class="faq-heading">{{ section.settings.heading }}</h2>
-  {% endif %}
+<section class="faq">
+  <div class="layout-wrapper">
+    {% if section.settings.heading != blank %}
+      <h2 class="type-h1-small faq__heading">{{ section.settings.heading }}</h2>
+    {% endif %}
 
-  <div class="faq-list">
-    {% for block in section.blocks %}
-      {% if block.settings['faq-heading'] %}
-        <h3>{{ block.settings['faq-heading'] }}</h3>
-      {% endif %}
-      <details class="faq-item" {{ block.shopify_attributes }}>
-        <summary class="faq-question">
-          {{ block.settings.question }}
-          <span class="faq-icon">+</span>
-        </summary>
-        <div class="faq-answer">
-          {{ block.settings.answer }}
-        </div>
-      </details>
-    {% endfor %}
-  </div>
-
-  {% if section.settings.show_view_all %}
-    <div class="faq-view-all">
-      <a href="{{ section.settings.view_all_link }}" class="faq-link">
-        {{ section.settings.view_all_text }}
-      </a>
+    <div class="faq-list" data-faq-list>
+      {% for block in section.blocks %}
+        {% render 'faq-card', block: block, question: block.settings.question, answer: block.settings.answer %}
+      {% endfor %}
     </div>
-  {% endif %}
+
+    {% if section.settings.show_view_all %}
+      <div class="faq-view-all">
+        <a href="{{ section.settings.view_all_link }}" class="faq-link">
+          {{ section.settings.view_all_text }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
 </section>
 
 {% schema %}
