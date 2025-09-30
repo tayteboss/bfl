@@ -1,20 +1,65 @@
-{{ 'carousel.css' | asset_url | stylesheet_tag }}
+{{ 'imagecarousel.css' | asset_url | stylesheet_tag }}
 
-<div class="image-carousel">
-  {% for block in section.blocks %}
-    <div class="image-carousel-item" {{ block.shopify_attributes }}>
-      {% if block.settings.image != blank %}
-        <img
-          src="{{ block.settings.image | image_url }}"
-          alt="{{ block.settings.alt | escape }}"
-          loading="lazy"
-          width="auto"
-          height="auto"
-        >
-      {% endif %}
+<div
+  id="image-carousel-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+>
+  <div class="image-carousel__inner">
+    <div class="swiper js-image-carousel image-carousel">
+      <div class="swiper-wrapper">
+        {% for block in section.blocks %}
+          <div class="swiper-slide image-carousel-item" {{ block.shopify_attributes }}>
+            {% if block.settings.image != blank %}
+              <div class="image-carousel__image-ratio">
+                <div class="image-carousel__image-inner">
+                  <img
+                    src="{{ block.settings.image | image_url }}"
+                    alt="{{ block.settings.alt | escape }}"
+                    loading="lazy"
+                    width="auto"
+                    height="auto"
+                  >
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
     </div>
-  {% endfor %}
+  </div>
 </div>
+
+<script>
+  function initImageCarousels() {
+    var carousels = document.querySelectorAll('.js-image-carousel');
+    if (!carousels || carousels.length === 0) return;
+
+    carousels.forEach(function (carouselEl) {
+      if (typeof window.Swiper !== 'function') return;
+
+      new window.Swiper(carouselEl, {
+        slidesPerView: 'auto',
+        breakpoints: {
+          0: {
+            spaceBetween: 8,
+          },
+          768: {
+            spaceBetween: 16,
+          },
+        },
+        loop: false,
+        freeMode: true,
+        grabCursor: true,
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initImageCarousels);
+  } else {
+    initImageCarousels();
+  }
+</script>
 
 {% schema %}
 {

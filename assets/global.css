@@ -383,6 +383,25 @@ a {
 .shopify-section-group-header-group {
   position: relative;
   z-index: 1000;
+  padding: 0 !important;
+}
+
+.shopify-section-group-footer-group {
+  padding: 0 !important;
+}
+
+.shopify-section {
+  padding-top: 4.6875rem;
+  padding-bottom: 4.6875rem;
+
+  @media (max-width: 768px) {
+    padding-top: 2.8125rem;
+    padding-bottom: 2.8125rem;
+  }
+}
+
+.shopify-section:last-child {
+  padding-bottom: 0;
 }
 
 main .shopify-section:first-child {
