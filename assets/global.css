@@ -481,12 +481,22 @@ main .shopify-section:first-child {
   transition: all var(--transition-speed-default) var(--transition-ease);
 
   &:hover {
-    animation: blink 150ms step-end infinite;
+    animation: blink 250ms step-start infinite;
   }
 }
 
 @keyframes blink {
   50% {
     opacity: 0;
+  }
+}
+
+.in-view-fade {
+  opacity: 0;
+  transition: all 500ms var(--transition-ease);
+  transition-delay: 100ms;
+
+  &.in-view {
+    opacity: 1;
   }
 }

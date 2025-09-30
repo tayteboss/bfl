@@ -1,6 +1,11 @@
 {{ 'walloffame.css' | asset_url | stylesheet_tag }}
 
-<section class="wall-of-fame" aria-label="Wall of Fame Image Gallery">
+<section
+  class="wall-of-fame in-view-fade"
+  aria-label="Wall of Fame Image Gallery"
+  data-in-view
+  data-in-view-once
+>
   <div class="layout-wrapper">
     <div class="wall-of-fame__header-wrapper">
       <h2 class="type-h1-large" id="wall-of-fame-title">{{ section.settings.heading }}</h2>
