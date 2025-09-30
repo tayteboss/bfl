@@ -66,7 +66,7 @@
 
     // Toggle `scrolled` class on header when beyond threshold
     if (window.ScrollUtils && typeof window.ScrollUtils.onScroll === 'function') {
-      const threshold = 300;
+      const threshold = 150;
       const updateHeaderScrollState = (y) => {
         header.classList.toggle('scrolled', y > threshold);
       };

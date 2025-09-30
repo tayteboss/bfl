@@ -1,0 +1,58 @@
+{% comment %}
+  Renders a product card
+
+  Usage:
+  {% render 'product-card', product: product %}
+{% endcomment %}
+
+{{ 'product-card.css' | asset_url | stylesheet_tag }}
+
+<a class="product-card" href="{{ product.url }}" target="_self">
+  {% assign product_image = product.media | first %}
+  {% assign bg_image = product.media[1] %}
+
+  <div class="product-card__image-wrapper">
+    {% if product.metafields.custom.product_badge %}
+      <div class="product-badge">
+        {{ product.metafields.custom.product_badge | metafield_tag }}
+      </div>
+    {% endif %}
+
+    <div class="product-card__image-ratio">
+      {% if bg_image %}
+        <div class="product-card__bg-image-inner">
+          <img
+            src="{{ bg_image.src | image_url }}"
+            alt="{{ product.title }}"
+            class="product-card__bg-image"
+            width="auto"
+            height="auto"
+          >
+        </div>
+      {% endif %}
+      {% if product_image %}
+        <div class="product-card__product-image">
+          <img
+            src="{{ product_image.src | image_url }}"
+            alt="{{ product.title }}"
+            class="product-card__image product-card__image--primary"
+            width="auto"
+            height="auto"
+          >
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="product-card-content">
+    <p class="product-card-content__brand type-h4">
+      {{ product.vendor }}
+    </p>
+    <p class="product-card-content__title type-p">
+      {{ product.title }}
+    </p>
+    <div class="product-card-content__price type-p-small">
+      <span>{{ cart.currency.iso_code }}</span>
+      <span>{{ product.price | money }}</span>
+    </div>
+  </div>
+</a>

@@ -38,10 +38,21 @@
     }
   }, 50);
 
+  // Special handler for when user reaches top of page
+  const handleScrollTop = function () {
+    const y = window.scrollY || window.pageYOffset || 0;
+    if (y === 0 && lastKnownY !== 0) {
+      lastKnownY = 0;
+      notifyAll(0);
+    }
+  };
+
   function onScroll(callback) {
     if (typeof callback !== 'function') return function () {};
     if (subscribers.size === 0) {
       window.addEventListener('scroll', handleScroll, { passive: true });
+      // Add separate non-throttled listener for top position
+      window.addEventListener('scroll', handleScrollTop, { passive: true });
     }
     subscribers.add(callback);
     // fire once with current position so consumers get initial state
@@ -50,6 +61,7 @@
       subscribers.delete(callback);
       if (subscribers.size === 0) {
         window.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('scroll', handleScrollTop);
       }
     };
   }

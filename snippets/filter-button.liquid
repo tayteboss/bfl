@@ -5,27 +5,6 @@
   {% render 'filter-button', title: 'Filter', id: '123', url: 'https://www.google.com' %}
 {% endcomment %}
 
+{{ 'filter-button.css' | asset_url | stylesheet_tag }}
+
 <span class="filter-button type-p{% if request.path contains url %} filter-button--active{% endif %}">{{ title }}</span>
-
-<style>
-  .filter-button {
-    padding: 10px 18px;
-    background: var(--color-grey-light);
-    color: var(--color-black);
-    border-radius: 50px;
-
-    transition: all var(--transition-speed-default) var(--transition-ease);
-  }
-
-  .filter-button:hover {
-    background: var(--color-yellow);
-    color: var(--color-black);
-  }
-
-  .filter-button--active {
-    color: var(--color-yellow);
-    background: var(--color-black);
-  }
-</style>
-
-<script></script>
