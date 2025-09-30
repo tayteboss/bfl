@@ -3,23 +3,25 @@
 
 <section class="faq">
   <div class="layout-wrapper">
-    {% if section.settings.heading != blank %}
-      <h2 class="type-h1-small faq__heading">{{ section.settings.heading }}</h2>
-    {% endif %}
+    <div class="faq__inner">
+      {% if section.settings.heading != blank %}
+        <h2 class="type-h1-small faq__heading">{{ section.settings.heading }}</h2>
+      {% endif %}
 
-    <div class="faq-list" data-faq-list>
-      {% for block in section.blocks %}
-        {% render 'faq-card', block: block, question: block.settings.question, answer: block.settings.answer %}
-      {% endfor %}
-    </div>
-
-    {% if section.settings.show_view_all %}
-      <div class="faq-view-all">
-        <a href="{{ section.settings.view_all_link }}" class="faq-link">
-          {{ section.settings.view_all_text }}
-        </a>
+      <div class="faq-list" data-faq-list>
+        {% for block in section.blocks %}
+          {% render 'faq-card', block: block, question: block.settings.question, answer: block.settings.answer %}
+        {% endfor %}
       </div>
-    {% endif %}
+
+      {% if section.settings.show_view_all %}
+        <div class="faq__button-wrapper">
+          <a href="{{ section.settings.view_all_link }}" class="faq-link secondary-button">
+            {{ section.settings.view_all_text }}
+          </a>
+        </div>
+      {% endif %}
+    </div>
   </div>
 </section>
 
