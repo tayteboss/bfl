@@ -1,28 +1,78 @@
-/* Obviously, you can change this to what you need */
-.image-carousel {
+.wall-of-fame__header-wrapper {
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+  max-width: 840px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+
+  @media (max-width: 768px) {
+    margin-bottom: 2rem;
+  }
 }
 
-.image-carousel-item {
+.swiper-slide {
+  width: 90vw !important;
+}
+
+.swiper-slide:first-child {
+  padding-left: calc(100vw / 12);
+
+  @media (max-width: 768px) {
+    padding-left: 1rem;
+  }
+}
+
+.swiper-slide:last-child {
+  padding-right: calc(100vw / 12);
+
+  @media (max-width: 768px) {
+    padding-right: 1rem;
+  }
+}
+
+
+.image-carousel__image-ratio {
   position: relative;
-  width: 600px;
-  height: auto;
+  width: 100%;
+  padding-top: 66%;
+}
+
+.image-carousel__image-inner {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 1rem;
 }
 
 .image-carousel-item img {
   width: 100%;
   height: 100%;
-  border-radius: 15px;
   object-fit: cover;
 }
 
-.ig-button {
-  background-color: white;
+.wall-of-fame__ig-button {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 5px 8px;
+  padding: 1rem;
+  color: var(--color-black);
+  background: var(--color-grey-light);
   border-radius: 50px;
+  padding: 0.5rem 1rem;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+}
+
+.wall-of-fame__ig-button:hover {
+  background: var(--color-yellow);
+  color: var(--color-black);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
 }

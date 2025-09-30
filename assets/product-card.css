@@ -32,7 +32,11 @@
 	background: var(--color-grey-light);
 	overflow: hidden;
 	border-radius: 1rem;
+
+	transition: all var(--transition-speed-default) var(--transition-ease);
 }
+
+
 
 .product-card__bg-image-inner {
   position: absolute;
@@ -41,6 +45,13 @@
 	width: 100%;
 	overflow: hidden;
 	border-radius: 1rem;
+
+	transition: all var(--transition-speed-default) var(--transition-ease);
+}
+
+.product-card__image-wrapper:hover .product-card__image-ratio,
+.product-card__image-wrapper:hover .product-card__bg-image-inner {
+	border-radius: 1.25rem;
 }
 
 .product-card__bg-image {

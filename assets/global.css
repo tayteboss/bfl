@@ -58,6 +58,15 @@ html {
   font-size: 16px;
 }
 
+main {
+  transition: filter var(--transition-speed-default) var(--transition-ease), opacity var(--transition-speed-default) var(--transition-ease);
+}
+
+body.menu-open main, body.menu-open .header__logo {
+  filter: blur(25px);
+  opacity: 0.75;
+}
+
 input,
 textarea,
 select,
@@ -384,6 +393,7 @@ a {
   position: relative;
   z-index: 1000;
   padding: 0 !important;
+  mix-blend-mode: darken;
 }
 
 .shopify-section-group-footer-group {

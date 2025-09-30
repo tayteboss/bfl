@@ -1,29 +1,87 @@
 {{ 'walloffame.css' | asset_url | stylesheet_tag }}
 
 <section class="wall-of-fame">
-  <h2>{{ section.settings.heading }}</h2>
-  <p>{{ section.settings.text }}</p>
-  <div class="image-carousel">
-    {% for block in section.blocks %}
-      <div class="image-carousel-item" {{ block.shopify_attributes }}>
-        {% if block.settings.image != blank %}
-          <img
-            src="{{ block.settings.image | image_url }}"
-            alt="{{ block.settings.alt | escape }}"
-            loading="lazy"
-            width="auto"
-            height="auto"
+  <div class="layout-wrapper">
+    <div class="wall-of-fame__header-wrapper">
+      <h2 class="type-h1-large">{{ section.settings.heading }}</h2>
+      <p class="type-p-large">{{ section.settings.text }}</p>
+    </div>
+  </div>
+  <div class="image-carousel__inner">
+    <div
+      class="swiper js-image-carousel image-carousel"
+      aria-roledescription="carousel"
+    >
+      <div
+        class="swiper-wrapper"
+        aria-live="polite"
+      >
+        {% for block in section.blocks %}
+          <div
+            class="swiper-slide image-carousel-item"
+            {{ block.shopify_attributes }}
+            role="group"
+            aria-roledescription="slide"
+            aria-label="Slide {{ forloop.index }} of {{ section.blocks.size }}"
           >
-          <div class="ig-button">
-            <a href="{{ block.settings.cta }}">
-              {{- block.settings.button -}}
-            </a>
+            {% if block.settings.image != blank %}
+              <div class="image-carousel__image-ratio">
+                <div class="image-carousel__image-inner">
+                  <img
+                    src="{{ block.settings.image | image_url }}"
+                    alt="{{ block.settings.alt | escape | default: 'Carousel image ' | append: forloop.index }}"
+                    loading="lazy"
+                    width="auto"
+                    height="auto"
+                  >
+                  {% if block.settings.cta != blank %}
+                    <div class="wall-of-fame__ig-button">
+                      <a href="{{ block.settings.cta }}" class="type-p-small">
+                        {{- block.settings.button -}}
+                      </a>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
           </div>
-        {% endif %}
+        {% endfor %}
       </div>
-    {% endfor %}
+    </div>
   </div>
 </section>
+
+<script>
+  function initImageCarousels() {
+    var carousels = document.querySelectorAll('.js-image-carousel');
+    if (!carousels || carousels.length === 0) return;
+
+    carousels.forEach(function (carouselEl) {
+      if (typeof window.Swiper !== 'function') return;
+
+      new window.Swiper(carouselEl, {
+        slidesPerView: 'auto',
+        breakpoints: {
+          0: {
+            spaceBetween: 8,
+          },
+          768: {
+            spaceBetween: 16,
+          },
+        },
+        loop: false,
+        freeMode: true,
+        grabCursor: true,
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initImageCarousels);
+  } else {
+    initImageCarousels();
+  }
+</script>
 
 {% schema %}
 {

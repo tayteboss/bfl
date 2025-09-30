@@ -47,7 +47,7 @@ header {
 }
 
 .menu-toggle:hover, .cart-button:hover {
-  opacity: 0.5;
+  opacity: 0.75;
 }
 
 .menu-open .menu-toggle {
@@ -102,14 +102,25 @@ header {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(50px);
+  /* background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(50px); */
   z-index: 40;
   pointer-events: none;
   opacity: 0;
   padding: 24px;
 
   transition: all var(--transition-speed-default) var(--transition-ease);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    /* backdrop-filter: blur(50px); */
+  }
 }
 
 .menu-open .menu-overlay {
@@ -121,6 +132,8 @@ header {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  position: relative;
+  z-index: 2;
 }
 
 .menu-list__item {
