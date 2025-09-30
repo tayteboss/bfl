@@ -11,25 +11,44 @@
         {{ product.description }}
       </div>
       {% comment %} Add checks to these divs if there is information, then render {% endcomment %}
-      <div class="event-extra-info">
-        <p class="event-subtitle">Where</p>
-        <p class="event-text">add metafield tags with data here</p>
-      </div>
-      <div class="event-extra-info">
-        <p class="event-subtitle">When</p>
-        <p class="event-text">add metafield tags with data here</p>
-      </div>
-      <div class="event-extra-info">
-        <p class="event-subtitle">Links</p>
-        <p class="event-text">add metafield tags with data here, anchor tags</p>
-      </div>
+      {% if product.metafields.custom.where_event %}
+        <div class="event-extra-info">
+          <p class="event-subtitle">Where</p>
+          <p class="event-text">{{ product.metafields.custom.where_event }}</p>
+        </div>
+      {% endif %}
+      {% if product.metafields.custom.when_event %}
+        <div class="event-extra-info">
+          <p class="event-subtitle">When</p>
+          <p class="event-text">{{ product.metafields.custom.when_event }}</p>
+        </div>
+      {% endif %}
+      {% if product.metafields.custom.events_links.value %}
+        <div class="event-extra-info">
+          <p class="event-subtitle">Links</p>
+
+          {% for link in product.metafields.custom.events_links.value %}
+            <a href="{{ link.link_url.value }}" target="_blank">
+              {{ link.link_text.value }}
+            </a>
+          {% endfor %}
+        </div>
+      {% endif %}
       <div class="event-ctas">
-        <div class="cta-button ticket-button">
-          <p class="event-text">metafield text for button, also an anchor tag</p>
-        </div>
-        <div class="cta-button directions-button">
-          <p class="event-text">metafield text for button, also an anchor tag</p>
-        </div>
+        {% if product.metafields.custom.1_cta_link || product.metafields.custom.1_cta_text %}
+          <div class="cta-button ticket-button">
+            <a class="event-text" href="{{ product.metafields.custom.1_cta_link }}">
+              {{- product.metafields.custom.1_cta_text -}}
+            </a>
+          </div>
+        {% endif %}
+        {% if product.metafields.custom.2_cta_link || product.metafields.custom.2_cta_text %}
+          <div class="cta-button directions-button">
+            <a class="event-text" href="{{ product.metafields.custom.2_cta_link }}">
+              {{- product.metafields.custom.2_cta_text -}}
+            </a>
+          </div>
+        {% endif %}
       </div>
     </div>
   </div>

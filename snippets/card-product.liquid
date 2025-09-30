@@ -21,11 +21,6 @@
   {% render 'card-product', show_vendor: section.settings.show_vendor %}
 {% endcomment %}
 {%- unless skip_styles -%}
-  {{ 'component-rating.css' | asset_url | stylesheet_tag }}
-  {{ 'component-volume-pricing.css' | asset_url | stylesheet_tag }}
-
-  {{ 'component-price.css' | asset_url | stylesheet_tag }}
-  {{ 'quick-order-list.css' | asset_url | stylesheet_tag }}
   {{ 'quantity-popover.css' | asset_url | stylesheet_tag }}
 {%- endunless -%}
 {%- if card_product and card_product != empty -%}
