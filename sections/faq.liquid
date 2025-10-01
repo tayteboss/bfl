@@ -22,6 +22,11 @@
         </div>
       {% endif %}
     </div>
+    <img
+      src="{{ section.settings.photo | image_url }}"
+      height="auto"
+      width="auto"
+    >
   </div>
 </section>
 
@@ -51,6 +56,11 @@
       "id": "view_all_text",
       "label": "View all button text",
       "default": "View all FAQs"
+    },
+    {
+      "type": "image_picker",
+      "id": "photo",
+      "label": "FAQ Image"
     }
   ],
   "blocks": [

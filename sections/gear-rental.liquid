@@ -1,0 +1,158 @@
+{{ 'gear-rental.css' | asset_url | stylesheet_tag }}
+
+<div>
+  <h1>{{ section.settings.heading }}</h1>
+  <p>{{ section.settings.subheading }}</p>
+  <p>{{ section.settings.subparagraph }}</p>
+  <div>
+    {{ section.settings['container-title'] }}
+    {% for block in section.blocks %}
+      <div>
+        <div>
+          {{ block.settings.brand }}
+          {{ block.settings['camera-name'] }}
+        </div>
+        <div>
+          <p>{{ block.settings['price-per-day'] }}</p>
+          <p>/day or weekend</p>
+          <p>{{ block.settings['price-per-week'] }}</p>
+          <p>/week</p>
+        </div>
+        <div>
+          {{ block.settings['camera-description'] }}
+        </div>
+        <details>
+          <summary>
+            {{ block.settings['accordion-1-title'] }}
+            <span class="faq-icon">+</span>
+          </summary>
+          {{ block.settings['accordion-1'] }}
+        </details>
+        <details>
+          <summary>
+            {{ block.settings['accordion-2-title'] }}
+            <span class="faq-icon">+</span>
+          </summary>
+          {{ block.settings['accordion-2'] }}
+        </details>
+        <details>
+          <summary>
+            {{ block.settings['accordion-3-title'] }}
+            <span class="faq-icon">+</span>
+          </summary>
+          {{ block.settings['accordion-3'] }}
+        </details>
+        <div>
+          <img
+            src="{{ block.settings['camera-photo'] | image_url }}"
+            width="auto"
+            height="auto"
+            alt="Camera Image"
+          >
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "gear-rental",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Page Title",
+      "default": "Gear Rental"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Sub Heading",
+      "default": "<p>From cult point-and-shoots to medium format legends — every camera is tested and includes a free dev + scan voucher.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "subparagraph",
+      "label": "Paragraph below titles",
+      "default": "<p>Test-drive the classics before you commit. Every body is CLA’d, shot-tested, and leaves with fresh batteries—and a free dev-and-scan voucher to sweeten the weekend. From point-and-shoot Contax T2s to a Hasselblad 500 CM kit, the shelf rotates weekly. Try the classics before you own them.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "container-title",
+      "label": "Title for gear container"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "rental",
+      "name": "Rental Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "brand",
+          "label": "Brand name"
+        },
+        {
+          "type": "text",
+          "id": "camera-name",
+          "label": "Camera name"
+        },
+        {
+          "type": "text",
+          "id": "price-per-day",
+          "label": "Price per day"
+        },
+        {
+          "type": "text",
+          "id": "price-per-week",
+          "label": "Price per week"
+        },
+        {
+          "type": "image_picker",
+          "id": "camera-photo",
+          "label": "Image of camera"
+        },
+        {
+          "type": "richtext",
+          "id": "camera-description",
+          "label": "Description of camera"
+        },
+        {
+          "type": "text",
+          "id": "accordion-1-title",
+          "label": "Question title",
+          "default": "What's included?"
+        },
+        {
+          "type": "richtext",
+          "id": "accordion-1",
+          "label": "What's included information"
+        },
+        {
+          "type": "text",
+          "id": "accordion-2-title",
+          "label": "Question title",
+          "default": "How to works?"
+        },
+        {
+          "type": "richtext",
+          "id": "accordion-2",
+          "label": "How to work information"
+        },
+        {
+          "type": "text",
+          "id": "accordion-3-title",
+          "label": "Question title",
+          "default": "Terms of use"
+        },
+        {
+          "type": "richtext",
+          "id": "accordion-3",
+          "label": "Terms of use information"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

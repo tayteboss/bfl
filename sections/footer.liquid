@@ -19,6 +19,11 @@
         <button class="footer-top-button type-h6 hover-blinking">Back to Top ▲</button>
       </div>
       {% render 'footer-logo' %}
+      <img
+        src="{{ section.settings.photo | image_url }}"
+        width="auto"
+        height="auto"
+      >
     </div>
   </div>
 </footer>
@@ -45,6 +50,11 @@
       "type": "link_list",
       "id": "second-menu",
       "label": "t:labels.menu"
+    },
+    {
+      "type": "image_picker",
+      "id": "photo",
+      "label": "Floating image"
     },
     {
       "type": "image_picker",

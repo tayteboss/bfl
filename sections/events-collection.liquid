@@ -1,0 +1,82 @@
+{{ 'events-page.css' | asset_url | stylesheet_tag }}
+
+<div>
+  <div>
+    <div>{{ section.settings.title }}</div>
+    <div>FILTERS HERE</div>
+  </div>
+  <div>
+    <div>{{ section.settings.event_present }}</div>
+    <div>
+      {% for product in collections.events.products %}
+        {% if product.metafields.custom.history.value != true %}
+          <div>
+            {{ product.title }}
+            {{ product.metafields.custom.when_event }}
+            <div>
+              {% render 'image', class: 'event-image', image: product.featured_image %}
+            </div>
+            {{ product.description }}
+            <p>Where</p>
+            {{ product.metafields.custom.where_event }}
+            <p>When</p>
+            {{ product.metafields.custom.when_event }}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  <div>
+    <div>{{ section.settings.event_past }}</div>
+    <div>
+      {% for product in collections.events.products %}
+        {% if product.metafields.custom.history.value == true %}
+          <div>
+            {{ product.title }}
+            {{ product.metafields.custom.when_event }}
+            <div>
+              {% render 'image', class: 'event-image', image: product.featured_image %}
+            </div>
+            {{ product.description }}
+            <p>Where</p>
+            {{ product.metafields.custom.where_event }}
+            <p>When</p>
+            {{ product.metafields.custom.when_event }}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "eventslist",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Page Heading",
+      "default": "What's on at Bellows"
+    },
+    {
+      "type": "text",
+      "id": "event_present",
+      "label": "Present Events Heading",
+      "default": "Upcoming Events"
+    },
+    {
+      "type": "text",
+      "id": "event_past",
+      "label": "Past Events Heading",
+      "default": "Past Events"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Events List",
+      "category": "Events List"
+    }
+  ]
+}
+{% endschema %}
