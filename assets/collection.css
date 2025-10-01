@@ -33,7 +33,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  row-gap: 1.5rem;
+  row-gap: 0.5rem;
   justify-content: center;
   align-items: center;
 
@@ -41,23 +41,4 @@
     gap: 0.125rem;
     row-gap: 0.25rem;
   }
-}
-
-.filter-button {
-  padding: 0.625rem 1.125rem;
-  background: var(--color-grey-light);
-  color: var(--color-black);
-  border-radius: 50px;
-
-  transition: all var(--transition-speed-default) var(--transition-ease);
-}
-
-.filter-button:hover {
-  background: var(--color-yellow);
-  color: var(--color-black);
-}
-
-.filter-button--active {
-  color: var(--color-yellow);
-  background: var(--color-black);
 }

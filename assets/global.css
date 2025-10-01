@@ -61,6 +61,7 @@ main {
 
 html {
   font-size: 16px;
+  scroll-behavior: smooth;
 }
 
 main {
@@ -570,3 +571,37 @@ main .shopify-section:first-child {
     transform: rotate(360deg);
   }
 }
+
+.filter-button {
+  padding: 0.625rem 1.125rem;
+  background: var(--color-grey-light);
+  color: var(--color-black);
+  border-radius: 50px;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+}
+
+.filter-button:hover {
+  background: var(--color-yellow);
+  color: var(--color-black);
+}
+
+.filter-button--active {
+  color: var(--color-yellow);
+  background: var(--color-black);
+}
+
+.anchor-button {
+  padding: 0.625rem 1.125rem;
+  background: var(--color-grey-light);
+  color: var(--color-black);
+  border-radius: 50px;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+}
+
+.anchor-button:hover {
+  background: var(--color-yellow);
+  color: var(--color-black);
+}
+

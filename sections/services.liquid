@@ -1,15 +1,37 @@
 {{ 'services.css' | asset_url | stylesheet_tag }}
 
-<section>
-  <h2>{{ section.settings.heading }}</h2>
-  <nav class="services-nav">
-    {% for block in section.blocks %}
-      <div class="button">
-        <a href="#{{ block.settings.anchor_id }}">{{ block.settings.link_text }}</a>
+<section class="services">
+  <div class="layout-wrapper">
+    <div class="services__header">
+      <h2
+        id="services-heading"
+        class="services__heading type-h1-large"
+      >
+        {{ section.settings.heading }}
+      </h2>
+      <div
+        class="services-nav"
+        role="navigation"
+        aria-label="Services navigation"
+      >
+        {% for block in section.blocks %}
+          {% render 'anchor-button', title: block.settings.link_text, id: block.settings.anchor_id %}
+        {% endfor %}
       </div>
-    {% endfor %}
-  </nav>
-  
+    </div>
+  </div>
+
+  {% comment %}
+    <h2>{{ section.settings.heading }}</h2>
+    <nav class="services-nav">
+      {% for block in section.blocks %}
+        <div class="button">
+          <a href="#{{ block.settings.anchor_id }}">{{ block.settings.link_text }}</a>
+        </div>
+      {% endfor %}
+    </nav>
+  {% endcomment %}
+
   <h3>{{ section.settings.subheading }}</h3>
   <p>{{ section.settings['services-paragraph-1'] }}</p>
   <p>{{ section.settings['services-paragraph-2'] }}</p>

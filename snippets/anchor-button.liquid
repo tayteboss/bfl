@@ -1,0 +1,17 @@
+{% comment %}
+  Renders a anchor button
+
+  Usage:
+  {% render 'anchor-button', title: 'Anchor', id: '123' %}
+{% endcomment %}
+
+<a
+  href="{{ request.path }}#{{ id }}"
+  target="_self"
+  class="anchor-button type-p"
+  role="button"
+  aria-pressed="{% if request.path contains url %}true{% else %}false{% endif %}"
+  aria-label="Anchor by {{ title }}"
+>
+  {{- title -}}
+</a>
