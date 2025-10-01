@@ -5,7 +5,12 @@
     <div class="layout-grid">
       <div class="service-card__content">
         {% if section.settings.heading != blank %}
-          <h3 class="service-card__heading type-h1-x-small">{{ section.settings.heading }}</h3>
+          <div class="service-card__heading-wrapper">
+            <h3 class="service-card__heading type-h1-x-small">{{ section.settings.heading }}</h3>
+            {% if section.settings.badge != blank %}
+              <div class="service-card__badge type-h1-x-small">{{ section.settings.badge }}</div>
+            {% endif %}
+          </div>
         {% endif %}
         {% if section.settings.paragraph != blank %}
           <p class="service-card__paragraph type-p">{{ section.settings.paragraph | newline_to_br }}</p>
@@ -16,7 +21,16 @@
           </div>
         {% endif %}
       </div>
-      {% comment %} <p>TABLES HERE????</p> {% endcomment %}
+      {% comment %}
+        <div class="service-card__table-wrapper">
+          {% if section.settings['table-caption'] != blank %}
+            <p class="service-card__table-caption type-p">
+              {{ section.settings['table-caption'] }}
+            </p>
+          {% endif %}
+        </div>
+      {% endcomment %}
+
       {% if section.settings.button != blank and section.settings.cta != blank %}
         <div class="service-card__button-wrapper">
           <a class="primary-button primary-button--small" href="{{ section.settings.cta }}">
@@ -67,6 +81,11 @@
       "label": "Service Heading"
     },
     {
+      "type": "text",
+      "id": "badge",
+      "label": "Badge Text"
+    },
+    {
       "type": "textarea",
       "id": "paragraph",
       "label": "Service Text"
@@ -75,6 +94,11 @@
       "type": "richtext",
       "id": "notes",
       "label": "Service Notes"
+    },
+    {
+      "type": "text",
+      "id": "table-caption",
+      "label": "Table Caption"
     },
     {
       "type": "text",
