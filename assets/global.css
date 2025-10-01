@@ -10,9 +10,12 @@
   --color-green: #81FF53;
   --color-white: #FFFFFF;
 
-  --font-diatype-rounded-heavy: 'ABC Diatype Rounded Heavy', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-diatype-rounded-bold: 'ABC Diatype Rounded Bold', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-gt-standard-mono: 'GT Standard Mono', sans-serif;
+  --font-diatype-rounded-heavy: 'ABC Diatype Rounded Heavy', system-ui;
+  --font-diatype-rounded-bold: 'ABC Diatype Rounded Bold', system-ui;
+  --font-gt-standard-mono-light: 'GT Standard Mono Light', sans-serif;
+  --font-gt-standard-mono-regular: 'GT Standard Mono Regular', sans-serif;
+  --font-gt-standard-mono-medium: 'GT Standard Mono Medium', sans-serif;
+  --font-tiny: 'Tiny Variable', sans-serif;
 
   --logo-height: 0px;
 
@@ -171,7 +174,7 @@ h3,
 
 h4,
 .type-h4 {
-  font-family: var(--font-gt-standard-mono);
+  font-family: var(--font-gt-standard-mono-light);
   font-weight: 300;
   font-size: 0.75rem; /* 12px */
   line-height: 1rem; /* 16px */
@@ -186,7 +189,7 @@ h4,
 
 h5,
 .type-h5 {
-  font-family: var(--font-gt-standard-mono);
+  font-family: var(--font-gt-standard-mono-light);
   font-weight: 300;
   font-size: 0.625rem; /* 10px */
   line-height: 0.625rem; /* 10px */
@@ -201,7 +204,7 @@ h5,
 h6,
 .type-h6,
 .type-tags {
-  font-family: var(--font-gt-standard-mono);
+  font-family: var(--font-gt-standard-mono-medium);
   font-weight: 500;
   font-size: 0.625rem; /* 10px */
   line-height: 0.625rem; /* 10px */
@@ -215,7 +218,7 @@ h6,
 }
 
 .type-p-x-large {
-  font-family: var(--font-gt-standard-mono);
+  font-family: var(--font-gt-standard-mono-light);
   font-weight: 300;
   font-size: 1.25rem; /* 20px */
   line-height: 1.75rem; /* 28px */
@@ -228,7 +231,7 @@ h6,
 }
 
 .type-p-large {
-  font-family: var(--font-gt-standard-mono);
+  font-family: var(--font-gt-standard-mono-regular);
   font-weight: 400;
   font-size: 1rem; /* 16px */
   line-height: 1.3125rem; /* 21px */
@@ -242,7 +245,7 @@ h6,
 
 p,
 .type-p {
-  font-family: var(--font-gt-standard-mono);
+  font-family: var(--font-gt-standard-mono-regular);
   font-weight: 400;
   font-size: 0.875rem; /* 14px */
   line-height: 1.25rem; /* 20px */
@@ -255,7 +258,7 @@ p,
 }
 
 .type-p-small {
-  font-family: var(--font-gt-standard-mono);
+  font-family: var(--font-gt-standard-mono-light);
   font-weight: 300;
   font-size: 0.75rem; /* 12px */
   line-height: 1rem; /* 16px */

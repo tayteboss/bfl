@@ -1,0 +1,81 @@
+/*
+  Font-face declarations for custom fonts.
+  Replace the placeholder filenames with your real font assets placed in `assets/`.
+
+  Expected filenames (you can change, but update below to match):
+    - abc-diatype-rounded-heavy.woff2 / .woff
+    - abc-diatype-rounded-bold.woff2 / .woff
+    - gt-standard-mono-300.woff2 / .woff
+    - gt-standard-mono-400.woff2 / .woff
+    - gt-standard-mono-500.woff2 / .woff
+
+  Notes:
+    - Files must live in the `assets/` folder for `asset_url` to work in Shopify.
+    - Keep `font-display: swap` for good UX and performance.
+*/
+
+/* ABC Diatype Rounded Heavy */
+@font-face {
+  font-family: 'ABC Diatype Rounded Heavy';
+  src:
+    url("{{ 'ABCDiatypeRounded-Heavy-Trial.woff2' | asset_url }}") format('woff2'),
+    url("{{ 'ABCDiatypeRounded-Heavy-Trial.woff' | asset_url }}") format('woff'),
+		url("{{ 'ABCDiatypeRounded-Heavy-Trial.otf' | asset_url }}") format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ABC Diatype Rounded Bold */
+@font-face {
+  font-family: 'ABC Diatype Rounded Bold';
+  src:
+    url("{{ 'ABCDiatypeRounded-Bold-Trial.woff2' | asset_url }}") format('woff2'),
+    url("{{ 'ABCDiatypeRounded-Bold-Trial.woff' | asset_url }}") format('woff'),
+		url("{{ 'ABCDiatypeRounded-Bold-Trial.otf' | asset_url }}") format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* GT Standard Mono Light (300) */
+@font-face {
+  font-family: 'GT Standard Mono Light';
+  src:
+    url("{{ 'GT-Pressura-Mono-Light-Trial.woff2' | asset_url }}") format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* GT Standard Mono Regular (400) */
+@font-face {
+  font-family: 'GT Standard Mono Regular';
+  src:
+    url("{{ 'GT-Pressura-Mono-Regular-Trial.woff2' | asset_url }}") format('woff2')
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* GT Standard Mono Medium (500) */
+@font-face {
+  font-family: 'GT Standard Mono Medium';
+  src:
+    url("{{ 'GT-Pressura-Mono-Medium-Trial.woff2' | asset_url }}") format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Tiny Variable */
+@font-face {
+  font-family: 'Tiny Variable';
+  src:
+    url("{{ 'tiny-variable.ttf' | asset_url }}") format('truetype');
+  font-weight: 0 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+

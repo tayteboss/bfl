@@ -47,6 +47,7 @@
 
     {{ content_for_header }}
 
+    {{ 'fonts.css' | asset_url | stylesheet_tag }}
     {{ 'global.css' | asset_url | stylesheet_tag }}
     {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
 

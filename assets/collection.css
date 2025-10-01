@@ -39,7 +39,7 @@
 
   @media (max-width: 768px) {
     gap: 0.125rem;
-    row-gap: 1rem;
+    row-gap: 0.25rem;
   }
 }
 
