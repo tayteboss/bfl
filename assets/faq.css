@@ -106,7 +106,7 @@
 
 .faq-card__question {
   text-align: center;
-  padding-right: 2rem;
+  padding: 0 2rem;
 }
 
 .faq-card__inner {

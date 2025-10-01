@@ -8,11 +8,11 @@
 >
   <div class="layout-wrapper">
     <div class="layout-grid">
-      <span id="send-rolls-heading" class="send-rolls-content__heading type-h1-small">
+      <h3 id="send-rolls-heading" class="send-rolls-content__heading type-h1-small">
         {{- section.settings.heading -}}
-      </span>
+      </h3>
       <div class="send-rolls-content__richtext">
-        <span class="type-p-x-large">{{ section.settings['paragraph-1'] }}</span>
+        <div class="type-p-x-large">{{ section.settings['paragraph-1'] }}</div>
         {% comment %} <p>{{ section.settings['paragraph-2'] }}</p> {% endcomment %}
       </div>
     </div>
@@ -54,10 +54,10 @@
   "name": "sendrollshome",
   "settings": [
     {
-      "type": "richtext",
+      "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "<p>Bellows began as a single pro lab in Miami and, in just a few short years, has grown into a small constellation of studios—Miami, Chicago and pop-ups in Atlanta and Orlando—processing thousands of rolls every month.</p>"
+      "default": "Bellows began as a single pro lab in Miami and, in just a few short years, has grown into a small constellation of studios—Miami, Chicago and pop-ups in Atlanta and Orlando—processing thousands of rolls every month."
     },
     {
       "type": "richtext",

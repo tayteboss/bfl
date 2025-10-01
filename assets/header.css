@@ -20,7 +20,7 @@ header {
   left: 50%;
   transform: translateX(-50%);
   font-family: var(--font-tiny);
-  font-variation-settings: "wght" 80;
+  font-variation-settings: "wght" var(--font-weight-header);
   text-transform: uppercase;
   font-size: 17.5vw;
   line-height: 0.6;
@@ -28,12 +28,12 @@ header {
   white-space: nowrap;
   pointer-events: none;
 
-  transition: all var(--transition-speed-default) var(--transition-ease);
+  transition: opacity var(--transition-speed-default) var(--transition-ease);
 }
 
-.scrolled .header__logo {
+/* .scrolled .header__logo {
   opacity: 0;
-}
+} */
 
 .menu-toggle, .cart-button {
   font-family: var(--font-diatype-rounded-bold);
@@ -91,7 +91,7 @@ header {
   font-size: 3.5rem;
   line-height: 0.5;
   position: relative;
-  top: -1px;
+  top: 1px;
 
   transition: all var(--transition-speed-default) var(--transition-ease);
 }
