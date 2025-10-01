@@ -3,41 +3,51 @@
 <div id="{{ section.settings.anchor_id }}" class="service-card">
   <div class="layout-wrapper">
     <div class="layout-grid">
-      {% if section.settings.heading != blank %}
-        <h3>{{ section.settings.heading }}</h3>
-      {% endif %}
-      {% if section.settings.paragraph != blank %}
-        <p>{{ section.settings.paragraph }}</p>
-      {% endif %}
-      {% if section.settings.notes != blank %}
-        {{ section.settings.notes }}
-      {% endif %}
-      <p>TABLES HERE????</p>
+      <div class="service-card__content">
+        {% if section.settings.heading != blank %}
+          <h3 class="service-card__heading type-h1-x-small">{{ section.settings.heading }}</h3>
+        {% endif %}
+        {% if section.settings.paragraph != blank %}
+          <p class="service-card__paragraph type-p">{{ section.settings.paragraph | newline_to_br }}</p>
+        {% endif %}
+        {% if section.settings.notes != blank %}
+          <div class="service-card__notes type-p">
+            {{ section.settings.notes }}
+          </div>
+        {% endif %}
+      </div>
+      {% comment %} <p>TABLES HERE????</p> {% endcomment %}
       {% if section.settings.button != blank and section.settings.cta != blank %}
-        <div class="button">
-          <a href="{{ section.settings.cta }}">{{ section.settings.button }}</a>
+        <div class="service-card__button-wrapper">
+          <a class="primary-button primary-button--small" href="{{ section.settings.cta }}">
+            {{- section.settings.button -}}
+          </a>
         </div>
       {% endif %}
     </div>
   </div>
   {% if section.settings['service-image-left'] != blank %}
-    <div class="service-image-div-left">
-      <img
-        src="{{ section.settings['service-image-left'] | image_url }}"
-        width="auto"
-        height="auto"
-        alt="Service Image"
-      >
+    <div class="service-card__image-wrapper service-card__image-wrapper--left">
+      <div class="service-card__image-wrapper-inner" data-parallax>
+        <img
+          src="{{ section.settings['service-image-left'] | image_url }}"
+          width="auto"
+          height="auto"
+          alt="Service Image"
+        >
+      </div>
     </div>
   {% endif %}
   {% if section.settings['service-image-right'] != blank %}
-    <div class="service-image-div-right">
-      <img
-        src="{{ section.settings['service-image-right'] | image_url }}"
-        width="auto"
-        height="auto"
-        alt="Service Image"
-      >
+    <div class="service-card__image-wrapper service-card__image-wrapper--right">
+      <div class="service-card__image-wrapper-inner" data-parallax>
+        <img
+          src="{{ section.settings['service-image-right'] | image_url }}"
+          width="auto"
+          height="auto"
+          alt="Service Image"
+        >
+      </div>
     </div>
   {% endif %}
 </div>

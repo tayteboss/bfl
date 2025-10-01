@@ -501,11 +501,16 @@ main .shopify-section:first-child {
   }
 }
 
+.primary-button--small {
+  font-family: var(--font-gt-standard-mono-regular);
+  font-weight: 400;
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.25rem; /* 20px */
+  padding: 1rem 1.5rem;
+}
+
 .primary-button:hover {
   background: var(--color-yellow);
-  transform: scale(1.01);
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
-  border-radius: 1.25rem;
 }
 
 .secondary-button {
@@ -521,7 +526,6 @@ main .shopify-section:first-child {
   transition: all var(--transition-speed-default) var(--transition-ease);
 
   @media (max-width: 768px) {
-    border-radius: 0.875rem;
     padding: 1rem 1.5rem 0.9375rem;
     font-size: 0.875rem;
     background: var(--color-yellow);
