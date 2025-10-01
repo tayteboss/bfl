@@ -1,10 +1,8 @@
 {{ 'walloffame.css' | asset_url | stylesheet_tag }}
 
 <section
-  class="wall-of-fame in-view-fade"
+  class="wall-of-fame"
   aria-label="Wall of Fame Image Gallery"
-  data-in-view
-  data-in-view-once
 >
   <div class="layout-wrapper">
     <div class="wall-of-fame__header-wrapper">
@@ -46,7 +44,7 @@
                       <a
                         href="{{ block.settings.cta }}"
                         target="_blank"
-                        class="type-p-small"
+                        class="wall-of-fame__ig-button type-p"
                         rel="noopener noreferrer"
                         aria-label="{{ block.settings.button }} (opens in new tab)"
                       >

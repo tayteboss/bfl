@@ -40,6 +40,7 @@
     const body = document.body;
     const footer = document.querySelector('.footer');
     const logoEl = document.querySelector('.header__logo');
+    const MAX_RANGE_PX = 300; // range where changes happen
 
     let footerHeight = footer ? footer.offsetHeight : 500;
 
@@ -69,7 +70,7 @@
 
     // Toggle `scrolled` class on header when beyond threshold and hide near page bottom
     if (window.ScrollUtils && typeof window.ScrollUtils.onScroll === 'function') {
-      const threshold = 150;
+      const threshold = MAX_RANGE_PX;
       const onScrollUpdate = (y) => {
         header.classList.toggle('scrolled', y > threshold);
         updateHideHeader();
@@ -92,40 +93,57 @@
     updateFooterHeight();
     updateHideHeader();
 
-    // Variable font weight scroll animation for header logo
+    // Step-based random weight for header logo + collapse via wdth after 500px
     if (logoEl) {
-      const MAX_WEIGHT = 80;
-      const MIN_WEIGHT = 0;
-      const DISTANCE = 500; // px from top for full transition
+      const STEP_PX = 35;
 
-      let rafPending = false;
-      let lastY = 0;
+      const MIN_WGHT = 50;
+      const MAX_WGHT = 200;
 
-      const clamp01 = (n) => (n < 0 ? 0 : n > 1 ? 1 : n);
-      const updateWeight = (y) => {
-        const t = clamp01(y / DISTANCE);
-        const weight = MAX_WEIGHT - (MAX_WEIGHT - MIN_WEIGHT) * t;
-        logoEl.style.setProperty('--font-weight-header', weight.toFixed(2));
-      };
+      let lastStep = -1;
+      let lastWeight = 0;
 
-      const onScrollFast = () => {
-        lastY = window.scrollY || window.pageYOffset || 0;
-        if (rafPending) return;
-        rafPending = true;
-        window.requestAnimationFrame(() => {
-          rafPending = false;
-          updateWeight(lastY);
-        });
-      };
+      function randomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      function applyForY(y) {
+        const clampedY = y < 0 ? 0 : y;
+        if (clampedY > MAX_RANGE_PX) {
+          // Collapse width to 0 so the logo becomes invisible
+          logoEl.style.fontVariationSettings = `"wght" ${lastWeight}, "wdth" 0`;
+          return;
+        }
+        // Lock to 80 weight for first 50px from top
+        if (clampedY < 50) {
+          lastStep = Math.floor(clampedY / STEP_PX);
+          lastWeight = 80;
+          logoEl.style.fontVariationSettings = `"wght" 80`;
+          return;
+        }
+        const step = Math.floor(clampedY / STEP_PX);
+        if (step !== lastStep) {
+          lastStep = step;
+          lastWeight = randomInt(MIN_WGHT, MAX_WGHT);
+          logoEl.style.fontVariationSettings = `"wght" ${lastWeight}`;
+        }
+      }
 
       // Initialize with current position
-      updateWeight(window.scrollY || window.pageYOffset || 0);
-      // High-frequency passive listener for smoothness
-      window.addEventListener('scroll', onScrollFast, { passive: true });
+      applyForY(window.scrollY || window.pageYOffset || 0);
+
+      let unsubscribeLogo;
+      if (window.ScrollUtils && typeof window.ScrollUtils.onScroll === 'function') {
+        unsubscribeLogo = window.ScrollUtils.onScroll(applyForY);
+      } else {
+        const onScroll = () => applyForY(window.scrollY || window.pageYOffset || 0);
+        window.addEventListener('scroll', onScroll, { passive: true });
+        unsubscribeLogo = () => window.removeEventListener('scroll', onScroll);
+      }
 
       // Cleanup when section is unloaded in the theme editor
       document.addEventListener('shopify:section:unload', () => {
-        window.removeEventListener('scroll', onScrollFast);
+        if (typeof unsubscribeLogo === 'function') unsubscribeLogo();
       });
     }
   });

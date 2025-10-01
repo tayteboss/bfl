@@ -129,13 +129,13 @@
 
 .faq__image-wrapper {
   position: absolute;
-  bottom: -100%;
+  top: 0;
   right: -250px;
   width: 50vw;
   height: auto;
 
   @media (max-width: 1200px) {
-    bottom: -75%;
+    top: 25%;
     right: -250px;
     width: 50vw;
   }

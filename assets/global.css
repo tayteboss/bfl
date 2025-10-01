@@ -25,9 +25,9 @@
   --tablet-portrait-breakpoint: 768px;
   --mobile-breakpoint: 480px;
 
-  --transition-speed-default: 200ms;
-  --transition-speed-fast: 150ms;
-  --transition-speed-extra-fast: 100ms;
+  --transition-speed-default: 50ms;
+  --transition-speed-fast: 50ms;
+  --transition-speed-extra-fast: 0ms;
   --transition-speed-slow: 500ms;
   --transition-speed-extra-slow: 1000ms;
   --transition-ease: cubic-bezier(0.65, 0, 0.35, 1);
@@ -555,5 +555,18 @@ main .shopify-section:first-child {
 
   &.in-view {
     opacity: 1;
+  }
+}
+
+.rotate-stamp-animation {
+  animation: rotate-stamp 35s linear infinite;
+}
+
+@keyframes rotate-stamp {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }

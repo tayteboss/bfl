@@ -8,9 +8,7 @@
 {{ 'product-card.css' | asset_url | stylesheet_tag }}
 
 <a
-  class="product-card in-view-fade"
-  data-in-view
-  data-in-view-once
+  class="product-card"
   href="{{ product.url }}"
   target="_self"
   aria-label="{{ product.title }} by {{ product.vendor }} - {{ product.price | money }}"

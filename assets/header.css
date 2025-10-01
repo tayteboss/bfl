@@ -27,13 +27,11 @@ header {
   text-align: center;
   white-space: nowrap;
   pointer-events: none;
-
-  transition: opacity var(--transition-speed-default) var(--transition-ease);
 }
 
-/* .scrolled .header__logo {
+.scrolled .header__logo {
   opacity: 0;
-} */
+}
 
 .menu-toggle, .cart-button {
   font-family: var(--font-diatype-rounded-bold);

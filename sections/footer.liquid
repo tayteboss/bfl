@@ -37,6 +37,87 @@
       behavior: 'smooth',
     });
   });
+
+  // Cursor-driven step animation for footer logo weight (active only when footer is in view)
+  (function () {
+    const footer = document.querySelector('.footer');
+    const footerLogo = document.querySelector('.footer__logo');
+    if (!footer || !footerLogo) return;
+
+    const STEP_PX = 300;
+    const MIN_WGHT = 25;
+    const MAX_WGHT = 200;
+
+    function randomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    let lastX = null;
+    let lastY = null;
+
+    function maybeUpdateFromCursor(x, y) {
+      if (lastX === null || lastY === null) {
+        lastX = x;
+        lastY = y;
+        return;
+      }
+      const dx = x - lastX;
+      const dy = y - lastY;
+      const dist = Math.hypot ? Math.hypot(dx, dy) : Math.sqrt(dx * dx + dy * dy);
+      if (dist >= STEP_PX) {
+        lastX = x;
+        lastY = y;
+        const w = randomInt(MIN_WGHT, MAX_WGHT);
+        footerLogo.style.fontVariationSettings = `"wght" ${w}`;
+      }
+    }
+
+    let unsubscribe = null;
+    let observing = false;
+    let observer;
+
+    function subscribeCursor() {
+      if (unsubscribe || !window.CursorUtils || typeof window.CursorUtils.onMove !== 'function') return;
+      unsubscribe = window.CursorUtils.onMove(({ x, y }) => maybeUpdateFromCursor(x, y));
+    }
+
+    function unsubscribeCursor() {
+      if (typeof unsubscribe === 'function') {
+        unsubscribe();
+        unsubscribe = null;
+      }
+    }
+
+    function initObserver() {
+      if (!('IntersectionObserver' in window)) {
+        subscribeCursor();
+        return;
+      }
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.target !== footer) return;
+            if (entry.isIntersecting) {
+              subscribeCursor();
+            } else {
+              unsubscribeCursor();
+            }
+          });
+        },
+        { root: null, threshold: 0 }
+      );
+      observer.observe(footer);
+      observing = true;
+    }
+
+    initObserver();
+
+    // Cleanup when this section is removed/updated in the theme editor
+    document.addEventListener('shopify:section:unload', () => {
+      unsubscribeCursor();
+      if (observing && observer) observer.disconnect();
+    });
+  })();
 </script>
 
 {% schema %}
