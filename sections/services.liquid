@@ -1,35 +1,60 @@
 {{ 'services.css' | asset_url | stylesheet_tag }}
 
-<section class="services">
+<section
+  class="services"
+  aria-labelledby="services-heading"
+>
   <div class="layout-wrapper">
     <div class="services__header">
-      <h2
-        id="services-heading"
-        class="services__heading type-h1-large"
-      >
-        {{ section.settings.heading }}
-      </h2>
-      <div
-        class="services-nav"
-        role="navigation"
-        aria-label="Services navigation"
-      >
-        {% for block in section.blocks %}
-          {% render 'anchor-button', title: block.settings.link_text, id: block.settings.anchor_id %}
-        {% endfor %}
+      {% if section.settings.heading != blank %}
+        <h2
+          id="services-heading"
+          class="services__heading type-h1-large"
+        >
+          {{ section.settings.heading }}
+        </h2>
+      {% endif %}
+      {% if section.blocks.size > 0 %}
+        <nav
+          class="services-nav"
+          aria-label="Services navigation"
+        >
+          {% for block in section.blocks %}
+            {% render 'anchor-button', title: block.settings.link_text, id: block.settings.anchor_id %}
+          {% endfor %}
+        </nav>
+      {% endif %}
+    </div>
+    <div
+      class="services-intro"
+      {% if section.settings.subheading != blank %}
+        aria-labelledby="services-subheading"
+      {% endif %}
+    >
+      <div class="layout-grid">
+        {% if section.settings.subheading != blank %}
+          <h2 class="services-intro__subheading type-h1-small">{{ section.settings.subheading }}</h2>
+        {% endif %}
+        {% if section.settings['services-paragraph-1'] != blank %}
+          <p class="services-intro__paragraph-1 type-p-x-large">
+            {{ section.settings['services-paragraph-1'] | newline_to_br }}
+          </p>
+        {% endif %}
+        {% if section.settings.servicesimage != blank %}
+          <div class="services-intro__image-wrapper">
+            <img
+              src="{{ section.settings.servicesimage | image_url }}"
+              width="auto"
+              height="auto"
+              class="service-hero-image"
+              alt="{{ section.settings.heading | escape }}"
+              role="img"
+            >
+          </div>
+        {% endif %}
       </div>
     </div>
   </div>
-
-  <h3>{{ section.settings.subheading }}</h3>
-  <p>{{ section.settings['services-paragraph-1'] }}</p>
-  <p>{{ section.settings['services-paragraph-2'] }}</p>
-  <img
-    src="{{ section.settings.servicesimage |image_url }}"
-    width="auto"
-    height="auto"
-    class="service-hero-image"
-  >
 </section>
 
 {% schema %}
@@ -54,12 +79,6 @@
       "id": "services-paragraph-1",
       "label": "Paragraph",
       "default": "The recipe hasn’t changed: fresh chemistry mixed daily, scanners tuned by hand, and a crew of film nerds who still get goose-bumps when a perfect negative hits the light table. From one-hour C-41 to exhibition-grade drum scans, Bellows exists to bridge the gap between analogue craft and a digital-first world, giving photographers a place where curiosity is met with real expertise."
-    },
-    {
-      "type": "textarea",
-      "id": "services-paragraph-2",
-      "label": "Paragraph",
-      "default": "At Bellows, we’re on a mission to keep film photography alive and thriving in South Florida. We believe in the magic of the process—from loading film to developing and holding the final product in your hands. Our goal is to offer exceptional film development services while cultivating a space where photographers can express their creativity, share their passion, and celebrate the art of analog."
     },
     {
       "type": "image_picker",

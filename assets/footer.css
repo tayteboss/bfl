@@ -5,7 +5,7 @@
   overflow: hidden;
 }
 
-.layout-grid {
+footer .layout-grid {
   @media (max-width: 768px) {
    row-gap: 48px;
   }

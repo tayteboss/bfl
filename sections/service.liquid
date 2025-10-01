@@ -1,13 +1,23 @@
 {{ 'services.css' | asset_url | stylesheet_tag }}
 
-<div id="{{ section.settings.anchor_id }}" class="service-div">
-  <div class="service-info-div">
-    <h3>{{ section.settings.heading }}</h3>
-    <p>{{ section.settings.paragraph }}</p>
-    {{ section.settings.notes }}
-    <p>TABLES HERE????</p>
-    <div class="button">
-      <a href="{{ section.settings.cta }}">{{ section.settings.button }}</a>
+<div id="{{ section.settings.anchor_id }}" class="service-card">
+  <div class="layout-wrapper">
+    <div class="layout-grid">
+      {% if section.settings.heading != blank %}
+        <h3>{{ section.settings.heading }}</h3>
+      {% endif %}
+      {% if section.settings.paragraph != blank %}
+        <p>{{ section.settings.paragraph }}</p>
+      {% endif %}
+      {% if section.settings.notes != blank %}
+        {{ section.settings.notes }}
+      {% endif %}
+      <p>TABLES HERE????</p>
+      {% if section.settings.button != blank and section.settings.cta != blank %}
+        <div class="button">
+          <a href="{{ section.settings.cta }}">{{ section.settings.button }}</a>
+        </div>
+      {% endif %}
     </div>
   </div>
   {% if section.settings['service-image-left'] != blank %}
