@@ -490,6 +490,7 @@ main .shopify-section:first-child {
   font-family: var(--font-diatype-rounded-bold);
   line-height: 1;
   display: inline-block;
+  text-align: center;
 
   transition: all var(--transition-speed-default) var(--transition-ease);
 
@@ -507,6 +508,10 @@ main .shopify-section:first-child {
   font-size: 0.875rem; /* 14px */
   line-height: 1.25rem; /* 20px */
   padding: 1rem 1.5rem;
+
+  @media (max-width: 768px) {
+    background: var(--color-grey-light);
+  }
 }
 
 .primary-button:hover {
@@ -522,6 +527,7 @@ main .shopify-section:first-child {
   font-family: var(--font-diatype-rounded-bold);
   line-height: 1;
   display: inline-block;
+  text-align: center;
 
   transition: all var(--transition-speed-default) var(--transition-ease);
 
@@ -584,6 +590,7 @@ main .shopify-section:first-child {
   background: var(--color-grey-light);
   color: var(--color-black);
   border-radius: 50px;
+  text-align: center;
 
   transition: all var(--transition-speed-default) var(--transition-ease);
 }
@@ -604,6 +611,7 @@ main .shopify-section:first-child {
   color: var(--color-black);
   border-radius: 50px;
   display: inline-block;
+  text-align: center;
 
   transition: all var(--transition-speed-default) var(--transition-ease);
 }

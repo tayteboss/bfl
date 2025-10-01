@@ -90,7 +90,11 @@
 }
 
 .service-card .layout-grid {
-  row-gap: 64px;
+  row-gap: 4rem;
+
+  @media (max-width: 768px) {
+    row-gap: 2.5rem;
+  }
 }
 
 .service-card__content {
@@ -98,7 +102,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px;
+  gap: 2rem;
 
   @media (max-width: 1024px) {
     grid-column: 3 / -3;
@@ -154,6 +158,12 @@
   grid-column: 1 / -1;
   display: flex;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    * {
+      width: 100%;
+    }
+  }
 }
 
 .service-card__image-wrapper {
@@ -162,6 +172,10 @@
   transform: translateY(-50%);
   width: 35vw;
   height: auto;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 
   img {
     height: 100%;
