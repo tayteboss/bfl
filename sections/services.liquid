@@ -21,17 +21,6 @@
     </div>
   </div>
 
-  {% comment %}
-    <h2>{{ section.settings.heading }}</h2>
-    <nav class="services-nav">
-      {% for block in section.blocks %}
-        <div class="button">
-          <a href="#{{ block.settings.anchor_id }}">{{ block.settings.link_text }}</a>
-        </div>
-      {% endfor %}
-    </nav>
-  {% endcomment %}
-
   <h3>{{ section.settings.subheading }}</h3>
   <p>{{ section.settings['services-paragraph-1'] }}</p>
   <p>{{ section.settings['services-paragraph-2'] }}</p>

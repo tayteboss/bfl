@@ -3,9 +3,9 @@
   <nav aria-label="{{ title }} navigation">
     <ul role="list" class="footer-links__list">
       {% for link in links %}
-        <li class="footer-links__item type-h6">
+        <li class="footer-links__item type-p-small">
           <a
-            class="type-h6 hover-blinking"
+            class="type-p-small hover-blinking"
             href="{{ link.url }}"
             {% if link.current %}
               aria-current="page"

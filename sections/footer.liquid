@@ -1,6 +1,6 @@
 {{ 'footer.css' | asset_url | stylesheet_tag }}
 
-<footer class="footer">
+<footer class="footer" role="contentinfo">
   <div class="layout-grid">
     {% render 'footer-links-list', title: 'Quick Links', links: section.settings.menu.links %}
     {% render 'footer-links-list', title: 'Customer Care', links: section.settings['second-menu'].links %}
@@ -11,12 +11,31 @@
     <div class="footer-bottom">
       <div class="footer-bottom__top-bar">
         <div class="footer-credits">
-          <a href="https://bienstudio.com.au" target="_blank" class="type-h6 hover-blinking"
-            >Bien Studio <sup>Design</sup></a
+          <a
+            href="https://bienstudio.com.au"
+            target="_blank"
+            class="type-h6 hover-blinking"
+            rel="noopener noreferrer"
+            aria-label="Bien Studio Design - Opens in new tab"
           >
-          <a href="https://tayte.co" target="_blank" class="type-h6 hover-blinking">Tayte.co <sup>Dev</sup></a>
+            Bien Studio <sup>Design</sup>
+          </a>
+          <a
+            href="https://tayte.co"
+            target="_blank"
+            class="type-h6 hover-blinking"
+            rel="noopener noreferrer"
+            aria-label="Tayte.co Development - Opens in new tab"
+          >
+            Tayte.co <sup>Dev</sup>
+          </a>
         </div>
-        <button class="footer-top-button type-h6 hover-blinking">Back to Top ▲</button>
+        <button
+          class="footer-top-button type-h6 hover-blinking"
+          aria-label="Scroll back to top of page"
+        >
+          Back to Top ▲
+        </button>
       </div>
       {% render 'footer-logo' %}
     </div>
@@ -26,6 +45,8 @@
       src="{{ section.settings.photo | image_url }}"
       width="auto"
       height="auto"
+      alt=""
+      role="presentation"
     >
   </div>
 </footer>
