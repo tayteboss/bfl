@@ -1,53 +1,86 @@
 {{ 'faq.css' | asset_url | stylesheet_tag }}
 
-<section class="faq-section">
-  <h2>FAQ</h2>
+<section class="faqs-page">
+  <div class="layout-wrapper">
+    <div class="faqs-page__header">
+      <h2
+        id="faqs-page-heading"
+        class="faqs-page__heading type-h1-large"
+      >
+        FAQ
+      </h2>
+      {% if section.blocks.size > 0 %}
+        <nav
+          class="faqs-page-nav"
+          aria-label="FAQ navigation"
+        >
+          {% for block in section.blocks %}
+            {% if block.type == 'faq_heading' %}
+              {% assign current_heading_id = block.id %}
+              <div class="faq-button">
+                {% render 'anchor-button', title: block.settings.heading, id: current_heading_id %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </nav>
+      {% endif %}
+    </div>
 
-  <nav class="faq-nav">
-    {% for block in section.blocks %}
-      {% if block.type == 'faq_heading' %}
-        <div class="faq-button">
-          <a href="#{{ block.id }}" class="faq-nav-link">{{ block.settings.heading }}</a>
+    <div class="faq-page-list-wrapper" data-faq-list>
+      {% assign current_heading_id = '' %}
+      {% assign current_heading = '' %}
+      {% for block in section.blocks %}
+        {% if block.type == 'faq_heading' %}
+          {% if current_heading != '' %}
+            </div>
+            </div>
+          {% endif %}
+          {% assign current_heading_id = block.id %}
+          {% assign current_heading = block.settings.heading %}
+          <div class="faq-page-list-item">
+            <div id="{{ block.id }}" class="faq-heading">
+              <h2 class="type-h2">{{ current_heading }}</h2>
+            </div>
+            <div class="faq-list">
+        {% elsif block.type == 'faq_item' %}
+          {% render 'faq-card',
+            block: block,
+            question: block.settings.question,
+            answer: block.settings.answer,
+            heading_id: current_heading_id
+          %}
+        {% endif %}
+      {% endfor %}
+      {% if current_heading != '' %}
+        </div>
         </div>
       {% endif %}
-    {% endfor %}
-  </nav>
+    </div>
 
-  <div class="faq-sections">
-    {% assign current_heading_id = '' %}
-    {% for block in section.blocks %}
-      {% if block.type == 'faq_heading' %}
-        <section id="{{ block.id }}" class="faq-heading">
-          <h2>{{ block.settings.heading }}</h2>
-        </section>
-        {% assign current_heading_id = block.id %}
-      {% elsif block.type == 'faq_item' %}
-        <details
-          class="faq-item"
-          {% if current_heading_id != blank %}
-            data-heading-id="{{ current_heading_id }}"
-          {% endif %}
-        >
-          <summary class="faq-question">
-            {{ block.settings.question -}}
-            <span class="faq-icon">+</span>
-          </summary>
-          <p>{{ block.settings.answer }}</p>
-        </details>
-      {% endif %}
-    {% endfor %}
-  </div>
-
-  <div class="need-help-div">
-    <p>NEED HELP?</p>
-    <p>CALL US ON +1 (305) 456 4006 OR EMAIL LAB@BELLOWSFILM.COM — A REAL HUMAN WILL REPLY WITHIN ONE BUSINESS DAY.</p>
+    <div class="need-help type-p-x-large">
+      <p class="need-help__heading">{{ section.settings.need_help_heading }}</p>
+      <div class="need-help__message">{{ section.settings.need_help_message }}</div>
+    </div>
   </div>
 </section>
 
 {% schema %}
 {
   "name": "FAQ-Page",
-  "settings": [],
+  "settings": [
+    {
+      "type": "text",
+      "id": "need_help_heading",
+      "label": "Need Help Heading",
+      "default": "NEED HELP?"
+    },
+    {
+      "type": "richtext",
+      "id": "need_help_message",
+      "label": "Need Help Message",
+      "default": "<p>CALL US ON <a href=\"tel:+13054564006\">+1 (305) 456 4006</a> OR EMAIL <a href=\"mailto:lab@bellowsfilm.com\">LAB@BELLOWSFILM.COM</a> — A REAL HUMAN WILL REPLY WITHIN ONE BUSINESS DAY.</p>"
+    }
+  ],
   "blocks": [
     {
       "type": "faq_heading",

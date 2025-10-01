@@ -1,14 +1,23 @@
 {{ 'services.css' | asset_url | stylesheet_tag }}
 
-<div id="{{ section.settings.anchor_id }}" class="service-card">
+<div
+  id="{{ section.settings.anchor_id }}"
+  class="service-card"
+  role="article"
+  aria-labelledby="service-heading-{{ section.settings.anchor_id }}"
+>
   <div class="layout-wrapper">
     <div class="layout-grid">
       <div class="service-card__content">
         {% if section.settings.heading != blank %}
           <div class="service-card__heading-wrapper">
-            <h3 class="service-card__heading type-h1-x-small">{{ section.settings.heading }}</h3>
+            <h3 id="service-heading-{{ section.settings.anchor_id }}" class="service-card__heading type-h1-x-small">
+              {{ section.settings.heading }}
+            </h3>
             {% if section.settings.badge != blank %}
-              <div class="service-card__badge type-h1-x-small">{{ section.settings.badge }}</div>
+              <div class="service-card__badge type-h1-x-small" role="text" aria-label="{{ section.settings.badge }}">
+                {{ section.settings.badge }}
+              </div>
             {% endif %}
           </div>
         {% endif %}
@@ -16,7 +25,7 @@
           <p class="service-card__paragraph type-p">{{ section.settings.paragraph | newline_to_br }}</p>
         {% endif %}
         {% if section.settings.notes != blank %}
-          <div class="service-card__notes type-p">
+          <div class="service-card__notes type-p" role="complementary">
             {{ section.settings.notes }}
           </div>
         {% endif %}
@@ -34,7 +43,11 @@
       {% if section.settings.button != blank and section.settings.cta != blank %}
         <div class="service-card__button-wrapper">
           <div data-hover-shake>
-            <a class="primary-button primary-button--small" href="{{ section.settings.cta }}">
+            <a
+              class="primary-button primary-button--small"
+              href="{{ section.settings.cta }}"
+              aria-label="{{ section.settings.button }}"
+            >
               {{- section.settings.button -}}
             </a>
           </div>
@@ -49,7 +62,7 @@
           src="{{ section.settings['service-image-left'] | image_url }}"
           width="auto"
           height="auto"
-          alt="Service Image"
+          alt="{% if section.settings.heading != blank %}{{ section.settings.heading }} service image{% else %}Service image{% endif %}"
         >
       </div>
     </div>
@@ -61,7 +74,7 @@
           src="{{ section.settings['service-image-right'] | image_url }}"
           width="auto"
           height="auto"
-          alt="Service Image"
+          alt="{% if section.settings.heading != blank %}{{ section.settings.heading }} service image{% else %}Service image{% endif %}"
         >
       </div>
     </div>

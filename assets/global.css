@@ -232,7 +232,7 @@ h6,
     letter-spacing: 0;
   }
 
-  p {
+  p, div, a {
     font-family: var(--font-gt-standard-mono-light);
     font-weight: 300;
     font-size: 1.25rem; /* 20px */
