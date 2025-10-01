@@ -125,6 +125,8 @@
   justify-content: center;
   pointer-events: none;
   z-index: 1;
+  position: relative;
+  pointer-events: all;
 }
 
 .faq__image-wrapper {
@@ -133,6 +135,8 @@
   right: -250px;
   width: 50vw;
   height: auto;
+  pointer-events: none;
+  z-index: 1;
 
   @media (max-width: 1200px) {
     top: 25%;

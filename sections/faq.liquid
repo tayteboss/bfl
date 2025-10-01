@@ -16,9 +16,11 @@
 
       {% if section.settings.show_view_all %}
         <div class="faq__button-wrapper">
-          <a href="{{ section.settings.view_all_link }}" class="faq-link secondary-button">
-            {{ section.settings.view_all_text }}
-          </a>
+          <div data-hover-shake>
+            <a href="{{ section.settings.view_all_link }}" class="faq-link secondary-button">
+              {{ section.settings.view_all_text }}
+            </a>
+          </div>
         </div>
       {% endif %}
     </div>

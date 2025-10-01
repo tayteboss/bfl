@@ -91,12 +91,134 @@ function percentageSeen(element) {
   return Math.round(percentage);
 }
 
+// Hover shake animation for elements with [data-hover-shake]
+function initializeHoverShake(rootEl = document) {
+  try {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  } catch (e) {}
+
+  const motionApi = window.motion || window.Motion;
+  const hasAnimate = motionApi && typeof motionApi.animate === 'function';
+  if (!hasAnimate) {
+    window.addEventListener(
+      'load',
+      () => {
+        initializeHoverShake(rootEl);
+      },
+      { once: true }
+    );
+  }
+
+  const elements = Array.from(rootEl.querySelectorAll('[data-hover-shake]'));
+  console.info('[hover-shake] init', { count: elements.length });
+
+  elements.forEach((el) => registerHoverShakeOnElement(el));
+
+  if (!document.__hoverShakeDelegated) {
+    document.__hoverShakeDelegated = true;
+    document.addEventListener(
+      'pointerenter',
+      (event) => {
+        const el = event.target && event.target.closest ? event.target.closest('[data-hover-shake]') : null;
+        if (!el) return;
+        registerHoverShakeOnElement(el);
+        if (hasAnimate) triggerHoverShake(el);
+      },
+      true
+    );
+    document.addEventListener('focusin', (event) => {
+      const el = event.target && event.target.closest ? event.target.closest('[data-hover-shake]') : null;
+      if (!el) return;
+      registerHoverShakeOnElement(el);
+      if (hasAnimate) triggerHoverShake(el);
+    });
+  }
+
+  if (!rootEl.__hoverShakeObserved) {
+    rootEl.__hoverShakeObserved = true;
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes &&
+          mutation.addedNodes.forEach((node) => {
+            if (!(node instanceof Element)) return;
+            if (node.matches && node.matches('[data-hover-shake]')) registerHoverShakeOnElement(node);
+            if (node.querySelectorAll)
+              node.querySelectorAll('[data-hover-shake]').forEach((el) => registerHoverShakeOnElement(el));
+          });
+      });
+    });
+    observer.observe(rootEl === document ? document.body : rootEl, { childList: true, subtree: true });
+  }
+}
+
+function registerHoverShakeOnElement(el) {
+  if (el.__hoverShakeBound) return;
+  el.__hoverShakeBound = true;
+
+  const onEnter = () => triggerHoverShake(el);
+  el.addEventListener('mouseenter', onEnter);
+  el.addEventListener('focus', onEnter);
+}
+
+function triggerHoverShake(el) {
+  const motionApi = window.motion || window.Motion;
+  if (!motionApi || typeof motionApi.animate !== 'function') return;
+
+  if (!el.style.transformOrigin) {
+    el.style.transformOrigin = '50% 50%';
+  }
+
+  if (el.__hoverShakeAnimation && typeof el.__hoverShakeAnimation.cancel === 'function') {
+    el.__hoverShakeAnimation.cancel();
+  }
+
+  const { rotate, y, duration } = getShakeConfig(el);
+
+  el.__hoverShakeAnimation = motionApi.animate(el, { rotate, y }, { duration, easing: 'ease-in-out' });
+
+  if (
+    el.__hoverShakeAnimation &&
+    el.__hoverShakeAnimation.finished &&
+    typeof el.__hoverShakeAnimation.finished.finally === 'function'
+  ) {
+    el.__hoverShakeAnimation.finished.finally(() => {
+      el.__hoverShakeAnimation = null;
+    });
+  }
+}
+
+function getShakeConfig(el) {
+  const raw = (
+    (el.dataset && (el.dataset.hoverShake || el.dataset.shakeSize || el.dataset.hoverShakeSize)) ||
+    ''
+  ).toLowerCase();
+  const isSmall = raw === 'small' || raw === 'sm' || raw === 's' || raw === 'mini';
+
+  if (isSmall) {
+    return {
+      rotate: [0, -3, 3, -2, 2, -1, 1, 0],
+      y: [0, -1, 1, 0],
+      duration: 0.24,
+    };
+  }
+
+  return {
+    rotate: [0, -5, 5, -3, 3, -2, 2, 0],
+    y: [0, -3, 2, 0],
+    duration: 0.3,
+  };
+}
+
+if (Shopify.designMode) {
+  document.addEventListener('shopify:section:load', (event) => {
+    initializeScrollAnimationTrigger(event.target, true);
+    initializeHoverShake(event.target);
+  });
+  document.addEventListener('shopify:section:reorder', () => initializeScrollAnimationTrigger(document, true));
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   initializeScrollAnimationTrigger();
   initializeScrollZoomAnimationTrigger();
+  initializeHoverShake();
 });
-
-if (Shopify.designMode) {
-  document.addEventListener('shopify:section:load', (event) => initializeScrollAnimationTrigger(event.target, true));
-  document.addEventListener('shopify:section:reorder', () => initializeScrollAnimationTrigger(document, true));
-}

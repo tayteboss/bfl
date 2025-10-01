@@ -67,8 +67,7 @@
       "settings": {
         "heading": "Our Services",
         "subheading": "Bellows began as a single pro lab in Miami and, in just a few short years, has grown into a small constellation of studios—Miami, Chicago and pop-ups in Atlanta and Orlando—processing thousands of rolls every month.",
-        "services-paragraph-1": "The recipe hasn’t changed: fresh chemistry mixed daily, scanners tuned by hand, and a crew of film nerds who still get goose-bumps when a perfect negative hits the light table. From one-hour C-41 to exhibition-grade drum scans, Bellows exists to bridge the gap between analogue craft and a digital-first world, giving photographers a place where curiosity is met with real expertise.",
-        "services-paragraph-2": "At Bellows, we’re on a mission to keep film photography alive and thriving in South Florida. We believe in the magic of the process—from loading film to developing and holding the final product in your hands. Our goal is to offer exceptional film development services while cultivating a space where photographers can express their creativity, share their passion, and celebrate the art of analog.",
+        "services-paragraph-1": "The recipe hasn’t changed: fresh chemistry mixed daily, scanners tuned by hand, and a crew of film nerds who still get goose-bumps when a perfect negative hits the light table. From one-hour C-41 to exhibition-grade drum scans, Bellows exists to bridge the gap between analogue craft and a digital-first world, giving photographers a place where curiosity is met with real expertise.\n\nAt Bellows, we’re on a mission to keep film photography alive and thriving in South Florida. We believe in the magic of the process—from loading film to developing and holding the final product in your hands. Our goal is to offer exceptional film development services while cultivating a space where photographers can express their creativity, share their passion, and celebrate the art of analog.",
         "servicesimage": "shopify://shop_images/220b88c84e0e65f6ef6e56be0e09c976ddce823a.png"
       }
     },
@@ -78,8 +77,10 @@
       "settings": {
         "anchor_id": "film-development",
         "heading": "Film Development",
+        "badge": "",
         "paragraph": "Your film hits chemistry <24 hours after it arrives—no back-log pallets, no mystery stains. Colour (C-41) is souped in seasoned Noritsu racks; B&W is hand-tanked in Ilford archival chemistry; E-6 and ECN-2 run in dedicated lines to keep colours honest. \n\nPush/pull and cross-process requests are logged on every hanger, then checked by a second tech before rinsing. Expect 3-day turnaround for C-41, 5 days for B&W & E-6, and a text the moment your scans are ready.",
         "notes": "<p>Notes:</p><ul><li>Formats accepted: 35 mm, 120, 110, APS, 4×5 sheet.</li><li>Archival sleeves and contact sheets available on request.</li><li>Eco-friendly fixer disposal and water-recirculation in every location.</li></ul>",
+        "table-caption": "*Times quoted for the Miami lab; other locations may differ.",
         "button": "Send Us Your Rolls",
         "cta": "#"
       }
@@ -90,8 +91,10 @@
       "settings": {
         "anchor_id": "scanning",
         "heading": "Scanning",
+        "badge": "New",
         "paragraph": "Bellows runs Noritsu HS-1800 and Frontier SP-3000 units for roll scanning—both profiled weekly with in-house IT8 targets—so skin tones stay consistent across stocks. Choose Standard JPGs for socials, Hi-Res JPGs for print spreads, or full 16-bit TIFFs when you need every grain. A human operator frames every shot (no auto-crop) and flags overlaps or scratches for a gratis re-scan.",
         "notes": "",
+        "table-caption": "",
         "button": "Scan My Film",
         "cta": "#"
       }
@@ -102,8 +105,10 @@
       "settings": {
         "anchor_id": "flextight",
         "heading": "Flextight X5™ Drum-Quality Scans",
+        "badge": "",
         "paragraph": "Virtual-drum mounting means zero Newton rings and up to 6300 dpi without wet mounting. Perfect for gallery editions or photobooks. Files arrive as untouched 3F raws or colour-graded TIFFs—your choice.",
         "notes": "<ul><li>Notes:<br/>Max file size: ~200 MB per frame.</li><li>Dust removal pass and 48-bit output available.</li><li>Price: $35 per frame (discounts 10+).</li></ul>",
+        "table-caption": "",
         "button": "Reserve the X5",
         "cta": "#",
         "service-image-left": "shopify://shop_images/25e0511ab7990c9332dbf562d4beafd76ff7747c.png"
@@ -115,8 +120,10 @@
       "settings": {
         "anchor_id": "darkroom",
         "heading": "Darkroom Rental (Atlanta Only)",
+        "badge": "",
         "paragraph": "Go beyond scanning and discover the hands-on magic of analog printing. Bellows’ Atlanta location now offers a private darkroom rental—everything you need to develop and print up to 20×24″ black & white enlargements, all by yourself, by appointment only.",
         "notes": "<p>What's included:</p><ul><li>In-house chemistry, trays, and a sink.</li><li>2 x enlargers: Besseler 45MX with condenser + Omega D/D2 with XL chassis.</li><li>Negative holders from 35 mm up to 4×5” sheet film.</li></ul>",
+        "table-caption": "",
         "button": "Contact Us",
         "cta": "shopify://pages/contact"
       }
@@ -127,8 +134,10 @@
       "settings": {
         "anchor_id": "camera-rental",
         "heading": "Camera Rental",
+        "badge": "",
         "paragraph": "Test-drive the classics before you commit. Every body is CLA’d, shot-tested, and leaves with fresh batteries—and a free dev-and-scan voucher to sweeten the weekend. From point-and-shoot Contax T2s to a Hasselblad 500 CM kit, the shelf rotates weekly. Try the classics before you own them.",
         "notes": "",
+        "table-caption": "",
         "button": "Browse Rental Gear",
         "cta": "#"
       }
@@ -139,8 +148,10 @@
       "settings": {
         "anchor_id": "tape-digitising",
         "heading": "Tape Digitising",
+        "badge": "",
         "paragraph": "Mini DV, VHS-C, Hi8—if it’s magnetic, we can rescue it. Footage is captured at 10-bit 4:2:2 ProRes, de-interlaced with motion-adaptive hardware, and delivered as an edit-ready MP4 or on a USB-C SSD. Time-base errors are stabilised, audio normalised, and tapes are returned (or recycled) alongside your negatives.",
         "notes": "<p>Notes:</p><ul><li>$30 per hour of footage, bulk breaks at 5+ tapes.</li><li>Optional colour pass to balance old camcorder white-balance swings.</li></ul>",
+        "table-caption": "",
         "button": "Digitise My Tapes",
         "cta": "#",
         "service-image-right": "shopify://shop_images/892a9235931663cca2285a8a94364fea3c60a794.png"

@@ -562,9 +562,12 @@ main .shopify-section:first-child {
     opacity: 1;
   }
 }
-
 .rotate-stamp-animation {
   animation: rotate-stamp 35s linear infinite;
+}
+
+.rotate-stamp-animation:hover {
+  animation-play-state: paused;
 }
 
 @keyframes rotate-stamp {
@@ -600,6 +603,7 @@ main .shopify-section:first-child {
   background: var(--color-grey-light);
   color: var(--color-black);
   border-radius: 50px;
+  display: inline-block;
 
   transition: all var(--transition-speed-default) var(--transition-ease);
 }

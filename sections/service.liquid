@@ -33,9 +33,11 @@
 
       {% if section.settings.button != blank and section.settings.cta != blank %}
         <div class="service-card__button-wrapper">
-          <a class="primary-button primary-button--small" href="{{ section.settings.cta }}">
-            {{- section.settings.button -}}
-          </a>
+          <div data-hover-shake>
+            <a class="primary-button primary-button--small" href="{{ section.settings.cta }}">
+              {{- section.settings.button -}}
+            </a>
+          </div>
         </div>
       {% endif %}
     </div>
