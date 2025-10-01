@@ -549,7 +549,7 @@ main .shopify-section:first-child {
 
 .in-view-fade {
   opacity: 0;
-  transition: all 500ms var(--transition-ease);
+  transition: all 400ms var(--transition-ease);
   transition-delay: 100ms;
 
   &.in-view {

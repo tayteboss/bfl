@@ -1,3 +1,8 @@
+.faq {
+  position: relative;
+  z-index: 1;
+}
+
 .faq__inner {
   display: flex;
   flex-direction: column;
@@ -111,9 +116,37 @@
 
 .faq-card__inner {
   padding: 2rem 0 0.5rem;
+  position: relative;
+  z-index: 2;
 }
 
 .faq__button-wrapper {
   display: flex;
   justify-content: center;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.faq__image-wrapper {
+  position: absolute;
+  bottom: -100%;
+  right: -250px;
+  width: 50vw;
+  height: auto;
+
+  @media (max-width: 1200px) {
+    bottom: -75%;
+    right: -250px;
+    width: 50vw;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 }

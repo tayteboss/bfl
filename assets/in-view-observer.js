@@ -24,7 +24,7 @@
           }
         });
       },
-      { root: null, rootMargin: '-100px', threshold: 0.1 }
+      { root: null, rootMargin: '-50px', threshold: 0.1 }
     );
 
     elements.forEach(function (el) {

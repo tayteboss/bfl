@@ -108,15 +108,12 @@
 .footer__logo {
   color: var(--color-black) !important;
   width: 100%;
-  font-size: 13.8vw;
-  line-height: 0.9;
+  font-family: var(--font-tiny);
+  font-variation-settings: "wght" var(--font-weight-header);
+  text-transform: uppercase;
+  font-size: 17.5vw;
+  line-height: 0.6;
   text-align: center;
   white-space: nowrap;
   pointer-events: none;
-
-  transition: all var(--transition-speed-default) var(--transition-ease);
-
-  @media (max-width: 768px) {
-    display: none;
-  }
 }
