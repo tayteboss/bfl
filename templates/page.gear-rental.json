@@ -1,0 +1,47 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "gear-rental",
+      "blocks": {
+        "rental_qwJWaQ": {
+          "type": "rental",
+          "settings": {
+            "brand": "Hasselblad",
+            "camera-name": "503CW Medium Format Camera",
+            "price-per-day": "$300",
+            "price-per-week": "$1,200",
+            "camera-photo": "shopify://shop_images/616b43aa66e1cf708d284cb1c9b88e4cfeed4d99.png",
+            "camera-description": "<p>The name \"Hasselblad\" is synonymous with image quality and reliability. Together with Carl Zeiss lenses, Hasselblad represents the highest standards of photographic craftsmanship and precision. The 503CW features a built-in TTL flash metering system, which automatically measures the light off the film for consistent flash exposures.</p>",
+            "accordion-1-title": "What's included?",
+            "accordion-1": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis lorem quis odio gravida vulputate. Etiam interdum porta ipsum ut tempus. Donec sit amet ante eu orci aliquam eleifend id ac arcu.</p>",
+            "accordion-2-title": "How to works?",
+            "accordion-2": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis lorem quis odio gravida vulputate. Etiam interdum porta ipsum ut tempus. Donec sit amet ante eu orci aliquam eleifend id ac arcu.</p>",
+            "accordion-3-title": "Terms of use",
+            "accordion-3": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis lorem quis odio gravida vulputate. Etiam interdum porta ipsum ut tempus. Donec sit amet ante eu orci aliquam eleifend id ac arcu.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "rental_qwJWaQ"
+      ],
+      "settings": {
+        "heading": "Gear Rental",
+        "subheading": "<p>From cult point-and-shoots to medium format legends — every camera is tested and includes a free dev + scan voucher.</p>",
+        "subparagraph": "<p>Test-drive the classics before you commit. Every body is CLA’d, shot-tested, and leaves with fresh batteries—and a free dev-and-scan voucher to sweeten the weekend. From point-and-shoot Contax T2s to a Hasselblad 500 CM kit, the shelf rotates weekly. Try the classics before you own them.</p>",
+        "container-title": "<p>Select a Camera 📷</p>"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

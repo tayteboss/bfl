@@ -98,9 +98,9 @@
       "type": "sendrollshome",
       "name": "Send Rolls",
       "settings": {
-        "heading": "Bellows began as a single pro lab in Miami and, in just a few short years, has grown into a small constellation of studios—Miami, Chicago and pop-ups in Atlanta and Orlando—processing thousands of rolls every month.",
-        "paragraph-1": "The recipe hasn’t changed: fresh chemistry mixed daily, scanners tuned by hand, and a crew of film nerds who still get goose-bumps when a perfect negative hits the light table. From one-hour C-41 to exhibition-grade drum scans, Bellows exists to bridge the gap between analogue craft and a digital-first world, giving photographers a place where curiosity is met with real expertise.",
-        "paragraph-2": "At Bellows, we’re on a mission to keep film photography alive and thriving in South Florida. We believe in the magic of the process—from loading film to developing and holding the final product in your hands. Our goal is to offer exceptional film development services while cultivating a space where photographers can express their creativity, share their passion, and celebrate the art of analog.",
+        "heading": "<p>Bellows began as a single pro lab in Miami and, in just a few short years, has grown into a small constellation of studios—Miami, Chicago and pop-ups in Atlanta and Orlando—processing thousands of rolls every month.</p>",
+        "paragraph-1": "<p>The recipe hasn’t changed: fresh chemistry mixed daily, scanners tuned by hand, and a crew of film nerds who still get goose-bumps when a perfect negative hits the light table. From one-hour C-41 to exhibition-grade drum scans, Bellows exists to bridge the gap between analogue craft and a digital-first world, giving photographers a place where curiosity is met with real expertise.</p>",
+        "paragraph-2": "<p>At Bellows, we’re on a mission to keep film photography alive and thriving in South Florida. We believe in the magic of the process—from loading film to developing and holding the final product in your hands. Our goal is to offer exceptional film development services while cultivating a space where photographers can express their creativity, share their passion, and celebrate the art of analog.</p>",
         "sendrollsimage": "shopify://shop_images/Group_6.png",
         "button": "Send Us Your Rolls",
         "cta": "#"
@@ -185,7 +185,8 @@
         "heading": "Frequently Asked Questions",
         "show_view_all": true,
         "view_all_link": "shopify://pages/faq",
-        "view_all_text": "View all FAQs"
+        "view_all_text": "View all FAQs",
+        "photo": "shopify://shop_images/892a9235931663cca2285a8a94364fea3c60a794.png"
       }
     },
     "drop_off_bbQxHD": {

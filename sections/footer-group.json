@@ -16,8 +16,8 @@
       "settings": {
         "menu": "footer",
         "second-menu": "customer-care",
-        "logo": "shopify://shop_images/Logo.svg",
-        "show_payment_icons": true
+        "photo": "shopify://shop_images/25e0511ab7990c9332dbf562d4beafd76ff7747c.png",
+        "logo": "shopify://shop_images/Logo.svg"
       }
     }
   },

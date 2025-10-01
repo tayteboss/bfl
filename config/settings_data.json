@@ -1,5 +1,6 @@
 {
   "current": "Default",
+  "favicon": "shopify://shop_images/Favicon.png",
   "presets": {
     "Default": {
       "logo_width": 90,
