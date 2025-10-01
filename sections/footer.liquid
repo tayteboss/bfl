@@ -59,38 +59,24 @@
     });
   });
 
-  // Cursor-driven step animation for footer logo weight (active only when footer is in view)
+  // Cursor position maps Y -> weight for footer logo (active only when footer is in view)
   (function () {
     const footer = document.querySelector('.footer');
     const footerLogo = document.querySelector('.footer__logo');
     if (!footer || !footerLogo) return;
 
-    const STEP_PX = 300;
-    const MIN_WGHT = 25;
-    const MAX_WGHT = 200;
+    const MIN_WGHT = 10;
+    const MAX_WGHT = 250;
 
-    function randomInt(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
+    function clamp(n, min, max) {
+      return n < min ? min : n > max ? max : n;
     }
 
-    let lastX = null;
-    let lastY = null;
-
-    function maybeUpdateFromCursor(x, y) {
-      if (lastX === null || lastY === null) {
-        lastX = x;
-        lastY = y;
-        return;
-      }
-      const dx = x - lastX;
-      const dy = y - lastY;
-      const dist = Math.hypot ? Math.hypot(dx, dy) : Math.sqrt(dx * dx + dy * dy);
-      if (dist >= STEP_PX) {
-        lastX = x;
-        lastY = y;
-        const w = randomInt(MIN_WGHT, MAX_WGHT);
-        footerLogo.style.fontVariationSettings = `"wght" ${w}`;
-      }
+    function applyWeightFromY(y) {
+      const vh = window.innerHeight || document.documentElement.clientHeight || 1;
+      const t = clamp(y / vh, 0, 1); // 0 at top, 1 at bottom
+      const w = (MIN_WGHT + (MAX_WGHT - MIN_WGHT) * t).toFixed(2);
+      footerLogo.style.fontVariationSettings = `"wght" ${w}`;
     }
 
     let unsubscribe = null;
@@ -99,7 +85,7 @@
 
     function subscribeCursor() {
       if (unsubscribe || !window.CursorUtils || typeof window.CursorUtils.onMove !== 'function') return;
-      unsubscribe = window.CursorUtils.onMove(({ x, y }) => maybeUpdateFromCursor(x, y));
+      unsubscribe = window.CursorUtils.onMove(({ y }) => applyWeightFromY(y));
     }
 
     function unsubscribeCursor() {

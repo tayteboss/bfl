@@ -1,7 +1,7 @@
 {{ 'header.css' | asset_url | stylesheet_tag }}
 
 <header>
-  {% render 'header-logo' %}
+  <a class="header__logo" href="{{ routes.root_url }}"> Bellows Film Lab</a>
 
   <button class="menu-toggle" aria-label="Open Menu" data-text="Menu">Menu</button>
 
@@ -40,7 +40,10 @@
     const body = document.body;
     const footer = document.querySelector('.footer');
     const logoEl = document.querySelector('.header__logo');
-    const MAX_RANGE_PX = 300; // range where changes happen
+
+    const MAX_RANGE_PX = 200; // range where changes happen
+    const MIN_WGHT = 50;
+    const MAX_WGHT = 200;
 
     let footerHeight = footer ? footer.offsetHeight : 500;
 
@@ -97,9 +100,6 @@
     if (logoEl) {
       const STEP_PX = 35;
 
-      const MIN_WGHT = 50;
-      const MAX_WGHT = 200;
-
       let lastStep = -1;
       let lastWeight = 0;
 
@@ -110,22 +110,26 @@
       function applyForY(y) {
         const clampedY = y < 0 ? 0 : y;
         if (clampedY > MAX_RANGE_PX) {
-          // Collapse width to 0 so the logo becomes invisible
-          logoEl.style.fontVariationSettings = `"wght" ${lastWeight}, "wdth" 0`;
+          // Collapse width to 0; keep weight driven by CSS variable
+          logoEl.style.fontVariationSettings = `"wght" var(--font-weight-header), "wdth" 0`;
           return;
         }
         // Lock to 80 weight for first 50px from top
         if (clampedY < 50) {
           lastStep = Math.floor(clampedY / STEP_PX);
           lastWeight = 80;
-          logoEl.style.fontVariationSettings = `"wght" 80`;
+          document.documentElement.style.setProperty('--font-weight-header', '80');
+          // Clear inline overrides so stylesheet uses the variable
+          logoEl.style.fontVariationSettings = '';
           return;
         }
         const step = Math.floor(clampedY / STEP_PX);
         if (step !== lastStep) {
           lastStep = step;
           lastWeight = randomInt(MIN_WGHT, MAX_WGHT);
-          logoEl.style.fontVariationSettings = `"wght" ${lastWeight}`;
+          document.documentElement.style.setProperty('--font-weight-header', String(lastWeight));
+          // Ensure we don't hold an inline override
+          logoEl.style.fontVariationSettings = '';
         }
       }
 
@@ -144,6 +148,83 @@
       // Cleanup when section is unloaded in the theme editor
       document.addEventListener('shopify:section:unload', () => {
         if (typeof unsubscribeLogo === 'function') unsubscribeLogo();
+      });
+
+      // Hover-driven random width variation every 0.5s while hovered
+      const MIN_WDTH = 50;
+      const MAX_WDTH = 200;
+      let hoverTimer = null;
+      let unsubscribeCursorHover;
+
+      function getCurrentWeight() {
+        // Use lastWeight from scroll logic to keep continuity
+        return lastWeight || 80;
+      }
+
+      function startHoverRandomizer() {
+        if (hoverTimer) return;
+        hoverTimer = setInterval(() => {
+          const yPos = window.scrollY || window.pageYOffset || 0;
+          if (yPos > MAX_RANGE_PX) return; // honor collapse rule
+          const wghtAmount = Math.floor(Math.random() * (MAX_WDTH - MIN_WDTH + 1)) + MIN_WDTH;
+          // Persist by updating the root variable; stylesheet applies it
+          document.documentElement.style.setProperty('--font-weight-header', String(wghtAmount));
+          // Clear inline override if any
+          if (logoEl.style.fontVariationSettings) logoEl.style.fontVariationSettings = '';
+        }, 200);
+      }
+
+      function stopHoverRandomizer() {
+        if (hoverTimer) {
+          clearInterval(hoverTimer);
+          hoverTimer = null;
+        }
+        // Do not restore inline style; root variable persists the last weight
+      }
+
+      function isCursorOverLogo(x, y) {
+        const rect = logoEl.getBoundingClientRect();
+        return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+      }
+
+      function ensureCursorSubscription() {
+        if (unsubscribeCursorHover || !(window.CursorUtils && typeof window.CursorUtils.onMove === 'function')) return;
+        unsubscribeCursorHover = window.CursorUtils.onMove(({ x, y }) => {
+          const yPos = window.scrollY || window.pageYOffset || 0;
+          if (yPos > MAX_RANGE_PX) {
+            stopHoverRandomizer();
+            return;
+          }
+          if (isCursorOverLogo(x, y)) {
+            startHoverRandomizer();
+          } else {
+            stopHoverRandomizer();
+          }
+        });
+      }
+
+      // Try to subscribe immediately; if utility isn't ready, fall back to mousemove
+      ensureCursorSubscription();
+      if (!unsubscribeCursorHover) {
+        const onMouseMove = (e) => {
+          const yPos = window.scrollY || window.pageYOffset || 0;
+          if (yPos > MAX_RANGE_PX) {
+            stopHoverRandomizer();
+            return;
+          }
+          if (isCursorOverLogo(e.clientX || 0, e.clientY || 0)) {
+            startHoverRandomizer();
+          } else {
+            stopHoverRandomizer();
+          }
+        };
+        window.addEventListener('mousemove', onMouseMove, { passive: true });
+        unsubscribeCursorHover = () => window.removeEventListener('mousemove', onMouseMove);
+      }
+
+      document.addEventListener('shopify:section:unload', () => {
+        stopHoverRandomizer();
+        if (typeof unsubscribeCursorHover === 'function') unsubscribeCursorHover();
       });
     }
   });

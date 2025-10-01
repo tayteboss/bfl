@@ -26,7 +26,9 @@ header {
   line-height: 0.6;
   text-align: center;
   white-space: nowrap;
-  pointer-events: none;
+  pointer-events: all;
+  cursor: pointer;
+  z-index: 1000;
 }
 
 .scrolled .header__logo {
