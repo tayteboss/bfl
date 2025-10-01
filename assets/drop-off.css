@@ -9,7 +9,7 @@
   border: solid 1px black;
   background: var(--color-grey-light);
   border-radius: 15px;
-  height: 98%;
-  width: 98%;
+  height: 80vh;
+  width: 100%;
   margin: auto;
 }

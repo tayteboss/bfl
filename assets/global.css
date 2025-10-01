@@ -51,6 +51,7 @@ main {
   position: relative;
   z-index: 1;
   background-color: var(--color-white);
+  overflow: hidden;
 }
 
 ::selection {
