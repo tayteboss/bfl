@@ -10,7 +10,7 @@
 {
   "sections": {
     "services_fwfpCD": {
-      "type": "services",
+      "type": "services-page",
       "blocks": {
         "service_link_3LN3tm": {
           "type": "service-link",

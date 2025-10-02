@@ -514,8 +514,21 @@ main .shopify-section:first-child {
   }
 }
 
-.primary-button:hover {
-  background: var(--color-yellow);
+@media (hover: hover) {
+  .primary-button:hover {
+    background: var(--color-yellow);
+  }
+}
+
+.primary-button--black {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+@media (hover: hover) {
+  .primary-button--black:hover {
+    background: var(--color-white);
+    color: var(--color-black);
+  }
 }
 
 .secondary-button {
@@ -538,11 +551,13 @@ main .shopify-section:first-child {
   }
 }
 
-.secondary-button:hover {
-  background: var(--color-yellow);
-  transform: scale(1.01);
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
-  border-radius: 1rem;
+@media (hover: hover) {
+  .secondary-button:hover {
+    background: var(--color-yellow);
+    transform: scale(1.01);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    border-radius: 1rem;
+  }
 }
 
 .hover-blinking {

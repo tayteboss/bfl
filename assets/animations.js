@@ -303,11 +303,41 @@ function initializeFAQAccordions(rootEl = document) {
   rootEl.querySelectorAll('[data-faq-list]').forEach(bind);
 }
 
+// Simple gear accordion (no animations)
+function initializeGearAccordions(rootEl = document) {
+  function toggle(btn, content) {
+    const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', !isExpanded);
+
+    if (isExpanded) {
+      content.setAttribute('hidden', '');
+    } else {
+      content.removeAttribute('hidden');
+    }
+  }
+
+  function bind(list) {
+    if (!list || list._bound) return;
+    list._bound = true;
+
+    list.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-gear-accordion-trigger]');
+      if (!btn || !list.contains(btn)) return;
+      const content = btn.querySelector('[data-gear-accordion-content]');
+      if (!content) return;
+      toggle(btn, content);
+    });
+  }
+
+  rootEl.querySelectorAll('[data-gear-accordion-list]').forEach(bind);
+}
+
 if (Shopify.designMode) {
   document.addEventListener('shopify:section:load', (event) => {
     initializeScrollAnimationTrigger(event.target, true);
     initializeHoverShake(event.target);
     initializeFAQAccordions(event.target);
+    initializeGearAccordions(event.target);
   });
   document.addEventListener('shopify:section:reorder', () => initializeScrollAnimationTrigger(document, true));
 }
@@ -317,4 +347,5 @@ window.addEventListener('DOMContentLoaded', () => {
   initializeScrollZoomAnimationTrigger();
   initializeHoverShake();
   initializeFAQAccordions();
+  initializeGearAccordions();
 });
