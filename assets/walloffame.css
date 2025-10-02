@@ -20,18 +20,18 @@
 }
 
 .swiper-slide:first-child {
-  padding-left: calc(100vw / 12);
+  margin-left: calc(100vw / 12);
 
   @media (max-width: 768px) {
-    padding-left: 1rem;
+    margin-left: 1rem;
   }
 }
 
 .swiper-slide:last-child {
-  padding-right: calc(100vw / 12);
+  margin-right: calc(100vw / 12);
 
   @media (max-width: 768px) {
-    padding-right: 1rem;
+    margin-right: 1rem;
   }
 }
 

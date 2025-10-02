@@ -91,9 +91,9 @@
       };
 
       if (autoplayEnabled) {
-        options.loop = true;
-        options.freeMode = false;
-        options.allowTouchMove = false;
+        options.loop = false;
+        options.freeMode = true;
+        options.allowTouchMove = true;
         options.autoplay = { disableOnInteraction: true };
         options.speed = 10000; // continuous ticker speed
       }

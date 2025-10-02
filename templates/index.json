@@ -109,6 +109,15 @@
     "walloffame_AnARbN": {
       "type": "walloffame",
       "blocks": {
+        "image_L46jhA": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/897da0e0ec478856d5f4399f8ca9df45b974ebdc_3bd9e957-898b-42fa-ab88-8291b5dfe18a.png",
+            "alt": "Carousel image",
+            "button": "",
+            "cta": ""
+          }
+        },
         "image_jUptyX": {
           "type": "image",
           "settings": {
@@ -129,13 +138,15 @@
         }
       },
       "block_order": [
+        "image_L46jhA",
         "image_jUptyX",
         "image_7Uq47d"
       ],
       "name": "Wall of Fame",
       "settings": {
         "heading": "Wall of Fame",
-        "text": "Legendary frames, developed right here - updated each month."
+        "text": "Legendary frames, developed right here - updated each month.",
+        "autoplay": true
       }
     },
     "faq_9Lg4BU": {
