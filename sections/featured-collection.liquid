@@ -1,11 +1,11 @@
 {{ 'collection.css' | asset_url | stylesheet_tag }}
 
-<section
+<div
   class="featured-collection"
   aria-labelledby="featured-collection-heading"
 >
   <div class="layout-wrapper">
-    <div class="featured-collection__header">
+    <section class="featured-collection__header">
       <h2
         id="featured-collection-heading"
         class="featured-collection__heading type-h1-large"
@@ -24,10 +24,10 @@
           {% endif %}
         {% endfor %}
       </div>
-    </div>
+    </section>
   </div>
 
-  <div
+  <section
     class="collection-list layout-grid layout-wrapper"
     role="region"
     aria-label="Featured products"
@@ -35,8 +35,8 @@
     {% for product in collections.frontpage.products %}
       {% render 'product-card', product: product %}
     {% endfor %}
-  </div>
-</section>
+  </section>
+</div>
 
 {% schema %}
 {

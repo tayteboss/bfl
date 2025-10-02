@@ -7,68 +7,50 @@
 
 {{ 'collection.css' | asset_url | stylesheet_tag }}
 
-<h1>{{ collection.title }}</h1>
-
-<p>Filters go here</p>
-
-<div class="collection-products">
-  {% if section.settings['collection-image'] %}
-    <div class="collection-banner-wrapper">
-      <p class="collection-banner-text">{{ section.settings['collection-image-text'] }}</p>
-      <img
-        src="{{ section.settings['collection-image'] | image_url }}"
-        width="auto"
-        height="auto"
-        alt="Collection Image"
-        class="collection-banner-image"
+<div
+  class="featured-collection"
+  aria-labelledby="featured-collection-heading"
+>
+  <div class="layout-wrapper">
+    <section class="featured-collection__header">
+      <h2
+        id="featured-collection-heading"
+        class="featured-collection__heading type-h1-large"
       >
+        Shop {{ collection.title }}
+      </h2>
+      FIX FILTERS HERE
+      {% comment %}
+        <div
+          class="collection-filters"
+          role="navigation"
+          aria-label="Collection filters"
+        >
+          {% for block in section.blocks %}
+            {% assign collection = collections[block.settings.collection] %}
+            {% if collection %}
+              {% render 'filter-button', title: collection.title, id: collection.id, url: collection.url %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endcomment %}
+    </section>
+  </div>
+
+  <section
+    class="collection-list layout-grid layout-wrapper"
+    role="region"
+    aria-label="Featured products"
+  >
+    {% for product in collection.products %}
+      {% render 'product-card', product: product %}
+    {% endfor %}
+  </section>
+  <div class="pagination-button">
+    <div data-hover-shake>
+      <button class="primary-button">Load More</button>
     </div>
-  {% endif %}
-  {% for product in collection.products %}
-    <a href="{{ product.url }}" target="_self">
-      <div class="product-container">
-        {% assign first_image = product.media | first %}
-        {% assign second_image = product.media[1] %}
-
-        <div class="product-image-container">
-          {% if product.metafields.custom.product_badge %}
-            <div class="product-badge">
-              {{ product.metafields.custom.product_badge | metafield_tag }}
-            </div>
-          {% endif %}
-          {% if first_image %}
-            <img
-              src="{{ first_image.src | image_url }}"
-              alt="{{ product.title }}"
-              class="product-image product-image--primary"
-              width="auto"
-              height="auto"
-            >
-          {% endif %}
-
-          {% if second_image %}
-            <img
-              src="{{ second_image.src | image_url }}"
-              alt="{{ product.title }}"
-              class="product-image product-image--secondary"
-              width="auto"
-              height="auto"
-            >
-          {% endif %}
-        </div>
-        <div class="product-brand">
-          {{ product.vendor }}
-        </div>
-        <div class="product-title">
-          {{ product.title }}
-        </div>
-        <div class="product-price">
-          {{ cart.currency.iso_code }}
-          {{ product.price | money }}
-        </div>
-      </div>
-    </a>
-  {% endfor %}
+  </div>
 </div>
 
 {% schema %}
