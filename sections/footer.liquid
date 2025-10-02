@@ -1,26 +1,26 @@
 {{ 'footer.css' | asset_url | stylesheet_tag }}
 
-<div class="footer-socials">
-  <a
-    href="{{ settings.social_instagram_link }}"
-    target="_blank"
-    class="type-p hover-blinking uppercase"
-    rel="noopener noreferrer"
-    aria-label="Instagram - Opens in new tab"
-  >
-    Instagram
-  </a>
-  <a
-    href="{{ settings.social_tiktok_link }}"
-    target="_blank"
-    class="type-p hover-blinking uppercase"
-    rel="noopener noreferrer"
-    aria-label="TikTok - Opens in new tab"
-  >
-    TikTok
-  </a>
-</div>
 <footer class="footer" role="contentinfo">
+  <div class="footer-socials">
+    <a
+      href="{{ settings.social_instagram_link }}"
+      target="_blank"
+      class="type-p hover-blinking uppercase"
+      rel="noopener noreferrer"
+      aria-label="Instagram - Opens in new tab"
+    >
+      Instagram
+    </a>
+    <a
+      href="{{ settings.social_tiktok_link }}"
+      target="_blank"
+      class="type-p hover-blinking uppercase"
+      rel="noopener noreferrer"
+      aria-label="TikTok - Opens in new tab"
+    >
+      TikTok
+    </a>
+  </div>
   <div class="layout-grid">
     {% render 'footer-links-list', title: 'Quick Links', links: section.settings.menu.links %}
     {% render 'footer-links-list', title: 'Customer Care', links: section.settings['second-menu'].links %}
@@ -60,15 +60,17 @@
       {% render 'footer-logo' %}
     </div>
   </div>
-  <div class="footer-image-wrapper">
-    <img
-      src="{{ section.settings.photo | image_url }}"
-      width="auto"
-      height="auto"
-      alt=""
-      role="presentation"
-    >
-  </div>
+  {% comment %}
+    <div class="footer-image-wrapper">
+      <img
+        src="{{ section.settings.photo | image_url }}"
+        width="auto"
+        height="auto"
+        alt=""
+        role="presentation"
+      >
+    </div>
+  {% endcomment %}
 </footer>
 
 <script>
@@ -92,20 +94,28 @@
       return n < min ? min : n > max ? max : n;
     }
 
-    function applyWeightFromY(y) {
-      const vh = window.innerHeight || document.documentElement.clientHeight || 1;
-      const t = clamp(y / vh, 0, 1); // 0 at top, 1 at bottom
+    function applyWeightFromX(x) {
+      const vw = window.innerWidth || document.documentElement.clientWidth || 1;
+      const t = clamp(x / vw, 0, 1); // 0 at left, 1 at right
       const w = (MIN_WGHT + (MAX_WGHT - MIN_WGHT) * t).toFixed(2);
-      footerLogo.style.fontVariationSettings = `"wght" ${w}`;
+
+      document.documentElement.style.setProperty('--font-weight-header', w);
     }
 
     let unsubscribe = null;
     let observing = false;
     let observer;
+    let hasReceivedInitial = false;
 
     function subscribeCursor() {
       if (unsubscribe || !window.CursorUtils || typeof window.CursorUtils.onMove !== 'function') return;
-      unsubscribe = window.CursorUtils.onMove(({ y }) => applyWeightFromY(y));
+      unsubscribe = window.CursorUtils.onMove(({ x }) => {
+        if (!hasReceivedInitial) {
+          hasReceivedInitial = true; // ignore CursorUtils' immediate initial call
+          return;
+        }
+        applyWeightFromX(x);
+      });
     }
 
     function unsubscribeCursor() {
@@ -113,6 +123,7 @@
         unsubscribe();
         unsubscribe = null;
       }
+      hasReceivedInitial = false;
     }
 
     function initObserver() {

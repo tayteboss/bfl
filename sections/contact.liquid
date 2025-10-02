@@ -36,7 +36,8 @@
       <section class="contact-page-list-wrapper" aria-label="Contact details">
         {% for block in section.blocks %}
           {% if block.settings.heading != blank %}
-            <div id="{{ block.id }}" class="contact-card">
+            {% assign current_heading_id = block.settings.heading | handleize %}
+            <div id="{{ current_heading_id }}" class="contact-card">
               <h3 class="contact-card__heading type-p-large">{{ block.settings.heading }}</h3>
               {% if block.settings.paragraph != blank %}
                 <div class="contact-card__content type-p">

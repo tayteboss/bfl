@@ -52,6 +52,11 @@ main {
   z-index: 1;
   background-color: var(--color-white);
   overflow: hidden;
+  padding-bottom: 5rem; /* 80px */
+
+  @media (max-width: 768px) {
+    padding-bottom: 2rem;
+  }
 }
 
 ::selection {

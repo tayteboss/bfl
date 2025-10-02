@@ -89,6 +89,14 @@
   position: relative;
 }
 
+.service-card::before {
+  content: '';
+  display: block;
+  height: 120px;
+  margin-top: -120px;
+  visibility: hidden;
+}
+
 .service-card .layout-grid {
   row-gap: 4rem;
 

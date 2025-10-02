@@ -41,8 +41,8 @@
           {% assign current_heading = block.settings.heading %}
           {% if current_heading != blank %}
             <div class="faq-page-list-item">
-              <div id="{{ current_heading_id }}" class="faq-heading">
-                <h2 class="type-h2">{{ current_heading }}</h2>
+              <div class="faq-heading">
+                <h2 class="type-h2" id="{{ current_heading_id }}">{{ current_heading }}</h2>
               </div>
               <div class="faq-list" role="region" aria-labelledby="{{ current_heading_id }}">
           {% endif %}
