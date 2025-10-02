@@ -16,7 +16,7 @@
         >
           {% for block in section.blocks %}
             {% if block.type == 'faq_heading' %}
-              {% assign current_heading_id = block.id %}
+              {% assign current_heading_id = block.settings.heading | handleize %}
               <div class="faq-button">
                 {% render 'anchor-button', title: block.settings.heading, id: current_heading_id %}
               </div>
@@ -35,10 +35,10 @@
             </div>
             </div>
           {% endif %}
-          {% assign current_heading_id = block.id %}
+          {% assign current_heading_id = block.settings.heading | handleize %}
           {% assign current_heading = block.settings.heading %}
           <div class="faq-page-list-item">
-            <div id="{{ block.id }}" class="faq-heading">
+            <div id="{{ current_heading_id }}" class="faq-heading">
               <h2 class="type-h2">{{ current_heading }}</h2>
             </div>
             <div class="faq-list">
@@ -57,11 +57,22 @@
       {% endif %}
     </div>
 
-    <div class="need-help type-p-x-large">
-      <p class="need-help__heading">{{ section.settings.need_help_heading }}</p>
-      <div class="need-help__message">{{ section.settings.need_help_message }}</div>
-    </div>
+    {% if section.settings.need_help_heading != blank or section.settings.need_help_message != blank %}
+      <div class="need-help type-p-x-large">
+        {% if section.settings.need_help_heading != blank %}
+          <p class="need-help__heading">{{ section.settings.need_help_heading }}</p>
+        {% endif %}
+        {% if section.settings.need_help_message != blank %}
+          <div class="need-help__message">{{ section.settings.need_help_message }}</div>
+        {% endif %}
+      </div>
+    {% endif %}
   </div>
+  {% if section.settings.stamp_image != blank %}
+    <div class="faq-page__stamp-image">
+      <img src="{{ section.settings.stamp_image | image_url }}" alt="Stamp Image" width="auto" height="auto">
+    </div>
+  {% endif %}
 </section>
 
 {% schema %}
@@ -79,6 +90,11 @@
       "id": "need_help_message",
       "label": "Need Help Message",
       "default": "<p>CALL US ON <a href=\"tel:+13054564006\">+1 (305) 456 4006</a> OR EMAIL <a href=\"mailto:lab@bellowsfilm.com\">LAB@BELLOWSFILM.COM</a> — A REAL HUMAN WILL REPLY WITHIN ONE BUSINESS DAY.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "stamp_image",
+      "label": "Stamp Image"
     }
   ],
   "blocks": [

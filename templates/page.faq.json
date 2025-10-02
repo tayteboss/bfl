@@ -61,7 +61,11 @@
         "faq_item_QQfJqA",
         "faq_item_Cz6jD4"
       ],
-      "settings": {}
+      "settings": {
+        "need_help_heading": "NEED HELP?",
+        "need_help_message": "<p>CALL US ON <a href=\"tel:+13054564006\">+1 (305) 456 4006</a> OR EMAIL <a href=\"mailto:lab@bellowsfilm.com\">LAB@BELLOWSFILM.COM</a> — A REAL HUMAN WILL REPLY WITHIN ONE BUSINESS DAY.</p>",
+        "stamp_image": "shopify://shop_images/892a9235931663cca2285a8a94364fea3c60a794.png"
+      }
     }
   },
   "order": [
