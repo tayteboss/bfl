@@ -1,13 +1,22 @@
 {{ 'faq.css' | asset_url | stylesheet_tag }}
 
-<section class="faq">
+<section
+  class="faq"
+  role="region"
+  aria-labelledby="faq-heading"
+>
   <div class="layout-wrapper">
     <div class="faq__inner">
       {% if section.settings.heading != blank %}
-        <h2 class="type-h1-small faq__heading">{{ section.settings.heading }}</h2>
+        <h2 id="faq-heading" class="type-h1-small faq__heading">{{ section.settings.heading }}</h2>
       {% endif %}
 
-      <div class="faq-list" data-faq-list>
+      <div
+        class="faq-list"
+        data-faq-list
+        role="list"
+        aria-label="Frequently Asked Questions"
+      >
         {% for block in section.blocks %}
           {% render 'faq-card', block: block, question: block.settings.question, answer: block.settings.answer %}
         {% endfor %}
@@ -16,7 +25,11 @@
       {% if section.settings.show_view_all %}
         <div class="faq__button-wrapper">
           <div data-hover-shake>
-            <a href="{{ section.settings.view_all_link }}" class="faq-link secondary-button">
+            <a
+              href="{{ section.settings.view_all_link }}"
+              class="faq-link secondary-button"
+              aria-label="{{ section.settings.view_all_text }}"
+            >
               {{ section.settings.view_all_text }}
             </a>
           </div>
@@ -24,11 +37,15 @@
       {% endif %}
     </div>
     <div class="faq__image-wrapper">
-      <img
-        src="{{ section.settings.photo | image_url }}"
-        height="auto"
-        width="auto"
-      >
+      <div data-parallax>
+        <img
+          src="{{ section.settings.photo | image_url }}"
+          height="auto"
+          width="auto"
+          alt="{% if section.settings.heading != blank %}{{ section.settings.heading }} decorative image{% else %}FAQ decorative image{% endif %}"
+          loading="lazy"
+        >
+      </div>
     </div>
   </div>
 </section>

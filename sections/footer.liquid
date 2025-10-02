@@ -1,5 +1,25 @@
 {{ 'footer.css' | asset_url | stylesheet_tag }}
 
+<div class="footer-socials">
+  <a
+    href="{{ settings.social_instagram_link }}"
+    target="_blank"
+    class="type-p hover-blinking uppercase"
+    rel="noopener noreferrer"
+    aria-label="Instagram - Opens in new tab"
+  >
+    Instagram
+  </a>
+  <a
+    href="{{ settings.social_tiktok_link }}"
+    target="_blank"
+    class="type-p hover-blinking uppercase"
+    rel="noopener noreferrer"
+    aria-label="TikTok - Opens in new tab"
+  >
+    TikTok
+  </a>
+</div>
 <footer class="footer" role="contentinfo">
   <div class="layout-grid">
     {% render 'footer-links-list', title: 'Quick Links', links: section.settings.menu.links %}

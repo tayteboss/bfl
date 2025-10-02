@@ -12,7 +12,8 @@
   </div>
   <div class="image-carousel__inner">
     <div
-      class="swiper js-image-carousel image-carousel"
+      class="swiper js-wall-of-fame-carousel image-carousel"
+      style="--swiper-wrapper-transition-timing-function: linear;"
       aria-roledescription="carousel"
       aria-labelledby="wall-of-fame-title wall-of-fame-description"
     >
@@ -65,14 +66,16 @@
 </section>
 
 <script>
-  function initImageCarousels() {
-    var carousels = document.querySelectorAll('.js-image-carousel');
+  function initWallOfFameCarousel() {
+    var carousels = document.querySelectorAll('.js-wall-of-fame-carousel');
     if (!carousels || carousels.length === 0) return;
+
+    var autoplayEnabled = {{ section.settings.autoplay | json }};
 
     carousels.forEach(function (carouselEl) {
       if (typeof window.Swiper !== 'function') return;
 
-      new window.Swiper(carouselEl, {
+      var options = {
         slidesPerView: 'auto',
         breakpoints: {
           0: {
@@ -85,14 +88,24 @@
         loop: false,
         freeMode: true,
         grabCursor: true,
-      });
+      };
+
+      if (autoplayEnabled) {
+        options.loop = true;
+        options.freeMode = false;
+        options.allowTouchMove = false;
+        options.autoplay = { disableOnInteraction: true };
+        options.speed = 10000; // continuous ticker speed
+      }
+
+      new window.Swiper(carouselEl, options);
     });
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initImageCarousels);
+    document.addEventListener('DOMContentLoaded', initWallOfFameCarousel);
   } else {
-    initImageCarousels();
+    initWallOfFameCarousel();
   }
 </script>
 
@@ -111,6 +124,12 @@
       "id": "text",
       "label": "Blurb",
       "default": "Legendary frames, developed right here - updated each month."
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": true
     }
   ],
   "blocks": [

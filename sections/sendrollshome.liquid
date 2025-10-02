@@ -37,14 +37,16 @@
       role="img"
       aria-label="Decorative circular image for send rolls section"
     >
-      <img
-        src="{{ section.settings.sendrollsimage |image_url }}"
-        width="auto"
-        height="auto"
-        class="send-rolls-content__image rotate-stamp-animation"
-        alt="{{ section.settings.sendrollsimage.alt | default: 'Send us your rolls' }}"
-        loading="lazy"
-      >
+      <div data-parallax>
+        <img
+          src="{{ section.settings.sendrollsimage |image_url }}"
+          width="auto"
+          height="auto"
+          class="send-rolls-content__image rotate-stamp-animation"
+          alt="{{ section.settings.sendrollsimage.alt | default: 'Send us your rolls' }}"
+          loading="lazy"
+        >
+      </div>
     </div>
   </a>
 </section>

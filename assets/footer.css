@@ -3,6 +3,8 @@
   padding: 1.5rem;
   position: relative;
   overflow: hidden;
+  position: relative;
+  z-index: 1500;
 }
 
 footer .layout-grid {
@@ -132,4 +134,12 @@ footer .layout-grid {
     height: 100%;
     object-fit: contain;
   }
+}
+
+.footer-socials {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 16px;
 }

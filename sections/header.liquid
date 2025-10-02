@@ -52,7 +52,7 @@
     const footer = document.querySelector('.footer');
     const logoEl = document.querySelector('.header__logo');
 
-    const MAX_RANGE_PX = 200; // range where changes happen
+    const MAX_RANGE_PX = 200;
     const MIN_WGHT = 50;
     const MAX_WGHT = 200;
 
@@ -67,7 +67,7 @@
     const updateHideHeader = () => {
       const doc = document.documentElement;
       const distanceToBottom = doc.scrollHeight - window.scrollY - window.innerHeight;
-      const shouldHide = distanceToBottom <= footerHeight;
+      const shouldHide = distanceToBottom <= footerHeight / 2;
       body.classList.toggle('hide-header', shouldHide);
     };
 

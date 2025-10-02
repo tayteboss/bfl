@@ -654,3 +654,7 @@ main .shopify-section:first-child {
   color: var(--color-black);
 }
 
+.uppercase {
+  text-transform: uppercase;
+}
+
