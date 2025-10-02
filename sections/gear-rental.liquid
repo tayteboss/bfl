@@ -3,9 +3,9 @@
 <div class="gear-rental">
   <div class="layout-wrapper">
     <div class="layout-grid">
-      <section class="gear-rental__header-wrapper">
+      <section class="gear-rental__header-wrapper" aria-labelledby="gear-rental-heading">
         {% if section.settings.heading %}
-          <h1 class="type-h1-large">{{ section.settings.heading }}</h1>
+          <h1 id="gear-rental-heading" class="type-h1-large">{{ section.settings.heading }}</h1>
         {% endif %}
         {% if section.settings.subheading %}
           <h2 class="type-h1-small">{{ section.settings.subheading }}</h2>
@@ -16,30 +16,42 @@
       </section>
     </div>
 
-    <section class="gear-list">
-      <h3 class="gear-list__title type-p-large">{{ section.settings['container-title'] }}</h3>
+    <section class="gear-list" aria-labelledby="gear-list-title">
+      {% if section.settings['container-title'] %}
+        <h3 id="gear-list-title" class="gear-list__title type-p-large">{{ section.settings['container-title'] }}</h3>
+      {% endif %}
       <div class="gear-list__inner">
         {% for block in section.blocks %}
           <div class="gear-card">
-            <div class="gear-card__indicator"></div>
+            <div class="gear-card__indicator" aria-hidden="true"></div>
             <div class="gear-card__content">
               <div class="gear-card__title-wrapper">
-                <h4 class="type-h1-small">{{ block.settings.brand }}</h4>
-                <h5 class="type-h1-small">{{ block.settings['camera-name'] }}</h5>
+                {% if block.settings.brand %}
+                  <h4 class="type-h1-small">{{ block.settings.brand }}</h4>
+                {% endif %}
+                {% if block.settings['camera-name'] %}
+                  <h5 class="type-h1-small">{{ block.settings['camera-name'] }}</h5>
+                {% endif %}
               </div>
               <div class="gear-card__price-wrapper">
-                <div class="gear-card__price-card">
-                  <p class="type-p-large">{{ block.settings['price-per-day'] }}</p>
-                  <p class="type-p">/day or weekend</p>
-                </div>
-                <div class="gear-card__price-card">
-                  <p class="type-p-large">{{ block.settings['price-per-week'] }}</p>
-                  <p class="type-p">/week</p>
-                </div>
+                {% if block.settings['price-per-day'] %}
+                  <div class="gear-card__price-card">
+                    <p class="type-p-large">{{ block.settings['price-per-day'] }}</p>
+                    <p class="type-p">/day or weekend</p>
+                  </div>
+                {% endif %}
+                {% if block.settings['price-per-week'] %}
+                  <div class="gear-card__price-card">
+                    <p class="type-p-large">{{ block.settings['price-per-week'] }}</p>
+                    <p class="type-p">/week</p>
+                  </div>
+                {% endif %}
               </div>
-              <div class="gear-card__description">
-                <p class="type-p">{{ block.settings['camera-description'] }}</p>
-              </div>
+              {% if block.settings['camera-description'] %}
+                <div class="gear-card__description">
+                  <p class="type-p">{{ block.settings['camera-description'] }}</p>
+                </div>
+              {% endif %}
               <div class="gear-card-accordions-list" data-gear-accordion-list>
                 {% for i in (1..3) %}
                   {% assign accordion_title_key = 'accordion-' | append: i | append: '-title' %}
@@ -57,7 +69,7 @@
                       data-gear-accordion-trigger
                     >
                       <div class="gear-card-accordion__header">
-                        <div class="gear-card-accordion__indicator"></div>
+                        <div class="gear-card-accordion__indicator" aria-hidden="true"></div>
                         <p class="type-p">{{ accordion_title }}</p>
                       </div>
                       <div
@@ -69,7 +81,7 @@
                         data-gear-accordion-content
                       >
                         <div class="gear-card-accordion__inner">
-                          <p class="type-p">—</p>
+                          <p class="type-p" aria-hidden="true">—</p>
                           <div class="type-p">{{ accordion_content }}</div>
                         </div>
                       </div>
@@ -77,36 +89,44 @@
                   {% endif %}
                 {% endfor %}
               </div>
-              <div class="gear-card__button-wrapper gear-card__button-wrapper--mobile">
-                <a
-                  href="{{ block.settings.link }}"
-                  target="_blank"
-                  class="primary-button primary-button--black"
-                >
-                  Rent now
-                </a>
-              </div>
-            </div>
-            <div class="gear-card__image-wrapper">
-              <div class="gear-card__image-inner">
-                <img
-                  src="{{ block.settings['camera-photo'] | image_url }}"
-                  width="auto"
-                  height="auto"
-                  alt="Camera Image"
-                >
-              </div>
-              <div class="gear-card__button-wrapper gear-card__button-wrapper--desktop">
-                <div data-hover-shake>
+              {% if block.settings.link %}
+                <div class="gear-card__button-wrapper gear-card__button-wrapper--mobile">
                   <a
                     href="{{ block.settings.link }}"
                     target="_blank"
                     class="primary-button primary-button--black"
+                    rel="noopener"
                   >
                     Rent now
                   </a>
                 </div>
-              </div>
+              {% endif %}
+            </div>
+            <div class="gear-card__image-wrapper">
+              {% if block.settings['camera-photo'] %}
+                <div class="gear-card__image-inner">
+                  <img
+                    src="{{ block.settings['camera-photo'] | image_url }}"
+                    width="auto"
+                    height="auto"
+                    alt="{{ block.settings.brand }} {{ block.settings['camera-name'] }}"
+                  >
+                </div>
+              {% endif %}
+              {% if block.settings.link %}
+                <div class="gear-card__button-wrapper gear-card__button-wrapper--desktop">
+                  <div data-hover-shake>
+                    <a
+                      href="{{ block.settings.link }}"
+                      target="_blank"
+                      class="primary-button primary-button--black"
+                      rel="noopener"
+                    >
+                      Rent now
+                    </a>
+                  </div>
+                </div>
+              {% endif %}
             </div>
           </div>
         {% endfor %}

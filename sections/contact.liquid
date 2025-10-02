@@ -1,29 +1,71 @@
 {{ 'contact.css' | asset_url | stylesheet_tag }}
 
-<section>
-  <h2>{{ section.settings.heading }}</h2>
-  <nav class="contact-nav">
-    {% for block in section.blocks %}
-      <div class="button">
-        <a href="#{{ block.id }}">{{ block.settings.heading }}</a>
-      </div>
-    {% endfor %}
-  </nav>
-  <div class="contact-blurb">
-    {{ section.settings.paragraph }}
-  </div>
-  {% for block in section.blocks %}
-    <div id="{{ block.id }}" class="contact-item">
-      <h2>{{ block.settings.heading }}</h2>
-      {{ block.settings.paragraph }}
-      <span>
-        {{ block.settings.email_icon }}
-        <p>{{ block.settings.email }}</p>
-      </span>
+<div class="contact" role="main" aria-labelledby="contact-page-heading">
+  <div class="layout-wrapper">
+    <div class="contact__inner">
+      <section class="contact-page__header">
+        {% if section.settings.heading != blank %}
+          <h1
+            id="contact-page-heading"
+            class="contact-page__heading type-h1-large"
+          >
+            {{ section.settings.heading }}
+          </h1>
+        {% endif %}
+        {% if section.blocks.size > 0 %}
+          <nav
+            class="contact-page-nav"
+            aria-label="Contact navigation"
+          >
+            {% for block in section.blocks %}
+              {% if block.type == 'info' and block.settings.heading != blank %}
+                {% assign current_heading_id = block.settings.heading | handleize %}
+                <div class="contact-button">
+                  {% render 'anchor-button', title: block.settings.heading, id: current_heading_id %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          </nav>
+        {% endif %}
+      </section>
+      {% if section.settings.paragraph != blank %}
+        <section class="contact-paragraph" aria-label="Contact information">
+          {{ section.settings.paragraph }}
+        </section>
+      {% endif %}
+      <section class="contact-page-list-wrapper" aria-label="Contact details">
+        {% for block in section.blocks %}
+          {% if block.settings.heading != blank %}
+            <div id="{{ block.id }}" class="contact-card">
+              <h3 class="contact-card__heading type-p-large">{{ block.settings.heading }}</h3>
+              {% if block.settings.paragraph != blank %}
+                <div class="contact-card__content type-p">
+                  {{ block.settings.paragraph }}
+                </div>
+              {% endif %}
+              {% if block.settings.email != blank %}
+                <div class="contact-card__email">
+                  {% if block.settings.email_icon != blank %}
+                    <span class="contact-card__email-icon type-p" aria-hidden="true">
+                      {{- block.settings.email_icon -}}
+                    </span>
+                  {% endif %}
+                  <a
+                    class="contact-card__email-text type-p"
+                    href="mailto:{{ block.settings.email }}"
+                    aria-label="Email {{ block.settings.email }}"
+                  >
+                    {{- block.settings.email -}}
+                  </a>
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </section>
     </div>
-  {% endfor %}
-  <div>EMAIL FORM HERE</div>
-</section>
+  </div>
+</div>
 
 {% schema %}
 {

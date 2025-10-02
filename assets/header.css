@@ -14,7 +14,7 @@ header {
 }
 
 .header__logo {
-  color: var(--color-black) !important;
+  color: var(--color-black);
   position: fixed;
   top: 0;
   left: 50%;

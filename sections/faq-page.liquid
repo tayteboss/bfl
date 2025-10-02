@@ -1,14 +1,14 @@
 {{ 'faq.css' | asset_url | stylesheet_tag }}
 
-<section class="faqs-page">
+<section class="faqs-page" aria-labelledby="faqs-page-heading">
   <div class="layout-wrapper">
     <div class="faqs-page__header">
-      <h2
+      <h1
         id="faqs-page-heading"
         class="faqs-page__heading type-h1-large"
       >
         FAQ
-      </h2>
+      </h1>
       {% if section.blocks.size > 0 %}
         <nav
           class="faqs-page-nav"
@@ -17,16 +17,18 @@
           {% for block in section.blocks %}
             {% if block.type == 'faq_heading' %}
               {% assign current_heading_id = block.settings.heading | handleize %}
-              <div class="faq-button">
-                {% render 'anchor-button', title: block.settings.heading, id: current_heading_id %}
-              </div>
+              {% if block.settings.heading != blank %}
+                <div class="faq-button">
+                  {% render 'anchor-button', title: block.settings.heading, id: current_heading_id %}
+                </div>
+              {% endif %}
             {% endif %}
           {% endfor %}
         </nav>
       {% endif %}
     </div>
 
-    <div class="faq-page-list-wrapper" data-faq-list>
+    <div class="faq-page-list-wrapper" data-faq-list role="tablist">
       {% assign current_heading_id = '' %}
       {% assign current_heading = '' %}
       {% for block in section.blocks %}
@@ -37,18 +39,22 @@
           {% endif %}
           {% assign current_heading_id = block.settings.heading | handleize %}
           {% assign current_heading = block.settings.heading %}
-          <div class="faq-page-list-item">
-            <div id="{{ current_heading_id }}" class="faq-heading">
-              <h2 class="type-h2">{{ current_heading }}</h2>
-            </div>
-            <div class="faq-list">
+          {% if current_heading != blank %}
+            <div class="faq-page-list-item">
+              <div id="{{ current_heading_id }}" class="faq-heading">
+                <h2 class="type-h2">{{ current_heading }}</h2>
+              </div>
+              <div class="faq-list" role="region" aria-labelledby="{{ current_heading_id }}">
+          {% endif %}
         {% elsif block.type == 'faq_item' %}
-          {% render 'faq-card',
-            block: block,
-            question: block.settings.question,
-            answer: block.settings.answer,
-            heading_id: current_heading_id
-          %}
+          {% if block.settings.question != blank %}
+            {% render 'faq-card',
+              block: block,
+              question: block.settings.question,
+              answer: block.settings.answer,
+              heading_id: current_heading_id
+            %}
+          {% endif %}
         {% endif %}
       {% endfor %}
       {% if current_heading != '' %}
@@ -69,8 +75,8 @@
     {% endif %}
   </div>
   {% if section.settings.stamp_image != blank %}
-    <div class="faq-page__stamp-image">
-      <img src="{{ section.settings.stamp_image | image_url }}" alt="Stamp Image" width="auto" height="auto">
+    <div class="faq-page__stamp-image" aria-hidden="true">
+      <img src="{{ section.settings.stamp_image | image_url }}" alt="" width="auto" height="auto">
     </div>
   {% endif %}
 </section>

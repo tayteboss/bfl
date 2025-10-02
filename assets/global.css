@@ -297,6 +297,19 @@ p,
       letter-spacing: 0;
     }
   }
+
+  li {
+    font-family: var(--font-gt-standard-mono-regular);
+    font-weight: 400;
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.25rem; /* 20px */
+  
+    @media (max-width: 768px) {
+      font-size: 0.8125rem; /* 13px */
+      line-height: 1.4; /* 140% */
+      letter-spacing: 0;
+    }
+  }
 }
 
 .type-p-small {
