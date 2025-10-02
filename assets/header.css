@@ -11,6 +11,10 @@ header {
   padding: 24px;
 
   transition: opacity var(--transition-speed-default) var(--transition-ease);
+
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
 }
 
 .header__logo {
@@ -50,20 +54,87 @@ header {
   transition: all var(--transition-speed-default) var(--transition-ease);
 }
 
+.menu-toggle {
+  position: relative;
+  z-index: 1000;
+
+  @media (max-width: 768px) {
+    font-size: 17px;
+    background: var(--color-green);
+    color: var(--color-black);
+    border-radius: 1.5rem;
+    line-height: 1;
+    padding: 1rem 36px;
+    letter-spacing: 0;
+  }
+}
+
+.menu-toggle__number {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: var(--color-black);
+    color: var(--color-green);
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px;
+    font-size: 12px;
+    line-height: 1;
+    min-width: 24px;
+    height: 24px;
+  }
+}
+
+
 .menu-toggle:hover, .cart-button:hover {
   opacity: 0.75;
 }
 
 .menu-open .menu-toggle {
   color: var(--color-white);
+
+  @media (max-width: 768px) {
+    color: var(--color-black);
+  }
 }
 
 .cart-button {
   display: flex;
   align-items: center;
   gap: 16px;
+
+  @media (max-width: 768px) {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    font-size: 32px;
+    line-height: 1.1;
+    letter-spacing: -0.02rem;
+    gap: 8px;
+  }
 }
 
+.cart-button--mobile {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+}
+
+.cart-button--desktop {
+  display: flex;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
 
 .menu-open .cart-button {
   color: var(--color-white);
@@ -80,6 +151,12 @@ header {
   padding: 0 8px;
 
   transition: all var(--transition-speed-default) var(--transition-ease);
+
+  @media (max-width: 768px) {
+    height: 35px;
+    min-width: 35px;
+    padding: 0 4px;
+  }
 }
 
 .menu-open .cart-button__bubble {
@@ -94,6 +171,11 @@ header {
   top: 1px;
 
   transition: all var(--transition-speed-default) var(--transition-ease);
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+    line-height: 1;
+  }
 }
 
 .menu-open .cart-button__number {
@@ -149,6 +231,12 @@ header {
   color: var(--color-white);
 
   transition: all var(--transition-speed-default) var(--transition-ease);
+
+  @media (max-width: 768px) {
+    font-size: 32px;
+    line-height: 1.1;
+    letter-spacing: -0.02rem;
+  }
 }
 
 .menu-list__item:hover {

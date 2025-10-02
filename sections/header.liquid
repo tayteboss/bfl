@@ -3,9 +3,14 @@
 <header>
   <a class="header__logo" href="{{ routes.root_url }}"> Bellows Film Lab</a>
 
-  <button class="menu-toggle" aria-label="Open Menu" data-text="Menu">Menu</button>
+  <button class="menu-toggle" aria-label="Open Menu" data-text="Menu">
+    Menu
+    {% if cart.item_count > 0 %}
+      <span class="menu-toggle__number">{{ cart.item_count }}</span>
+    {% endif %}
+  </button>
 
-  <a class="cart-button" href="{{ routes.cart_url }}">
+  <a class="cart-button cart-button--desktop" href="{{ routes.cart_url }}">
     Bag
     <div class="cart-button__bubble">
       <span class="cart-button__number">{{ cart.item_count }}</span>
@@ -30,6 +35,12 @@
         >
       {% endif %}
     </nav>
+    <a class="cart-button cart-button--mobile" href="{{ routes.cart_url }}">
+      Bag
+      <div class="cart-button__bubble">
+        <span class="cart-button__number">{{ cart.item_count }}</span>
+      </div>
+    </a>
   </div>
 </header>
 

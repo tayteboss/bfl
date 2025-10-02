@@ -466,6 +466,10 @@ a {
   z-index: 1000;
   padding: 0 !important;
   mix-blend-mode: darken;
+
+  @media (max-width: 768px) {
+    mix-blend-mode: normal;
+  }
 }
 
 .shopify-section-group-footer-group {
@@ -619,6 +623,7 @@ main .shopify-section:first-child {
   color: var(--color-black);
   border-radius: 50px;
   text-align: center;
+  display: inline-block;
 
   transition: all var(--transition-speed-default) var(--transition-ease);
 }
