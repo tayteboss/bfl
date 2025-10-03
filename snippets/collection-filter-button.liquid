@@ -1,31 +1,7 @@
-{% comment %}
-  There are a few issues and improvements to consider for this code:
-
-  1. **Data Attributes on Product Elements**: The JavaScript expects each product card to have `data-product-tags`, `data-product-vendor`, and `data-product-collections` attributes. If your product cards (e.g., in `product-card.liquid`) do not include these attributes, the filtering will not work. Make sure your product card markup includes:
-    <div
-      data-product-tags="{{ product.tags | join: ',' }}"
-      data-product-vendor="{{ product.vendor }}"
-      data-product-collections="{% for c in product.collections %}{{ c.title }}{% unless forloop.last %},{% endunless %}{% endfor %}"
-    >
-      ...
-    </div>
-
-  2. **Liquid Uniqueness**: The way tags and vendors are collected is a bit inefficient and can result in empty strings in the arrays. It's better to use arrays and `uniq` filter properly.
-
-  3. **Collections Filter**: Filtering by collection title may not be meaningful on a collection page, since all products are already from the current collection. You may want to remove or rethink this.
-
-  4. **Accessibility**: The modal and filter controls could use better accessibility (aria attributes, focus management).
-
-  5. **Display Style**: The code uses `prod.style.display = 'block'`, but your product cards may use `flex` or `grid`. Consider using `''` (empty string) to reset to default, or use a CSS class to hide/show.
-
-  6. **Edge Cases**: If a product has no tags, vendor, or collections, the code may break.
-
-  Below is a revised version with improvements and comments:
-{% endcomment %}
 <!-- Filter Trigger -->
 <button id="open-filters" type="button" aria-haspopup="dialog" aria-controls="filters-modal">+ Filters</button>
 
-<!-- Active Filters (custom) -->
+<!-- Active Filters -->
 <div id="active-filters"></div>
 
 <!-- Modal -->
@@ -33,7 +9,7 @@
   <div>
     <h3 id="filters-modal-title">Filters</h3>
 
-    <!-- Tags -->
+    <!-- TAGS -->
     <fieldset>
       <legend>Tags</legend>
       {% assign all_tags = '' | split: '' %}
@@ -47,7 +23,6 @@
             <input
               type="checkbox"
               value="{{ tag | escape }}"
-              name="properties[{{ tag }}]"
               class="filter-option"
               data-filter-type="tag"
             >
@@ -57,7 +32,7 @@
       {% endfor %}
     </fieldset>
 
-    <!-- Vendors -->
+    <!-- VENDORS -->
     <fieldset>
       <legend>Brands</legend>
       {% assign all_vendors = '' | split: '' %}
@@ -81,7 +56,7 @@
       {% endfor %}
     </fieldset>
 
-    <!-- Collections (optional, see note above) -->
+    <!-- COLLECTIONS -->
     <fieldset>
       <legend>Categories</legend>
       {% for coll in collections %}
@@ -91,7 +66,6 @@
               type="checkbox"
               value="{{ coll.title | escape }}"
               class="filter-option"
-              name="properties[{{ coll.title }}]"
               data-filter-type="collection"
             >
             {{ coll.title }}
@@ -116,6 +90,7 @@
 
     let activeFilters = [];
 
+    // Modal toggle
     openBtn.addEventListener('click', () => {
       modal.style.display = 'block';
       modal.setAttribute('aria-hidden', 'false');
@@ -125,6 +100,7 @@
       modal.setAttribute('aria-hidden', 'true');
     });
 
+    // Apply filters
     applyBtn.addEventListener('click', () => {
       activeFilters = [];
       filterOptions.forEach((opt) => {
@@ -138,6 +114,7 @@
       filterProducts();
     });
 
+    // Render filter chips
     function renderActiveFilters() {
       activeFiltersDiv.innerHTML = '';
       activeFilters.forEach((f) => {
@@ -161,27 +138,30 @@
       });
     }
 
+    // Dynamic filtering
     function filterProducts() {
       const products = document.querySelectorAll('[data-product-tags][data-product-vendor][data-product-collections]');
+
+      const filterHandlers = {
+        tag: (prod, value) =>
+          (prod.dataset.productTags || '')
+            .split(',')
+            .map((s) => s.trim())
+            .includes(value),
+        vendor: (prod, value) => prod.dataset.productVendor === value,
+        collection: (prod, value) =>
+          (prod.dataset.productCollections || '')
+            .split(',')
+            .map((s) => s.trim())
+            .includes(value),
+
+        // Extendable:
+        // price: (prod, value) => parseFloat(prod.dataset.productPrice) <= parseFloat(value),
+        // color: (prod, value) => (prod.dataset.productColors || '').split(',').includes(value),
+      };
+
       products.forEach((prod) => {
-        const tags = (prod.dataset.productTags || '')
-          .split(',')
-          .map((s) => s.trim())
-          .filter(Boolean);
-        const vendor = prod.dataset.productVendor || '';
-        const colls = (prod.dataset.productCollections || '')
-          .split(',')
-          .map((s) => s.trim())
-          .filter(Boolean);
-
-        // OR logic instead of AND logic
-        const match = activeFilters.some((f) => {
-          if (f.type === 'tag') return tags.includes(f.value);
-          if (f.type === 'vendor') return vendor === f.value;
-          if (f.type === 'collection') return colls.includes(f.value);
-          return false;
-        });
-
+        const match = activeFilters.some((f) => filterHandlers[f.type]?.(prod, f.value));
         prod.style.display = match || activeFilters.length === 0 ? '' : 'none';
       });
     }

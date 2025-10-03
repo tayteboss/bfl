@@ -13,9 +13,18 @@
   target="_self"
   aria-label="{{ product.title }} by {{ product.vendor }} - {{ product.price | money }}"
   role="article"
-  data-product-tags="{{ product.tags | join: ',' }}"
-  data-product-vendor="{{ product.vendor }}"
-  data-product-collections="{% for c in product.collections %}{{ c.title }}{% unless forloop.last %},{% endunless %}{% endfor %}"
+  data-product-id="{{ product.id }}"
+  data-product-tags="{{ product.tags | join: ',' | escape }}"
+  data-product-vendor="{{ product.vendor | escape }}"
+  data-product-collections="{% for coll in product.collections %}{{ coll.title | escape }}{% unless forloop.last %},{% endunless %}{% endfor %}"
+  data-product-price="{{ product.price | money_without_currency }}"
+  data-product-colors="
+    {% for option in product.options_with_values %}
+      {% if option.name == 'Color' %}
+        {{ option.values | join: ',' }}
+      {% endif %}
+    {% endfor %}
+  "
 >
   {% assign product_image = product.media | first %}
   {% assign bg_image = product.media[1] %}
