@@ -1,0 +1,189 @@
+{% comment %}
+  There are a few issues and improvements to consider for this code:
+
+  1. **Data Attributes on Product Elements**: The JavaScript expects each product card to have `data-product-tags`, `data-product-vendor`, and `data-product-collections` attributes. If your product cards (e.g., in `product-card.liquid`) do not include these attributes, the filtering will not work. Make sure your product card markup includes:
+    <div
+      data-product-tags="{{ product.tags | join: ',' }}"
+      data-product-vendor="{{ product.vendor }}"
+      data-product-collections="{% for c in product.collections %}{{ c.title }}{% unless forloop.last %},{% endunless %}{% endfor %}"
+    >
+      ...
+    </div>
+
+  2. **Liquid Uniqueness**: The way tags and vendors are collected is a bit inefficient and can result in empty strings in the arrays. It's better to use arrays and `uniq` filter properly.
+
+  3. **Collections Filter**: Filtering by collection title may not be meaningful on a collection page, since all products are already from the current collection. You may want to remove or rethink this.
+
+  4. **Accessibility**: The modal and filter controls could use better accessibility (aria attributes, focus management).
+
+  5. **Display Style**: The code uses `prod.style.display = 'block'`, but your product cards may use `flex` or `grid`. Consider using `''` (empty string) to reset to default, or use a CSS class to hide/show.
+
+  6. **Edge Cases**: If a product has no tags, vendor, or collections, the code may break.
+
+  Below is a revised version with improvements and comments:
+{% endcomment %}
+<!-- Filter Trigger -->
+<button id="open-filters" type="button" aria-haspopup="dialog" aria-controls="filters-modal">+ Filters</button>
+
+<!-- Active Filters (custom) -->
+<div id="active-filters"></div>
+
+<!-- Modal -->
+<div id="filters-modal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="filters-modal-title">
+  <div>
+    <h3 id="filters-modal-title">Filters</h3>
+
+    <!-- Tags -->
+    <fieldset>
+      <legend>Tags</legend>
+      {% assign all_tags = '' | split: '' %}
+      {% for product in collection.products %}
+        {% assign all_tags = all_tags | concat: product.tags %}
+      {% endfor %}
+      {% assign tag_list = all_tags | uniq %}
+      {% for tag in tag_list %}
+        {% if tag != blank %}
+          <label>
+            <input
+              type="checkbox"
+              value="{{ tag | escape }}"
+              name="properties[{{ tag }}]"
+              class="filter-option"
+              data-filter-type="tag"
+            >
+            {{ tag }}
+          </label>
+        {% endif %}
+      {% endfor %}
+    </fieldset>
+
+    <!-- Vendors -->
+    <fieldset>
+      <legend>Brands</legend>
+      {% assign all_vendors = '' | split: '' %}
+      {% for product in collection.products %}
+        {% assign vendor_array = product.vendor | split: '|||' %}
+        {% assign all_vendors = all_vendors | concat: vendor_array %}
+      {% endfor %}
+      {% assign vendor_list = all_vendors | uniq %}
+      {% for vendor in vendor_list %}
+        {% if vendor != blank %}
+          <label>
+            <input
+              type="checkbox"
+              value="{{ vendor | escape }}"
+              class="filter-option"
+              data-filter-type="vendor"
+            >
+            {{ vendor }}
+          </label>
+        {% endif %}
+      {% endfor %}
+    </fieldset>
+
+    <!-- Collections (optional, see note above) -->
+    <fieldset>
+      <legend>Categories</legend>
+      {% for coll in collections %}
+        {% if coll.handle != 'events' %}
+          <label>
+            <input
+              type="checkbox"
+              value="{{ coll.title | escape }}"
+              class="filter-option"
+              name="properties[{{ coll.title }}]"
+              data-filter-type="collection"
+            >
+            {{ coll.title }}
+          </label>
+        {% endif %}
+      {% endfor %}
+    </fieldset>
+
+    <button id="apply-filters" type="button">Apply</button>
+    <button id="close-filters" type="button">Close</button>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const openBtn = document.getElementById('open-filters');
+    const closeBtn = document.getElementById('close-filters');
+    const applyBtn = document.getElementById('apply-filters');
+    const modal = document.getElementById('filters-modal');
+    const activeFiltersDiv = document.getElementById('active-filters');
+    const filterOptions = document.querySelectorAll('.filter-option');
+
+    let activeFilters = [];
+
+    openBtn.addEventListener('click', () => {
+      modal.style.display = 'block';
+      modal.setAttribute('aria-hidden', 'false');
+    });
+    closeBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+      modal.setAttribute('aria-hidden', 'true');
+    });
+
+    applyBtn.addEventListener('click', () => {
+      activeFilters = [];
+      filterOptions.forEach((opt) => {
+        if (opt.checked) {
+          activeFilters.push({ type: opt.dataset.filterType, value: opt.value });
+        }
+      });
+      renderActiveFilters();
+      modal.style.display = 'none';
+      modal.setAttribute('aria-hidden', 'true');
+      filterProducts();
+    });
+
+    function renderActiveFilters() {
+      activeFiltersDiv.innerHTML = '';
+      activeFilters.forEach((f) => {
+        const chip = document.createElement('span');
+        chip.className = 'active-filter-chip';
+        chip.textContent = f.value + ' ';
+        const remove = document.createElement('button');
+        remove.type = 'button';
+        remove.textContent = '×';
+        remove.setAttribute('aria-label', 'Remove filter ' + f.value);
+        remove.addEventListener('click', () => {
+          activeFilters = activeFilters.filter((x) => x.value !== f.value);
+          filterOptions.forEach((opt) => {
+            if (opt.value === f.value) opt.checked = false;
+          });
+          renderActiveFilters();
+          filterProducts();
+        });
+        chip.appendChild(remove);
+        activeFiltersDiv.appendChild(chip);
+      });
+    }
+
+    function filterProducts() {
+      const products = document.querySelectorAll('[data-product-tags][data-product-vendor][data-product-collections]');
+      products.forEach((prod) => {
+        const tags = (prod.dataset.productTags || '')
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean);
+        const vendor = prod.dataset.productVendor || '';
+        const colls = (prod.dataset.productCollections || '')
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean);
+
+        // OR logic instead of AND logic
+        const match = activeFilters.some((f) => {
+          if (f.type === 'tag') return tags.includes(f.value);
+          if (f.type === 'vendor') return vendor === f.value;
+          if (f.type === 'collection') return colls.includes(f.value);
+          return false;
+        });
+
+        prod.style.display = match || activeFilters.length === 0 ? '' : 'none';
+      });
+    }
+  });
+</script>

@@ -73,6 +73,10 @@ main {
   transition: filter var(--transition-speed-default) var(--transition-ease), opacity var(--transition-speed-default) var(--transition-ease);
 }
 
+#shop-hcaptcha-badge-container {
+  display: none !important;
+}
+
 body.menu-open main, body.menu-open .header__logo {
   filter: blur(25px);
   opacity: 0.75;

@@ -19,21 +19,7 @@
       >
         Shop {{ collection.title }}
       </h2>
-      FIX FILTERS HERE
-      {% comment %}
-        <div
-          class="collection-filters"
-          role="navigation"
-          aria-label="Collection filters"
-        >
-          {% for block in section.blocks %}
-            {% assign collection = collections[block.settings.collection] %}
-            {% if collection %}
-              {% render 'filter-button', title: collection.title, id: collection.id, url: collection.url %}
-            {% endif %}
-          {% endfor %}
-        </div>
-      {% endcomment %}
+      {% render 'collection-filter-button' %}
     </section>
   </div>
 
@@ -43,7 +29,9 @@
     aria-label="Featured products"
   >
     {% for product in collection.products %}
-      {% render 'product-card', product: product %}
+      {% unless product.collections contains collections.events %}
+        {% render 'product-card', product: product %}
+      {% endunless %}
     {% endfor %}
   </section>
   <div class="pagination-button">

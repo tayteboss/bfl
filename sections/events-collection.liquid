@@ -3,14 +3,14 @@
 <div>
   <div>
     <div>{{ section.settings.title }}</div>
-    <div>FILTERS HERE</div>
+    {% render 'events-filter-button' %}
   </div>
   <div>
     <div>{{ section.settings.event_present }}</div>
     <div>
       {% for product in collections.events.products %}
         {% if product.metafields.custom.history.value != true %}
-          <div>
+          <div data-event-product-tags="{{ product.tags | join: ',' }}">
             {{ product.title }}
             {{ product.metafields.custom.when_event }}
             <div>
@@ -31,7 +31,7 @@
     <div>
       {% for product in collections.events.products %}
         {% if product.metafields.custom.history.value == true %}
-          <div>
+          <div data-event-product-tags="{{ product.tags | join: ',' }}">
             {{ product.title }}
             {{ product.metafields.custom.when_event }}
             <div>

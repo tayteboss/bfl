@@ -1,0 +1,58 @@
+{% comment %}
+  Render unique tags from products in the 'events' collection as filter buttons.
+  When a tag is clicked, only products with that tag are shown.
+{% endcomment %}
+
+{% assign all_tags = '' | split: '' %}
+
+{% if collections.events and collections.events.products_count > 0 %}
+  {% for product in collections.events.products %}
+    {% assign all_tags = all_tags | concat: product.tags %}
+  {% endfor %}
+  {% assign tag_list = all_tags | uniq %}
+{% else %}
+  {% assign tag_list = '' | split: '' %}
+  <!-- Debug: No events collection found or no products in collection -->
+{% endif %}
+
+{% comment %} Debug info {% endcomment %}
+{% if collections.events and collections.events.products_count > 0 %}
+  <!-- Found {{ collections.events.products_count }} products in events collection -->
+  <!-- Tag list: {{ tag_list | join: ', ' }} -->
+{% else %}
+  <!-- No events collection or no products found -->
+{% endif %}
+
+<div class="event-tags-filter" id="event-tags-filter">
+  <button class="filter-button type-p event-tag-filter" data-tag="all" aria-pressed="true">All</button>
+  {% if tag_list.size > 0 %}
+    {% for tag in tag_list %}
+      <button class="filter-button type-p event-tag-filter" data-tag="{{ tag | escape }}" aria-pressed="false">
+        {{ tag }}
+      </button>
+    {% endfor %}
+  {% else %}
+    <!-- No tags found -->
+  {% endif %}
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const filterButtons = document.querySelectorAll('.event-tag-filter');
+    const allProducts = document.querySelectorAll('[data-event-product-tags]');
+    filterButtons.forEach((btn) => {
+      btn.addEventListener('click', function () {
+        filterButtons.forEach((b) => b.setAttribute('aria-pressed', 'false'));
+        this.setAttribute('aria-pressed', 'true');
+        const tag = this.getAttribute('data-tag');
+        allProducts.forEach((prod) => {
+          if (tag === 'all' || prod.getAttribute('data-event-product-tags').split(',').includes(tag)) {
+            prod.style.display = '';
+          } else {
+            prod.style.display = 'none';
+          }
+        });
+      });
+    });
+  });
+</script>

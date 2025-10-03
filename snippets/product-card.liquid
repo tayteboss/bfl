@@ -13,11 +13,16 @@
   target="_self"
   aria-label="{{ product.title }} by {{ product.vendor }} - {{ product.price | money }}"
   role="article"
+  data-product-tags="{{ product.tags | join: ',' }}"
+  data-product-vendor="{{ product.vendor }}"
+  data-product-collections="{% for c in product.collections %}{{ c.title }}{% unless forloop.last %},{% endunless %}{% endfor %}"
 >
   {% assign product_image = product.media | first %}
   {% assign bg_image = product.media[1] %}
 
-  <div class="product-card__image-wrapper">
+  <div
+    class="product-card__image-wrapper"
+  >
     {% if product.metafields.custom.product_badge %}
       <div class="product-badge" role="text" aria-label="Product badge: {{ product.metafields.custom.product_badge }}">
         {{ product.metafields.custom.product_badge | metafield_tag }}
