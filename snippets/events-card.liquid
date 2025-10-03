@@ -1,0 +1,73 @@
+{% comment %}
+  Renders an event card
+
+  Usage:
+  {% render 'events-card', product: product %}
+{% endcomment %}
+
+<a
+  href="{{ product.url }}"
+  class="event-card"
+  data-event-product-tags="{{ product.tags | join: ',' }}"
+  aria-labelledby="event-title-{{ product.id }}"
+  role="article"
+>
+  <div class="event-card__heading-wrapper">
+    {% if product.title %}
+      <h4 id="event-title-{{ product.id }}" class="event-card__heading type-h2">{{ product.title }}</h4>
+    {% endif %}
+    {% if product.metafields.custom.when_event %}
+      <p class="event-card__date type-h2" aria-label="Event date">{{ product.metafields.custom.when_event }}</p>
+    {% endif %}
+  </div>
+  <div class="event-card__image-wrapper">
+    {% if product.tags.size > 0 %}
+      <div class="event-card__category-badges" role="group" aria-label="Event categories">
+        {% for tag in product.tags %}
+          <div class="event-card__category-badge" role="text" aria-label="Event category">
+            {{ tag }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <div class="event-card__image-ratio">
+      <div class="event-card__image-ratio-inner">
+        {% if product.featured_image %}
+          {%
+            render 'image',
+            class: 'event-image',
+            image: product.featured_image,
+            alt: product.featured_image.alt | default: product.title
+          %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="event-card__content">
+    {% if product.description %}
+      <p class="event-card__description type-p-large" aria-label="Event description">
+        {{ product.description | truncatewords: 40 }}
+      </p>
+    {% endif %}
+    {% if product.metafields.custom.where_event %}
+      <div class="event-card__content-card" role="group" aria-label="Event location">
+        <p class="type-p-large">Where</p>
+        <p class="type-p-large">{{ product.metafields.custom.where_event }}</p>
+      </div>
+    {% endif %}
+    {% if product.metafields.custom.when_event %}
+      <div class="event-card__content-card" role="group" aria-label="Event timing">
+        <p class="type-p-large">When</p>
+        <p class="type-p-large">{{ product.metafields.custom.when_event }}</p>
+      </div>
+    {% endif %}
+    <div class="event-card__mobile-button">
+      <button
+        class="primary-button primary-button--small primary-button--outline"
+        aria-label="View Event"
+      >
+        View Event
+      </button>
+    </div>
+  </div>
+</a>

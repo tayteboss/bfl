@@ -1,4 +1,4 @@
-.featured-collection {
+.main-collection {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,7 +9,7 @@
   }
 }
 
-.featured-collection .layout-grid, .collection .layout-grid {
+.main-collection .layout-grid, .collection .layout-grid {
   row-gap: 4rem;
 
   @media (max-width: 768px) {
@@ -17,7 +17,7 @@
   }
 }
 
-.featured-collection__header {
+.main-collection__header {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -25,7 +25,7 @@
   gap: 2rem;
 }
 
-.featured-collection__heading {
+.main-collection__heading {
   text-align: center;
 }
 

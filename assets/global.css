@@ -550,9 +550,50 @@ main .shopify-section:first-child {
   background: var(--color-black);
   color: var(--color-white);
 }
+
+.primary-button--dark-grey {
+  background: var(--color-grey-dark);
+  color: var(--color-white);
+}
+
+@media (hover: hover) {
+  .primary-button--dark-grey:hover {
+    background: var(--color-white);
+    color: var(--color-grey-dark);
+  }
+}
+
 @media (hover: hover) {
   .primary-button--black:hover {
     background: var(--color-white);
+    color: var(--color-black);
+  }
+}
+
+.primary-button--highlight {
+  background: var(--color-highlight);
+  color: var(--color-black);
+}
+
+@media (hover: hover) {
+  .primary-button--highlight:hover {
+    background: var(--color-yellow);
+    color: var(--color-black);
+  }
+}
+
+.primary-button--outline {
+  background: transparent;
+  color: var(--color-black);
+  border: 1px solid var(--color-black);
+  border-radius: 100px;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+}
+
+@media (hover: hover) {
+  .primary-button--outline:hover {
+    background: var(--color-yellow);
     color: var(--color-black);
   }
 }

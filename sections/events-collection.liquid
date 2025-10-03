@@ -1,51 +1,131 @@
 {{ 'events-page.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'events-page.js' | asset_url }}" defer></script>
 
-<div>
-  <div>
-    <div>{{ section.settings.title }}</div>
-    {% render 'events-filter-button' %}
-  </div>
-  <div>
-    <div>{{ section.settings.event_present }}</div>
-    <div>
-      {% for product in collections.events.products %}
-        {% if product.metafields.custom.history.value != true %}
-          <div data-event-product-tags="{{ product.tags | join: ',' }}">
-            {{ product.title }}
-            {{ product.metafields.custom.when_event }}
-            <div>
-              {% render 'image', class: 'event-image', image: product.featured_image %}
+<div
+  class="events-collection"
+  data-section-id="{{ section.id }}"
+  data-events-collection
+  role="main"
+  aria-label="Events Collection"
+>
+  <div class="layout-wrapper">
+    <section class="events-collection__header" aria-labelledby="collection-heading">
+      <h1 class="events-collection__heading type-h1-large" id="collection-heading">
+        {{ section.settings.title }}
+      </h1>
+      <div
+        class="collection-filters"
+        role="navigation"
+        aria-label="Collection filters"
+      >
+        {% render 'events-filter-button' %}
+      </div>
+    </section>
+
+    <section class="events-list-wrapper" aria-label="Events Lists">
+      {% paginate collection.products by 5 %}
+        {% assign now_ts = 'now' | date: '%s' | plus: 0 %}
+        {% assign present_blob = '' %}
+        {% assign past_blob = '' %}
+        {% for product in collection.products %}
+          {% assign is_upcoming = true %}
+          {% assign event_ts_num = 0 %}
+          {% if product.metafields.custom.event_date %}
+            {% assign event_raw = product.metafields.custom.event_date.value %}
+            {% assign event_ts = event_raw | date: '%s' %}
+            {% assign event_ts_num = event_ts | plus: 0 %}
+            {% if event_ts_num < now_ts %}
+              {% assign is_upcoming = false %}
+            {% endif %}
+          {% endif %}
+
+          {% capture item %}
+            {% render 'events-card', product: product %}
+          {% endcapture %}
+          {% capture entry %}{{ event_ts_num }}::{{ item }}||{% endcapture %}
+          {% if is_upcoming %}
+            {% assign present_blob = present_blob | append: entry %}
+          {% else %}
+            {% assign past_blob = past_blob | append: entry %}
+          {% endif %}
+        {% endfor %}
+
+        {% assign present_arr = present_blob | split: '||' %}
+        {% assign present_sorted = present_arr | sort %}
+        {% if present_sorted.size > 0 %}
+          <div class="events-list" aria-labelledby="upcoming-events-heading">
+            <h2 class="events-list__heading type-h1-small" id="upcoming-events-heading">
+              {{ section.settings.event_present }}
+            </h2>
+            <div class="events-list__inner" data-events-group="upcoming">
+              {% for entry in present_sorted reversed %}
+                {% if entry != blank %}
+                  {% assign parts = entry | split: '::' %}
+                  {{ parts[1] }}
+                {% endif %}
+              {% endfor %}
             </div>
-            {{ product.description }}
-            <p>Where</p>
-            {{ product.metafields.custom.where_event }}
-            <p>When</p>
-            {{ product.metafields.custom.when_event }}
           </div>
         {% endif %}
-      {% endfor %}
-    </div>
-  </div>
-  <div>
-    <div>{{ section.settings.event_past }}</div>
-    <div>
-      {% for product in collections.events.products %}
-        {% if product.metafields.custom.history.value == true %}
-          <div data-event-product-tags="{{ product.tags | join: ',' }}">
-            {{ product.title }}
-            {{ product.metafields.custom.when_event }}
-            <div>
-              {% render 'image', class: 'event-image', image: product.featured_image %}
+
+        {% assign past_arr = past_blob | split: '||' %}
+        {% assign past_sorted = past_arr | sort %}
+        {% if past_sorted.size > 0 %}
+          <div class="events-list" aria-labelledby="past-events-heading">
+            <h2 class="events-list__heading type-h1-small" id="past-events-heading">
+              {{ section.settings.event_past }}
+            </h2>
+            <div class="events-list__inner" data-events-group="past">
+              {% for entry in past_sorted reversed %}
+                {% if entry != blank %}
+                  {% assign parts = entry | split: '::' %}
+                  {{ parts[1] }}
+                {% endif %}
+              {% endfor %}
             </div>
-            {{ product.description }}
-            <p>Where</p>
-            {{ product.metafields.custom.where_event }}
-            <p>When</p>
-            {{ product.metafields.custom.when_event }}
           </div>
         {% endif %}
-      {% endfor %}
-    </div>
+
+        {% if paginate.pages > 1 and paginate.next %}
+          <section class="events-pagination-button" aria-label="Pagination">
+            <div data-hover-shake>
+              <a
+                href="{{ paginate.next.url }}"
+                class="primary-button"
+                data-events-load-more
+                aria-label="Load more events"
+                >Load More</a
+              >
+            </div>
+          </section>
+        {% endif %}
+      {% endpaginate %}
+    </section>
+    <section class="host-events-content" aria-label="Host Events Information">
+      {% if section.settings.host_title %}
+        <h2 class="host-events-content__heading type-h1-small" id="host-events-heading">
+          {{ section.settings.host_title }}
+        </h2>
+      {% endif %}
+      {% if section.settings.host_description %}
+        <p class="host-events-content__description type-p-x-large" aria-labelledby="host-events-heading">
+          {{ section.settings.host_description }}
+        </p>
+      {% endif %}
+      {% if section.settings.host_button_link and section.settings.host_button_title %}
+        <div class="host-events-content__button-wrapper">
+          <div data-hover-shake="small">
+            <a
+              href="{{ section.settings.host_button_link }}"
+              class="host-events-content__button primary-button primary-button--small"
+              aria-label="{{ section.settings.host_button_title }}"
+            >
+              {{- section.settings.host_button_title -}}
+            </a>
+          </div>
+        </div>
+      {% endif %}
+    </section>
   </div>
 </div>
 
@@ -70,6 +150,30 @@
       "id": "event_past",
       "label": "Past Events Heading",
       "default": "Past Events"
+    },
+    {
+      "type": "text",
+      "id": "host_title",
+      "label": "Host Title",
+      "default": "Host your event at Bellows"
+    },
+    {
+      "type": "textarea",
+      "id": "host_description",
+      "label": "Host Description",
+      "default": "Got an idea for a workshop, photowalk, or creative gathering? We love collaborating with photographers, artists, and educators to bring new experiences to our community."
+    },
+    {
+      "type": "text",
+      "id": "host_button_title",
+      "label": "Host Button Title",
+      "default": "Let's make it happen"
+    },
+    {
+      "type": "text",
+      "id": "host_button_link",
+      "label": "Host Button Email Link",
+      "default": "mailto:events@bellows.com"
     }
   ],
   "presets": [
