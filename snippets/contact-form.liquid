@@ -6,135 +6,131 @@
   {% render 'contact-form', service_options: section.settings.service_options %}
 {% endcomment %}
 
-{% form 'customer', class: 'contact-form' %}
-  <input type="hidden" name="contact[tags]" value="contact-form">
-  <div>
-    <!-- Full Name -->
-    <div class="field">
-      <input
-        id="ContactFormFullName--{{ section.id }}"
-        type="text"
-        name="contact[full_name]"
-        class="field__input"
-        value="{{ form.full_name }}"
-        aria-required="true"
-        placeholder="Full Name"
-        required
-      >
-      <label class="field__label" for="ContactFormFullName--{{ section.id }}"> Full Name </label>
-    </div>
-
-    <!-- Email -->
-    <div class="field">
-      <input
-        id="ContactFormEmail--{{ section.id }}"
-        type="email"
-        name="contact[email]"
-        class="field__input"
-        value="{{ form.email }}"
-        aria-required="true"
-        autocorrect="off"
-        autocapitalize="off"
-        autocomplete="email"
-        {% if form.errors %}
+<section class="contact-form-section">
+  <div class="layout-wrapper">
+    {% form 'customer', class: 'contact-form' %}
+      <input type="hidden" name="contact[tags]" value="contact-form" aria-label="Contact form">
+      {%- if form.posted_successfully? -%}
+        <h3
+          class="contact-form__message contact-form__message--success form__message type-h1-x-small"
+          id="ContactForm-success--{{ section.id }}"
+          tabindex="-1"
           autofocus
-          aria-invalid="true"
-          aria-describedby="ContactForm-error--{{ section.id }}"
-        {% elsif form.posted_successfully? %}
-          aria-describedby="ContactForm-success--{{ section.id }}"
-        {% endif %}
-        placeholder="Email"
-        required
-      >
-      <label class="field__label" for="ContactFormEmail--{{ section.id }}"> Email </label>
-    </div>
+        >
+          Thank you, we'll get back to you as soon as possible.
+        </h3>
+      {%- elsif form.errors -%}
+        <small class="contact-form__message form__message type-p-large" id="ContactForm-error--{{ section.id }}">
+          {{ form.errors | json }}
+        </small>
+      {%- else -%}
+        <h2 class="contact-form-section__heading type-h1-small">Still need help?</h2>
+        <div class="contact-form__fields">
+          <!-- Full Name -->
+          <div class="form-field">
+            <input
+              id="ContactFormFullName--{{ section.id }}"
+              type="text"
+              name="contact[full_name]"
+              class="field__input"
+              value="{{ form.full_name }}"
+              aria-required="true"
+              placeholder="Full Name*"
+              aria-label="Full Name"
+              required
+            >
+          </div>
 
-    <!-- Select a Service -->
-    <div class="field">
-      <select
-        id="ContactFormService--{{ section.id }}"
-        name="contact[service]"
-        class="field__input"
-        aria-required="true"
-        required
-      >
-        <option value="" disabled selected>Select a service</option>
+          <!-- Email -->
+          <div class="form-field">
+            <input
+              id="ContactFormEmail--{{ section.id }}"
+              type="email"
+              name="contact[email]"
+              class="field__input"
+              value="{{ form.email }}"
+              aria-required="true"
+              autocorrect="off"
+              autocapitalize="off"
+              autocomplete="email"
+              placeholder="Email*"
+              aria-label="Email"
+              required
+            >
+          </div>
 
-        <option value="Film Development">Film Development</option>
-        <option value="Scanning">Scanning</option>
-        <option value="Darkroom Rental">Darkroom Rental</option>
-        <option value="Flextight X5">Flextight X5</option>
-        <option value="Camera Rental">Camera Rental</option>
-        <option value="Tape Digitising">Tape Digitising</option>
-      </select>
-      <label class="field__label" for="ContactFormService--{{ section.id }}"> Select a service </label>
-    </div>
+          <!-- Select a Service -->
+          <div class="form-field">
+            <div class="select-wrapper">
+              <select
+                id="ContactFormService--{{ section.id }}"
+                name="contact[service]"
+                class="field__input"
+                aria-required="true"
+                aria-label="Select a service"
+                required
+              >
+                <option value="" disabled selected>Select a Service*</option>
 
-    <!-- Select a Store -->
-    <div class="field">
-      <select
-        id="ContactFormStore--{{ section.id }}"
-        name="contact[store]"
-        class="field__input"
-        aria-required="true"
-        required
-      >
-        <option value="" disabled selected>Select a store</option>
-        <option value="Miami (HQ)">Miami (HQ)</option>
-        <option value="Chicago">Chicago</option>
-        <option value="Atlanta Lab">Atlanta Lab</option>
-        <option value="Orlando">Orlando</option>
-      </select>
-      <label class="field__label" for="ContactFormStore--{{ section.id }}"> Select a store </label>
-    </div>
+                <option value="Film Development">Film Development</option>
+                <option value="Scanning">Scanning</option>
+                <option value="Darkroom Rental">Darkroom Rental</option>
+                <option value="Flextight X5">Flextight X5</option>
+                <option value="Camera Rental">Camera Rental</option>
+                <option value="Tape Digitising">Tape Digitising</option>
+              </select>
+            </div>
+          </div>
 
-    <!-- Description -->
-    <div class="field">
-      <textarea
-        id="ContactFormDescription--{{ section.id }}"
-        name="contact[body]"
-        class="field__input"
-        rows="5"
-        aria-required="true"
-        placeholder="Description"
-        required
-      >{{ form.body }}</textarea>
-      <label class="field__label" for="ContactFormDescription--{{ section.id }}"> Description </label>
-    </div>
+          <!-- Select a Store -->
+          <div class="form-field">
+            <div class="select-wrapper">
+              <select
+                id="ContactFormStore--{{ section.id }}"
+                name="contact[store]"
+                class="field__input"
+                aria-required="true"
+                aria-label="Select a store"
+                required
+              >
+                <option value="" disabled selected>Select a Store*</option>
 
-    <!-- Submit Button -->
-    <div class="field">
-      <button
-        type="submit"
-        class="contact-form__button field__button"
-        name="commit"
-        id="ContactFormSubmit"
-        aria-label="Submit contact form"
-      >
-        <span class="svg-wrapper"> Submit </span>
-      </button>
-    </div>
+                <option value="Miami (HQ)">Miami (HQ)</option>
+                <option value="Chicago">Chicago</option>
+                <option value="Atlanta Lab">Atlanta Lab</option>
+                <option value="Orlando">Orlando</option>
+              </select>
+            </div>
+          </div>
 
-    {%- if form.errors -%}
-      <small class="contact-form__message form__message" id="ContactForm-error--{{ section.id }}">
-        <span class="svg-wrapper">
-          {{- 'icon-error.svg' | inline_asset_content -}}
-        </span>
-        {{ form.errors | json }}
-      </small>
-    {%- endif -%}
+          <!-- Description -->
+          <div class="form-field">
+            <textarea
+              id="ContactFormDescription--{{ section.id }}"
+              name="contact[body]"
+              class="field__input"
+              rows="5"
+              aria-required="true"
+              placeholder="Brief description of what you’re looking for?*"
+              aria-label="Description"
+              required
+            >{{ form.body }}</textarea>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="form-field form-field--submit">
+            <button
+              type="submit"
+              class="contact-form__button field__button primary-button primary-button--black"
+              name="commit"
+              id="ContactFormSubmit"
+              aria-label="Submit contact form"
+            >
+              <span class="svg-wrapper">Submit 💌</span>
+            </button>
+          </div>
+        </div>
+      {%- endif -%}
+    {% endform %}
   </div>
-  {%- if form.posted_successfully? -%}
-    <h3
-      class="contact-form__message contact-form__message--success form__message"
-      id="ContactForm-success--{{ section.id }}"
-      tabindex="-1"
-      autofocus
-    >
-      <span class="svg-wrapper">
-        {{- 'icon-success.svg' | inline_asset_content -}}
-      </span>
-      Thank you for contacting us!
-    </h3>
-  {%- endif -%}
-{% endform %}
+</section>

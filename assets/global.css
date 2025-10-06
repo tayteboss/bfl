@@ -635,7 +635,7 @@ main .shopify-section:first-child {
 
 @media (hover: hover) {
   .primary-button--black:hover {
-    background: var(--color-white);
+    background: var(--color-yellow);
     color: var(--color-black);
   }
 }
