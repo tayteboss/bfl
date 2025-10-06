@@ -1,4 +1,5 @@
-.main-collection {
+.main-collection,
+.featured-collection {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,7 +10,9 @@
   }
 }
 
-.main-collection .layout-grid, .collection .layout-grid {
+.main-collection .layout-grid,
+.collection .layout-grid,
+.featured-collection .layout-grid {
   row-gap: 4rem;
 
   @media (max-width: 768px) {
@@ -17,7 +20,8 @@
   }
 }
 
-.main-collection__header {
+.main-collection__header,
+.featured-collection__header {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -25,7 +29,8 @@
   gap: 2rem;
 }
 
-.main-collection__heading {
+.main-collection__heading,
+.featured-collection__heading {
   text-align: center;
 }
 
@@ -36,6 +41,7 @@
   row-gap: 0.5rem;
   justify-content: center;
   align-items: center;
+  max-width: 56.25rem;
 
   @media (max-width: 768px) {
     gap: 0.125rem;

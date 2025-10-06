@@ -23,6 +23,7 @@
   row-gap: 0.5rem;
   justify-content: center;
   align-items: center;
+  max-width: 60rem;
 
   @media (max-width: 768px) {
     gap: 0.125rem;

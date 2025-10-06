@@ -28,40 +28,49 @@
       {% endif %}
     </div>
 
-    <div class="faq-page-list-wrapper" data-faq-list role="tablist">
-      {% assign current_heading_id = '' %}
-      {% assign current_heading = '' %}
-      {% for block in section.blocks %}
-        {% if block.type == 'faq_heading' %}
-          {% if current_heading != '' %}
-            </div>
-            </div>
-          {% endif %}
-          {% assign current_heading_id = block.settings.heading | handleize %}
-          {% assign current_heading = block.settings.heading %}
-          {% if current_heading != blank %}
-            <div class="faq-page-list-item">
-              <div class="faq-heading">
-                <h2 class="type-h2" id="{{ current_heading_id }}">{{ current_heading }}</h2>
-              </div>
-              <div class="faq-list" role="region" aria-labelledby="{{ current_heading_id }}">
-          {% endif %}
-        {% elsif block.type == 'faq_item' %}
-          {% if block.settings.question != blank %}
-            {% render 'faq-card',
-              block: block,
-              question: block.settings.question,
-              answer: block.settings.answer,
-              heading_id: current_heading_id
-            %}
-          {% endif %}
-        {% endif %}
-      {% endfor %}
-      {% if current_heading != '' %}
-        </div>
-        </div>
-      {% endif %}
+    <div class="test-card" id="hours-location">
+      <h2 class="type-h2">Test Card Hours & Location</h2>
     </div>
+    <div class="test-card" id="services">
+      <h2 class="type-h2">Test Card Services</h2>
+    </div>
+
+    {% comment %}
+      <div class="faq-page-list-wrapper" data-faq-list role="tablist">
+        {% assign current_heading_id = '' %}
+        {% assign current_heading = '' %}
+        {% for block in section.blocks %}
+          {% if block.type == 'faq_heading' %}
+            {% if current_heading != '' %}
+              </div>
+              </div>
+            {% endif %}
+            {% assign current_heading_id = block.settings.heading | handleize %}
+            {% assign current_heading = block.settings.heading %}
+            {% if current_heading != blank %}
+              <div class="faq-page-list-item" id="{{ current_heading_id }}">
+                <div class="faq-heading">
+                  <h2 class="type-h2">{{ current_heading }}</h2>
+                </div>
+                <div class="faq-list" role="region">
+            {% endif %}
+          {% elsif block.type == 'faq_item' %}
+            {% if block.settings.question != blank %}
+              {% render 'faq-card',
+                block: block,
+                question: block.settings.question,
+                answer: block.settings.answer,
+                heading_id: current_heading_id
+              %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+        {% if current_heading != '' %}
+          </div>
+          </div>
+        {% endif %}
+      </div>
+    {% endcomment %}
 
     {% if section.settings.need_help_heading != blank or section.settings.need_help_message != blank %}
       <div class="need-help type-p-x-large">
@@ -76,7 +85,9 @@
   </div>
   {% if section.settings.stamp_image != blank %}
     <div class="faq-page__stamp-image" aria-hidden="true">
-      <img src="{{ section.settings.stamp_image | image_url }}" alt="" width="auto" height="auto">
+      <div data-parallax>
+        <img src="{{ section.settings.stamp_image | image_url }}" alt="" width="auto" height="auto">
+      </div>
     </div>
   {% endif %}
 </section>
