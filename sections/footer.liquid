@@ -25,10 +25,7 @@
     {% render 'footer-links-list', title: 'Quick Links', links: section.settings.menu.links %}
     {% render 'footer-links-list', title: 'Customer Care', links: section.settings['second-menu'].links %}
     {% render 'footer-stores-list', title: 'Stores', links: section.settings['third-menu'].links %}
-    <div class="footer-newsletter">
-      <p>Join our newsletter</p>
-      {% render 'newsletter' %}
-    </div>
+    {% render 'newsletter' %}
     <div class="footer-bottom">
       <div class="footer-bottom__top-bar">
         <div class="footer-credits">
@@ -87,6 +84,16 @@
     const footer = document.querySelector('.footer');
     const footerLogo = document.querySelector('.footer__logo');
     if (!footer || !footerLogo) return;
+
+    // Disable animation on mobile/touch devices; keep footer wght using --font-weight-header
+    const disableAnimation =
+      (window.matchMedia &&
+        (window.matchMedia('(hover: none) and (pointer: coarse)').matches ||
+          window.matchMedia('(max-width: 768px)').matches)) ||
+      false;
+    if (disableAnimation) {
+      return;
+    }
 
     const MIN_WGHT = 10;
     const MAX_WGHT = 250;
