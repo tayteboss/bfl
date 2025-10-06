@@ -1,5 +1,5 @@
 .product-event {
-  padding: calc(var(--logo-height) + 16px) 0;
+  padding: calc(var(--logo-height) + 1rem) 0;
 }
 
 .product-event .layout-wrapper {
@@ -7,7 +7,7 @@
 }
 
 .product-event .layout-grid {
-	@media (max-width: 768px) {
+	@media (max-width: 48rem) {
 		row-gap: 2rem;
 	}
 }
@@ -15,7 +15,7 @@
 .product-event__image-wrapper {
 	grid-column: span 6;
 
-	@media (max-width: 768px) {
+	@media (max-width: 48rem) {
 		grid-column: 1 / -1;
 	}
 }
@@ -27,15 +27,15 @@
 	align-items: flex-start;
 	justify-content: space-between;
 	gap: 3rem;
-	max-width: 550px;
+	max-width: 34.375rem;
 	padding: 1.5rem;
 	height: 100%;
 
-	@media (max-width: 1024px) {
+	@media (max-width: 64rem) {
 		padding: 0;
 	}
 
-	@media (max-width: 768px) {
+	@media (max-width: 48rem) {
 		grid-column: 1 / -1;
 	}
 }
