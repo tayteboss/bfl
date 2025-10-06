@@ -22,7 +22,6 @@
   row-gap: 0.5rem;
   justify-content: center;
   align-items: center;
-  max-width: 56.25rem;
 
   @media (max-width: 768px) {
     gap: 0.125rem;
@@ -272,9 +271,4 @@
     height: 100%;
     object-fit: contain;
   }
-}
-
-.test-card {
-  height: 25vh;
-  margin-bottom: 10rem;
 }
