@@ -91,7 +91,7 @@
       "settings": {
         "anchor_id": "scanning",
         "heading": "Scanning",
-        "badge": "New",
+        "badge": "",
         "paragraph": "Bellows runs Noritsu HS-1800 and Frontier SP-3000 units for roll scanning—both profiled weekly with in-house IT8 targets—so skin tones stay consistent across stocks. Choose Standard JPGs for socials, Hi-Res JPGs for print spreads, or full 16-bit TIFFs when you need every grain. A human operator frames every shot (no auto-crop) and flags overlaps or scratches for a gratis re-scan.",
         "notes": "",
         "table-caption": "",
@@ -120,7 +120,7 @@
       "settings": {
         "anchor_id": "darkroom",
         "heading": "Darkroom Rental (Atlanta Only)",
-        "badge": "",
+        "badge": "New",
         "paragraph": "Go beyond scanning and discover the hands-on magic of analog printing. Bellows’ Atlanta location now offers a private darkroom rental—everything you need to develop and print up to 20×24″ black & white enlargements, all by yourself, by appointment only.",
         "notes": "<p>What's included:</p><ul><li>In-house chemistry, trays, and a sink.</li><li>2 x enlargers: Besseler 45MX with condenser + Omega D/D2 with XL chassis.</li><li>Negative holders from 35 mm up to 4×5” sheet film.</li></ul>",
         "table-caption": "",

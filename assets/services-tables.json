@@ -1,0 +1,49 @@
+{
+  "tables": [
+    {
+      "id": "film-development",
+      "caption": "*Times quoted for the Miami lab; other locations may differ.",
+      "headings": ["Format / Process", "Dev-Only", "Dev + Med-Res JPG", "Dev + Hi-Res JPG", "Turn-Around*"],
+      "rows": [
+        ["35mm C-41", "$10", "$18", "$23", "3 days"],
+        ["120 C-41", "$11", "$20", "$25", "3 days"],
+        ["B&W (any format)", "$12", "$22", "$27", "3 days"],
+        ["E-6 / 3CN-2", "$15", "$26", "$31", "5 days"]
+      ]
+    },
+    {
+      "id": "darkroom",
+      "caption": "",
+      "headings": ["Term", "B&W Darkroom", "Includes"],
+      "rows": [
+        ["2 hours", "from $40", "Chemistry & trays, 35mm-4x5 carriers"],
+        ["4 hours", "from $80", "as above + orientation on request"],
+        ["Full day", "from $150", "Leave set-ups between prints"]
+      ]
+    },
+    {
+      "id": "camera-rental",
+      "caption": "",
+      "headings": ["Term", "35mm", "12mm", "lenses"],
+      "rows": [
+        ["3 days", "from $40", "from $60", "from $15"],
+        ["7 days", "from $65", "from $95", "from $25"]
+      ]
+    },
+    {
+      "id": "tape-digitising",
+      "caption": "",
+      "headings": ["Service", "Price"],
+      "rows": [
+        ["Transfer (per hour of footage)", "$30 / per hour"],
+        ["5+ tapes", "$25 / per hour"]
+      ]
+    }
+  ],
+  "serviceToTable": [
+    { "anchor_id": "film-development", "table_id": "film-development" },
+    { "anchor_id": "darkroom", "table_id": "darkroom" },
+    { "anchor_id": "camera-rental", "table_id": "camera-rental" },
+    { "anchor_id": "tape-digitising", "table_id": "tape-digitising" }
+  ]
+}
