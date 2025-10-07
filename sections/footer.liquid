@@ -97,32 +97,35 @@
 
     const MIN_WGHT = 10;
     const MAX_WGHT = 250;
+    const CHANGE_THRESHOLD = 400;
 
     function clamp(n, min, max) {
       return n < min ? min : n > max ? max : n;
     }
 
-    function applyWeightFromX(x) {
-      const vw = window.innerWidth || document.documentElement.clientWidth || 1;
-      const t = clamp(x / vw, 0, 1); // 0 at left, 1 at right
-      const w = (MIN_WGHT + (MAX_WGHT - MIN_WGHT) * t).toFixed(2);
-
-      document.documentElement.style.setProperty('--font-weight-header', w);
+    function setRandomWeight() {
+      const w = Math.floor(Math.random() * (MAX_WGHT - MIN_WGHT + 1)) + MIN_WGHT;
+      document.documentElement.style.setProperty('--font-weight-header', String(w));
     }
 
     let unsubscribe = null;
     let observing = false;
     let observer;
     let hasReceivedInitial = false;
+    let lastChangeX = 0;
 
     function subscribeCursor() {
       if (unsubscribe || !window.CursorUtils || typeof window.CursorUtils.onMove !== 'function') return;
       unsubscribe = window.CursorUtils.onMove(({ x }) => {
         if (!hasReceivedInitial) {
           hasReceivedInitial = true; // ignore CursorUtils' immediate initial call
+          lastChangeX = x;
           return;
         }
-        applyWeightFromX(x);
+        if (Math.abs(x - lastChangeX) >= CHANGE_THRESHOLD) {
+          setRandomWeight();
+          lastChangeX = x;
+        }
       });
     }
 
@@ -132,6 +135,7 @@
         unsubscribe = null;
       }
       hasReceivedInitial = false;
+      lastChangeX = 0;
     }
 
     function initObserver() {

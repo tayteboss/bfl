@@ -1,45 +1,78 @@
-<section class="drop-off-map">
+<section class="drop-off-map" role="region" aria-label="Drop-off locations map">
   <div class="drop-off-map__controls drop-off-map__controls--mobile" aria-label="Map controls">
-    <h3 class="drop-off-map__controls-title type-h2">Discover Drop-off Locations</h3>
-    <p class="drop-off-map__controls-description type-p-x-small">
-      Explore the nearby drop-off options for a hassle-free shopping experience. Utilize our partnered locations to
-      conveniently send in your items!
-    </p>
-    <form id="locationSearchForm" class="drop-off-map__search">
-      <input
-        id="locationSearchInput"
-        type="text"
-        placeholder="Enter city or ZIP"
-        aria-label="Search for nearest location"
-      >
-      <button type="submit">Search</button>
-    </form>
-    {% comment %} <div class="drop-off-map__list-results">when searching bring up a list of results</div> {% endcomment %}
-  </div>
-  <div class="drop-off-map__inner">
-    <div id="dropOffMap" class="drop-off-map__map"></div>
-    <div class="drop-off-map__zoom">
-      <button class="drop-off-map__zoom-button" type="button" id="zoomInBtn" aria-label="Zoom in">+</button>
-      <button class="drop-off-map__zoom-button" type="button" id="zoomOutBtn" aria-label="Zoom out">-</button>
-
-      <a href="/pages/join-us" class="drop-off-map__join-us-wrapper"> Join Our Drop-off Network </a>
-    </div>
-    <div class="drop-off-map__controls drop-off-map__controls--desktop" aria-label="Map controls">
+    {% if section.settings.title %}
+      <h3 class="drop-off-map__controls-title type-h2">{{ section.settings.title }}</h3>
+    {% else %}
       <h3 class="drop-off-map__controls-title type-h2">Discover Drop-off Locations</h3>
+    {% endif %}
+
+    {% if section.settings.description %}
+      <p class="drop-off-map__controls-description type-p-x-small">{{ section.settings.description }}</p>
+    {% else %}
       <p class="drop-off-map__controls-description type-p-x-small">
         Explore the nearby drop-off options for a hassle-free shopping experience. Utilize our partnered locations to
         conveniently send in your items!
       </p>
-      <form id="locationSearchForm" class="drop-off-map__search">
+    {% endif %}
+
+    <form id="locationSearchFormMobile" class="drop-off-map__search" role="search" aria-label="Search locations">
+      <input
+        id="locationSearchInputMobile"
+        type="text"
+        placeholder="Enter city or ZIP"
+        aria-label="Search for nearest location"
+        required
+      >
+      <button class="type-p-small uppercase" type="submit" aria-label="Search locations">Search</button>
+    </form>
+    {% comment %} <div class="drop-off-map__list-results" role="region" aria-live="polite">when searching bring up a list of results</div> {% endcomment %}
+  </div>
+
+  <div class="drop-off-map__inner">
+    <div
+      id="dropOffMap"
+      class="drop-off-map__map"
+      role="application"
+      aria-label="Interactive map of drop-off locations"
+    ></div>
+    <div class="drop-off-map__zoom" role="group" aria-label="Map zoom controls">
+      <button class="drop-off-map__zoom-button" type="button" id="zoomInBtn" aria-label="Zoom in">+</button>
+      <button class="drop-off-map__zoom-button" type="button" id="zoomOutBtn" aria-label="Zoom out">-</button>
+
+      {% if settings.join_us_url %}
+        <a href="{{ settings.join_us_url }}" class="drop-off-map__join-us-wrapper">Join Our Drop-off Network</a>
+      {% else %}
+        <a href="/pages/join-us" class="drop-off-map__join-us-wrapper">Join Our Drop-off Network</a>
+      {% endif %}
+    </div>
+
+    <div class="drop-off-map__controls drop-off-map__controls--desktop" aria-label="Map controls">
+      {% if section.settings.title %}
+        <h3 class="drop-off-map__controls-title type-h2">{{ section.settings.title }}</h3>
+      {% else %}
+        <h3 class="drop-off-map__controls-title type-h2">Discover Drop-off Locations</h3>
+      {% endif %}
+
+      {% if section.settings.description %}
+        <p class="drop-off-map__controls-description type-p-x-small">{{ section.settings.description }}</p>
+      {% else %}
+        <p class="drop-off-map__controls-description type-p-x-small">
+          Explore the nearby drop-off options for a hassle-free shopping experience. Utilize our partnered locations to
+          conveniently send in your items!
+        </p>
+      {% endif %}
+
+      <form id="locationSearchFormDesktop" class="drop-off-map__search" role="search" aria-label="Search locations">
         <input
-          id="locationSearchInput"
+          id="locationSearchInputDesktop"
           type="text"
           placeholder="Enter city or ZIP"
           aria-label="Search for nearest location"
+          required
         >
-        <button type="submit">Search</button>
+        <button class="type-p-small uppercase" type="submit" aria-label="Search locations">Search</button>
       </form>
-      {% comment %} <div class="drop-off-map__list-results">when searching bring up a list of results</div> {% endcomment %}
+      {% comment %} <div class="drop-off-map__list-results" role="region" aria-live="polite">when searching bring up a list of results</div> {% endcomment %}
     </div>
   </div>
 </section>
