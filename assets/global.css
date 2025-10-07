@@ -28,7 +28,7 @@
   --transition-speed-default: 50ms;
   --transition-speed-fast: 50ms;
   --transition-speed-extra-fast: 0ms;
-  --transition-speed-slow: 500ms;
+  --transition-speed-slow: 300ms;
   --transition-speed-extra-slow: 1000ms;
   --transition-ease: cubic-bezier(0.65, 0, 0.35, 1);
 }

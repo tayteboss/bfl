@@ -5,10 +5,346 @@
 }
 
 .drop-off-map {
-  border: solid 1px black;
-  background: var(--color-grey-light);
-  border-radius: 15px;
-  height: 80vh;
   width: 100%;
   margin: auto;
+  position: relative;
+}
+
+.drop-off-map__inner {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+.drop-off-map__map {
+  height: 80vh;
+  min-height: 700px;
+  position: relative;
+  z-index: 1;
+}
+
+.drop-off-map__controls {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 2;
+  background: var(--color-white);
+  padding: 28px 24px;
+  border-radius: 16px;
+  width: 490px;
+  border: 1px solid;
+  border-color: var(--color-grey-mid);
+
+  transition: all var(--transition-speed-slow) var(--transition-ease);
+}
+
+/* .drop-off-map__controls:hover {
+  background: var(--color-white);
+
+  .drop-off-map__controls-title,
+  .drop-off-map__controls-description {
+    opacity: 1;
+    pointer-events: auto;
+  }
+} */
+
+.drop-off-map__controls--inactive {
+  background: rgba(255, 255, 255, 0);
+  border-color: rgba(255, 255, 255, 0);
+  pointer-events: none;
+
+  .drop-off-map__controls-title,
+  .drop-off-map__controls-description {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .drop-off-map__search {
+    opacity: 0.9;
+  }
+}
+
+.drop-off-map__controls-title {
+  margin-bottom: 1rem;
+
+  transition: all var(--transition-speed-slow) var(--transition-ease);
+}
+
+.drop-off-map__controls-description {
+  margin-bottom: 2rem;
+
+  transition: all var(--transition-speed-slow) var(--transition-ease);
+}
+
+.drop-off-map__search {
+  display: flex;
+  gap: 0.5rem;
+  width: 430px;
+  background: var(--color-grey-light);
+  border: 1px solid var(--color-grey-mid);
+  padding: 16px;
+  border-radius: 16px;
+  width: 100%;
+  pointer-events: all;
+
+  transition: all var(--transition-speed-slow) var(--transition-ease);
+}
+
+.drop-off-map__search input::placeholder {
+  opacity: 0.5;
+}
+
+.drop-off-map__search input, .drop-off-map__search button {
+  font-family: var(--font-gt-standard-mono-regular);
+  font-weight: 400;
+  font-size: 0.875rem; 
+  line-height: 1.25rem; 
+
+  @media (max-width: 768px) {
+    font-size: 0.8125rem; 
+    line-height: 1.4; 
+    letter-spacing: 0;
+  }
+}
+
+.drop-off-map__search button:hover {
+  opacity: 0.5;
+}
+
+
+.drop-off-map__zoom {
+  position: absolute;
+  right: 24px;
+  top: 24px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.drop-off-map__zoom-button {
+  background: var(--color-white);
+  border: 1px solid var(--color-grey-mid);
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+}
+
+.drop-off-map__zoom-button:hover {
+  background: var(--color-grey-mid);
+  color: var(--color-black);
+}
+
+.drop-off-map__join-us-wrapper {
+  background: var(--color-white);
+  border: 1px solid var(--color-grey-mid);
+  border-radius: 100px;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 0;
+  font-family: var(--font-diatype-rounded-bold);
+  font-weight: 400;
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.25rem; /* 20px */
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+
+  @media (max-width: 768px) {
+    font-size: 0.8125rem; /* 13px */
+    line-height: 1.4; /* 140% */
+    letter-spacing: 0;
+  }
+}
+
+.drop-off-map__join-us-wrapper:hover {
+  background: var(--color-grey-mid);
+}
+
+
+/* Minimal styles for custom pin and cluster icons */
+.dropoff-pin {
+  background: var(--color-yellow, var(--color-yellow));
+  border-radius: 9999px;
+  border: 2px solid var(--color-black);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+}
+
+.dropoff-pin::after {
+  content: '';
+  display: block;
+  width: 50%;
+  height: 50%;
+  background: var(--color-black);
+  border-radius: 9999px;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+}
+
+.dropoff-pin--active::after {
+  opacity: 1;
+}
+
+.dropoff-pin__dot {
+  width: 6px;
+  height: 6px;
+  background: var(--color-black);
+  border-radius: 9999px;
+}
+
+.dropoff-cluster {
+  background: var(--color-yellow);
+  color: var(--color-black);
+  border: 2px solid var(--color-black);
+  border-radius: 9999px;
+  width: 34px;
+  height: 34px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-gt-standard-mono-bold);
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    letter-spacing: 0;
+  }
+}
+
+/* Popup layout (content left, image right) */
+.leaflet-popup {
+  margin-bottom: 12px !important;
+}
+
+.leaflet-popup-content-wrapper {
+  box-shadow: none !important;
+  background: var(--color-yellow) !important;
+  border-radius: 16px !important;
+  padding: 24px !important;
+  overflow: hidden !important;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  width: auto !important;
+}
+
+.dropoff-popup {
+  display: flex;
+  gap: 24px;
+  height: 100%;
+}
+
+.dropoff-popup__content {
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.dropoff-popup__title {
+  margin-bottom: 12px;
+  font-size: 1.25rem;
+  color: var(--color-black);
+  font-family: var(--font-diatype-rounded-bold);
+  line-height: 1;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+}
+
+.dropoff-popup__address,
+.dropoff-popup__phone {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  margin-bottom: 4px;
+}
+
+.dropoff-popup__links {
+  display: inline-flex;
+  gap: 8px;
+}
+
+.dropoff-popup__link {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  text-decoration: underline;
+  opacity: 0.75;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+}
+
+.dropoff-popup__link:hover {
+  opacity: 1;
+}
+
+.dropoff-popup__media {
+  flex: 0 0 auto;
+}
+
+.dropoff-popup__image {
+  display: block;
+  width: 120px;
+  height: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+/* Bottom-right overlay container replacing default Leaflet popup */
+.dropoff-map-popup {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  z-index: 3;
+  max-width: 520px;
+  opacity: 0;
+  pointer-events: none;
+  background: var(--color-yellow);
+  padding: 24px 20px;
+  border-radius: 16px;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+}
+
+.dropoff-map-popup.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.leaflet-popup-tip-container,
+.leaflet-popup-close-button,
+.leaflet-popup-tip {
+  display: none !important;
 }

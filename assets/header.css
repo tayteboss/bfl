@@ -36,6 +36,7 @@ header {
 
 .scrolled .header__logo {
   opacity: 0;
+  pointer-events: none;
 }
 
 .menu-open .header__logo {
@@ -252,6 +253,7 @@ header {
 /* Hide header near page bottom */
 body.hide-header header {
   opacity: 0;
+  pointer-events: none;
 }
 
 body.hide-header .menu-toggle,

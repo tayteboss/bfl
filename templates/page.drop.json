@@ -11,6 +11,160 @@
   "sections": {
     "main": {
       "type": "drop-off",
+      "blocks": {
+        "location_TxFwkb": {
+          "type": "location",
+          "settings": {
+            "id": "nyc",
+            "name": "New York",
+            "address": "118 S Beach StDaytona Beach, FL 32114USA",
+            "lat": "40.7128",
+            "lng": "-74.006",
+            "phone": "04000000",
+            "website": "https://google.com/",
+            "google_maps_url": "https://google.com/",
+            "thumbnail": "shopify://shop_images/thumbnail.png"
+          }
+        },
+        "location_nRxVet": {
+          "type": "location",
+          "settings": {
+            "id": "la",
+            "name": "Los Angeles",
+            "address": "118 S Beach St Daytona Beach, FL 32114 USA",
+            "lat": "34.0522",
+            "lng": "-118.2437",
+            "phone": "04000000",
+            "website": "https://google.com/",
+            "google_maps_url": "https://google.com/",
+            "thumbnail": "shopify://shop_images/ffc75e8fabe8f4999ae49012b105d20650d37a7c.png"
+          }
+        },
+        "location_tMbyPU": {
+          "type": "location",
+          "settings": {
+            "id": "dal",
+            "name": "Dallas",
+            "address": "118 S Beach St Daytona Beach, FL 32114 USA",
+            "lat": "32.7767",
+            "lng": "-96.797",
+            "phone": "04000000",
+            "website": "https://google.com/",
+            "google_maps_url": "https://google.com/",
+            "thumbnail": "shopify://shop_images/ffc75e8fabe8f4999ae49012b105d20650d37a7c.png"
+          }
+        },
+        "location_czJ3wQ": {
+          "type": "location",
+          "settings": {
+            "id": "sea",
+            "name": "Seattle",
+            "address": "118 S Beach St Daytona Beach, FL 32114 USA",
+            "lat": "47.6062",
+            "lng": "-122.3321",
+            "phone": "04000000",
+            "website": "https://google.com/",
+            "google_maps_url": "https://google.com/",
+            "thumbnail": "shopify://shop_images/ffc75e8fabe8f4999ae49012b105d20650d37a7c.png"
+          }
+        },
+        "location_4BAqwh": {
+          "type": "location",
+          "settings": {
+            "id": "den",
+            "name": "Denver",
+            "address": "118 S Beach St Daytona Beach, FL 32114 USA",
+            "lat": "39.7392",
+            "lng": "-104.9903",
+            "phone": "04000000",
+            "website": "https://google.com/",
+            "google_maps_url": "https://google.com/",
+            "thumbnail": "shopify://shop_images/ffc75e8fabe8f4999ae49012b105d20650d37a7c.png"
+          }
+        },
+        "location_cKTDPw": {
+          "type": "location",
+          "settings": {
+            "id": "mia",
+            "name": "Miami",
+            "address": "118 S Beach St Daytona Beach, FL 32114 USA",
+            "lat": "25.7617",
+            "lng": "-80.1918",
+            "phone": "04000000",
+            "website": "https://google.com/",
+            "google_maps_url": "https://google.com/",
+            "thumbnail": "shopify://shop_images/ffc75e8fabe8f4999ae49012b105d20650d37a7c.png"
+          }
+        },
+        "location_Tq3CcX": {
+          "type": "location",
+          "settings": {
+            "id": "atl",
+            "name": "Atlanta",
+            "address": "118 S Beach St Daytona Beach, FL 32114 USA",
+            "lat": "33.749",
+            "lng": "-84.388",
+            "phone": "04000000",
+            "website": "https://google.com/",
+            "google_maps_url": "https://google.com/",
+            "thumbnail": "shopify://shop_images/ffc75e8fabe8f4999ae49012b105d20650d37a7c.png"
+          }
+        },
+        "location_bjNR33": {
+          "type": "location",
+          "settings": {
+            "id": "phx",
+            "name": "Phoenix",
+            "address": "118 S Beach St Daytona Beach, FL 32114 USA",
+            "lat": "33.4484",
+            "lng": "-112.074",
+            "phone": "04000000",
+            "website": "https://google.com/",
+            "google_maps_url": "https://google.com/",
+            "thumbnail": "shopify://shop_images/ffc75e8fabe8f4999ae49012b105d20650d37a7c.png"
+          }
+        },
+        "location_FLCQMm": {
+          "type": "location",
+          "settings": {
+            "id": "bos",
+            "name": "Boston",
+            "address": "118 S Beach St Daytona Beach, FL 32114 USA",
+            "lat": "42.3601",
+            "lng": "-71.0589",
+            "phone": "04000000",
+            "website": "https://google.com/",
+            "google_maps_url": "https://google.com/",
+            "thumbnail": "shopify://shop_images/ffc75e8fabe8f4999ae49012b105d20650d37a7c.png"
+          }
+        },
+        "location_ikKthT": {
+          "type": "location",
+          "settings": {
+            "id": "nyc2",
+            "name": "NYC2",
+            "address": "118 S Beach St Daytona Beach, FL 32114 USA",
+            "lat": "42.3601",
+            "lng": "-72.0589",
+            "phone": "04000000",
+            "website": "https://google.com/",
+            "google_maps_url": "https://google.com/",
+            "thumbnail": "shopify://shop_images/ffc75e8fabe8f4999ae49012b105d20650d37a7c.png"
+          }
+        }
+      },
+      "block_order": [
+        "location_TxFwkb",
+        "location_nRxVet",
+        "location_tMbyPU",
+        "location_czJ3wQ",
+        "location_4BAqwh",
+        "location_cKTDPw",
+        "location_Tq3CcX",
+        "location_bjNR33",
+        "location_FLCQMm",
+        "location_ikKthT"
+      ],
       "settings": {}
     }
   },
