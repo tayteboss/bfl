@@ -588,6 +588,14 @@ main .shopify-section:first-child {
   }
 }
 
+main .shopify-section:first-child:has(.drop-off) {
+  padding-top: calc(var(--logo-height) + 16px);
+
+  @media (max-width: 768px) {
+    padding-top: calc(var(--logo-height) + 80px);
+  }
+}
+
 .primary-button {
   font-size: 1.25rem;
   padding: 1.375rem 2rem 1.3125rem;

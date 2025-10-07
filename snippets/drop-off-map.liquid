@@ -1,4 +1,21 @@
 <section class="drop-off-map">
+  <div class="drop-off-map__controls drop-off-map__controls--mobile" aria-label="Map controls">
+    <h3 class="drop-off-map__controls-title type-h2">Discover Drop-off Locations</h3>
+    <p class="drop-off-map__controls-description type-p-x-small">
+      Explore the nearby drop-off options for a hassle-free shopping experience. Utilize our partnered locations to
+      conveniently send in your items!
+    </p>
+    <form id="locationSearchForm" class="drop-off-map__search">
+      <input
+        id="locationSearchInput"
+        type="text"
+        placeholder="Enter city or ZIP"
+        aria-label="Search for nearest location"
+      >
+      <button type="submit">Search</button>
+    </form>
+    {% comment %} <div class="drop-off-map__list-results">when searching bring up a list of results</div> {% endcomment %}
+  </div>
   <div class="drop-off-map__inner">
     <div id="dropOffMap" class="drop-off-map__map"></div>
     <div class="drop-off-map__zoom">
@@ -7,7 +24,7 @@
 
       <a href="/pages/join-us" class="drop-off-map__join-us-wrapper"> Join Our Drop-off Network </a>
     </div>
-    <div class="drop-off-map__controls" aria-label="Map controls">
+    <div class="drop-off-map__controls drop-off-map__controls--desktop" aria-label="Map controls">
       <h3 class="drop-off-map__controls-title type-h2">Discover Drop-off Locations</h3>
       <p class="drop-off-map__controls-description type-p-x-small">
         Explore the nearby drop-off options for a hassle-free shopping experience. Utilize our partnered locations to
@@ -22,6 +39,7 @@
         >
         <button type="submit">Search</button>
       </form>
+      {% comment %} <div class="drop-off-map__list-results">when searching bring up a list of results</div> {% endcomment %}
     </div>
   </div>
 </section>

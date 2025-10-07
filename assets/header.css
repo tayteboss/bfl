@@ -99,6 +99,10 @@ header {
 
 .menu-toggle:hover, .cart-button:hover {
   opacity: 0.75;
+
+  @media (max-width: 768px) {
+    opacity: 1;
+  }
 }
 
 .menu-open .menu-toggle {

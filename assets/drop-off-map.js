@@ -69,11 +69,9 @@
       .replace(/(^-|-$)+/g, '');
   }
 
-  function getLocationsFromScript() {
-    var el = document.getElementById('dropOffLocations');
-    if (!el) return null;
+  function parseLocationsFromScriptEl(scriptEl) {
     try {
-      var data = JSON.parse(el.textContent || '[]');
+      var data = JSON.parse((scriptEl && scriptEl.textContent) || '[]');
       if (!Array.isArray(data)) return null;
       var cleaned = [];
       for (var i = 0; i < data.length; i++) {
@@ -95,9 +93,39 @@
         });
       }
       return cleaned;
-    } catch (e) {
+    } catch (_e) {
       return null;
     }
+  }
+
+  function getLocationsFromScript(doc) {
+    var d = doc || document;
+    var el = d.getElementById('dropOffLocations');
+    if (!el) return null;
+    return parseLocationsFromScriptEl(el);
+  }
+
+  function fetchRemoteLocations() {
+    var candidates = ['/pages/drop', '/pages/drop-off'];
+    var tryNext = function (idx) {
+      if (idx >= candidates.length) return Promise.resolve([]);
+      var url = candidates[idx];
+      return fetch(url, { credentials: 'same-origin' })
+        .then(function (r) {
+          return r.text();
+        })
+        .then(function (html) {
+          var parser = new DOMParser();
+          var doc = parser.parseFromString(html, 'text/html');
+          var found = getLocationsFromScript(doc);
+          if (found && found.length) return found;
+          return tryNext(idx + 1);
+        })
+        .catch(function () {
+          return tryNext(idx + 1);
+        });
+    };
+    return tryNext(0);
   }
 
   ready(function () {
@@ -105,7 +133,10 @@
     if (!mapEl || typeof L === 'undefined') return;
 
     // Initialize map centered on continental US
-    var map = L.map(mapEl, { zoomControl: false, attributionControl: false });
+    var map = L.map(mapEl, { zoomControl: false, attributionControl: false, scrollWheelZoom: false });
+    // Default view so maps render even with no markers (e.g., homepage without blocks)
+    var initialZoom = typeof window !== 'undefined' && window.innerWidth < 900 ? 10 : 5;
+    map.setView([39.5, -98.35], initialZoom);
 
     // Tiles (OSM). You may replace with your preferred tile provider.
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -126,8 +157,8 @@
       });
     }
 
-    // Load locations (CMS or fallback)
-    var LOCATIONS = getLocationsFromScript() || DEFAULT_LOCATIONS;
+    // Load locations (CMS local or fallback to remote Drop-off page)
+    var LOCATIONS = [];
 
     function popupHtml(loc) {
       var html = '';
@@ -222,21 +253,53 @@
       }
     }
 
-    // Add markers
-    var markers = LOCATIONS.map(function (loc) {
-      var m = L.marker([loc.lat, loc.lng], { icon: makePinIcon(false) });
-      m.loc = loc; // attach
-      m.on('click', function () {
-        setActiveMarkerById(loc.id);
-        renderOverlayForLocation(loc);
-      });
-      if (clusterGroup) {
-        clusterGroup.addLayer(m);
-      } else {
-        m.addTo(map);
+    var markers = [];
+
+    function renderLocations() {
+      // Clear previous
+      if (clusterGroup) clusterGroup.clearLayers();
+      for (var i = 0; i < markers.length; i++) {
+        try {
+          map.removeLayer(markers[i]);
+        } catch (_e) {}
       }
-      return m;
-    });
+      markers = [];
+      // Add markers
+      for (var j = 0; j < LOCATIONS.length; j++) {
+        var loc = LOCATIONS[j];
+        var m = L.marker([loc.lat, loc.lng], { icon: makePinIcon(false) });
+        m.loc = loc; // attach
+        m.on('click', function (ev) {
+          var mk = ev.target;
+          var l = mk.loc;
+          setActiveMarkerById(l.id);
+          renderOverlayForLocation(l);
+        });
+        if (clusterGroup) {
+          clusterGroup.addLayer(m);
+        } else {
+          m.addTo(map);
+        }
+        markers.push(m);
+      }
+
+      // Fit map bounds to markers
+      if (markers.length > 0) {
+        var bounds = clusterGroup ? clusterGroup.getBounds() : L.featureGroup(markers).getBounds();
+        if (bounds && bounds.isValid && bounds.isValid()) {
+          map.fitBounds(bounds.pad(0.2));
+          // On mobile, ensure a minimum zoom so the map is more zoomed in
+          if (typeof window !== 'undefined' && window.innerWidth < 900) {
+            var minMobileZoom = 3;
+            var currentZoom = map.getZoom();
+            if (typeof currentZoom === 'number' && currentZoom < minMobileZoom) {
+              var center = bounds.getCenter();
+              map.setView(center, minMobileZoom);
+            }
+          }
+        }
+      }
+    }
 
     if (clusterGroup) {
       map.addLayer(clusterGroup);
@@ -298,10 +361,21 @@
     var form = document.getElementById('locationSearchForm');
     var input = document.getElementById('locationSearchInput');
     if (form && input) {
+      var submitBtn = form.querySelector('button[type="submit"]');
+      function setSearchLoading(isLoading) {
+        try {
+          if (controlsEl) controlsEl.classList.toggle('drop-off-map__controls--loading', !!isLoading);
+          form.classList.toggle('drop-off-map__search--loading', !!isLoading);
+          input.disabled = !!isLoading;
+          if (submitBtn) submitBtn.disabled = !!isLoading;
+        } catch (_) {}
+      }
+
       form.addEventListener('submit', function (e) {
         e.preventDefault();
         var q = (input.value || '').trim();
         if (!q) return;
+        setSearchLoading(true);
         geocode(q)
           .then(function (results) {
             if (!Array.isArray(results) || results.length === 0) return;
@@ -312,6 +386,9 @@
           })
           .catch(function () {
             /* silent */
+          })
+          .finally(function () {
+            setSearchLoading(false);
           });
       });
     }
@@ -394,12 +471,18 @@
       // Do not collapse on blur; only after next map interaction
     }
 
-    // Fit map bounds to markers initially
-    if (markers.length > 0) {
-      var bounds = clusterGroup ? clusterGroup.getBounds() : L.featureGroup(markers).getBounds();
-      if (bounds && bounds.isValid && bounds.isValid()) {
-        map.fitBounds(bounds.pad(0.2));
-      }
+    // Load local or remote locations then render
+    var local = getLocationsFromScript();
+    if (local && local.length) {
+      LOCATIONS = local;
+      renderLocations();
+    } else {
+      fetchRemoteLocations().then(function (remote) {
+        if (Array.isArray(remote) && remote.length) {
+          LOCATIONS = remote;
+          renderLocations();
+        }
+      });
     }
 
     // Hide overlay when clicking empty map area
