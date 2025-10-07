@@ -1,0 +1,28 @@
+{% comment %}
+  Reusable filter group
+  Props:
+  - title: string (legend)
+  - items: array of strings
+  - type: string (data-filter-type value)
+{% endcomment %}
+
+{% if items.size > 0 %}
+  <fieldset class="filter-group">
+    <legend class="filter-group__title type-button-large">{{ title }}</legend>
+    <div class="filter-group__items">
+      {% for item in items %}
+        {% if item != blank %}
+          <label class="filter-group__item primary-button primary-button--modal-filter">
+            <input
+              type="checkbox"
+              value="{{ item | escape }}"
+              class="filter-option"
+              data-filter-type="{{ type }}"
+            >
+            {{ item }}
+          </label>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </fieldset>
+{% endif %}

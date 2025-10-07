@@ -10,6 +10,8 @@
 <div
   class="main-collection"
   aria-labelledby="main-collection-heading"
+  data-collection-section
+  data-section-id="{{ section.id }}"
 >
   <div class="layout-wrapper">
     <section class="main-collection__header">
@@ -23,23 +25,42 @@
     </section>
   </div>
 
-  <section
-    class="collection-list layout-grid layout-wrapper"
-    role="region"
-    aria-label="Featured products"
-  >
-    {% for product in collection.products %}
-      {% unless product.collections contains collections.events %}
-        {% render 'product-card', product: product %}
-      {% endunless %}
-    {% endfor %}
-  </section>
-  <div class="pagination-button">
-    <div data-hover-shake>
-      <button class="primary-button">Load More</button>
-    </div>
-  </div>
+  {% paginate collection.products by 12 %}
+    <section
+      class="collection-list layout-grid layout-wrapper"
+      role="region"
+      aria-label="Featured products"
+      data-collection-list
+    >
+      {% assign any_products = false %}
+      {% for product in collection.products %}
+        {% unless product.collections contains collections.events %}
+          {% render 'product-card', product: product %}
+          {% assign any_products = true %}
+        {% endunless %}
+      {% endfor %}
+      {% if any_products == false %}
+        <div class="collection-empty-message">
+          <p class="collection-empty-message__title type-h1-x-small">No products to show.</p>
+          <div class="collection-empty-message__button-wrapper">
+            <a href="{{ routes.all_products_collection_url }}" class="primary-button primary-button--small">
+              View All Products
+            </a>
+          </div>
+        </div>
+      {% endif %}
+    </section>
+    {% if paginate.pages > 1 and paginate.next %}
+      <div class="pagination-button">
+        <div data-hover-shake>
+          <a href="{{ paginate.next.url }}" class="primary-button" data-collection-load-more>Load More</a>
+        </div>
+      </div>
+    {% endif %}
+  {% endpaginate %}
 </div>
+
+<script src="{{ 'collection.js' | asset_url }}" defer></script>
 
 {% schema %}
 {

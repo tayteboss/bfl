@@ -354,6 +354,16 @@ div {
   line-height: normal;
 }
 
+.type-button-large {
+  font-size: 1.25rem;
+  font-family: var(--font-diatype-rounded-bold);
+  line-height: 1;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+}
+
 .rich-text {
   h1, h2, h3, h4, h5, h6 {
     margin-bottom: 1.5rem;
@@ -548,6 +558,7 @@ a {
 
   @media (max-width: 768px) {
     mix-blend-mode: normal;
+    z-index: 2000;
   }
 }
 
@@ -610,6 +621,18 @@ main .shopify-section:first-child {
   }
 }
 
+.primary-button--modal-filter {
+  font-family: var(--font-gt-standard-mono-regular);
+  font-weight: 400;
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.25rem; /* 20px */
+  padding: 10px 1rem;
+
+  @media (max-width: 768px) {
+    background: var(--color-grey-light);
+  }
+}
+
 @media (hover: hover) {
   .primary-button:hover {
     background: var(--color-yellow);
@@ -652,6 +675,18 @@ main .shopify-section:first-child {
   }
 }
 
+.primary-button--red {
+  background: var(--color-red);
+  color: var(--color-white);
+}
+
+@media (hover: hover) {
+  .primary-button--red:hover {
+    background: var(--color-yellow);
+    color: var(--color-black);
+  }
+}
+
 .primary-button--outline {
   background: transparent;
   color: var(--color-black);
@@ -667,6 +702,24 @@ main .shopify-section:first-child {
     color: var(--color-black);
   }
 }
+
+
+.primary-button--outline-white {
+  background: transparent;
+  color: var(--color-white);
+  border: 1px solid var(--color-white);
+  border-radius: 100px;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+}
+
+@media (hover: hover) {
+  .primary-button--outline-white:hover {
+    background: var(--color-white);
+    color: var(--color-black);
+  }
+}
+
 
 .secondary-button {
   font-size: 1rem;
@@ -785,5 +838,41 @@ main .shopify-section:first-child {
   gap: 2rem;
   text-align: center;
   margin-bottom: var(--logo-height);
+}
+
+cart-items .cart__warnings .button {
+  padding: 0.625rem 1.125rem;
+  background: var(--color-grey-light);
+  color: var(--color-black);
+  border-radius: 50px;
+  text-align: center;
+  display: inline-block;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+
+  &:hover {
+    background: var(--color-yellow);
+    color: var(--color-black);
+  }
+}
+
+cart-items .cart__warnings .cart__login-paragraph a {
+  padding: 0.625rem 1.125rem;
+  background: var(--color-yellow);
+  color: var(--color-black);
+  border-radius: 50px;
+  text-align: center;
+  display: inline-block;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+
+  &:hover {
+    background: var(--color-grey-light);
+    color: var(--color-black);
+  }
+}
+
+.rounded {
+  border-radius: 100px !important;
 }
 

@@ -66,8 +66,17 @@
 
     const updateHideHeader = () => {
       const doc = document.documentElement;
-      const distanceToBottom = doc.scrollHeight - window.scrollY - window.innerHeight;
-      const shouldHide = distanceToBottom <= footerHeight / 2;
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = doc.scrollHeight;
+      const scrollThreshold = windowHeight * 2;
+      const footerThreshold = footerHeight / 2;
+
+      const distanceToBottom = documentHeight - scrollY - windowHeight;
+      const isPastScrollThreshold = scrollY > scrollThreshold;
+      const isNearFooter = distanceToBottom <= footerThreshold;
+
+      const shouldHide = isPastScrollThreshold && isNearFooter;
       body.classList.toggle('hide-header', shouldHide);
     };
 

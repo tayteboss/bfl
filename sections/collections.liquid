@@ -5,51 +5,44 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
 {% endcomment %}
 
+{{ 'collection.css' | asset_url | stylesheet_tag }}
+
 <div
-  class="collections {{ section.settings.grid_item_width }}"
-  style="--grid-gap: {{ section.settings.grid_gap }}px"
+  class="all-collection"
+  aria-labelledby="all-collection-heading"
 >
-  {% for collection in collections %}
-    <a class="collection-card" href="{{ collection.url }}">
-      {% if collection.featured_image %}
-        {% render 'image',
-          class: 'collection-card__image',
-          image: collection.featured_image,
-          width: 600,
-          height: 600,
-          crop: 'center'
-        %}
-      {% endif %}
-
-      <div class="collection-card__content">
-        <p>{{ collection.title }}</p>
-
-        {% if collection.description %}
-          <p>{{ collection.description | strip_html | truncatewords: 15 }}</p>
-        {% endif %}
+  <div class="layout-wrapper">
+    <section class="all-collection__header">
+      <h1
+        id="all-collection-heading"
+        class="all-collection__heading type-h1-large"
+      >
+        Collections
+      </h1>
+      <div
+        class="collection-filters"
+        role="navigation"
+        aria-label="Collection filters"
+      >
+        {% for collection in collections %}
+          {% render 'filter-button', title: collection.title, id: collection.id, url: collection.url %}
+        {% endfor %}
       </div>
-    </a>
-  {% endfor %}
-</div>
+    </section>
+  </div>
 
-{% stylesheet %}
-  .collections {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(var(--collection-card-size), 100%), 1fr));
-    gap: var(--grid-gap);
-  }
-  .collections--compact {
-    --collection-card-size: 160px;
-  }
-  .collections--full {
-    --collection-card-size: 280px;
-  }
-  .collection-card {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-{% endstylesheet %}
+  {% comment %}
+    <section
+      class="collection-list layout-grid layout-wrapper"
+      role="region"
+      aria-label="Collections"
+    >
+      {% for collection in collections %}
+        {% render 'product-card', product: collection %}
+      {% endfor %}
+    </section>
+  {% endcomment %}
+</div>
 
 {% schema %}
 {

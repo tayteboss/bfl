@@ -1,4 +1,4 @@
-.main-collection, .featured-collection {
+.main-collection, .featured-collection, .all-collection {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,7 +9,15 @@
   }
 }
 
-.main-collection .layout-grid, .collection .layout-grid, .featured-collection .layout-grid {
+.all-collection {
+  margin-bottom: calc(var(--logo-height));
+
+  @media (max-width: 768px) {
+    margin-bottom: calc(var(--logo-height) + 100px);
+  }
+}
+
+.main-collection .layout-grid, .collection .layout-grid, .featured-collection .layout-grid, .all-collection .layout-grid {
   row-gap: 4rem;
 
   @media (max-width: 768px) {
@@ -17,7 +25,7 @@
   }
 }
 
-.main-collection__header, .featured-collection__header {
+.main-collection__header, .featured-collection__header, .all-collection__header {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -25,7 +33,7 @@
   gap: 2rem;
 }
 
-.main-collection__heading, .featured-collection__heading {
+.main-collection__heading, .featured-collection__heading, .all-collection__heading {
   text-align: center;
 }
 
@@ -36,9 +44,150 @@
   row-gap: 0.5rem;
   justify-content: center;
   align-items: center;
+  max-width: 45rem;
+  margin: 0 auto;
 
   @media (max-width: 768px) {
     gap: 0.125rem;
     row-gap: 0.25rem;
   }
+}
+
+.collection-empty-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  grid-column: 1 / -1;
+}
+
+.collection-empty-message__title {
+  text-align: center;
+}
+
+.collection-empty-message__button-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Filters modal */
+.filters-modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.75);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  backdrop-filter: blur(8px) saturate(120%);
+  overflow: auto;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 200ms ease, visibility 200ms ease;
+  z-index: 5000;
+}
+
+.filters-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.filters-modal__dialog {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  max-width: 520px;
+  width: 100%;
+  opacity: 0;
+}
+
+.filters-modal-title {
+  color: var(--color-white);
+}
+
+.filters-modal.is-open .filters-modal__dialog {
+  opacity: 1;
+}
+
+.filters-modal__dialog fieldset {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.filters-modal__dialog legend {
+  color: var(--color-white);
+}
+
+.filters-modal__actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.filter-group__title {
+  color: var(--color-white);
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.filter-group__items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.filter-group__item input {
+  padding: 0;
+}
+
+/* Lock page scroll when modal is open */
+body.is-modal-open {
+  overflow: hidden;
+  touch-action: none;
+}
+
+/* On small-height viewports, align modal content to top and allow scrolling */
+@media (max-height: 700px) {
+  .filters-modal {
+    place-items: start center;
+    padding-top: 2rem;
+  }
+}
+
+/* On mobile, top-flow layout with comfortable padding */
+@media (max-width: 768px) {
+  .filters-modal {
+    display: block;
+    padding: 4rem 1rem;
+  }
+
+  .filters-modal__dialog {
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    align-items: stretch;
+  }
+}
+
+.primary-button--modal-filter span {
+  font-family: var(--font-gt-standard-mono-regular);
+  font-weight: 400;
+  font-size: 0.6rem; /* 14px */
+  line-height: 0.1; /* 20px */
+  color: var(--color-black);
+  position: relative;
+  top: -4px; 
 }

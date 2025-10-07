@@ -1,81 +1,104 @@
 <!-- Filter Trigger -->
-<button id="open-filters" type="button" aria-haspopup="dialog" aria-controls="filters-modal">+ Filters</button>
+<div data-hover-shake="small">
+  <button
+    id="open-filters"
+    type="button"
+    aria-haspopup="dialog"
+    aria-controls="filters-modal"
+    class="primary-button primary-button--small"
+  >
+    + Filters
+  </button>
+</div>
 
 <!-- Active Filters -->
 <div id="active-filters"></div>
 
 <!-- Modal -->
-<div id="filters-modal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="filters-modal-title">
-  <div>
-    <h3 id="filters-modal-title">Filters</h3>
+<div
+  id="filters-modal"
+  class="filters-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="filters-modal-title"
+  aria-hidden="true"
+>
+  <div class="filters-modal__dialog" role="document">
+    {% comment %} <h3 class="filters-modal-title type-button-large">Filters</h3> {% endcomment %}
+
+    {% comment %} Here there will be 3 buttons, All - New arrivals and Sale {% endcomment %}
+    {% capture quick_links_html %}
+      {% assign all_products_count = 0 %}
+      {% if collections['all'] %}
+        {% assign all_products_count = collections['all'].products_count | plus: 0 %}
+      {% endif %}
+      <a href="{{ routes.all_products_collection_url }}" class="primary-button primary-button--modal-filter">
+        All{% if all_products_count > 0 %} <span>{{ all_products_count }}</span>{% endif %}
+      </a>
+
+      {% assign new_arrivals_count = 0 %}
+      {% if collections['new-arrivals'] %}
+        {% assign new_arrivals_count = collections['new-arrivals'].products_count | plus: 0 %}
+        <a href="{{ collections['new-arrivals'].url }}" class="primary-button primary-button--modal-filter">
+          New Arrivals{% if new_arrivals_count > 0 %} <span>{{ new_arrivals_count }}</span>{% endif %}
+        </a>
+      {% endif %}
+
+      {% assign sale_count = 0 %}
+      {% if collections['sale'] %}
+        {% assign sale_count = collections['sale'].products_count | plus: 0 %}
+        <a href="{{ collections['sale'].url }}" class="primary-button primary-button--modal-filter primary-button--red">
+          Sale{% if sale_count > 0 %} <span>{{ sale_count }}</span>{% endif %}
+        </a>
+      {% endif %}
+    {% endcapture %}
+    {% render 'filter-link-group', title: 'Shop by', content_html: quick_links_html %}
+
+    {% comment %} Here will be the list of collections which are buttons that immediately send the user to /collection/chosen-collection-name {% endcomment %}
+    {% capture collections_links_html %}
+      {% for coll in collections %}
+        {% if coll.handle != 'events' and coll.handle != 'all' and coll.handle != 'new-arrivals' and coll.handle != 'sale' %}
+          {% assign coll_count = coll.products_count | plus: 0 %}
+          <a href="{{ coll.url }}" class="primary-button primary-button--modal-filter">
+            {{ coll.title }}{% if coll_count > 0 %} <span>{{ coll_count }}</span>{% endif %}
+          </a>
+        {% endif %}
+      {% endfor %}
+    {% endcapture %}
+    {% render 'filter-link-group', title: 'Collections', content_html: collections_links_html %}
+
+    {% comment %} Here will be tags for the current collection. If we are on the collection/film then there will be tags such as 35mm etc. {% endcomment %}
 
     <!-- TAGS -->
-    <fieldset>
-      <legend>Tags</legend>
-      {% assign all_tags = '' | split: '' %}
-      {% for product in collection.products %}
-        {% assign all_tags = all_tags | concat: product.tags %}
-      {% endfor %}
-      {% assign tag_list = all_tags | uniq %}
-      {% for tag in tag_list %}
-        {% if tag != blank %}
-          <label>
-            <input
-              type="checkbox"
-              value="{{ tag | escape }}"
-              class="filter-option"
-              data-filter-type="tag"
-            >
-            {{ tag }}
-          </label>
-        {% endif %}
-      {% endfor %}
-    </fieldset>
+    {% assign all_tags = '' | split: '' %}
+    {% for product in collection.products %}
+      {% assign all_tags = all_tags | concat: product.tags %}
+    {% endfor %}
+    {% assign tag_list = all_tags | uniq %}
+    {% render 'filter-group', title: 'Tags', items: tag_list, type: 'tag' %}
 
+    {% comment %} Finally here will be brands or vendors for the current collection. {% endcomment %}
     <!-- VENDORS -->
-    <fieldset>
-      <legend>Brands</legend>
-      {% assign all_vendors = '' | split: '' %}
-      {% for product in collection.products %}
-        {% assign vendor_array = product.vendor | split: '|||' %}
-        {% assign all_vendors = all_vendors | concat: vendor_array %}
-      {% endfor %}
-      {% assign vendor_list = all_vendors | uniq %}
-      {% for vendor in vendor_list %}
-        {% if vendor != blank %}
-          <label>
-            <input
-              type="checkbox"
-              value="{{ vendor | escape }}"
-              class="filter-option"
-              data-filter-type="vendor"
-            >
-            {{ vendor }}
-          </label>
-        {% endif %}
-      {% endfor %}
-    </fieldset>
+    {% assign all_vendors = '' | split: '' %}
+    {% for product in collection.products %}
+      {% assign vendor_array = product.vendor | split: '|||' %}
+      {% assign all_vendors = all_vendors | concat: vendor_array %}
+    {% endfor %}
+    {% assign vendor_list = all_vendors | uniq %}
+    {% render 'filter-group', title: 'Brands', items: vendor_list, type: 'vendor' %}
 
-    <!-- COLLECTIONS -->
-    <fieldset>
-      <legend>Categories</legend>
-      {% for coll in collections %}
-        {% if coll.handle != 'events' %}
-          <label>
-            <input
-              type="checkbox"
-              value="{{ coll.title | escape }}"
-              class="filter-option"
-              data-filter-type="collection"
-            >
-            {{ coll.title }}
-          </label>
-        {% endif %}
-      {% endfor %}
-    </fieldset>
-
-    <button id="apply-filters" type="button">Apply</button>
-    <button id="close-filters" type="button">Close</button>
+    <div class="filters-modal__actions">
+      <button id="apply-filters" type="button" class="primary-button primary-button--modal-filter rounded">
+        Apply
+      </button>
+      <button
+        id="close-filters"
+        type="button"
+        class="primary-button primary-button--modal-filter primary-button--outline-white"
+      >
+        Close
+      </button>
+    </div>
   </div>
 </div>
 
@@ -90,14 +113,28 @@
 
     let activeFilters = [];
 
+    // Move modal to end of body to avoid stacking context issues
+    if (modal && modal.parentNode !== document.body) {
+      document.body.appendChild(modal);
+    }
+
     // Modal toggle
-    openBtn.addEventListener('click', () => {
-      modal.style.display = 'block';
+    function openModal() {
+      modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
-    });
-    closeBtn.addEventListener('click', () => {
-      modal.style.display = 'none';
+      document.body.classList.add('is-modal-open');
+    }
+
+    function closeModal() {
+      modal.classList.remove('is-open');
       modal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('is-modal-open');
+    }
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
     });
 
     // Apply filters
@@ -109,8 +146,7 @@
         }
       });
       renderActiveFilters();
-      modal.style.display = 'none';
-      modal.setAttribute('aria-hidden', 'true');
+      closeModal();
       filterProducts();
     });
 
