@@ -248,6 +248,11 @@ class CartItems extends HTMLElement {
 
     [...cartItemElements, ...cartDrawerItemElements].forEach((overlay) => overlay.classList.remove('hidden'));
 
+    const rowElement = document.getElementById(`CartItem-${line}`);
+    if (rowElement) {
+      rowElement.classList.add('is-loading');
+    }
+
     document.activeElement.blur();
     this.lineItemStatusElement.setAttribute('aria-hidden', false);
   }
@@ -261,6 +266,11 @@ class CartItems extends HTMLElement {
 
     cartItemElements.forEach((overlay) => overlay.classList.add('hidden'));
     cartDrawerItemElements.forEach((overlay) => overlay.classList.add('hidden'));
+
+    const rowElement = document.getElementById(`CartItem-${line}`);
+    if (rowElement) {
+      rowElement.classList.remove('is-loading');
+    }
   }
 }
 
