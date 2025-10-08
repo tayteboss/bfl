@@ -126,16 +126,6 @@ class CartItems extends HTMLElement {
         selector: '.js-contents',
       },
       {
-        id: 'cart-icon-bubble',
-        section: 'cart-icon-bubble',
-        selector: '.shopify-section',
-      },
-      {
-        id: 'cart-live-region-text',
-        section: 'cart-live-region-text',
-        selector: '.shopify-section',
-      },
-      {
         id: 'main-cart-footer',
         section: document.getElementById('main-cart-footer').dataset.id,
         selector: '.js-contents',
@@ -177,12 +167,12 @@ class CartItems extends HTMLElement {
         if (cartDrawerWrapper) cartDrawerWrapper.classList.toggle('is-empty', parsedState.item_count === 0);
 
         this.getSectionsToRender().forEach((section) => {
-          const elementToReplace =
-            document.getElementById(section.id).querySelector(section.selector) || document.getElementById(section.id);
-          elementToReplace.innerHTML = this.getSectionInnerHTML(
-            parsedState.sections[section.section],
-            section.selector
-          );
+          const container = document.getElementById(section.id);
+          if (!container) return; // skip missing containers safely
+          const sectionHtml = parsedState.sections && parsedState.sections[section.section];
+          if (!sectionHtml) return; // skip if server did not return this section
+          const elementToReplace = container.querySelector(section.selector) || container;
+          elementToReplace.innerHTML = this.getSectionInnerHTML(sectionHtml, section.selector);
         });
         const updatedValue = parsedState.items[line - 1] ? parsedState.items[line - 1].quantity : undefined;
         let message = '';

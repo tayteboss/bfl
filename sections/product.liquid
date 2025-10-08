@@ -38,77 +38,75 @@
           </div>
 
           <div class="product-form">
-            {% form 'product', product %}
-              {% comment %}
-                {% if product.variants.size > 1 %}
-                  <fieldset class="variant-options">
-                    <legend>Select Options:</legend>
+            {% comment %}
+              {% if product.variants.size > 1 %}
+                <fieldset class="variant-options">
+                  <legend>Select Options:</legend>
 
-                    {% for variant in product.variants %}
-                      <input
-                        type="radio"
-                        id="variant-{{ variant.id }}"
-                        name="id"
-                        value="{{ variant.id }}"
-                        {% if forloop.first %}
-                          checked
-                        {% endif %}
-                        {% unless variant.available %}
-                          disabled
-                        {% endunless %}
-                      >
-                      <label for="variant-{{ variant.id }}">
-                        <span class="var-title"> {{ variant.title }} </span>
-                        <span class="exp">EXP</span>
-                      </label>
-                    {% endfor %}
-                  </fieldset>
-                {% endif %}
-              {% endcomment %}
+                  {% for variant in product.variants %}
+                    <input
+                      type="radio"
+                      id="variant-{{ variant.id }}"
+                      name="id"
+                      value="{{ variant.id }}"
+                      {% if forloop.first %}
+                        checked
+                      {% endif %}
+                      {% unless variant.available %}
+                        disabled
+                      {% endunless %}
+                    >
+                    <label for="variant-{{ variant.id }}">
+                      <span class="var-title"> {{ variant.title }} </span>
+                      <span class="exp">EXP</span>
+                    </label>
+                  {% endfor %}
+                </fieldset>
+              {% endif %}
+            {% endcomment %}
 
-              <div class="product-form__bottom">
-                <div class="product-form__buy-button" data-hover-shake>
-                  {%- render 'buy-buttons',
-                    product: product,
-                    product_form_id: product_form_id,
-                    section_id: section.id,
-                    show_pickup_availability: true
-                  -%}
-                </div>
-                <div class="quantity-input-wrapper quantity-bubble">
-                  <button
-                    type="button"
-                    class="quantity-btn quantity-btn--minus type-button-large"
-                    name="minus"
-                    aria-label="Decrease quantity"
-                  >
-                    -
-                  </button>
-                  <input
-                    id="Quantity-{{ section.id }}"
-                    name="quantity"
-                    type="number"
-                    class="input-selector quantity-input quantity-number type-button-large"
-                    form="{{ product_form_id }}"
-                    min="{{ product.selected_or_first_available_variant.quantity_rule.min | default: 1 }}"
-                    {% if product.selected_or_first_available_variant.quantity_rule.max %}
-                      max="{{ product.selected_or_first_available_variant.quantity_rule.max }}"
-                    {% endif %}
-                    step="{{ product.selected_or_first_available_variant.quantity_rule.increment | default: 1 }}"
-                    value="{{ product.selected_or_first_available_variant.quantity_rule.min | default: 1 }}"
-                    aria-label="quantity"
-                  >
-                  <button
-                    type="button"
-                    class="quantity-btn quantity-btn--plus type-button-large"
-                    name="plus"
-                    aria-label="Increase quantity"
-                  >
-                    +
-                  </button>
-                </div>
+            <div class="product-form__bottom">
+              <div class="product-form__buy-button" data-hover-shake>
+                {%- render 'buy-buttons',
+                  product: product,
+                  product_form_id: product_form_id,
+                  section_id: section.id,
+                  show_pickup_availability: true
+                -%}
               </div>
-            {% endform %}
+              <div class="quantity-input-wrapper quantity-bubble">
+                <button
+                  type="button"
+                  class="quantity-btn quantity-btn--minus type-button-large"
+                  name="minus"
+                  aria-label="Decrease quantity"
+                >
+                  -
+                </button>
+                <input
+                  id="Quantity-{{ section.id }}"
+                  name="quantity"
+                  type="number"
+                  class="input-selector quantity-input quantity-number type-button-large"
+                  form="{{ product_form_id }}"
+                  min="{{ product.selected_or_first_available_variant.quantity_rule.min | default: 1 }}"
+                  {% if product.selected_or_first_available_variant.quantity_rule.max %}
+                    max="{{ product.selected_or_first_available_variant.quantity_rule.max }}"
+                  {% endif %}
+                  step="{{ product.selected_or_first_available_variant.quantity_rule.increment | default: 1 }}"
+                  value="{{ product.selected_or_first_available_variant.quantity_rule.min | default: 1 }}"
+                  aria-label="quantity"
+                >
+                <button
+                  type="button"
+                  class="quantity-btn quantity-btn--plus type-button-large"
+                  name="plus"
+                  aria-label="Increase quantity"
+                >
+                  +
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

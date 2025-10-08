@@ -249,6 +249,32 @@
         if (typeof unsubscribeCursorHover === 'function') unsubscribeCursorHover();
       });
     }
+
+    // Keep header cart count in sync without page refresh
+    if (typeof subscribe === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
+      const setHeaderCartCount = (count) => {
+        const desktopEl = document.querySelector('.cart-button--desktop .cart-button__number');
+        const mobileEl = document.querySelector('.cart-button--mobile .cart-button__number');
+        const menuEl = document.querySelector('.menu-toggle__number');
+        [desktopEl, mobileEl, menuEl].forEach((el) => {
+          if (!el) return;
+          el.textContent = String(count);
+          el.classList.toggle('is-zero', count === 0);
+        });
+      };
+
+      const onCartUpdate = (event) => {
+        const count =
+          event && event.cartData && typeof event.cartData.item_count === 'number' ? event.cartData.item_count : null;
+        if (count === null) return;
+        setHeaderCartCount(count);
+      };
+
+      const unsubscribeCartUpdate = subscribe(PUB_SUB_EVENTS.cartUpdate, onCartUpdate);
+      document.addEventListener('shopify:section:unload', () => {
+        if (typeof unsubscribeCartUpdate === 'function') unsubscribeCartUpdate();
+      });
+    }
   });
 </script>
 
