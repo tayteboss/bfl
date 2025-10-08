@@ -13,105 +13,149 @@
   <section id="ProductInfo-{{ section.id }}" class="product-page">
     {%- assign product_form_id = 'product-form-' | append: section.id -%}
 
-    <div class="layout-wrapper layout-grid">
-      <div class="product-images-wrapper">
-        {% if product.metafields.custom.product_badge %}
-          <div class="product-images-wrapper__badge badge-button">
-            {{ product.metafields.custom.product_badge | metafield_tag }}
+    <div class="product-section">
+      <div class="layout-wrapper layout-grid">
+        <div class="product-images-wrapper">
+          {% if product.metafields.custom.product_badge %}
+            <div class="product-images-wrapper__badge badge-button">
+              {{ product.metafields.custom.product_badge | metafield_tag }}
+            </div>
+          {% endif %}
+          {% render 'image', class: 'product-images-wrapper__image', image: product.featured_image %}
+        </div>
+
+        <div class="product-content">
+          <div class="product-content__header">
+            <h2 class="product-content__vendor type-h1-small">{{ product.vendor }}</h2>
+            <h1 class="product-content__title type-h1-small">{{ product.title }}</h1>
           </div>
-        {% endif %}
-        {% render 'image', class: 'product-images-wrapper__image', image: product.featured_image %}
-      </div>
+          <div class="product-content__price">
+            <span class="type-p-large">{{ cart.currency.iso_code }}</span>
+            <span class="type-p-large">{{ product.price | money }}</span>
+          </div>
+          <div class="product-content__description-wrapper">
+            <p class="product-content__description type-p">{{ product.description }}</p>
+          </div>
 
-      <div class="product-content">
-        <div class="product-content__header">
-          <h2 class="product-content__vendor type-h1-small">{{ product.vendor }}</h2>
-          <h1 class="product-content__title type-h1-small">{{ product.title }}</h1>
-        </div>
-        <div class="product-content__price">
-          <span class="type-p-large">{{ cart.currency.iso_code }}</span>
-          <span class="type-p-large">{{ product.price | money }}</span>
-        </div>
-        <div class="product-content__description-wrapper">
-          <p class="product-content__description type-p">{{ product.description }}</p>
-        </div>
+          <div class="product-form">
+            {% form 'product', product %}
+              {% comment %}
+                {% if product.variants.size > 1 %}
+                  <fieldset class="variant-options">
+                    <legend>Select Options:</legend>
 
-        <div class="product-form">
-          {% form 'product', product %}
-            {% comment %}
-              {% if product.variants.size > 1 %}
-                <fieldset class="variant-options">
-                  <legend>Select Options:</legend>
+                    {% for variant in product.variants %}
+                      <input
+                        type="radio"
+                        id="variant-{{ variant.id }}"
+                        name="id"
+                        value="{{ variant.id }}"
+                        {% if forloop.first %}
+                          checked
+                        {% endif %}
+                        {% unless variant.available %}
+                          disabled
+                        {% endunless %}
+                      >
+                      <label for="variant-{{ variant.id }}">
+                        <span class="var-title"> {{ variant.title }} </span>
+                        <span class="exp">EXP</span>
+                      </label>
+                    {% endfor %}
+                  </fieldset>
+                {% endif %}
+              {% endcomment %}
 
-                  {% for variant in product.variants %}
-                    <input
-                      type="radio"
-                      id="variant-{{ variant.id }}"
-                      name="id"
-                      value="{{ variant.id }}"
-                      {% if forloop.first %}
-                        checked
-                      {% endif %}
-                      {% unless variant.available %}
-                        disabled
-                      {% endunless %}
-                    >
-                    <label for="variant-{{ variant.id }}">
-                      <span class="var-title"> {{ variant.title }} </span>
-                      <span class="exp">EXP</span>
-                    </label>
-                  {% endfor %}
-                </fieldset>
-              {% endif %}
-            {% endcomment %}
-
-            <div class="product-form__bottom">
-              <div class="product-form__buy-button" data-hover-shake>
-                {%- render 'buy-buttons',
-                  product: product,
-                  product_form_id: product_form_id,
-                  section_id: section.id,
-                  show_pickup_availability: true
-                -%}
+              <div class="product-form__bottom">
+                <div class="product-form__buy-button" data-hover-shake>
+                  {%- render 'buy-buttons',
+                    product: product,
+                    product_form_id: product_form_id,
+                    section_id: section.id,
+                    show_pickup_availability: true
+                  -%}
+                </div>
+                <div class="quantity-input-wrapper quantity-bubble">
+                  <button
+                    type="button"
+                    class="quantity-btn quantity-btn--minus type-button-large"
+                    name="minus"
+                    aria-label="Decrease quantity"
+                  >
+                    -
+                  </button>
+                  <input
+                    id="Quantity-{{ section.id }}"
+                    name="quantity"
+                    type="number"
+                    class="input-selector quantity-input quantity-number type-button-large"
+                    form="{{ product_form_id }}"
+                    min="{{ product.selected_or_first_available_variant.quantity_rule.min | default: 1 }}"
+                    {% if product.selected_or_first_available_variant.quantity_rule.max %}
+                      max="{{ product.selected_or_first_available_variant.quantity_rule.max }}"
+                    {% endif %}
+                    step="{{ product.selected_or_first_available_variant.quantity_rule.increment | default: 1 }}"
+                    value="{{ product.selected_or_first_available_variant.quantity_rule.min | default: 1 }}"
+                    aria-label="quantity"
+                  >
+                  <button
+                    type="button"
+                    class="quantity-btn quantity-btn--plus type-button-large"
+                    name="plus"
+                    aria-label="Increase quantity"
+                  >
+                    +
+                  </button>
+                </div>
               </div>
-              <div class="quantity-input-wrapper quantity-bubble">
-                <button
-                  type="button"
-                  class="quantity-btn quantity-btn--minus type-button-large"
-                  name="minus"
-                  aria-label="Decrease quantity"
-                >
-                  -
-                </button>
-                <input
-                  id="Quantity-{{ section.id }}"
-                  name="quantity"
-                  type="number"
-                  class="input-selector quantity-input quantity-number type-button-large"
-                  form="{{ product_form_id }}"
-                  min="{{ product.selected_or_first_available_variant.quantity_rule.min | default: 1 }}"
-                  {% if product.selected_or_first_available_variant.quantity_rule.max %}
-                    max="{{ product.selected_or_first_available_variant.quantity_rule.max }}"
-                  {% endif %}
-                  step="{{ product.selected_or_first_available_variant.quantity_rule.increment | default: 1 }}"
-                  value="{{ product.selected_or_first_available_variant.quantity_rule.min | default: 1 }}"
-                  aria-label="quantity"
-                >
-                <button
-                  type="button"
-                  class="quantity-btn quantity-btn--plus type-button-large"
-                  name="plus"
-                  aria-label="Increase quantity"
-                >
-                  +
-                </button>
+            {% endform %}
+          </div>
+        </div>
+      </div>
+      {%- assign show_related = section.settings.show_related | default: true -%}
+      {%- if show_related -%}
+        {%- assign related_title = section.settings.related_title | default: 'Similar Products' -%}
+        {%- assign related_limit = section.settings.related_limit | default: 4 -%}
+
+        {%- assign base_collection = null -%}
+        {%- if collection and collection.handle != 'events' -%}
+          {%- assign base_collection = collection -%}
+        {%- endif -%}
+        {%- if base_collection == null -%}
+          {%- for coll in product.collections -%}
+            {%- if coll.handle != 'events' -%}
+              {%- assign base_collection = coll -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+        {%- if base_collection == null -%}
+          {%- assign base_collection = collections.all -%}
+        {%- endif -%}
+
+        {%- assign similar_rendered = 0 -%}
+        {%- if base_collection and base_collection.products_count > 1 -%}
+          <div class="similar-products">
+            <div class="layout-wrapper">
+              <h2 class="similar-products__title type-h2-medium">{{ related_title }}</h2>
+              <div class="similar-products__list layout-grid">
+                {%- for item in base_collection.products -%}
+                  {%- if item.id != product.id -%}
+                    {% render 'product-card', product: item %}
+                    {%- assign similar_rendered = similar_rendered | plus: 1 -%}
+                    {%- if similar_rendered >= related_limit -%}
+                      {%- break -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endfor -%}
               </div>
             </div>
-          {% endform %}
-        </div>
-      </div>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
     </div>
   </section>
+
   <script type="application/ld+json">
     {{ product | structured_data }}
   </script>
@@ -173,7 +217,29 @@
 {% schema %}
 {
   "name": "product",
-  "settings": [],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_related",
+      "label": "Show related products",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "related_title",
+      "label": "Related products heading",
+      "default": "Similar Products"
+    },
+    {
+      "type": "range",
+      "id": "related_limit",
+      "label": "Related products limit",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    }
+  ],
   "disabled_on": {
     "groups": ["header", "footer"]
   }
