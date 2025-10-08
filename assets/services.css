@@ -134,15 +134,8 @@
 }
 
 .service-card__badge {
-  font-family: var(--font-gt-standard-mono-regular);
-  font-weight: 400;
-  font-size: 0.75rem;
-  line-height: 1;
-  letter-spacing: 0.01em;
   color: var(--color-black);
   background: var(--color-green);
-  padding: 0.3125rem 0.625rem;
-  border-radius: 3.125rem;
 }
 
 .service-card__paragraph {
@@ -256,11 +249,6 @@
   border-bottom-color: rgba(0, 0, 0, 0.1);
   min-width: 250px;
   width: 25%;
-
-  @media (max-width: 1024px) {
-    min-width: 150px;
-    width: 20%;
-  }
 }
 
 .service-table td {

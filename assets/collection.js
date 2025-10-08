@@ -53,5 +53,3 @@ document.addEventListener('click', function (e) {
   if (trigger.getAttribute('aria-busy') === 'true') return;
   loadMoreOnce(trigger);
 });
-
-// Manual load-more only; no auto-fill on initial load.

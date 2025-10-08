@@ -15,7 +15,11 @@
               {{ section.settings.heading }}
             </h3>
             {% if section.settings.badge != blank %}
-              <div class="service-card__badge type-h1-x-small" role="text" aria-label="{{ section.settings.badge }}">
+              <div
+                class="service-card__badge badge-button type-h1-x-small"
+                role="text"
+                aria-label="{{ section.settings.badge }}"
+              >
                 {{ section.settings.badge }}
               </div>
             {% endif %}

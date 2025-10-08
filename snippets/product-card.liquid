@@ -31,7 +31,11 @@
     class="product-card__image-wrapper"
   >
     {% if product.metafields.custom.product_badge %}
-      <div class="product-badge" role="text" aria-label="Product badge: {{ product.metafields.custom.product_badge }}">
+      <div
+        class="badge-button product-card__badge"
+        role="text"
+        aria-label="Product badge: {{ product.metafields.custom.product_badge }}"
+      >
         {{ product.metafields.custom.product_badge | metafield_tag }}
       </div>
     {% endif %}
