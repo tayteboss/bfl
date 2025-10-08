@@ -1,7 +1,7 @@
 {{ 'header.css' | asset_url | stylesheet_tag }}
 
 <header>
-  <a class="header__logo" href="{{ routes.root_url }}"> Bellows Film Lab</a>
+  <a class="header__logo" href="{{ routes.root_url }}"> <span>Bellows </span> <span>Film Lab</span> </a>
 
   <button class="menu-toggle" aria-label="Open Menu" data-text="Menu">
     Menu
@@ -69,7 +69,7 @@
       const scrollY = window.scrollY;
       const windowHeight = window.innerHeight;
       const documentHeight = doc.scrollHeight;
-      const scrollThreshold = windowHeight * 2;
+      const scrollThreshold = windowHeight * 1.5;
       const footerThreshold = footerHeight / 2;
 
       const distanceToBottom = documentHeight - scrollY - windowHeight;
@@ -78,6 +78,12 @@
 
       const shouldHide = isPastScrollThreshold && isNearFooter;
       body.classList.toggle('hide-header', shouldHide);
+    };
+
+    // Toggle minimise-header when scrolling past MAX_RANGE_PX
+    const updateMinimiseHeader = (y) => {
+      const currentY = typeof y === 'number' ? y : window.scrollY || window.pageYOffset || 0;
+      header.classList.toggle('minimise-header', currentY > MAX_RANGE_PX);
     };
 
     menuToggle.addEventListener('click', () => {
@@ -91,11 +97,12 @@
       body.classList.toggle('menu-open', isOpen);
     });
 
-    // Toggle `scrolled` class on header when beyond threshold and hide near page bottom
+    // Toggle `scrolled` and `minimise-header` on header when beyond threshold and hide near page bottom
     if (window.ScrollUtils && typeof window.ScrollUtils.onScroll === 'function') {
       const threshold = MAX_RANGE_PX;
       const onScrollUpdate = (y) => {
         header.classList.toggle('scrolled', y > threshold);
+        updateMinimiseHeader(y);
         updateHideHeader();
       };
       const unsubscribe = window.ScrollUtils.onScroll(onScrollUpdate);
@@ -105,7 +112,14 @@
         if (typeof unsubscribe === 'function') unsubscribe();
       });
     } else {
-      window.addEventListener('scroll', updateHideHeader, { passive: true });
+      const onScrollFallback = () => {
+        updateMinimiseHeader();
+        updateHideHeader();
+      };
+      window.addEventListener('scroll', onScrollFallback, { passive: true });
+      document.addEventListener('shopify:section:unload', () => {
+        window.removeEventListener('scroll', onScrollFallback);
+      });
     }
 
     window.addEventListener('resize', () => {
@@ -115,6 +129,7 @@
 
     updateFooterHeight();
     updateHideHeader();
+    updateMinimiseHeader();
 
     // Step-based random weight for header logo + collapse via wdth after 500px
     if (logoEl) {
