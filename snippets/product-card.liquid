@@ -5,8 +5,6 @@
   {% render 'product-card', product: product %}
 {% endcomment %}
 
-{{ 'product-card.css' | asset_url | stylesheet_tag }}
-
 <a
   class="product-card"
   href="{{ product.url }}"

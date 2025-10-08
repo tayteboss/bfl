@@ -1,30 +1,25 @@
-document.addEventListener('click', function (e) {
-  const trigger = e.target.closest('[data-collection-load-more]');
-  if (!trigger) return;
-
-  e.preventDefault();
-  if (trigger.getAttribute('aria-busy') === 'true') return;
-  const url = new URL(trigger.getAttribute('href'), window.location.origin);
-
+function loadMoreOnce(trigger) {
+  if (!trigger) return Promise.resolve(false);
   const sectionEl = document.querySelector('[data-collection-section]');
-  if (!sectionEl) return;
+  if (!sectionEl) return Promise.resolve(false);
   const sectionId = sectionEl.getAttribute('data-section-id');
   const listEl = sectionEl.querySelector('[data-collection-list]');
   const buttonWrapper = trigger.closest('.pagination-button');
-  if (!sectionId || !listEl) return;
+  if (!sectionId || !listEl) return Promise.resolve(false);
 
+  const url = new URL(trigger.getAttribute('href'), window.location.origin);
   url.searchParams.set('section_id', sectionId);
 
   trigger.setAttribute('aria-busy', 'true');
   if (buttonWrapper) buttonWrapper.classList.add('is-loading');
 
-  fetch(url.toString())
+  return fetch(url.toString())
     .then((r) => r.text())
     .then((html) => {
       const parser = new DOMParser();
       const doc = parser.parseFromString(html, 'text/html');
       const nextSection = doc.querySelector(`[data-collection-section][data-section-id="${sectionId}"]`);
-      if (!nextSection) return;
+      if (!nextSection) return false;
       const nextList = nextSection.querySelector('[data-collection-list]');
       const nextButton = nextSection.querySelector('[data-collection-load-more]');
 
@@ -38,12 +33,25 @@ document.addEventListener('click', function (e) {
         trigger.setAttribute('href', nextButton.getAttribute('href'));
         trigger.removeAttribute('aria-busy');
         if (buttonWrapper) buttonWrapper.classList.remove('is-loading');
+        return true;
       } else {
         if (buttonWrapper) buttonWrapper.remove();
+        return false;
       }
     })
     .catch(() => {
       trigger.removeAttribute('aria-busy');
       if (buttonWrapper) buttonWrapper.classList.remove('is-loading');
+      return false;
     });
+}
+
+document.addEventListener('click', function (e) {
+  const trigger = e.target.closest('[data-collection-load-more]');
+  if (!trigger) return;
+  e.preventDefault();
+  if (trigger.getAttribute('aria-busy') === 'true') return;
+  loadMoreOnce(trigger);
 });
+
+// Manual load-more only; no auto-fill on initial load.
