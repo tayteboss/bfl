@@ -357,41 +357,71 @@
       }
     }
 
-    // Search form
-    var form = document.getElementById('locationSearchForm');
-    var input = document.getElementById('locationSearchInput');
-    if (form && input) {
-      var submitBtn = form.querySelector('button[type="submit"]');
+    // Search forms (desktop and mobile)
+    function setupSearch(formId, inputId) {
+      var formEl = document.getElementById(formId);
+      var inputEl = document.getElementById(inputId);
+      if (!formEl || !inputEl) return;
+      var submitBtnEl = formEl.querySelector('button[type="submit"]');
+      var controlsContainer = formEl.closest('.drop-off-map__controls');
+
       function setSearchLoading(isLoading) {
         try {
-          if (controlsEl) controlsEl.classList.toggle('drop-off-map__controls--loading', !!isLoading);
-          form.classList.toggle('drop-off-map__search--loading', !!isLoading);
-          input.disabled = !!isLoading;
-          if (submitBtn) submitBtn.disabled = !!isLoading;
+          if (controlsContainer) controlsContainer.classList.toggle('drop-off-map__controls--loading', !!isLoading);
+          formEl.classList.toggle('drop-off-map__search--loading', !!isLoading);
+          inputEl.disabled = !!isLoading;
+          if (submitBtnEl) submitBtnEl.disabled = !!isLoading;
         } catch (_) {}
       }
 
-      form.addEventListener('submit', function (e) {
+      function clearSearchError() {
+        formEl.classList.remove('drop-off-map__search--error');
+        if (controlsContainer) controlsContainer.classList.remove('drop-off-map__controls--error');
+        var existing = formEl.querySelector('.drop-off-map__search-error');
+        if (existing && existing.parentNode) existing.parentNode.removeChild(existing);
+      }
+
+      function showSearchError(message) {
+        formEl.classList.add('drop-off-map__search--error');
+        if (controlsContainer) controlsContainer.classList.add('drop-off-map__controls--error');
+        var existing = formEl.querySelector('.drop-off-map__search-error');
+        if (!existing) {
+          existing = document.createElement('div');
+          existing.className = 'drop-off-map__search-error';
+          existing.setAttribute('role', 'alert');
+          formEl.appendChild(existing);
+        }
+        existing.textContent = message || 'No results found. Please try a different city or ZIP.';
+      }
+
+      formEl.addEventListener('submit', function (e) {
         e.preventDefault();
-        var q = (input.value || '').trim();
+        var q = (inputEl.value || '').trim();
         if (!q) return;
+        clearSearchError();
         setSearchLoading(true);
         geocode(q)
           .then(function (results) {
-            if (!Array.isArray(results) || results.length === 0) return;
+            if (!Array.isArray(results) || results.length === 0) {
+              showSearchError('No results found. Please try a different city or ZIP.');
+              return;
+            }
             var r = results[0];
             var target = { lat: parseFloat(r.lat), lng: parseFloat(r.lon) };
             var nearest = findNearest(target);
             focusLocation(nearest.loc);
           })
           .catch(function () {
-            /* silent */
+            showSearchError('Search failed. Please try again.');
           })
           .finally(function () {
             setSearchLoading(false);
           });
       });
     }
+
+    setupSearch('locationSearchFormDesktop', 'locationSearchInputDesktop');
+    setupSearch('locationSearchFormMobile', 'locationSearchInputMobile');
 
     // Geolocation
     var useMyLocationBtn = document.getElementById('useMyLocationBtn');
