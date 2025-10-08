@@ -225,3 +225,15 @@ cart-items {
     gap: 1rem;
   }
 }
+
+.cart-items {
+  padding-top: 0 !important;
+}
+
+.title-wrapper-with-link {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 4rem;
+}
