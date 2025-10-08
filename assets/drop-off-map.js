@@ -411,10 +411,11 @@
       });
     }
 
-    // Controls interactivity: shrink controls on map interaction, restore on search hover/focus
-    var controlsEl = document.querySelector('.drop-off-map__controls');
-    var searchFormEl = document.getElementById('locationSearchForm');
-    var searchInputEl = document.getElementById('locationSearchInput');
+    // Controls interactivity (desktop only ≥900px): shrink controls on map interaction, restore on search hover/focus
+    var isDesktop = typeof window !== 'undefined' && window.innerWidth >= 900;
+    var controlsEl = isDesktop ? document.querySelector('.drop-off-map__controls--desktop') : null;
+    var searchFormEl = isDesktop ? document.getElementById('locationSearchFormDesktop') : null;
+    var searchInputEl = isDesktop ? document.getElementById('locationSearchInputDesktop') : null;
     var hasUserInteracted = false;
     function setControlsInactive(isInactive) {
       if (!controlsEl) return;
@@ -425,7 +426,7 @@
       }
     }
 
-    if (controlsEl) {
+    if (isDesktop && controlsEl) {
       // Only set inactive after user interacts with the map
       map.on('movestart', function () {
         if (hasUserInteracted) setControlsInactive(true);
@@ -442,14 +443,6 @@
         setControlsInactive(true);
       });
       mapEl.addEventListener(
-        'touchstart',
-        function () {
-          hasUserInteracted = true;
-          setControlsInactive(true);
-        },
-        { passive: true }
-      );
-      mapEl.addEventListener(
         'wheel',
         function () {
           hasUserInteracted = true;
@@ -460,7 +453,7 @@
     }
 
     // Only the INPUT should restore controls (not the whole form/container)
-    if (searchInputEl) {
+    if (isDesktop && searchInputEl) {
       searchInputEl.addEventListener('mouseenter', function () {
         setControlsInactive(false);
       });
