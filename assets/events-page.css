@@ -137,18 +137,6 @@
 	gap: 0.25rem;
 }
 
-.event-card__category-badge {
-	border-radius: 3.125rem;
-	background: var(--color-green);
-	color: var(--color-black);
-	font-size: 0.625rem;
-	line-height: 1;
-	font-family: var(--font-gt-standard-mono);
-	border: 0.0625rem solid var(--color-black);
-	padding: 0.3125rem 0.625rem;
-	text-transform: capitalize;
-}
-
 .event-card__image-ratio {
 	position: relative;
 	width: 100%;

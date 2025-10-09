@@ -74,7 +74,7 @@
       const scrollY = window.scrollY;
       const windowHeight = window.innerHeight;
       const documentHeight = doc.scrollHeight;
-      const scrollThreshold = windowHeight * 1.5;
+      const scrollThreshold = windowHeight / 2;
       const footerThreshold = footerHeight / 2;
 
       const distanceToBottom = documentHeight - scrollY - windowHeight;

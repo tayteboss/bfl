@@ -350,7 +350,7 @@ p,
 a,
 button,
 div {
-  font-size: 16px;
+  font-size: 1rem;
   line-height: normal;
 }
 
@@ -416,7 +416,7 @@ div {
   blockquote {
     margin: 2rem 0;
     padding-left: 1rem;
-    border-left: 2px solid var(--color-black);
+    border-left: 0.125rem solid var(--color-black);
   }
 
   @media (max-width: 768px) {
@@ -484,7 +484,7 @@ input,
 textarea,
 select {
   padding: 0.125rem 0;
-  font-size: 16px;
+  font-size: 1rem;
   width: 100%;
   appearance: none;
 }
@@ -517,7 +517,7 @@ img {
 
 ol,
 ul {
-  padding-inline-start: 30px;
+  padding-inline-start: 1.875rem;
 }
 
 a {
@@ -528,22 +528,22 @@ a {
 
 .product-badge {
   background-color: #FFF750;
-  padding: 3px 10px;
-  border: black solid 1px;
-  border-radius: 15px;
+  padding: 0.1875rem 0.625rem;
+  border: 1px solid black;
+  border-radius: 0.9375rem;
   position: absolute;
-  top: 8px;
-  left: 8px;
-  font-size: 11px;
+  top: 0.5rem;
+  left: 0.5rem;
+  font-size: 0.6875rem;
   z-index: 150;
 }
 
 .visually-hidden {
   position: absolute !important;
   overflow: hidden;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
+  width: 0.0625rem;
+  height: 0.0625rem;
+  margin: -0.0625rem;
   padding: 0;
   border: 0;
   clip: rect(0 0 0 0);
@@ -581,27 +581,27 @@ a {
 } */
 
 main .shopify-section:first-child {
-  padding-top: calc(var(--logo-height) + 150px);
+  padding-top: calc(var(--logo-height) + 9.375rem);
 
   @media (max-width: 768px) {
-    padding-top: calc(var(--logo-height) + 80px);
+    padding-top: calc(var(--logo-height) + 5rem);
   }
 }
 
 main .shopify-section:first-child:has(.drop-off) {
-  padding-top: calc(var(--logo-height) + 16px);
+  padding-top: calc(var(--logo-height) + 1rem);
 
   @media (max-width: 768px) {
-    padding-top: calc(var(--logo-height) + 80px);
+    padding-top: calc(var(--logo-height) + 5rem);
   }
 }
 
 main .shopify-section:first-child:has(product-info) {
-  padding-top: calc(var(--logo-height) + 16px);
+  padding-top: calc(var(--logo-height) + 1rem);
 }
 
 /* main .shopify-section:first-child:has(cart-items) {
-  padding-top: calc(var(--logo-height) + 150px);
+  padding-top: calc(var(--logo-height) + 9.375rem);
 } */
 
 .primary-button {
@@ -643,7 +643,7 @@ main .shopify-section:first-child:has(product-info) {
   font-weight: 400;
   font-size: 0.875rem; /* 14px */
   line-height: 1.25rem; /* 20px */
-  padding: 10px 1rem;
+  padding: 0.625rem 1rem;
 
   @media (max-width: 768px) {
     background: var(--color-grey-light);
@@ -655,11 +655,11 @@ main .shopify-section:first-child:has(product-info) {
   font-weight: 400;
   font-size: 1.25rem; /* 20px */
   line-height: 1; /* 20px */
-  padding: 12px 18px;
+  padding: 0.75rem 1.125rem;
   background: var(--color-green);
   color: var(--color-black);
-  border: 2px solid var(--color-black);
-  border-radius: 100px;
+  border: 0.125rem solid var(--color-black);
+  border-radius: 6.25rem;
 }
 
 .primary-button--store-selector .active {
@@ -758,7 +758,7 @@ main .shopify-section:first-child:has(product-info) {
   background: transparent;
   color: var(--color-black);
   border: 1px solid var(--color-black);
-  border-radius: 100px;
+  border-radius: 6.25rem;
 
   transition: all var(--transition-speed-default) var(--transition-ease);
 }
@@ -775,7 +775,7 @@ main .shopify-section:first-child:has(product-info) {
   background: transparent;
   color: var(--color-white);
   border: 1px solid var(--color-white);
-  border-radius: 100px;
+  border-radius: 6.25rem;
 
   transition: all var(--transition-speed-default) var(--transition-ease);
 }
@@ -812,7 +812,7 @@ main .shopify-section:first-child:has(product-info) {
   .secondary-button:hover {
     background: var(--color-yellow);
     transform: scale(1.01);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0 0.9375rem rgba(0, 0, 0, 0.05);
     border-radius: 1rem;
   }
 }
@@ -861,7 +861,7 @@ main .shopify-section:first-child:has(product-info) {
   padding: 0.625rem 1.125rem;
   background: var(--color-grey-light);
   color: var(--color-black);
-  border-radius: 50px;
+  border-radius: 3.125rem;
   text-align: center;
   display: inline-block;
 
@@ -882,7 +882,7 @@ main .shopify-section:first-child:has(product-info) {
   padding: 0.625rem 1.125rem;
   background: var(--color-grey-light);
   color: var(--color-black);
-  border-radius: 50px;
+  border-radius: 3.125rem;
   display: inline-block;
   text-align: center;
 
@@ -911,7 +911,7 @@ cart-items .cart__warnings .button {
   padding: 0.625rem 1.125rem;
   background: var(--color-grey-light);
   color: var(--color-black);
-  border-radius: 50px;
+  border-radius: 3.125rem;
   text-align: center;
   display: inline-block;
 
@@ -927,7 +927,7 @@ cart-items .cart__warnings .cart__login-paragraph a {
   padding: 0.625rem 1.125rem;
   background: var(--color-yellow);
   color: var(--color-black);
-  border-radius: 50px;
+  border-radius: 3.125rem;
   text-align: center;
   display: inline-block;
 
@@ -940,11 +940,11 @@ cart-items .cart__warnings .cart__login-paragraph a {
 }
 
 .rounded {
-  border-radius: 100px !important;
+  border-radius: 6.25rem !important;
 }
 
 .badge-button {
-	border-radius: 50px;
+	border-radius: 3.125rem;
 	background: var(--color-yellow);
   border: 1px solid var(--color-black);
 	color: var(--color-black);
@@ -1081,20 +1081,20 @@ cart-items .cart__warnings .cart__login-paragraph a {
 .store-selector-modal {
   position: fixed;
   z-index: 10000;
-  bottom: 24px;
+  bottom: 1.5rem;
   left: 50%;
   transform: translateX(-50%);
   background: var(--color-green);
-  border-radius: 24px;
-  width: 480px;
+  border-radius: 1.5rem;
+  width: 30rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 24px;
+  gap: 1.5rem;
 
   @media (max-width: 550px) {
-    width: calc(100% - 24px);
+    width: calc(100% - 1.5rem);
   }
 }
 
@@ -1114,7 +1114,7 @@ cart-items .cart__warnings .cart__login-paragraph a {
 .store-selector-modal__inner {
   display: grid;
   gap: 1rem;
-  padding: 32px;
+  padding: 2rem;
 }
 
 .store-selector-modal__title,
@@ -1128,11 +1128,11 @@ cart-items .cart__warnings .cart__login-paragraph a {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 0.25rem;
 }
 
 .store-selector-modal__close {
-  padding-top: 16px;
+  padding-top: 1rem;
   text-align: center;
 }
 
@@ -1142,7 +1142,7 @@ cart-items .cart__warnings .cart__login-paragraph a {
 
 .store-selector-floating {
   position: fixed;
-  bottom: 24px;
+  bottom: 1.5rem;
   left: 50%;
   transform: translateX(-50%) translateY(100%);
   z-index: 10000;
@@ -1150,7 +1150,7 @@ cart-items .cart__warnings .cart__login-paragraph a {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 0.25rem;
   pointer-events: none;
   opacity: 0;
 
@@ -1164,13 +1164,13 @@ cart-items .cart__warnings .cart__login-paragraph a {
 }
 
 .store-selector-floating__menu {
-  width: 480px;
+  width: 30rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 0.25rem;
   opacity: 0;
   pointer-events: none;
 

@@ -24,7 +24,7 @@
     {% if product.tags.size > 0 %}
       <div class="event-card__category-badges" role="group" aria-label="Event categories">
         {% for tag in product.tags %}
-          <div class="event-card__category-badge" role="text" aria-label="Event category">
+          <div class="event-card__category-badge badge-button" role="text" aria-label="Event category">
             {{ tag }}
           </div>
         {% endfor %}

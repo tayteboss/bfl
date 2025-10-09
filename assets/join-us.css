@@ -1,7 +1,15 @@
+.join-us-form-section {
+	padding-bottom: 5rem;
+}
+
 .join-us__inner {
 	display: flex;
 	flex-direction: column;
-	gap: 40px;
+	gap: 4rem;
+
+	@media (max-width: 768px) {
+		gap: 2.5rem;
+	}
 }
 
 .join-us__header-wrapper {
