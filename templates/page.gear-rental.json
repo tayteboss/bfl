@@ -16,18 +16,18 @@
           "type": "rental",
           "settings": {
             "link": "https://www.sharegrid.com/miami/l/229612?type=rent",
-            "brand": "Hasselblad",
-            "camera-name": "503CW Medium Format Camera",
+            "brand": "Contax",
+            "camera-name": "645 Medium Format Camera",
             "price-per-day": "$300",
             "price-per-week": "$1,200",
             "camera-photo": "shopify://shop_images/616b43aa66e1cf708d284cb1c9b88e4cfeed4d99.png",
-            "camera-description": "The name \"Hasselblad\" is synonymous with image quality and reliability. Together with Carl Zeiss lenses, Hasselblad represents the highest standards of photographic craftsmanship and precision. The 503CW features a built-in TTL flash metering system, which automatically measures the light off the film for consistent flash exposures.",
+            "camera-description": "The Contax 645 is a medium-format film camera exclusively designed for serious and professional photographers. It has both manual and automatic focus modes. The communication between the lens, body, filmbacks, and viewfinders is purely electronic. This minimizes mechanical wear and tear, and it improves the design and expansion flexibility. The shutter assembly is metallic and electronically controlled, reaching speeds of up to 1/4000s. The viewfinders are interchangeable, with the primary AE (with center-weighted and spot metering) easily swapped for a waist-level finder. It allow for data imprinting as well as a film barcode reader. The camera utilizes in-lens motors and is compatible with a wide range of Carl Zeiss lenses.",
             "accordion-1-title": "What's included?",
-            "accordion-1": "<p>2 x 120/220 Backs<br/>1 x 45mm f2.8<br/>1 x 80mm f2<br/>1x 120mm (Marco) f4<br/>1x 140mm F2.8<br/>1x 210mm F4</p>",
-            "accordion-2-title": "How to works?",
-            "accordion-2": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis lorem quis odio gravida vulputate. Etiam interdum porta ipsum ut tempus. Donec sit amet ante eu orci aliquam eleifend id ac arcu.</p>",
-            "accordion-3-title": "Terms of use",
-            "accordion-3": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis lorem quis odio gravida vulputate. Etiam interdum porta ipsum ut tempus. Donec sit amet ante eu orci aliquam eleifend id ac arcu.</p>"
+            "accordion-1": "<p>12x 120/220 Backs<br/>1x 45mm f2.8<br/>1x 80mm f2<br/>1x 120mm (Marco) f4<br/>1x 140mm F2.8<br/>1x 210mm F4<br/>1x TTL Flash<br/>1x Bottom Battery Grip<br/>1x Pelican Hard Case<br/>1x Strap for Camera<br/>1x Lens hoods for all lenses</p>",
+            "accordion-2-title": "More information",
+            "accordion-2": "<p>Pickup & return days are free.<br/>Weekends count as one day.<br/>One-day minimum.<br/>Rent 6-7 days per week, pay only for 4!</p>",
+            "accordion-3-title": "",
+            "accordion-3": ""
           }
         },
         "rental_MphFLV": {
@@ -36,22 +36,136 @@
             "link": "https://www.sharegrid.com/miami/l/229612?type=rent",
             "brand": "Hasselblad",
             "camera-name": "503CW Medium Format Camera",
-            "price-per-day": "$300",
-            "price-per-week": "$1,200",
+            "price-per-day": "$250",
+            "price-per-week": "$1,000",
             "camera-photo": "shopify://shop_images/616b43aa66e1cf708d284cb1c9b88e4cfeed4d99.png",
-            "camera-description": "<p>The name \"Hasselblad\" is synonymous with image quality and reliability. Together with Carl Zeiss lenses, Hasselblad represents the highest standards of photographic craftsmanship and precision. The 503CW features a built-in TTL flash metering system, which automatically measures the light off the film for consistent flash exposures.</p>",
+            "camera-description": "The name \"Hasselblad\" is synonymous with image quality and reliability. Together with Carl Zeiss lenses, Hasselblad represents the highest standards of photographic craftsmanship and precision. The 503CW features a built-in TTL flash metering system, which automatically measures the light off the film for consistent flash exposures.",
             "accordion-1-title": "What's included?",
-            "accordion-1": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis lorem quis odio gravida vulputate. Etiam interdum porta ipsum ut tempus. Donec sit amet ante eu orci aliquam eleifend id ac arcu.</p>",
-            "accordion-2-title": "How to works?",
-            "accordion-2": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis lorem quis odio gravida vulputate. Etiam interdum porta ipsum ut tempus. Donec sit amet ante eu orci aliquam eleifend id ac arcu.</p>",
-            "accordion-3-title": "Terms of use",
-            "accordion-3": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis lorem quis odio gravida vulputate. Etiam interdum porta ipsum ut tempus. Donec sit amet ante eu orci aliquam eleifend id ac arcu.</p>"
+            "accordion-1": "<p>1x 40mm CFE F4<br/>1x 50mm CFE f4<br/>1x 80mm CFE f2.8<br/>1x Flash Sync Cables<br/>3x 120 Backs<br/>1x Pelican Storm Case<br/>1x Waist Level Finder</p>",
+            "accordion-2-title": "More information",
+            "accordion-2": "<p>Pickup & return days are free.<br/>Weekends count as one day.<br/>One-day minimum.<br/>Rent 6-7 days per week, pay only for 4!</p>",
+            "accordion-3-title": "",
+            "accordion-3": ""
+          }
+        },
+        "rental_BpmWd8": {
+          "type": "rental",
+          "settings": {
+            "link": "https://www.sharegrid.com/miami/l/229612?type=rent",
+            "brand": "Contax",
+            "camera-name": "T3 Black",
+            "price-per-day": "$100",
+            "price-per-week": "$400",
+            "camera-photo": "shopify://shop_images/616b43aa66e1cf708d284cb1c9b88e4cfeed4d99.png",
+            "camera-description": "Contax T3 is a professional grade fully automatic point and shoot. You can program focus distance, aperture, and set flash settings so that you have more creative control. Shutter speed is always automatic, but there is an indicator in the viewfinder.",
+            "accordion-1-title": "What's included?",
+            "accordion-1": "<p>1x Contax Strap<br/>1x Pelican Case<br/>1x Leather Case</p>",
+            "accordion-2-title": "More information",
+            "accordion-2": "<p>Pickup & return days are free.<br/>Weekends count as one day.<br/>One-day minimum.<br/>Rent 6-7 days per week, pay only for 4!</p>",
+            "accordion-3-title": "",
+            "accordion-3": ""
+          }
+        },
+        "rental_chLzmj": {
+          "type": "rental",
+          "settings": {
+            "link": "https://www.sharegrid.com/miami/l/226949?type=rent",
+            "brand": "Contax",
+            "camera-name": "G2 Film Camera",
+            "price-per-day": "$125",
+            "price-per-week": "$500",
+            "camera-photo": "shopify://shop_images/616b43aa66e1cf708d284cb1c9b88e4cfeed4d99.png",
+            "camera-description": "The Contax G2 is one of the most advanced rangefinder systems available. Unlike traditional rangefinders, the Contax G2 boasts a tight and accurate autofocus that makes it incredibly easy to use. The compact and discrete design makes this camera ideal for travel or street photography.",
+            "accordion-1-title": "What's included?",
+            "accordion-1": "<p>1x Contax Carl Zeiss Planar T* 45mm f/2<br/>1x Contax Carl Zeiss Biogon T* 28mm f/2.8<br/>1x Contax TLA140 Flash<br/>1x Camera Strap<br/>1x Extra Battery (For camera + flash)<br/>1x Pelican Storm Case<br/>1x Contax G2 Body</p>",
+            "accordion-2-title": "More information",
+            "accordion-2": "<p>Pickup & return days are free.<br/>Weekends count as one day.<br/>One-day minimum.<br/>Rent 6-7 days per week, pay only for 4!</p>",
+            "accordion-3-title": "",
+            "accordion-3": ""
+          }
+        },
+        "rental_q6fQF6": {
+          "type": "rental",
+          "settings": {
+            "link": "https://www.sharegrid.com/miami/l/226949?type=rent",
+            "brand": "Contax",
+            "camera-name": "G2 Green Label 21mm with Viewfinder",
+            "price-per-day": "$50",
+            "price-per-week": "$200",
+            "camera-photo": "shopify://shop_images/616b43aa66e1cf708d284cb1c9b88e4cfeed4d99.png",
+            "camera-description": "Designed by Dr. Ludwig Bertele, the Biogon lens formulation exerts a powerful hold on the hearts of photographic fans around the world. Especially for use with the CONTAX G series, the T 21mm f2.8 was perfected by Carl Zeiss using the latest in optical technology. Although the Biogon T 21mm has an ultra-wide angle of view of 90 degrees, distortion is very low. High contrast is achieved even with the f stop wide open. The Biogon T 21mm lens combines rich gradation, clear, three-dimensional reproduction along with high color saturation. This lens responds well to a wide variety of photographic applications from artistic expression to architectural photography. The Biogon T 21mm f2.8 lens uses a supplied optical viewfinder with a cross-hair reticle to provide an accurate ultra-wide angle view.",
+            "accordion-1-title": "What's included?",
+            "accordion-1": "<p>1x 21mm T2.8<br/>1x Viewfinder</p>",
+            "accordion-2-title": "More information",
+            "accordion-2": "<p>Pickup & return days are free.<br/>Weekends count as one day.<br/>One-day minimum.<br/>Rent 6-7 days per week, pay only for 4!</p>",
+            "accordion-3-title": "",
+            "accordion-3": ""
+          }
+        },
+        "rental_6UaGHb": {
+          "type": "rental",
+          "settings": {
+            "link": "https://www.sharegrid.com/miami/l/226949?type=rent",
+            "brand": "Elmo",
+            "camera-name": "Super 8 Camera",
+            "price-per-day": "$75",
+            "price-per-week": "$300",
+            "camera-photo": "shopify://shop_images/616b43aa66e1cf708d284cb1c9b88e4cfeed4d99.png",
+            "camera-description": "Designed for filmmakers who value precision and craftsmanship, the Elmo Super 8 camera embodies the golden era of analog cinematography. Engineered with meticulous attention to detail, it delivers smooth, consistent motion and vivid color reproduction across every frame. The precision-ground lens ensures sharp image rendering, while its robust mechanical construction provides reliable performance in any shooting condition. With intuitive manual controls for exposure and focus, the Elmo Super 8 empowers creators to shape their visual narratives with intent and authenticity. Revered by collectors and filmmakers alike, it stands as both a functional tool and a timeless artifact of cinematic design.",
+            "accordion-1-title": "",
+            "accordion-1": "",
+            "accordion-2-title": "More inormation",
+            "accordion-2": "<p>Pickup & return days are free.<br/>Weekends count as one day.<br/>One-day minimum.<br/>Rent 6-7 days per week, pay only for 4!</p>",
+            "accordion-3-title": "",
+            "accordion-3": ""
+          }
+        },
+        "rental_pwqLUL": {
+          "type": "rental",
+          "settings": {
+            "link": "https://www.sharegrid.com/miami/l/226949?type=rent",
+            "brand": "Contax",
+            "camera-name": "G2 Green Label 35mm F2",
+            "price-per-day": "$35",
+            "price-per-week": "$140",
+            "camera-photo": "shopify://shop_images/616b43aa66e1cf708d284cb1c9b88e4cfeed4d99.png",
+            "camera-description": "The Contax 35mm Planar G is a 2nd generation Contax G system lens originally introduced alongside the G2 body, it's also useable on G1 bodies that have been modified to adjust the finder correctly. The 35mm focal length offers a moderately wide field of view that many photographers choose as a primary walk-around lens often opting for it's more encompassing field of view over Contax's other Planar G design, the normal 45mm f/2 G. The 35mm G produces excellent sharpness so many photographers reason that they can crop the image some if needed.",
+            "accordion-1-title": "What's included",
+            "accordion-1": "<p>1x 35mm F2<br/>1x Leather case</p>",
+            "accordion-2-title": "More inormation",
+            "accordion-2": "<p>Pickup & return days are free.<br/>Weekends count as one day.<br/>One-day minimum.<br/>Rent 6-7 days per week, pay only for 4!</p>",
+            "accordion-3-title": "",
+            "accordion-3": ""
+          }
+        },
+        "rental_8hbQDa": {
+          "type": "rental",
+          "settings": {
+            "link": "https://www.sharegrid.com/miami/l/226949?type=rent",
+            "brand": "Contax",
+            "camera-name": "G2 Green Label 90mm F2",
+            "price-per-day": "$25",
+            "price-per-week": "$100",
+            "camera-photo": "shopify://shop_images/616b43aa66e1cf708d284cb1c9b88e4cfeed4d99.png",
+            "camera-description": "The Zeiss Sonnar 2.8/90 was originally developed in the mid 90’s for the Contax G1 and it’s successor the Contax G2. Both are AF rangefinder cameras.",
+            "accordion-1-title": "What's included",
+            "accordion-1": "<p>1x 90mm F2.8 Lens<br/>1x Leather Pouch<br/>1x UV Filter<br/>1x Lens Hood</p>",
+            "accordion-2-title": "More inormation",
+            "accordion-2": "<p>Pickup & return days are free.<br/>Weekends count as one day.<br/>One-day minimum.<br/>Rent 6-7 days per week, pay only for 4!</p>",
+            "accordion-3-title": "",
+            "accordion-3": ""
           }
         }
       },
       "block_order": [
         "rental_qwJWaQ",
-        "rental_MphFLV"
+        "rental_MphFLV",
+        "rental_BpmWd8",
+        "rental_chLzmj",
+        "rental_q6fQF6",
+        "rental_6UaGHb",
+        "rental_pwqLUL",
+        "rental_8hbQDa"
       ],
       "settings": {
         "heading": "Gear Rental",

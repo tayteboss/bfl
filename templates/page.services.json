@@ -82,7 +82,7 @@
         "notes": "<p>Notes:</p><ul><li>Formats accepted: 35 mm, 120, 110, APS, 4×5 sheet.</li><li>Archival sleeves and contact sheets available on request.</li><li>Eco-friendly fixer disposal and water-recirculation in every location.</li></ul>",
         "table-caption": "*Times quoted for the Miami lab; other locations may differ.",
         "button": "Send Us Your Rolls",
-        "cta": "#"
+        "cta": "shopify://pages/send-us-your-rolls"
       }
     },
     "service_zXRfUN": {
@@ -96,7 +96,7 @@
         "notes": "",
         "table-caption": "",
         "button": "Scan My Film",
-        "cta": "#"
+        "cta": "shopify://pages/send-us-your-rolls"
       }
     },
     "service_3Qnrpd": {
@@ -107,10 +107,10 @@
         "heading": "Flextight X5™ Drum-Quality Scans",
         "badge": "",
         "paragraph": "Virtual-drum mounting means zero Newton rings and up to 6300 dpi without wet mounting. Perfect for gallery editions or photobooks. Files arrive as untouched 3F raws or colour-graded TIFFs—your choice.",
-        "notes": "<ul><li>Notes:<br/>Max file size: ~200 MB per frame.</li><li>Dust removal pass and 48-bit output available.</li><li>Price: $35 per frame (discounts 10+).</li></ul>",
+        "notes": "<p>Notes:</p><ul><li>Max file size: ~200 MB per frame.</li><li>Dust removal pass and 48-bit output available.</li><li>Price: $35 per frame (discounts 10+).</li></ul>",
         "table-caption": "",
         "button": "Reserve the X5",
-        "cta": "#",
+        "cta": "shopify://pages/send-us-your-rolls",
         "service-image-left": "shopify://shop_images/25e0511ab7990c9332dbf562d4beafd76ff7747c.png"
       }
     },
@@ -139,7 +139,7 @@
         "notes": "",
         "table-caption": "",
         "button": "Browse Rental Gear",
-        "cta": "#"
+        "cta": "shopify://pages/gear-rental"
       }
     },
     "service_aHeRqQ": {
@@ -156,6 +156,11 @@
         "cta": "#",
         "service-image-right": "shopify://shop_images/892a9235931663cca2285a8a94364fea3c60a794.png"
       }
+    },
+    "drop_off_Gwk6Tz": {
+      "type": "drop-off",
+      "name": "Drop-off",
+      "settings": {}
     }
   },
   "order": [
@@ -165,6 +170,7 @@
     "service_3Qnrpd",
     "service_dEWPfw",
     "service_DwyEKt",
-    "service_aHeRqQ"
+    "service_aHeRqQ",
+    "drop_off_Gwk6Tz"
   ]
 }

@@ -85,11 +85,27 @@
             "image": "shopify://shop_images/493255312d84660aace5a2cfdb2a29bbf8200074.png",
             "alt": "Carousel image"
           }
+        },
+        "image_xACxnj": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/897da0e0ec478856d5f4399f8ca9df45b974ebdc_3bd9e957-898b-42fa-ab88-8291b5dfe18a.png",
+            "alt": "Carousel image"
+          }
+        },
+        "image_XU3RBp": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/220b88c84e0e65f6ef6e56be0e09c976ddce823a.png",
+            "alt": "Carousel image"
+          }
         }
       },
       "block_order": [
         "image_GGpTiX",
-        "image_KHyr8t"
+        "image_KHyr8t",
+        "image_xACxnj",
+        "image_XU3RBp"
       ],
       "name": "Image Carousel",
       "settings": {}
@@ -156,8 +172,8 @@
           "type": "faq",
           "settings": {
             "faq-heading": "",
-            "question": "What is your turnaround time?",
-            "answer": "<p>Our standard turnaround is 2-3 business days.</p>"
+            "question": "What Days/Times Are You Open?",
+            "answer": "<p>See <a href=\"/pages/faq#hours-location\" title=\"/pages/faq#hours-location\">FAQs page</a> for all store opening times</p>"
           }
         },
         "faq_Jh4Xqd": {

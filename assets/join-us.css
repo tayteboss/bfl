@@ -1,0 +1,16 @@
+.join-us__inner {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+}
+
+.join-us__header-wrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.join-us__heading {
+	opacity: 0.25;
+}

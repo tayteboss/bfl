@@ -12,6 +12,15 @@
       ]
     },
     {
+      "id": "scanning",
+      "caption": "",
+      "headings": ["Resolution", "Output", "Price"],
+      "rows": [
+        ["Medium", "3000 px JPG", "$8 per roll"],
+        ["High", "5400 px JPG", "$13 per roll"]
+      ]
+    },
+    {
       "id": "darkroom",
       "caption": "",
       "headings": ["Term", "B&W Darkroom", "Includes"],
@@ -42,6 +51,7 @@
   ],
   "serviceToTable": [
     { "anchor_id": "film-development", "table_id": "film-development" },
+    { "anchor_id": "scanning", "table_id": "scanning" },
     { "anchor_id": "darkroom", "table_id": "darkroom" },
     { "anchor_id": "camera-rental", "table_id": "camera-rental" },
     { "anchor_id": "tape-digitising", "table_id": "tape-digitising" }

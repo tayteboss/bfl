@@ -191,7 +191,6 @@
 .gear-card__title-wrapper {
 	display: flex;
 	flex-direction: column;
-	gap: 0.5rem;
 
 	h4 {
 		opacity: 0.25;
