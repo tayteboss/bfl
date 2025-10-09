@@ -22,11 +22,6 @@ header {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  /* font-family: var(--font-tiny);
-  font-variation-settings: "wght" var(--font-weight-header);
-  text-transform: uppercase;
-  font-size: 17.5vw;
-  line-height: 0.6; */
   white-space: nowrap;
   pointer-events: all;
   cursor: pointer;
@@ -38,7 +33,7 @@ header {
   padding: 0 1rem;
 
   @media (max-width: 768px) {
-    padding: 0 1rem;
+    padding: 0.5rem 1rem;
   }
 
   span {
@@ -50,11 +45,19 @@ header {
     line-height: 0.6;
 
     transition: font-size var(--transition-speed-slow) var(--transition-ease);
+
+    @media (max-width: 768px) {
+      font-size: 16vw;
+    }
   }
 }
 
 .minimise-header .header__logo span {
   font-size: 8vw;
+
+  @media (max-width: 768px) {
+    font-size: 12vw;
+  }
 }
 
 /* .scrolled .header__logo {
