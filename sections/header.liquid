@@ -56,6 +56,11 @@
     const MIN_WGHT = 50;
     const MAX_WGHT = 200;
 
+    // Track scroll direction to hide/show the menu toggle button
+    let lastScrollY = window.scrollY || window.pageYOffset || 0;
+    const SCROLL_DIR_THRESHOLD = 5; // debounce small scroll jitters
+    const MENU_TOGGLE_HIDDEN_CLASS = 'menu-toggle--hidden';
+
     let footerHeight = footer ? footer.offsetHeight : 500;
 
     const updateFooterHeight = () => {
@@ -92,6 +97,9 @@
       menuToggle.textContent = isOpen ? 'Close' : 'Menu';
       menuToggle.setAttribute('aria-label', isOpen ? 'Close Menu' : 'Open Menu');
 
+      // Ensure the toggle remains visible while the menu is open
+      if (isOpen) menuToggle.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
+
       // Toggle overflow hidden on body to prevent scrolling
       body.classList.toggle('overflow-hidden', isOpen);
       body.classList.toggle('menu-open', isOpen);
@@ -104,6 +112,20 @@
         header.classList.toggle('scrolled', y > threshold);
         updateMinimiseHeader(y);
         updateHideHeader();
+
+        // Hide the menu toggle when scrolling down, show when scrolling up
+        const currentY = typeof y === 'number' ? y : window.scrollY || window.pageYOffset || 0;
+        if (header.classList.contains('menu-open')) {
+          menuToggle.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
+        } else {
+          const diff = currentY - lastScrollY;
+          if (diff > SCROLL_DIR_THRESHOLD) {
+            menuToggle.classList.add(MENU_TOGGLE_HIDDEN_CLASS);
+          } else if (diff < -SCROLL_DIR_THRESHOLD) {
+            menuToggle.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
+          }
+        }
+        lastScrollY = currentY;
       };
       const unsubscribe = window.ScrollUtils.onScroll(onScrollUpdate);
 
@@ -115,6 +137,20 @@
       const onScrollFallback = () => {
         updateMinimiseHeader();
         updateHideHeader();
+
+        // Hide the menu toggle when scrolling down, show when scrolling up
+        const currentY = window.scrollY || window.pageYOffset || 0;
+        if (header.classList.contains('menu-open')) {
+          menuToggle.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
+        } else {
+          const diff = currentY - lastScrollY;
+          if (diff > SCROLL_DIR_THRESHOLD) {
+            menuToggle.classList.add(MENU_TOGGLE_HIDDEN_CLASS);
+          } else if (diff < -SCROLL_DIR_THRESHOLD) {
+            menuToggle.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
+          }
+        }
+        lastScrollY = currentY;
       };
       window.addEventListener('scroll', onScrollFallback, { passive: true });
       document.addEventListener('shopify:section:unload', () => {
@@ -137,6 +173,10 @@
 
       let lastStep = -1;
       let lastWeight = 0;
+      let initialBlinkTimer = null;
+      let initialBlinkActive = false;
+      let scrollBlinkStopTimer = null;
+      let unsubscribeScrollBlink;
 
       function randomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -190,6 +230,8 @@
       const MAX_WDTH = 200;
       let hoverTimer = null;
       let unsubscribeCursorHover;
+      let onLogoEnter;
+      let onLogoLeave;
 
       function getCurrentWeight() {
         // Use lastWeight from scroll logic to keep continuity
@@ -259,9 +301,60 @@
         unsubscribeCursorHover = () => window.removeEventListener('mousemove', onMouseMove);
       }
 
+      // Explicit hover events to ensure blink while hovering over the logo
+      onLogoEnter = () => {
+        const yPos = window.scrollY || window.pageYOffset || 0;
+        if (yPos <= MAX_RANGE_PX) startHoverRandomizer();
+      };
+      onLogoLeave = () => {
+        stopHoverRandomizer();
+      };
+      logoEl.addEventListener('mouseenter', onLogoEnter);
+      logoEl.addEventListener('mouseleave', onLogoLeave);
+
+      // 1) Initial blink on load for 2s
+      initialBlinkActive = true;
+      startHoverRandomizer();
+      initialBlinkTimer = setTimeout(() => {
+        initialBlinkActive = false;
+        stopHoverRandomizer();
+      }, 2000);
+
+      // 2) Blink while scrolling (until MAX_RANGE_PX). Stop shortly after scroll stops
+      const handleScrollBlink = (y) => {
+        const currentY = typeof y === 'number' ? y : window.scrollY || window.pageYOffset || 0;
+        if (initialBlinkActive) {
+          clearTimeout(initialBlinkTimer);
+          initialBlinkActive = false;
+        }
+        if (currentY <= MAX_RANGE_PX) {
+          startHoverRandomizer();
+          clearTimeout(scrollBlinkStopTimer);
+          scrollBlinkStopTimer = setTimeout(() => {
+            // Only stop if not in initial blink window
+            if (!initialBlinkActive) stopHoverRandomizer();
+          }, 150);
+        } else {
+          stopHoverRandomizer();
+        }
+      };
+
+      if (window.ScrollUtils && typeof window.ScrollUtils.onScroll === 'function') {
+        unsubscribeScrollBlink = window.ScrollUtils.onScroll(handleScrollBlink);
+      } else {
+        const onScrollBlinkFallback = () => handleScrollBlink();
+        window.addEventListener('scroll', onScrollBlinkFallback, { passive: true });
+        unsubscribeScrollBlink = () => window.removeEventListener('scroll', onScrollBlinkFallback);
+      }
+
       document.addEventListener('shopify:section:unload', () => {
         stopHoverRandomizer();
         if (typeof unsubscribeCursorHover === 'function') unsubscribeCursorHover();
+        if (typeof unsubscribeScrollBlink === 'function') unsubscribeScrollBlink();
+        if (initialBlinkTimer) clearTimeout(initialBlinkTimer);
+        if (scrollBlinkStopTimer) clearTimeout(scrollBlinkStopTimer);
+        if (onLogoEnter) logoEl.removeEventListener('mouseenter', onLogoEnter);
+        if (onLogoLeave) logoEl.removeEventListener('mouseleave', onLogoLeave);
       });
     }
 

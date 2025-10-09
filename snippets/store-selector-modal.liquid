@@ -1,0 +1,368 @@
+{% comment %}
+  Global Store Selector modal. Shows on first session for home/collection/shop pages.
+  Stores selection in sessionStorage as 'preferred_store_location'.
+  Publishes 'store:selected' via pubsub for downstream listeners.
+{% endcomment %}
+
+<details-modal id="StoreSelectorModal" class="store-selector-modal">
+  <details>
+    <summary class="visually-hidden modal__toggle" aria-haspopup="dialog">
+      <span>Open Store Selector</span>
+    </summary>
+    <div class="modal__content" role="dialog" aria-modal="true" aria-label="Store Selector">
+      <div class="store-selector-modal__content" tabindex="-1">
+        <div class="store-selector-modal__inner">
+          <h2 class="store-selector-modal__title type-button-large">⚠️ Store Selector</h2>
+          <p class="store-selector-modal__description type-p">
+            We’ve got multiple labs and drop-off points. Pick your preferred location so we can show you the right
+            services, turnaround times, and events.
+          </p>
+          <div class="store-selector-modal__buttons">
+            <div data-hover-shake>
+              <button
+                type="button"
+                class="primary-button primary-button--store-selector"
+                data-location="miami"
+              >
+                Miami
+              </button>
+            </div>
+            <div data-hover-shake>
+              <button
+                type="button"
+                class="primary-button primary-button--store-selector"
+                data-location="chicago"
+              >
+                Chicago
+              </button>
+            </div>
+            <div data-hover-shake>
+              <button
+                type="button"
+                class="primary-button primary-button--store-selector"
+                data-location="orlando"
+              >
+                Orlando
+              </button>
+            </div>
+            <div data-hover-shake>
+              <button
+                type="button"
+                class="primary-button primary-button--store-selector"
+                data-location="new_york_city"
+              >
+                New York City
+              </button>
+            </div>
+          </div>
+          {% comment %}
+            <div class="store-selector-modal__close">
+              <button type="button" class="type-p-x-small hover-blinking" aria-label="Close">Close</button>
+            </div>
+          {% endcomment %}
+        </div>
+      </div>
+    </div>
+  </details>
+</details-modal>
+
+<div id="StoreSelectorFloating" class="store-selector-floating">
+  <div class="store-selector-floating__menu"></div>
+  <div data-hover-shake>
+    <button
+      type="button"
+      class="store-selector-floating__button primary-button--store-selector"
+      aria-label="Change store"
+    >
+      <span class="store-selector-floating__label">Choose store ▲</span>
+    </button>
+  </div>
+  <input type="hidden" id="StoreSelectorFloatingValue" value="">
+  <!-- Add styles in your CSS: position fixed bottom, small size, etc. -->
+  <!-- Example classes: .store-selector-floating, .store-selector-floating--visible -->
+</div>
+
+<script>
+  (function() {
+    var MODAL_ID = 'StoreSelectorModal';
+    var SESSION_KEY = 'preferred_store_location';
+    // Track explicit closes so we don't reopen after the user closes it
+    var SESSION_CLOSED_KEY = 'store_selector_closed';
+    // When true: styling mode (keep opening until user closes or selects)
+    // When false: production mode (show once per session if no selection)
+    var STORE_SELECTOR_DEBUG = true;
+    var SESSION_SHOWN_KEY = 'store_selector_shown';
+
+    // Shopify context
+    var PAGE_TYPE = '{{ request.page_type }}';
+    var TEMPLATE_NAME = '{{ template.name }}';
+    var TEMPLATE_SUFFIX = '{{ template.suffix | default: '' }}';
+    var PAGE_HANDLE = '{{ page.handle | default: '' }}';
+    var REQUEST_PATH = '{{ request.path }}';
+
+    function shouldShowOnThisPage() {
+      // Home, collections, list-collections
+      if (PAGE_TYPE === 'index' || PAGE_TYPE === 'collection' || PAGE_TYPE === 'list-collections') return true;
+
+      // Optional: treat pages with handles like 'shop' or 'shops' as shop pages
+      if (PAGE_TYPE === 'page' && /(^|-)shop(s)?(-|$)/i.test(PAGE_HANDLE)) return true;
+
+      // Optional path fallback: any URL under /collections
+      if (REQUEST_PATH.indexOf('/collections') === 0) return true;
+
+      return false;
+    }
+
+    function openModal() {
+      var el = document.getElementById(MODAL_ID);
+      if (!el) return;
+      // Ensure floating selector is hidden while modal is open
+      if (typeof setFloatingVisible === 'function') {
+        setFloatingVisible(false);
+      }
+      var details = el.querySelector('details');
+      var summary = el.querySelector('summary');
+      if (details && summary) {
+        summary.click();
+      }
+    }
+
+    function closeModal() {
+      var el = document.getElementById(MODAL_ID);
+      if (!el) return;
+      var details = el.querySelector('details');
+      if (details && details.hasAttribute('open')) {
+        details.removeAttribute('open');
+        document.body.classList.remove('overflow-hidden');
+      }
+    }
+
+    function saveSelection(location) {
+      try {
+        sessionStorage.setItem(SESSION_KEY, location);
+      } catch(e) {}
+    }
+
+    function getSelection() {
+      try {
+        return sessionStorage.getItem(SESSION_KEY);
+      } catch(e) { return null; }
+    }
+
+    function ensureFloatingUi() {
+      var node = document.getElementById('StoreSelectorFloating');
+      if (!node) return null;
+      var button = node.querySelector('.store-selector-floating__button');
+      if (button && !button.__storeSelectorBound) {
+        button.addEventListener('click', function() {
+          toggleFloatingMenu();
+        });
+        button.__storeSelectorBound = true;
+      }
+      return node;
+    }
+
+    function updateFloatingLabel(location) {
+      var node = document.getElementById('StoreSelectorFloating');
+      if (!node) return;
+      var label = node.querySelector('.store-selector-floating__label');
+      var hiddenVal = document.getElementById('StoreSelectorFloatingValue');
+      var text = 'Choose store';
+      if (location) {
+        var formatted = location
+          .replace(/_/g, ' ')
+          .replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+        text = formatted;
+      }
+      if (label) label.textContent = text + ' \u25B2';
+      if (hiddenVal) hiddenVal.value = location || '';
+    }
+
+    function formatLocationLabel(id) {
+      if (!id) return '';
+      return id.replace(/_/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+    }
+
+    function getAllLocations() {
+      return ['miami', 'chicago', 'orlando', 'new_york_city'];
+    }
+
+    function renderFloatingMenu() {
+      var node = document.getElementById('StoreSelectorFloating');
+      if (!node) return;
+      var menu = node.querySelector('.store-selector-floating__menu');
+      if (!menu) return;
+
+      var current = getSelection();
+      var options = getAllLocations().filter(function(loc) { return loc !== current; });
+      var html = options.map(function(loc) {
+        return '<div data-hover-shake><button type="button" class="store-selector-floating__option primary-button primary-button--store-selector" data-location="' + loc + '">' + formatLocationLabel(loc) + '</button></div>';
+      }).join('');
+      menu.innerHTML = html;
+
+      menu.querySelectorAll('[data-location]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var loc = btn.getAttribute('data-location');
+          saveSelection(loc);
+          window.StoreSelector.onStoreSelected(loc);
+          updateFloatingLabel(loc);
+          closeFloatingMenu();
+        });
+      });
+    }
+
+    function openFloatingMenu() {
+      var node = document.getElementById('StoreSelectorFloating');
+      if (!node) return;
+      var menu = node.querySelector('.store-selector-floating__menu');
+      if (!menu) return;
+      renderFloatingMenu();
+      menu.classList.add('store-selector-floating__menu--open');
+      document.addEventListener('click', onOutsideMenuClick, true);
+    }
+
+    function closeFloatingMenu() {
+      var node = document.getElementById('StoreSelectorFloating');
+      if (!node) return;
+      var menu = node.querySelector('.store-selector-floating__menu');
+      if (!menu) return;
+      menu.classList.remove('store-selector-floating__menu--open');
+      document.removeEventListener('click', onOutsideMenuClick, true);
+    }
+
+    function toggleFloatingMenu() {
+      var node = document.getElementById('StoreSelectorFloating');
+      if (!node) return;
+      var menu = node.querySelector('.store-selector-floating__menu');
+      if (!menu) return;
+      if (!menu.classList.contains('store-selector-floating__menu--open')) {
+        openFloatingMenu();
+      } else {
+        closeFloatingMenu();
+      }
+    }
+
+    function onOutsideMenuClick(e) {
+      var node = document.getElementById('StoreSelectorFloating');
+      if (!node) return;
+      if (!node.contains(e.target)) {
+        closeFloatingMenu();
+      }
+    }
+
+    function setFloatingVisible(visible) {
+      var node = document.getElementById('StoreSelectorFloating');
+      if (!node) return;
+      node.classList.toggle('store-selector-floating--visible', !!visible);
+    }
+
+    function setupLocationObserver() {
+      var targets = document.querySelectorAll('[data-location-selector]');
+      if (!targets.length) return;
+
+      ensureFloatingUi();
+      updateFloatingLabel(getSelection());
+
+      var inView = new Set();
+      window.__storeSelectorInViewCount = 0;
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            inView.add(entry.target);
+          } else {
+            inView.delete(entry.target);
+          }
+        });
+        window.__storeSelectorInViewCount = inView.size;
+        setFloatingVisible(inView.size > 0 && !!getSelection());
+      }, { root: null, rootMargin: '0px', threshold: 0.25 });
+
+      targets.forEach(function(t) { observer.observe(t); });
+
+      // Expose for debugging if needed
+      window.__storeSelectorObserver = observer;
+    }
+
+    // Dummy hooks for future product filtering/reloading
+    window.StoreSelector = window.StoreSelector || {};
+    window.StoreSelector.onStoreSelected = function(location) {
+      if (typeof publish === 'function') {
+        publish('store:selected', { location: location });
+      }
+      // Placeholder: implement product list changes per location later
+      if (typeof window.updateCollectionsForStore === 'function') {
+        window.updateCollectionsForStore(location);
+      }
+      if (typeof window.updateProductsForStore === 'function') {
+        window.updateProductsForStore(location);
+      }
+    };
+
+    // Optional global stubs user can replace later
+    window.updateCollectionsForStore = window.updateCollectionsForStore || function(location) { /* no-op */ };
+    window.updateProductsForStore = window.updateProductsForStore || function(location) { /* no-op */ };
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var alreadySelected = null;
+      var isClosed = null;
+      var hasShown = null;
+      try {
+        alreadySelected = sessionStorage.getItem(SESSION_KEY);
+        isClosed = sessionStorage.getItem(SESSION_CLOSED_KEY);
+        hasShown = sessionStorage.getItem(SESSION_SHOWN_KEY);
+      } catch(e) {}
+
+      if (STORE_SELECTOR_DEBUG) {
+        // Styling mode: open until a store is selected OR user explicitly closes the modal
+        if (!alreadySelected && !isClosed && shouldShowOnThisPage()) {
+          openModal();
+        }
+      } else {
+        // Production mode: show once per session if not already selected
+        if (!alreadySelected && !hasShown && shouldShowOnThisPage()) {
+          openModal();
+        }
+      }
+
+      var el = document.getElementById(MODAL_ID);
+      if (!el) return;
+
+      var buttons = el.querySelectorAll('[data-location]');
+      buttons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var location = btn.getAttribute('data-location');
+          saveSelection(location);
+          window.StoreSelector.onStoreSelected(location);
+          closeModal();
+          updateFloatingLabel(location);
+          // Ensure floating dropdown is closed if it was open
+          if (typeof closeFloatingMenu === 'function') {
+            closeFloatingMenu();
+          }
+          // Re-evaluate floating visibility immediately after selection
+          try {
+            var inViewCount = window.__storeSelectorInViewCount || 0;
+            setFloatingVisible(inViewCount > 0 && !!getSelection());
+          } catch(e) {}
+        });
+      });
+
+      var closeBtn = el.querySelector('.store-selector-modal__close');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+          try {
+            if (STORE_SELECTOR_DEBUG) {
+              sessionStorage.setItem(SESSION_CLOSED_KEY, '1');
+            } else {
+              sessionStorage.setItem(SESSION_SHOWN_KEY, '1');
+            }
+          } catch(e) {}
+          closeModal();
+        });
+      }
+
+      // Initialize floating selector observer regardless of selection
+      setupLocationObserver();
+    });
+  })();
+</script>
