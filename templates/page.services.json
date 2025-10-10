@@ -153,7 +153,7 @@
         "notes": "<p>Notes:</p><ul><li>$30 per hour of footage, bulk breaks at 5+ tapes.</li><li>Optional colour pass to balance old camcorder white-balance swings.</li></ul>",
         "table-caption": "",
         "button": "Digitise My Tapes",
-        "cta": "#",
+        "cta": "shopify://pages/tape-digitization",
         "service-image-right": "shopify://shop_images/892a9235931663cca2285a8a94364fea3c60a794.png"
       }
     },

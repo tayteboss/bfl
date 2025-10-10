@@ -1,0 +1,63 @@
+<section class="rich-text-section">
+  <div class="layout-wrapper layout-grid">
+    <div class="rich-text-section__inner rich-text rich-text--centered">
+      {% if section.settings.content != blank %}
+        {{ section.settings.content }}
+      {% endif %}
+      {% if section.settings.button != blank and section.settings.cta != blank %}
+        <div class="rich-text-section__button">
+          <div data-hover-shake>
+            <a
+              class="primary-button primary-button--small"
+              href="{{ section.settings.cta }}"
+              aria-label="{{ section.settings.button }}"
+            >
+              {{- section.settings.button -}}
+            </a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .rich-text-section__inner {
+    grid-column: 4 / -4;
+
+    @media (max-width: 1024px) {
+      grid-column: 3 / -3;
+    }
+
+    @media (max-width: 768px) {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .rich-text-section__button {
+    padding-top: 2rem;
+    display: flex;
+    justify-content: center;
+
+    a {
+      text-decoration: none;
+    }
+  }
+
+  .rich-text-section__button:hover,
+  .rich-text-section__button a:hover {
+    opacity: 1 !important;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Rich text",
+  "settings": [
+    { "type": "richtext", "id": "content", "label": "Content", "default": "<p>Add your content here.</p>" },
+    { "type": "text", "id": "button", "label": "Button text" },
+    { "type": "url", "id": "cta", "label": "Button link" }
+  ],
+  "presets": [{ "name": "Rich text", "category": "Content" }]
+}
+{% endschema %}

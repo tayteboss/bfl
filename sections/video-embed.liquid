@@ -1,0 +1,78 @@
+<section
+  class="video-embed"
+  aria-label="Video embed"
+>
+  <div class="layout-wrapper">
+    <div class="video-embed__inner">
+      {% if section.settings.heading != blank %}
+        <h2 class="video-embed__heading type-h2">{{ section.settings.heading }}</h2>
+      {% endif %}
+
+      {% assign video_id = '' %}
+      {% if section.settings.video_url != blank %}
+        {% assign url = section.settings.video_url %}
+        {% if url contains 'youtu.be/' %}
+          {% assign parts = url | split: '/' %}
+          {% assign video_id = parts | last %}
+        {% elsif url contains 'youtube.com/watch' and url contains 'v=' %}
+          {% assign after_v = url | split: 'v=' | last %}
+          {% assign video_id = after_v | split: '&' | first %}
+        {% else %}
+          {% assign video_id = url %}
+        {% endif %}
+      {% endif %}
+
+      {% if video_id != blank %}
+        <div class="video-embed__frame">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/{{ video_id }}?rel=0"
+            title="{{ section.settings.heading | default: 'YouTube video' | escape }}"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            loading="lazy"
+            style="width: 100%; aspect-ratio: 16 / 9; border: 0;"
+          ></iframe>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .video-embed__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    @media (max-width: 768px) {
+      gap: 1rem;
+    }
+  }
+
+  .video-embed__heading {
+    text-align: center;
+  }
+
+  .video-embed__frame {
+    width: 100%;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Video Embed",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading" },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "YouTube URL or ID",
+      "placeholder": "https://www.youtube.com/watch?v=... or VIDEO_ID"
+    }
+  ],
+  "presets": [{ "name": "Video Embed", "category": "Media" }]
+}
+{% endschema %}

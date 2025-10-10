@@ -1,0 +1,45 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "header": {
+      "type": "page-flex-header",
+      "settings": {
+        "heading": "Tape Digitization",
+        "intro": "Convert your tapes with us! Making these memories digital and forever",
+        "button": "Start Digitizing",
+        "cta": "shopify://pages/send-us-your-rolls",
+        "show_page_content": false
+      }
+    },
+    "video_embed_YWmzUW": {
+      "type": "video-embed",
+      "name": "Video Embed",
+      "settings": {
+        "heading": "What we've digitized lately",
+        "video_url": "https://www.youtube.com/watch?time_continue=10&v=PrSBuEFdRFU"
+      }
+    },
+    "rich_text_qBYBXe": {
+      "type": "rich-text",
+      "name": "Rich text",
+      "settings": {
+        "content": "<h1>Lorem ipsum dolor sit amet</h1><p>consectetur adipiscing elit. Integer porta erat sed enim mollis facilisis. Sed ac consectetur mi. Cras placerat egestas ullamcorper. Vivamus lacus nulla, vulputate eget bibendum eget, molestie sit amet risus. </p><h2>Praesent id urna</h2><p>Dignissim metus hendrerit feugiat quis a quam. Donec metus felis, lacinia vitae imperdiet a, sodales vestibulum arcu. Quisque lacus turpis, vestibulum eget erat varius, volutpat pharetra ligula. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nullam consectetur tortor vestibulum, lobortis urna sit amet, lobortis urna.</p>",
+        "button": "Testing button",
+        "cta": "shopify://pages/privacy-policy"
+      }
+    }
+  },
+  "order": [
+    "header",
+    "video_embed_YWmzUW",
+    "rich_text_qBYBXe"
+  ]
+}
