@@ -32,6 +32,8 @@ header {
   width: 100%;
   padding: 0 1rem;
 
+  transition: padding var(--transition-speed-slow) var(--transition-ease);
+
   @media (max-width: 768px) {
     padding: 0.5rem 1rem;
   }
@@ -49,17 +51,24 @@ header {
     opacity var(--transition-speed-default) var(--transition-ease);
 
     @media (max-width: 768px) {
-      font-size: 16vw;
+      font-size: 16.5vw;
     }
+  }
+}
+
+.minimise-header .header__logo {
+  padding: 1rem;
+
+  @media (max-width: 768px) {
+    padding: 0.5rem 1rem;
   }
 }
 
 .minimise-header .header__logo span {
   font-size: 5vw;
-  padding: 0.5rem 0;
 
   @media (max-width: 768px) {
-    font-size: 15vw;
+    font-size: 13vw;
   }
 }
 
@@ -251,6 +260,10 @@ header {
   padding: 24px;
 
   transition: all var(--transition-speed-default) var(--transition-ease);
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
 
   &::before {
     content: '';

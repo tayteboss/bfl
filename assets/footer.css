@@ -46,6 +46,15 @@ footer .layout-grid {
   padding: 0;
 }
 
+.footer-links__item a,
+.footer-links__item p,
+.footer-links__item h3,
+.footer-links__item address {
+  @media (max-width: 768px) {
+    font-size: 0.75rem !important;
+  }
+}
+
 .footer-address-list {
   display: flex;
   flex-direction: column;

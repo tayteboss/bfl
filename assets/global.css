@@ -47,6 +47,18 @@
   box-shadow: none;
 }
 
+input[type="text"],
+input[type="email"],
+input[type="search"],
+input[type="tel"],
+input[type="number"],
+input[type="password"],
+select,
+textarea {
+  -webkit-text-size-adjust: 100%;
+}
+
+
 main {
   position: relative;
   z-index: 1;
@@ -834,8 +846,10 @@ main .shopify-section:first-child:has(product-info) {
 .hover-blinking {
   transition: all var(--transition-speed-default) var(--transition-ease);
 
-  &:hover {
-    animation: blink 250ms step-start infinite;
+  @media (hover: hover) {
+    &:hover {
+      animation: blink 250ms step-start infinite;
+    }
   }
 }
 
