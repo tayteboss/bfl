@@ -40,9 +40,9 @@
           {% assign current_heading_id = block.settings.heading | handleize %}
           {% assign current_heading = block.settings.heading %}
           {% if current_heading != blank %}
-            <div class="faq-page-list-item">
+            <div class="faq-page-list-item" id="{{ current_heading_id }}">
               <div class="faq-heading">
-                <h2 class="type-h2" id="{{ current_heading_id }}">{{ current_heading }}</h2>
+                <h2 class="type-h2">{{ current_heading }}</h2>
               </div>
               <div class="faq-list" role="region" aria-labelledby="{{ current_heading_id }}">
           {% endif %}
@@ -74,12 +74,13 @@
       </div>
     {% endif %}
   </div>
-  {% if section.settings.stamp_image != blank %}
-    <div class="faq-page__stamp-image" aria-hidden="true">
-      <img src="{{ section.settings.stamp_image | image_url }}" alt="" width="auto" height="auto">
-    </div>
-  {% endif %}
 </section>
+{% comment %} THIS THING IS CAUSING ISSUES!!! {% endcomment %}
+{% if section.settings.stamp_image != blank %}
+  <div class="faq-page__stamp-image">
+    <img src="{{ section.settings.stamp_image | image_url }}" alt="" width="auto" height="auto">
+  </div>
+{% endif %}
 
 {% schema %}
 {

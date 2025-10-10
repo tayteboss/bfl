@@ -18,18 +18,32 @@
             "heading": "Hours & Location"
           }
         },
-        "faq_item_eTe4en": {
+        "faq_item_tMkgi7": {
           "type": "faq_item",
           "settings": {
-            "question": "Example Question?",
-            "answer": "<p>Example Answer.</p>"
+            "question": "Atlanta",
+            "answer": "<p>Daily from 10:00AM -7:00PM</p>"
           }
         },
         "faq_item_KQjqW9": {
           "type": "faq_item",
           "settings": {
-            "question": "Example Question?",
-            "answer": "<p>Example Answer.</p>"
+            "question": "Chicago",
+            "answer": "<p>Daily from 10:00AM -7:00PM</p>"
+          }
+        },
+        "faq_item_eTe4en": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Miami",
+            "answer": "<p>Daily from 10:00AM -7:00PM</p>"
+          }
+        },
+        "faq_item_qcEjdh": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Orlando",
+            "answer": "<p>Monday: 10am - 6pm<br/>Tueday: 10am - 6pm<br/>Wednesday: 10am - 6pm<br/>Thursday: 10am - 6pm<br/>Friday: 10am - 6pm<br/>Saturday: 10am - 7pm<br/>Sunday: 10am - 6pm</p>"
           }
         },
         "faq_heading_dmYtMB": {
@@ -41,25 +55,138 @@
         "faq_item_QQfJqA": {
           "type": "faq_item",
           "settings": {
-            "question": "Example Question?",
-            "answer": "<p>Example Answer.</p>"
+            "question": "Do You Develop Disposable Cameras?",
+            "answer": "<p>We develop every type of disposable camera!</p>"
           }
         },
         "faq_item_Cz6jD4": {
           "type": "faq_item",
           "settings": {
-            "question": "Example Question?",
-            "answer": "<p>Example Answer.</p>"
+            "question": "What is Your Turnaround Time?",
+            "answer": "<p><strong>24 hours </strong>is the <strong>Standard </strong>turnaround time for development for Color (C-41) and Black & White development. Alternative processes such as E6 and ECN2 are usually 72hours.<br/><br/>Our <strong>72hour </strong>turnaround offers a 10% Discount on development and scanning.</p>"
+          }
+        },
+        "faq_item_gegcPN": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do I get my negatives back?",
+            "answer": "<p>We do hold them in the store for 14 days, if you want us to hold them longer you can give us a call or DM us! When you place an order online shipping your negatives back to you is automatically charged. If you don't want your negatives, give us a call and we can waive that fee!</p>"
+          }
+        },
+        "faq_item_WjPwhM": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I know which scanner I should choose?",
+            "answer": "<p>If you're having a little trouble making a decision, you can always head to our <a href=\"http://instagram.com/bellowsfilmlab\" target=\"_blank\">Instagram</a>. Each photo we post has the scanner that was used in the description! :)</p><p>Medium scans are our standard. We recommend selecting high scans only if you need larger files for editing or large format printing.<br/><br/>We have two excellent scanning options, the Noritsu HS-1800 and the Fuji SP3000. Details about both listed below!<br/><br/><strong>Noritsu HS-1800: </strong>High: 4011x6048<br/>Med: 2048x3072<br/></p><p>Great shadow detail, neutral tones.<br/>Black point is more muted and can deviate to greenish on underexposed images.<br/>Skin tones are more neutral.<br/>Colors are softer and lighter.<br/>BW film scans are more neutral and flexible.</p><p><br/><strong>Fuji SP3000:   </strong>High: 4492x6774<br/>Med: 2000x3000</p><p>Maintains highlight detail. Slight warmer contrast.<br/>Black point is very rich (there tends to be a bluer black in the black shadow areas)<br/>Skin tones are more golden, warm.<br/>Colors are more vivid, punchy, or saturated.<br/>BW film scans can lose shadow detail</p>"
+          }
+        },
+        "faq_item_LjLrPM": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do You Develop Special Film?",
+            "answer": "<p>We Develop every size for every chemistry. (Chemistries include: C-41, E6, ECN-2, B&W, 110, APS; Formats include: 35mm, 120mm, 220mm, 4x5 sheets, 5X7 sheets, 8X10 sheets</p>"
+          }
+        },
+        "faq_item_a9mjaA": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Scans are Digital but what if I want printed copies?",
+            "answer": "<p>Want prints of your photos?<br/><br/>We can print anything you got developed or scanned with us, or any digital photos you send our way. You can send us the files through WeTransfer or, if we recently sent you scans, send us the file names of those you want printed.<br/><br/>Always let us know the size and if you want multiples of any image.<br/><br/>We'll send a payment link and let you know as soon as everything is ready to pick up!<br/><br/>Our standard sizes of 3x5 up to 8x12 are printed inhouse and on Fujifilm lustre finish photo paper. Let us know if you need any special sizing and we will help you as best as we can.</p>"
+          }
+        },
+        "faq_item_akVdQi": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do you have a darkroom?",
+            "answer": "<p>Bellows Atlanta is currently the only location with a darkroom.</p>"
+          }
+        },
+        "faq_item_hPQqzm": {
+          "type": "faq_item",
+          "settings": {
+            "question": "I have a box of negatives, can you scan them?",
+            "answer": "<p>Absolutely! We offer “scan only” services, prices differ on the type of film (i.e. 120, 35mm, etc) We typically charge per roll of film! If you do happen to have slide film, we charge the same price ($8 for medium resolution, $13 for high resolution) for up to 36 slides.</p>"
+          }
+        },
+        "faq_item_eiVcXy": {
+          "type": "faq_item",
+          "settings": {
+            "question": "I want digital images of old prints, can you help me?",
+            "answer": "<p>Yes! We offer print scanning using our Epson v850 flatbed scanner. If you need any old family prints or polaroid scans, we offer digitizing for those as well.</p>"
+          }
+        },
+        "faq_item_ajJHRR": {
+          "type": "faq_item",
+          "settings": {
+            "question": "I found tapes in my family's attic, do you guys digitize those?",
+            "answer": "<p>We digitize most kinds of tapes. VHS, VHS-C, 8mm, Hi-8, Mini DV, and Beta Tapes! Feel free to bring them in, we'll assess if they're in good condition so we can get them recorded for you and sent digitally.</p>"
+          }
+        },
+        "faq_heading_dkJ8qa": {
+          "type": "faq_heading",
+          "settings": {
+            "heading": "Other FAQs"
+          }
+        },
+        "faq_item_YzawNr": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do you offer Student discounts?",
+            "answer": "<p>We offer 20% off development and scanning service for students! All we need is an ID or student email ;)</p>"
+          }
+        },
+        "faq_item_4aqfkH": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I ship my film to you?",
+            "answer": "<p>Go to the <a href=\"/pages/send-us-your-rolls\" title=\"Send Us Your Rolls\">Send Us Your Rolls Page to make an order.</a></p><p>Place your rolls in a baggie and if you want to be extra careful, add your order number. Place the rolls in a box or envelope and ship them to us using your favorite carrier. <strong>We recommend shipping with FEDEX or UPS!</strong></p><p>MIAMI: 2051 NW 2nd ave Miami, Fl 33127<br/>CHICAGO: 1702 N Damen ave Chicago, IL 60647<br/>ATLANTA: 1440 Euclid AVE NE Atlanta, GA 30307<br/>ORLANDO: 2426 East Robinson St Orlando, FL 32803</p>"
+          }
+        },
+        "faq_item_Q8Mk3L": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do you have a return policy for cameras?",
+            "answer": "<p>We know how important it is to make sure your camera truly feels like it's yours. Once your item is delivered, you have <strong>7 days</strong> to return it for a full refund.</p>"
+          }
+        },
+        "faq_item_X36yVD": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I return film?",
+            "answer": "<p>We can't accept film back because of it's sensitivity.</p>"
+          }
+        },
+        "faq_item_QkKLCm": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What if my camera or accessory is defective?",
+            "answer": "<p>Everything we sell online is tested in the store. If something isn't working, you can contact us and we'd love to help! You have 14 days from delivery to let us know about your item.</p>"
           }
         }
       },
       "block_order": [
         "faq_heading_amFpTg",
-        "faq_item_eTe4en",
+        "faq_item_tMkgi7",
         "faq_item_KQjqW9",
+        "faq_item_eTe4en",
+        "faq_item_qcEjdh",
         "faq_heading_dmYtMB",
         "faq_item_QQfJqA",
-        "faq_item_Cz6jD4"
+        "faq_item_Cz6jD4",
+        "faq_item_gegcPN",
+        "faq_item_WjPwhM",
+        "faq_item_LjLrPM",
+        "faq_item_a9mjaA",
+        "faq_item_akVdQi",
+        "faq_item_hPQqzm",
+        "faq_item_eiVcXy",
+        "faq_item_ajJHRR",
+        "faq_heading_dkJ8qa",
+        "faq_item_YzawNr",
+        "faq_item_4aqfkH",
+        "faq_item_Q8Mk3L",
+        "faq_item_X36yVD",
+        "faq_item_QkKLCm"
       ],
       "settings": {
         "need_help_heading": "NEED HELP?",
