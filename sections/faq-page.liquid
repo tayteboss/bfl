@@ -7,7 +7,7 @@
         id="faqs-page-heading"
         class="faqs-page__heading type-h1-large"
       >
-        FAQ
+        FAQ's
       </h1>
       {% if section.blocks.size > 0 %}
         <nav
@@ -76,11 +76,15 @@
   </div>
 </section>
 {% comment %} THIS THING IS CAUSING ISSUES!!! {% endcomment %}
-{% if section.settings.stamp_image != blank %}
-  <div class="faq-page__stamp-image">
-    <img src="{{ section.settings.stamp_image | image_url }}" alt="" width="auto" height="auto">
-  </div>
-{% endif %}
+{% comment %}
+  {% if section.settings.stamp_image != blank %}
+    <div class="faq-page__stamp-image">
+      <div class="faq-page__stamp-image-inner">
+        <img src="{{ section.settings.stamp_image | image_url }}" alt="" width="auto" height="auto">
+      </div>
+    </div>
+  {% endif %}
+{% endcomment %}
 
 {% schema %}
 {
