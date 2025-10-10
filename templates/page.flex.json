@@ -12,34 +12,25 @@
     "header": {
       "type": "page-flex-header",
       "settings": {
-        "heading": "Tape Digitization",
-        "intro": "Convert your tapes with us! Making these memories digital and forever",
-        "button": "Start Digitizing",
+        "heading": "Noritsu HS-1800",
+        "intro": "A professional-grade film scanner trusted by labs and photographers worldwide for its speed, color accuracy, and exceptional image quality.",
+        "button": "Send Us Your Rolls",
         "cta": "shopify://pages/send-us-your-rolls",
         "show_page_content": false
-      }
-    },
-    "video_embed_YWmzUW": {
-      "type": "video-embed",
-      "name": "Video Embed",
-      "settings": {
-        "heading": "What we've digitized lately",
-        "video_url": "https://www.youtube.com/watch?time_continue=10&v=PrSBuEFdRFU"
       }
     },
     "rich_text_qBYBXe": {
       "type": "rich-text",
       "name": "Rich text",
       "settings": {
-        "content": "<h1>Lorem ipsum dolor sit amet</h1><p>consectetur adipiscing elit. Integer porta erat sed enim mollis facilisis. Sed ac consectetur mi. Cras placerat egestas ullamcorper. Vivamus lacus nulla, vulputate eget bibendum eget, molestie sit amet risus. </p><h2>Praesent id urna</h2><p>Dignissim metus hendrerit feugiat quis a quam. Donec metus felis, lacinia vitae imperdiet a, sodales vestibulum arcu. Quisque lacus turpis, vestibulum eget erat varius, volutpat pharetra ligula. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nullam consectetur tortor vestibulum, lobortis urna sit amet, lobortis urna.</p>",
-        "button": "Testing button",
-        "cta": "shopify://pages/privacy-policy"
+        "content": "<h2>Overview</h2><p>The HS-1800 is a powerhouse built for anyone serious about film — from busy photo labs to dedicated film nerds. It handles <strong>35mm</strong> and <strong>120/220 medium format</strong> film with ease, delivering rich, detailed scans that make your shots look their absolute best. Precision-built in Japan, this machine mixes top-notch engineering with clever software to give every frame the treatment it deserves.</p><h2>Key Features</h2><p><strong>Sharp as it gets</strong>: Up to <strong>6400 dpi</strong> resolution means every grain of detail shows up crystal clear.<br/></p><p><strong>Speedy workflow</strong>: Designed to keep up with high-volume scanning without breaking a sweat.<br/></p><p><strong>Built-in cleanup crew</strong>: Infrared dust and scratch removal keeps your scans smooth and spotless.<br/></p><p><strong>Film format flexibility</strong>: Works with <strong>35mm</strong>, <strong>APS</strong>, and <strong>medium format</strong> films.<br/></p><p><strong>Beautiful color</strong>: Noritsu’s color tech delivers lifelike tones straight out of the scanner.<br/></p><h2>Why It Rocks</h2><p>The HS-1800 isn’t just a scanner — it’s your lab’s secret weapon. Whether you’re digitizing decades of film or cranking out client work, it brings speed, precision, and reliability to the table. You get total control over your images with easy adjustments for tone, contrast, and sharpness, so every scan feels like a little piece of magic.</p><h2>Perfect For</h2><p>Photographers who want to preserve their analog gems<br/></p><p>Archivists and film enthusiasts who love the look of real film done right<br/></p><h2>In Short</h2><p>The <strong>Noritsu HS-1800</strong> is a legend in the world of film scanning — sharp, fast, and built to last. If you want pro-level results without the drama, this is your go-to machine.</p><p></p>",
+        "button": "Send Us Your Rolls",
+        "cta": "shopify://pages/send-us-your-rolls"
       }
     }
   },
   "order": [
     "header",
-    "video_embed_YWmzUW",
     "rich_text_qBYBXe"
   ]
 }

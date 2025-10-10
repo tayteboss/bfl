@@ -1169,6 +1169,10 @@ cart-items .cart__warnings .cart__login-paragraph a {
   opacity: 0;
 
   transition: all 250ms var(--transition-ease);
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 }
 
 .store-selector-floating--visible {
