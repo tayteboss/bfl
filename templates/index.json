@@ -72,13 +72,6 @@
     "imagecarousel_7H8JL3": {
       "type": "imagecarousel",
       "blocks": {
-        "image_GGpTiX": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/a3bf6a92b61862809047a7ae287061773e9e1b01.png",
-            "alt": "Carousel image"
-          }
-        },
         "image_KHyr8t": {
           "type": "image",
           "settings": {
@@ -89,7 +82,14 @@
         "image_xACxnj": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/897da0e0ec478856d5f4399f8ca9df45b974ebdc_3bd9e957-898b-42fa-ab88-8291b5dfe18a.png",
+            "image": "shopify://shop_images/R0002342.jpg",
+            "alt": "Carousel image"
+          }
+        },
+        "image_TLMjtc": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/R0002391.jpg",
             "alt": "Carousel image"
           }
         },
@@ -102,9 +102,9 @@
         }
       },
       "block_order": [
-        "image_GGpTiX",
         "image_KHyr8t",
         "image_xACxnj",
+        "image_TLMjtc",
         "image_XU3RBp"
       ],
       "name": "Image Carousel",
@@ -128,35 +128,55 @@
         "image_L46jhA": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/897da0e0ec478856d5f4399f8ca9df45b974ebdc_3bd9e957-898b-42fa-ab88-8291b5dfe18a.png",
+            "image": "shopify://shop_images/08A9B9AE-CB50-47BA-8190-A36ED6DE72CC_1729645205.jpg",
             "alt": "Carousel image",
-            "button": "",
-            "cta": ""
+            "button": "@goldrosecrown",
+            "cta": "https://www.instagram.com/goldrosecrown/"
           }
         },
         "image_jUptyX": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/a4818996346ca9c32b86de4b41d75d6a8702e5f8.jpg",
+            "image": "shopify://shop_images/613CCEDC-4D84-41E0-AFA9-FF49CD24FB4C_1729645111.jpg",
             "alt": "Carousel image",
-            "button": "@blueroom",
-            "cta": "https://www.instagram.com/blueroom.studios/"
+            "button": "@nathan.tif",
+            "cta": "https://www.instagram.com/nathan.tif/?hl=en"
+          }
+        },
+        "image_8qhKbJ": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/R0002457.jpg",
+            "alt": "Carousel image",
+            "button": "@tayte.co",
+            "cta": "https://www.instagram.com/tayte.co/?hl=en"
           }
         },
         "image_7Uq47d": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/2f529b174b6214c2ec5f84a1e769474c31d7c7c9.png",
+            "image": "shopify://shop_images/9987BE5A-F48A-4F72-AB38-7C0DB3FF1AC6_1729645142.webp",
             "alt": "Carousel image",
-            "button": "@testing",
-            "cta": "#"
+            "button": "@asulprusia",
+            "cta": "https://www.instagram.com/asulprusia/?hl=en"
+          }
+        },
+        "image_D4eEDq": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/2024-10-23_18-25-19_1729733132.webp",
+            "alt": "Carousel image",
+            "button": "@aleiette",
+            "cta": "https://www.instagram.com/aleiette/?hl=en"
           }
         }
       },
       "block_order": [
         "image_L46jhA",
         "image_jUptyX",
-        "image_7Uq47d"
+        "image_8qhKbJ",
+        "image_7Uq47d",
+        "image_D4eEDq"
       ],
       "name": "Wall of Fame",
       "settings": {
@@ -180,24 +200,24 @@
           "type": "faq",
           "settings": {
             "faq-heading": "",
-            "question": "What is your turnaround time?",
-            "answer": "<p>Our standard turnaround is 2-3 business days.</p>"
+            "question": "Do you develop disposable cameras?",
+            "answer": "<p>Absolutely! Every type of disposable camera!</p>"
           }
         },
         "faq_qhpYMJ": {
           "type": "faq",
           "settings": {
             "faq-heading": "",
-            "question": "What is your turnaround time?",
-            "answer": "<p>Our standard turnaround is 2-3 business days.</p>"
+            "question": "Do you offer student discounts?",
+            "answer": "<p>We offer 20% off development and scanning service for students! All we need is an ID or an active schedule ;)</p>"
           }
         },
         "faq_hKahmV": {
           "type": "faq",
           "settings": {
             "faq-heading": "",
-            "question": "What is your turnaround time?",
-            "answer": "<p>Our standard turnaround is 2-3 business days.</p>"
+            "question": "I found tapes in my family's attic, do you guys digitize those?",
+            "answer": "<p>We digitize most kinds of tapes. VHS, VHS-C, 8mm, Hi-8, Mini DV, and Beta Tapes! Feel free to bring them in, we'll assess if they're in good condition so we can get them recorded for you and sent digitally.</p>"
           }
         }
       },

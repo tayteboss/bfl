@@ -4,7 +4,7 @@
 }
 
 .swiper-slide {
-  width: 75vw !important;
+  width: auto !important;
 }
 
 .swiper-slide:first-child {
@@ -26,21 +26,31 @@
 
 .image-carousel__image-ratio {
   position: relative;
-  width: 100%;
-  padding-top: 66%;
+  display: inline-block;
+  width: auto;
+  height: 80vh;
+  overflow: hidden;
+  border-radius: 24px;
+
+  @media (max-width: 768px) {
+    height: 40vh;
+  }
 }
 
 .image-carousel__image-inner {
-  position: absolute;
-  inset: 0;
-  width: 100%;
+  position: relative;
+  display: inline-block;
+  width: auto;
   height: 100%;
   overflow: hidden;
-  border-radius: 1rem;
+  border-radius: 24px;
 }
 
 .image-carousel-item img {
-  width: 100%;
+  display: block;
+  width: auto;
   height: 100%;
+  overflow: hidden;
+  border-radius: 24px;
   object-fit: cover;
 }

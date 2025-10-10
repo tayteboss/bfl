@@ -169,7 +169,7 @@
 
     // Step-based random weight for header logo + collapse via wdth after 500px
     if (logoEl) {
-      const STEP_PX = 35;
+      const STEP_PX = 60;
 
       let lastStep = -1;
       let lastWeight = 0;
@@ -227,11 +227,8 @@
 
       // Hover-driven random width variation every 0.5s while hovered
       const MIN_WDTH = 50;
-      const MAX_WDTH = 200;
+      const MAX_WDTH = 150;
       let hoverTimer = null;
-      let unsubscribeCursorHover;
-      let onLogoEnter;
-      let onLogoLeave;
 
       function getCurrentWeight() {
         // Use lastWeight from scroll logic to keep continuity
@@ -261,56 +258,7 @@
         // Do not restore inline style; root variable persists the last weight
       }
 
-      function isCursorOverLogo(x, y) {
-        const rect = logoEl.getBoundingClientRect();
-        return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
-      }
-
-      function ensureCursorSubscription() {
-        if (unsubscribeCursorHover || !(window.CursorUtils && typeof window.CursorUtils.onMove === 'function')) return;
-        unsubscribeCursorHover = window.CursorUtils.onMove(({ x, y }) => {
-          const yPos = window.scrollY || window.pageYOffset || 0;
-          if (yPos > MAX_RANGE_PX) {
-            stopHoverRandomizer();
-            return;
-          }
-          if (isCursorOverLogo(x, y)) {
-            startHoverRandomizer();
-          } else {
-            stopHoverRandomizer();
-          }
-        });
-      }
-
-      // Try to subscribe immediately; if utility isn't ready, fall back to mousemove
-      ensureCursorSubscription();
-      if (!unsubscribeCursorHover) {
-        const onMouseMove = (e) => {
-          const yPos = window.scrollY || window.pageYOffset || 0;
-          if (yPos > MAX_RANGE_PX) {
-            stopHoverRandomizer();
-            return;
-          }
-          if (isCursorOverLogo(e.clientX || 0, e.clientY || 0)) {
-            startHoverRandomizer();
-          } else {
-            stopHoverRandomizer();
-          }
-        };
-        window.addEventListener('mousemove', onMouseMove, { passive: true });
-        unsubscribeCursorHover = () => window.removeEventListener('mousemove', onMouseMove);
-      }
-
-      // Explicit hover events to ensure blink while hovering over the logo
-      onLogoEnter = () => {
-        const yPos = window.scrollY || window.pageYOffset || 0;
-        if (yPos <= MAX_RANGE_PX) startHoverRandomizer();
-      };
-      onLogoLeave = () => {
-        stopHoverRandomizer();
-      };
-      logoEl.addEventListener('mouseenter', onLogoEnter);
-      logoEl.addEventListener('mouseleave', onLogoLeave);
+      // Removed hover-triggered randomizer to disable weight changes on hover
 
       // 1) Initial blink on load for 2s
       initialBlinkActive = true;
@@ -349,12 +297,9 @@
 
       document.addEventListener('shopify:section:unload', () => {
         stopHoverRandomizer();
-        if (typeof unsubscribeCursorHover === 'function') unsubscribeCursorHover();
         if (typeof unsubscribeScrollBlink === 'function') unsubscribeScrollBlink();
         if (initialBlinkTimer) clearTimeout(initialBlinkTimer);
         if (scrollBlinkStopTimer) clearTimeout(scrollBlinkStopTimer);
-        if (onLogoEnter) logoEl.removeEventListener('mouseenter', onLogoEnter);
-        if (onLogoLeave) logoEl.removeEventListener('mouseleave', onLogoLeave);
       });
     }
 

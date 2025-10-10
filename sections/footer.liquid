@@ -1,6 +1,6 @@
 {{ 'footer.css' | asset_url | stylesheet_tag }}
 
-<footer class="footer" role="contentinfo">
+<footer class="footer cursor-animation-off" role="contentinfo">
   <div class="footer-socials">
     <a
       href="{{ settings.social_instagram_link }}"
@@ -84,6 +84,11 @@
     const footer = document.querySelector('.footer');
     const footerLogo = document.querySelector('.footer__logo');
     if (!footer || !footerLogo) return;
+
+    // Allow disabling via class on the footer
+    if (footer.classList.contains('cursor-animation-off')) {
+      return;
+    }
 
     // Disable animation on mobile/touch devices; keep footer wght using --font-weight-header
     const disableAnimation =
