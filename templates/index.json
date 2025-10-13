@@ -75,28 +75,26 @@
         "image_KHyr8t": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/493255312d84660aace5a2cfdb2a29bbf8200074.png",
+            "image": "shopify://shop_images/walloffame-1.jpg",
             "alt": "Carousel image"
           }
         },
         "image_xACxnj": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/R0002342.jpg",
+            "image": "shopify://shop_images/carousel-3.png",
             "alt": "Carousel image"
           }
         },
         "image_TLMjtc": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/R0002391.jpg",
             "alt": "Carousel image"
           }
         },
         "image_XU3RBp": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/220b88c84e0e65f6ef6e56be0e09c976ddce823a.png",
             "alt": "Carousel image"
           }
         }
@@ -117,7 +115,7 @@
         "heading": "Bellows began as a single pro lab in Miami and, in just a few short years, has grown into a small constellation of studios—Miami, Chicago and pop-ups in Atlanta and Orlando—processing thousands of rolls every month",
         "paragraph-1": "<p>The recipe hasn’t changed: fresh chemistry mixed daily, scanners tuned by hand, and a crew of film nerds who still get goose-bumps when a perfect negative hits the light table. From one-hour C-41 to exhibition-grade drum scans, Bellows exists to bridge the gap between analogue craft and a digital-first world, giving photographers a place where curiosity is met with real expertise.</p>",
         "paragraph-2": "<p>At Bellows, we’re on a mission to keep film photography alive and thriving in South Florida. We believe in the magic of the process—from loading film to developing and holding the final product in your hands. Our goal is to offer exceptional film development services while cultivating a space where photographers can express their creativity, share their passion, and celebrate the art of analog.</p>",
-        "sendrollsimage": "shopify://shop_images/Group_6.png",
+        "sendrollsimage": "shopify://shop_images/stamp.png",
         "button": "Send Us Your Rolls",
         "cta": "#"
       }
@@ -125,19 +123,10 @@
     "walloffame_AnARbN": {
       "type": "walloffame",
       "blocks": {
-        "image_L46jhA": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/08A9B9AE-CB50-47BA-8190-A36ED6DE72CC_1729645205.jpg",
-            "alt": "Carousel image",
-            "button": "@goldrosecrown",
-            "cta": "https://www.instagram.com/goldrosecrown/"
-          }
-        },
         "image_jUptyX": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/613CCEDC-4D84-41E0-AFA9-FF49CD24FB4C_1729645111.jpg",
+            "image": "shopify://shop_images/08A9B9AE-CB50-47BA-8190-A36ED6DE72CC_1729645205.jpg",
             "alt": "Carousel image",
             "button": "@nathan.tif",
             "cta": "https://www.instagram.com/nathan.tif/?hl=en"
@@ -152,31 +141,30 @@
             "cta": "https://www.instagram.com/tayte.co/?hl=en"
           }
         },
-        "image_7Uq47d": {
+        "image_NYezea": {
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/9987BE5A-F48A-4F72-AB38-7C0DB3FF1AC6_1729645142.webp",
             "alt": "Carousel image",
-            "button": "@asulprusia",
-            "cta": "https://www.instagram.com/asulprusia/?hl=en"
+            "button": "@test",
+            "cta": "https://google.com/"
           }
         },
-        "image_D4eEDq": {
+        "image_TPE8Lp": {
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/2024-10-23_18-25-19_1729733132.webp",
             "alt": "Carousel image",
-            "button": "@aleiette",
-            "cta": "https://www.instagram.com/aleiette/?hl=en"
+            "button": "@testing",
+            "cta": "https://google.com/"
           }
         }
       },
       "block_order": [
-        "image_L46jhA",
         "image_jUptyX",
         "image_8qhKbJ",
-        "image_7Uq47d",
-        "image_D4eEDq"
+        "image_NYezea",
+        "image_TPE8Lp"
       ],
       "name": "Wall of Fame",
       "settings": {
@@ -233,7 +221,7 @@
         "show_view_all": true,
         "view_all_link": "shopify://pages/faq",
         "view_all_text": "View all FAQs",
-        "photo": "shopify://shop_images/892a9235931663cca2285a8a94364fea3c60a794.png"
+        "photo": "shopify://shop_images/side.png"
       }
     },
     "drop_off_bbQxHD": {

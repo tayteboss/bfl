@@ -10,7 +10,7 @@
 {
   "sections": {
     "main": {
-      "type": "gear-rental",
+      "type": "gear-rental-single",
       "settings": {}
     }
   },
