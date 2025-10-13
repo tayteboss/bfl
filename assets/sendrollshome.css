@@ -56,6 +56,9 @@
 
 .send-rolls-content__button-wrapper {
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   @media (max-width: 480px) {
     width: 100%;

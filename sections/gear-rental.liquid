@@ -54,7 +54,7 @@
                 </div>
               {% endif %}
               <div class="gear-card-accordions-list" data-gear-accordion-list>
-                {% if rental.accordion_title_1 %}
+                {% if rental.accordion_1_title %}
                   {% assign accordion_uid = rental.id | append: '-accordion-1' %}
                   <button
                     class="gear-card-accordion"
@@ -65,7 +65,7 @@
                   >
                     <div class="gear-card-accordion__header">
                       <div class="gear-card-accordion__indicator" aria-hidden="true"></div>
-                      <p class="type-p">{{ rental.accordion_title_1 }}</p>
+                      <p class="type-p">{{ rental.accordion_1_title }}</p>
                     </div>
                     <div
                       class="gear-card-accordion__content"
@@ -77,12 +77,12 @@
                     >
                       <div class="gear-card-accordion__inner">
                         <p class="type-p" aria-hidden="true">—</p>
-                        <div class="type-p">{{ rental.accordion_content_1 | metafield_tag }}</div>
+                        <div class="type-p">{{ rental.accordion_1_content | metafield_tag }}</div>
                       </div>
                     </div>
                   </button>
                 {% endif %}
-                {% if rental.accordion_title_2 %}
+                {% if rental.accordion_2_title %}
                   {% assign accordion_uid_b = rental.id | append: '-accordion-2' %}
                   <button
                     class="gear-card-accordion"
@@ -93,7 +93,7 @@
                   >
                     <div class="gear-card-accordion__header">
                       <div class="gear-card-accordion__indicator" aria-hidden="true"></div>
-                      <p class="type-p">{{ rental.accordion_title_2 }}</p>
+                      <p class="type-p">{{ rental.accordion_2_title }}</p>
                     </div>
                     <div
                       class="gear-card-accordion__content"
@@ -105,7 +105,7 @@
                     >
                       <div class="gear-card-accordion__inner">
                         <p class="type-p" aria-hidden="true">—</p>
-                        <div class="type-p">{{ rental.accordion_content_2 | metafield_tag }}</div>
+                        <div class="type-p">{{ rental.accordion_1_content | metafield_tag }}</div>
                       </div>
                     </div>
                   </button>

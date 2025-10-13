@@ -66,9 +66,8 @@
       "name": "Services Details",
       "settings": {
         "heading": "Our Services",
-        "subheading": "Bellows began as a single pro lab in Miami and, in just a few short years, has grown into a small constellation of studios—Miami, Chicago and pop-ups in Atlanta and Orlando—processing thousands of rolls every month.",
-        "services-paragraph-1": "The recipe hasn’t changed: fresh chemistry mixed daily, scanners tuned by hand, and a crew of film nerds who still get goose-bumps when a perfect negative hits the light table. From one-hour C-41 to exhibition-grade drum scans, Bellows exists to bridge the gap between analogue craft and a digital-first world, giving photographers a place where curiosity is met with real expertise.\n\nAt Bellows, we’re on a mission to keep film photography alive and thriving in South Florida. We believe in the magic of the process—from loading film to developing and holding the final product in your hands. Our goal is to offer exceptional film development services while cultivating a space where photographers can express their creativity, share their passion, and celebrate the art of analog.",
-        "servicesimage": "shopify://shop_images/220b88c84e0e65f6ef6e56be0e09c976ddce823a.png"
+        "subheading": "Bellows began as a single pro lab in Miami and has since grown into a network of studios—Miami, Chicago, and beyond—trusted by photographers nationwide.",
+        "services-paragraph-1": "We handle every part of the process with care: precise film development, expert scanning, and hands-on printing. Whether it’s C-41, B&W, E-6, or tape digitising, Bellows is built to serve photographers who want consistent results, honest colour, and real craft in a digital-first world."
       }
     },
     "service_jehEyF": {
@@ -110,8 +109,7 @@
         "notes": "<p>Notes:</p><ul><li>Max file size: ~200 MB per frame.</li><li>Dust removal pass and 48-bit output available.</li><li>Price: $35 per frame (discounts 10+).</li></ul>",
         "table-caption": "",
         "button": "Reserve the X5",
-        "cta": "shopify://pages/send-us-your-rolls",
-        "service-image-left": "shopify://shop_images/25e0511ab7990c9332dbf562d4beafd76ff7747c.png"
+        "cta": "shopify://pages/send-us-your-rolls"
       }
     },
     "service_dEWPfw": {
@@ -153,8 +151,7 @@
         "notes": "<p>Notes:</p><ul><li>$30 per hour of footage, bulk breaks at 5+ tapes.</li><li>Optional colour pass to balance old camcorder white-balance swings.</li></ul>",
         "table-caption": "",
         "button": "Digitise My Tapes",
-        "cta": "shopify://pages/tape-digitization",
-        "service-image-right": "shopify://shop_images/892a9235931663cca2285a8a94364fea3c60a794.png"
+        "cta": "shopify://pages/tape-digitization"
       }
     },
     "drop_off_Gwk6Tz": {

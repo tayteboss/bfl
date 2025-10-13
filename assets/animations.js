@@ -323,7 +323,17 @@ function initializeGearAccordions(rootEl = document) {
     list.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-gear-accordion-trigger]');
       if (!btn || !list.contains(btn)) return;
-      const content = btn.querySelector('[data-gear-accordion-content]');
+      let content = btn.querySelector('[data-gear-accordion-content]');
+      if (!content) {
+        const controlsId = btn.getAttribute('aria-controls');
+        if (controlsId) content = document.getElementById(controlsId);
+      }
+      if (!content) {
+        const maybeSibling = btn.nextElementSibling;
+        if (maybeSibling && maybeSibling.matches && maybeSibling.matches('[data-gear-accordion-content]')) {
+          content = maybeSibling;
+        }
+      }
       if (!content) return;
       toggle(btn, content);
     });
