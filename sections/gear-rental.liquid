@@ -4,16 +4,15 @@
   <div class="layout-wrapper">
     <div class="layout-grid">
       <section class="gear-rental__header-wrapper" aria-labelledby="gear-rental-heading">
-        <h1 id="gear-rental-heading" class="type-h1-large">Gear Rental</h1>
-        <h2 class="type-h1-small">
-          From cult point-and-shoots to medium format legends — every camera is tested and includes a free dev + scan
-          voucher.
-        </h2>
-        <p class="type-p-x-large">
-          Test-drive the classics before you commit. Every body is CLA’d, shot-tested, and leaves with fresh
-          batteries—and a free dev-and-scan voucher to sweeten the weekend. From point-and-shoot Contax T2s to a
-          Hasselblad 500 CM kit, the shelf rotates weekly. Try the classics before you own them.
-        </p>
+        {% if section.settings.heading != blank %}
+          <h1 id="gear-rental-heading" class="type-h1-large">{{ section.settings.heading }}</h1>
+        {% endif %}
+        {% if section.settings.subheading != blank %}
+          <h2 class="type-h1-small">{{ section.settings.subheading }}</h2>
+        {% endif %}
+        {% if section.settings.subparagraph != blank %}
+          <p class="type-p-x-large">{{ section.settings.subparagraph }}</p>
+        {% endif %}
       </section>
     </div>
 
@@ -163,6 +162,25 @@
 {% schema %}
 {
   "name": "gear-rental",
-  "settings": []
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Page title",
+      "default": "Gear Rental"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "From cult point-and-shoots to medium format legends — every camera is tested and includes a free dev + scan voucher."
+    },
+    {
+      "type": "textarea",
+      "id": "subparagraph",
+      "label": "Intro paragraph",
+      "default": "Test-drive the classics before you commit. Every body is CLA’d, shot-tested, and leaves with fresh batteries—and a free dev-and-scan voucher to sweeten the weekend. From point-and-shoot Contax T2s to a Hasselblad 500 CM kit, the shelf rotates weekly. Try the classics before you own them."
+    }
+  ]
 }
 {% endschema %}

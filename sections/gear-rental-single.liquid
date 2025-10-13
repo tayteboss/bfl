@@ -1,144 +1,207 @@
 {{ 'gear-rental.css' | asset_url | stylesheet_tag }}
+{{ 'contact.css' | asset_url | stylesheet_tag }}
 
-<div class="gear-rental">
+<div class="gear-single">
   <div class="layout-wrapper">
-    <div class="layout-grid">
-      <section class="gear-rental__header-wrapper" aria-labelledby="gear-rental-heading">
-        {% if metaobject and metaobject.brand_name or metaobject.title %}
-          <h1 id="gear-rental-heading" class="type-h1-large">
-            {{ metaobject.brand_name -}}
-            {%- if metaobject.brand_name and metaobject.title %} — {% endif -%}
-            {{- metaobject.title }}
-          </h1>
-        {% else %}
-          <h1 id="gear-rental-heading" class="type-h1-large">Gear Rental</h1>
+    <div class="gear-single__inner">
+      <div class="gear-single__content">
+        <div class="gear-card__title-wrapper">
+          {% if metaobject.brand_name %}
+            <h4 class="type-h1-small">{{ metaobject.brand_name }}</h4>
+          {% endif %}
+          {% if metaobject.title %}
+            <h5 class="type-h1-small">{{ metaobject.title }}</h5>
+          {% endif %}
+        </div>
+        <div class="gear-card__price-wrapper">
+          {% if metaobject.price_per_day %}
+            <div class="gear-card__price-card">
+              <p class="type-p-large">{{ metaobject.price_per_day }}</p>
+              <p class="type-p">/day or weekend</p>
+            </div>
+          {% endif %}
+          {% if metaobject.price_per_week %}
+            <div class="gear-card__price-card">
+              <p class="type-p-large">{{ metaobject.price_per_week }}</p>
+              <p class="type-p">/week</p>
+            </div>
+          {% endif %}
+        </div>
+
+        {% if metaobject.description %}
+          <div class="gear-card__description">
+            <div class="type-p">{{ metaobject.description }}</div>
+          </div>
         {% endif %}
-      </section>
-    </div>
 
-    <section class="gear-list" aria-labelledby="gear-list-title">
-      <h3 id="gear-list-title" class="gear-list__title type-p-large">Details</h3>
-      <div class="gear-list__inner">
-        <div class="gear-card">
-          <div class="gear-card__indicator" aria-hidden="true"></div>
-          <div class="gear-card__content">
-            <div class="gear-card__title-wrapper">
-              {% if metaobject.brand_name %}
-                <h4 class="type-h1-small">{{ metaobject.brand_name }}</h4>
-              {% endif %}
-              {% if metaobject.title %}
-                <h5 class="type-h1-small">{{ metaobject.title }}</h5>
-              {% endif %}
-            </div>
-            <div class="gear-card__price-wrapper">
-              {% if metaobject.price_per_day %}
-                <div class="gear-card__price-card">
-                  <p class="type-p-large">{{ metaobject.price_per_day }}</p>
-                  <p class="type-p">/day or weekend</p>
+        <div class="gear-card-accordions-list" data-gear-accordion-list>
+          {% if metaobject.accordion_title_1 %}
+            {% assign accordion_uid = metaobject.id | append: '-accordion-1' %}
+            <button
+              class="gear-card-accordion"
+              type="button"
+              aria-expanded="false"
+              aria-controls="gear-accordion-content-{{ accordion_uid }}"
+              data-gear-accordion-trigger
+            >
+              <div class="gear-card-accordion__header">
+                <div class="gear-card-accordion__indicator" aria-hidden="true"></div>
+                <p class="type-p">{{ metaobject.accordion_title_1 }}</p>
+              </div>
+              <div
+                class="gear-card-accordion__content"
+                id="gear-accordion-content-{{ accordion_uid }}"
+                role="region"
+                aria-labelledby="gear-accordion-{{ accordion_uid }}"
+                hidden
+                data-gear-accordion-content
+              >
+                <div class="gear-card-accordion__inner">
+                  <p class="type-p" aria-hidden="true">—</p>
+                  <div class="type-p">{{ metaobject.accordion_content_1 | metafield_tag }}</div>
                 </div>
-              {% endif %}
-              {% if metaobject.price_per_week %}
-                <div class="gear-card__price-card">
-                  <p class="type-p-large">{{ metaobject.price_per_week }}</p>
-                  <p class="type-p">/week</p>
+              </div>
+            </button>
+          {% endif %}
+
+          {% if metaobject.accordion_title_2 %}
+            {% assign accordion_uid_b = metaobject.id | append: '-accordion-2' %}
+            <button
+              class="gear-card-accordion"
+              type="button"
+              aria-expanded="false"
+              aria-controls="gear-accordion-content-{{ accordion_uid_b }}"
+              data-gear-accordion-trigger
+            >
+              <div class="gear-card-accordion__header">
+                <div class="gear-card-accordion__indicator" aria-hidden="true"></div>
+                <p class="type-p">{{ metaobject.accordion_title_2 }}</p>
+              </div>
+              <div
+                class="gear-card-accordion__content"
+                id="gear-accordion-content-{{ accordion_uid_b }}"
+                role="region"
+                aria-labelledby="gear-accordion-{{ accordion_uid_b }}"
+                hidden
+                data-gear-accordion-content
+              >
+                <div class="gear-card-accordion__inner">
+                  <p class="type-p" aria-hidden="true">—</p>
+                  <div class="type-p">{{ metaobject.accordion_content_2 | metafield_tag }}</div>
                 </div>
-              {% endif %}
-            </div>
-
-            {% if metaobject.description %}
-              <div class="gear-card__description">
-                <div class="type-p">{{ metaobject.description }}</div>
               </div>
-            {% endif %}
-
-            <div class="gear-card-accordions-list" data-gear-accordion-list>
-              {% if metaobject.accordion_title_1 %}
-                {% assign accordion_uid = metaobject.id | append: '-accordion-1' %}
-                <button
-                  class="gear-card-accordion"
-                  type="button"
-                  aria-expanded="false"
-                  aria-controls="gear-accordion-content-{{ accordion_uid }}"
-                  data-gear-accordion-trigger
-                >
-                  <div class="gear-card-accordion__header">
-                    <div class="gear-card-accordion__indicator" aria-hidden="true"></div>
-                    <p class="type-p">{{ metaobject.accordion_title_1 }}</p>
-                  </div>
-                  <div
-                    class="gear-card-accordion__content"
-                    id="gear-accordion-content-{{ accordion_uid }}"
-                    role="region"
-                    aria-labelledby="gear-accordion-{{ accordion_uid }}"
-                    hidden
-                    data-gear-accordion-content
-                  >
-                    <div class="gear-card-accordion__inner">
-                      <p class="type-p" aria-hidden="true">—</p>
-                      <div class="type-p">{{ metaobject.accordion_content_1 | metafield_tag }}</div>
-                    </div>
-                  </div>
-                </button>
-              {% endif %}
-
-              {% if metaobject.accordion_title_2 %}
-                {% assign accordion_uid_b = metaobject.id | append: '-accordion-2' %}
-                <button
-                  class="gear-card-accordion"
-                  type="button"
-                  aria-expanded="false"
-                  aria-controls="gear-accordion-content-{{ accordion_uid_b }}"
-                  data-gear-accordion-trigger
-                >
-                  <div class="gear-card-accordion__header">
-                    <div class="gear-card-accordion__indicator" aria-hidden="true"></div>
-                    <p class="type-p">{{ metaobject.accordion_title_2 }}</p>
-                  </div>
-                  <div
-                    class="gear-card-accordion__content"
-                    id="gear-accordion-content-{{ accordion_uid_b }}"
-                    role="region"
-                    aria-labelledby="gear-accordion-{{ accordion_uid_b }}"
-                    hidden
-                    data-gear-accordion-content
-                  >
-                    <div class="gear-card-accordion__inner">
-                      <p class="type-p" aria-hidden="true">—</p>
-                      <div class="type-p">{{ metaobject.accordion_content_2 | metafield_tag }}</div>
-                    </div>
-                  </div>
-                </button>
-              {% endif %}
-            </div>
-
-            {% if metaobject.seo_title or metaobject.seo_description %}
-              <div class="gear-card__seo">
-                {% if metaobject.seo_title %}
-                  <p class="type-p"><strong>SEO Title:</strong> {{ metaobject.seo_title }}</p>
-                {% endif %}
-                {% if metaobject.seo_description %}
-                  <p class="type-p"><strong>SEO Description:</strong> {{ metaobject.seo_description }}</p>
-                {% endif %}
-              </div>
-            {% endif %}
-          </div>
-
-          <div class="gear-card__image-wrapper">
-            {% if metaobject.image %}
-              <div class="gear-card__image-inner">
-                <img
-                  src="{{ metaobject.image | image_url }}"
-                  width="auto"
-                  height="auto"
-                  alt="{{ metaobject.brand_name }} {{ metaobject.title }}"
-                >
-              </div>
-            {% endif %}
-          </div>
+            </button>
+          {% endif %}
         </div>
       </div>
-    </section>
+
+      <div class="gear-card__image-wrapper">
+        {% if metaobject.image %}
+          <div class="gear-card__image-inner">
+            <img
+              src="{{ metaobject.image | image_url }}"
+              width="auto"
+              height="auto"
+              alt="{{ metaobject.brand_name }} {{ metaobject.title }}"
+            >
+          </div>
+        {% endif %}
+      </div>
+    </div>
   </div>
+
+  <section class="contact-form-section">
+    <div class="layout-wrapper">
+      {% form 'contact', class: 'contact-form' %}
+        <input type="hidden" name="contact[tags]" value="gear-rental-inquiry" aria-label="Form tag">
+        <input type="hidden" name="contact[topic]" value="Gear Rental" aria-label="Form topic">
+        <input type="hidden" name="contact[page]" value="{{ request.path }}" aria-label="Page URL">
+        <input
+          type="hidden"
+          name="contact[body]"
+          value="Camera: {{ metaobject.brand_name }} — {{ metaobject.title }}"
+          aria-label="Camera details"
+        >
+
+        {%- if form.posted_successfully? -%}
+          <h3
+            class="contact-form__message contact-form__message--success form__message type-h1-x-small"
+            id="GearRentalContact-success--{{ section.id }}"
+            tabindex="-1"
+            autofocus
+          >
+            Thank you, we'll get back to you as soon as possible.
+          </h3>
+        {%- elsif form.errors -%}
+          <small
+            class="contact-form__message form__message type-p-large"
+            id="GearRentalContact-error--{{ section.id }}"
+          >
+            {{ form.errors | json }}
+          </small>
+        {%- else -%}
+          <h2 class="contact-form-section__heading type-h1-small">Interested in renting?</h2>
+          <div class="contact-form__fields">
+            <div class="form-field">
+              <input
+                id="GearRentalContactFullName--{{ section.id }}"
+                type="text"
+                name="contact[name]"
+                class="field__input"
+                value="{{ form.name }}"
+                aria-required="true"
+                placeholder="Full Name*"
+                aria-label="Full Name"
+                required
+              >
+            </div>
+
+            <div class="form-field">
+              <input
+                id="GearRentalContactEmail--{{ section.id }}"
+                type="email"
+                name="contact[email]"
+                class="field__input"
+                value="{{ form.email }}"
+                aria-required="true"
+                autocorrect="off"
+                autocapitalize="off"
+                autocomplete="email"
+                placeholder="Email*"
+                aria-label="Email"
+                required
+              >
+            </div>
+
+            <div class="form-field">
+              <input
+                id="GearRentalContactPhone--{{ section.id }}"
+                type="tel"
+                name="contact[phone]"
+                class="field__input"
+                value="{{ form.phone }}"
+                aria-required="false"
+                placeholder="Phone"
+                aria-label="Phone"
+              >
+            </div>
+
+            <div class="form-field form-field--submit">
+              <button
+                type="submit"
+                class="contact-form__button field__button primary-button primary-button--black"
+                name="commit"
+                id="GearRentalContactSubmit--{{ section.id }}"
+                aria-label="Submit gear rental inquiry"
+              >
+                <span class="svg-wrapper">Submit 💌</span>
+              </button>
+            </div>
+          </div>
+        {%- endif -%}
+      {% endform %}
+    </div>
+  </section>
 </div>
 
 {% schema %}
