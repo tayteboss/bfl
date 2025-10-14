@@ -274,6 +274,10 @@
           var l = mk.loc;
           setActiveMarkerById(l.id);
           renderOverlayForLocation(l);
+          // Center the map on the selected pin without changing zoom
+          try {
+            map.panTo([l.lat, l.lng]);
+          } catch (_e) {}
         });
         if (clusterGroup) {
           clusterGroup.addLayer(m);
@@ -341,19 +345,17 @@
 
     function focusLocation(loc) {
       if (!loc) return;
-      map.setView([loc.lat, loc.lng], 10);
+      // Center on the location without altering current zoom level
+      try {
+        map.panTo([loc.lat, loc.lng]);
+      } catch (_e) {}
       var marker = markers.find(function (m) {
         return m.loc.id === loc.id;
       });
       if (marker) {
         setActiveMarkerById(loc.id);
-        if (clusterGroup && typeof clusterGroup.zoomToShowLayer === 'function') {
-          clusterGroup.zoomToShowLayer(marker, function () {
-            renderOverlayForLocation(loc);
-          });
-        } else {
-          renderOverlayForLocation(loc);
-        }
+        // Do not zoom when focusing; just show the overlay
+        renderOverlayForLocation(loc);
       }
     }
 
