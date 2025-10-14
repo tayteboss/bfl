@@ -17,11 +17,10 @@
     </div>
 
     <section class="gear-list" aria-labelledby="gear-list-title">
-      <h3 id="gear-list-title" class="gear-list__title type-p-large">Select a Camera 📷</h3>
+      <h3 id="gear-list-title" class="gear-list__title type-p-large">Our selection 📷</h3>
       <div class="gear-list__inner">
         {% for rental in shop.metaobjects.gear_rental.values %}
           <div class="gear-card">
-            {% comment %} <div class="gear-card__indicator" aria-hidden="true"></div> {% endcomment %}
             <div class="gear-card__content">
               <div class="gear-card__title-wrapper">
                 {% if rental.brand_name %}

@@ -71,6 +71,8 @@ main {
   }
 }
 
+main:has(.gear-single) { overflow: visible; }
+
 ::selection {
   background-color: var(--color-highlight);
   color: var(--color-black);
@@ -602,10 +604,6 @@ a {
   }
 }
 
-/* .shopify-section:last-child {
-  padding-bottom: 0;
-} */
-
 main .shopify-section:first-child {
   padding-top: calc(var(--logo-height) + 9.375rem);
 
@@ -626,9 +624,9 @@ main .shopify-section:first-child:has(product-info) {
   padding-top: calc(var(--logo-height) + 1rem);
 }
 
-/* main .shopify-section:first-child:has(cart-items) {
-  padding-top: calc(var(--logo-height) + 9.375rem);
-} */
+main .shopify-section:first-child:has(.gear-single) {
+  padding-top: calc(var(--logo-height) + 1rem);
+}
 
 .primary-button {
   font-size: 1.25rem;

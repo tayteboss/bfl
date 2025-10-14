@@ -1,9 +1,22 @@
 {{ 'gear-rental.css' | asset_url | stylesheet_tag }}
 {{ 'contact.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/css/datepicker.min.css">
 
 <div class="gear-single">
-  <div class="layout-wrapper">
-    <div class="gear-single__inner">
+  <section class="gear-single-product">
+    <div class="layout-wrapper layout-grid">
+      <div class="gear-single__image-wrapper">
+        {% if metaobject.image %}
+          <div class="gear-single__image-inner">
+            <img
+              src="{{ metaobject.image | image_url }}"
+              width="auto"
+              height="auto"
+              alt="{{ metaobject.brand_name }} {{ metaobject.title }}"
+            >
+          </div>
+        {% endif %}
+      </div>
       <div class="gear-single__content">
         <div class="gear-card__title-wrapper">
           {% if metaobject.brand_name %}
@@ -30,12 +43,12 @@
 
         {% if metaobject.description %}
           <div class="gear-card__description">
-            <div class="type-p">{{ metaobject.description }}</div>
+            <div class="type-p rich-text">{{ metaobject.description }}</div>
           </div>
         {% endif %}
 
         <div class="gear-card-accordions-list" data-gear-accordion-list>
-          {% if metaobject.accordion_title_1 %}
+          {% if metaobject.accordion_1_title %}
             {% assign accordion_uid = metaobject.id | append: '-accordion-1' %}
             <button
               class="gear-card-accordion"
@@ -45,8 +58,11 @@
               data-gear-accordion-trigger
             >
               <div class="gear-card-accordion__header">
-                <div class="gear-card-accordion__indicator" aria-hidden="true"></div>
-                <p class="type-p">{{ metaobject.accordion_title_1 }}</p>
+                <div
+                  class="gear-card-accordion__indicator gear-card-accordion__indicator--black-hover"
+                  aria-hidden="true"
+                ></div>
+                <p class="type-p">{{ metaobject.accordion_1_title }}</p>
               </div>
               <div
                 class="gear-card-accordion__content"
@@ -58,13 +74,13 @@
               >
                 <div class="gear-card-accordion__inner">
                   <p class="type-p" aria-hidden="true">—</p>
-                  <div class="type-p">{{ metaobject.accordion_content_1 | metafield_tag }}</div>
+                  <div class="type-p">{{ metaobject.accordion_1_content | metafield_tag }}</div>
                 </div>
               </div>
             </button>
           {% endif %}
 
-          {% if metaobject.accordion_title_2 %}
+          {% if metaobject.accordion_2_title %}
             {% assign accordion_uid_b = metaobject.id | append: '-accordion-2' %}
             <button
               class="gear-card-accordion"
@@ -74,8 +90,11 @@
               data-gear-accordion-trigger
             >
               <div class="gear-card-accordion__header">
-                <div class="gear-card-accordion__indicator" aria-hidden="true"></div>
-                <p class="type-p">{{ metaobject.accordion_title_2 }}</p>
+                <div
+                  class="gear-card-accordion__indicator gear-card-accordion__indicator--black-hover"
+                  aria-hidden="true"
+                ></div>
+                <p class="type-p">{{ metaobject.accordion_2_title }}</p>
               </div>
               <div
                 class="gear-card-accordion__content"
@@ -87,122 +106,193 @@
               >
                 <div class="gear-card-accordion__inner">
                   <p class="type-p" aria-hidden="true">—</p>
-                  <div class="type-p">{{ metaobject.accordion_content_2 | metafield_tag }}</div>
+                  <div class="type-p">{{ metaobject.accordion_2_content | metafield_tag }}</div>
                 </div>
               </div>
             </button>
           {% endif %}
         </div>
-      </div>
-
-      <div class="gear-card__image-wrapper">
-        {% if metaobject.image %}
-          <div class="gear-card__image-inner">
-            <img
-              src="{{ metaobject.image | image_url }}"
-              width="auto"
-              height="auto"
-              alt="{{ metaobject.brand_name }} {{ metaobject.title }}"
+        <div class="gear-single__contact-form">
+          {% form 'contact', class: 'contact-form' %}
+            <input type="hidden" name="contact[tags]" value="gear-rental-inquiry" aria-label="Form tag">
+            <input type="hidden" name="contact[topic]" value="Gear Rental" aria-label="Form topic">
+            <input type="hidden" name="contact[page]" value="{{ request.path }}" aria-label="Page URL">
+            <input
+              type="hidden"
+              name="contact[body]"
+              value="Camera: {{ metaobject.brand_name }} — {{ metaobject.title }}"
+              aria-label="Camera details"
             >
-          </div>
-        {% endif %}
+
+            {%- if form.posted_successfully? -%}
+              <h3
+                class="contact-form__message contact-form__message--success form__message type-h1-x-small"
+                id="GearRentalContact-success--{{ section.id }}"
+                tabindex="-1"
+                autofocus
+              >
+                Thank you, we'll get back to you as soon as possible.
+              </h3>
+            {%- elsif form.errors -%}
+              <small
+                class="contact-form__message form__message type-p-large"
+                id="GearRentalContact-error--{{ section.id }}"
+              >
+                {{ form.errors | json }}
+              </small>
+            {%- else -%}
+              <h2 class="gear-single-contact-form__heading type-h1-x-small">Interested in renting?</h2>
+              <div class="contact-form__fields">
+                <div class="form-field">
+                  <input
+                    id="GearRentalContactFirstName--{{ section.id }}"
+                    type="text"
+                    name="contact[first_name]"
+                    class="field__input"
+                    value=""
+                    aria-required="true"
+                    placeholder="First name*"
+                    aria-label="First name"
+                    required
+                  >
+                </div>
+
+                <div class="form-field">
+                  <input
+                    id="GearRentalContactLastName--{{ section.id }}"
+                    type="text"
+                    name="contact[last_name]"
+                    class="field__input"
+                    value=""
+                    aria-required="true"
+                    placeholder="Last name*"
+                    aria-label="Last name"
+                    required
+                  >
+                </div>
+
+                <input
+                  type="hidden"
+                  id="GearRentalContactFullNameHidden--{{ section.id }}"
+                  name="contact[name]"
+                  value=""
+                  aria-hidden="true"
+                >
+
+                <div class="form-field">
+                  <input
+                    id="GearRentalContactEmail--{{ section.id }}"
+                    type="email"
+                    name="contact[email]"
+                    class="field__input"
+                    value="{{ form.email }}"
+                    aria-required="true"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    autocomplete="email"
+                    placeholder="Email*"
+                    aria-label="Email"
+                    required
+                  >
+                </div>
+
+                <div class="form-field">
+                  <input
+                    id="GearRentalContactPhone--{{ section.id }}"
+                    type="tel"
+                    name="contact[phone]"
+                    class="field__input"
+                    value="{{ form.phone }}"
+                    aria-required="false"
+                    placeholder="Phone"
+                    aria-label="Phone"
+                  >
+                </div>
+
+                <div class="form-field">
+                  <div id="GearRentalHireDates--{{ section.id }}" class="input-daterange">
+                    <input
+                      id="GearRentalHireStart--{{ section.id }}"
+                      type="text"
+                      name="contact[hire_start]"
+                      class="field__input"
+                      placeholder="Hire start date"
+                      aria-label="Hire start date"
+                      autocomplete="off"
+                    >
+                    <input
+                      id="GearRentalHireEnd--{{ section.id }}"
+                      type="text"
+                      name="contact[hire_end]"
+                      class="field__input"
+                      placeholder="Hire end date"
+                      aria-label="Hire end date"
+                      autocomplete="off"
+                    >
+                  </div>
+                </div>
+
+                <div class="form-field">
+                  <select
+                    id="GearRentalInsured--{{ section.id }}"
+                    name="contact[insured]"
+                    class="field__input"
+                    aria-label="Are you insured?"
+                  >
+                    <option value="" selected disabled>Are you insured?</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                </div>
+
+                <div class="form-field form-field--submit">
+                  <button
+                    type="submit"
+                    class="contact-form__button field__button primary-button primary-button--black"
+                    name="commit"
+                    id="GearRentalContactSubmit--{{ section.id }}"
+                    aria-label="Submit gear rental inquiry"
+                  >
+                    <span class="svg-wrapper">Submit 💌</span>
+                  </button>
+                </div>
+              </div>
+            {%- endif -%}
+          {% endform %}
+        </div>
       </div>
-    </div>
-  </div>
-
-  <section class="contact-form-section">
-    <div class="layout-wrapper">
-      {% form 'contact', class: 'contact-form' %}
-        <input type="hidden" name="contact[tags]" value="gear-rental-inquiry" aria-label="Form tag">
-        <input type="hidden" name="contact[topic]" value="Gear Rental" aria-label="Form topic">
-        <input type="hidden" name="contact[page]" value="{{ request.path }}" aria-label="Page URL">
-        <input
-          type="hidden"
-          name="contact[body]"
-          value="Camera: {{ metaobject.brand_name }} — {{ metaobject.title }}"
-          aria-label="Camera details"
-        >
-
-        {%- if form.posted_successfully? -%}
-          <h3
-            class="contact-form__message contact-form__message--success form__message type-h1-x-small"
-            id="GearRentalContact-success--{{ section.id }}"
-            tabindex="-1"
-            autofocus
-          >
-            Thank you, we'll get back to you as soon as possible.
-          </h3>
-        {%- elsif form.errors -%}
-          <small
-            class="contact-form__message form__message type-p-large"
-            id="GearRentalContact-error--{{ section.id }}"
-          >
-            {{ form.errors | json }}
-          </small>
-        {%- else -%}
-          <h2 class="contact-form-section__heading type-h1-small">Interested in renting?</h2>
-          <div class="contact-form__fields">
-            <div class="form-field">
-              <input
-                id="GearRentalContactFullName--{{ section.id }}"
-                type="text"
-                name="contact[name]"
-                class="field__input"
-                value="{{ form.name }}"
-                aria-required="true"
-                placeholder="Full Name*"
-                aria-label="Full Name"
-                required
-              >
-            </div>
-
-            <div class="form-field">
-              <input
-                id="GearRentalContactEmail--{{ section.id }}"
-                type="email"
-                name="contact[email]"
-                class="field__input"
-                value="{{ form.email }}"
-                aria-required="true"
-                autocorrect="off"
-                autocapitalize="off"
-                autocomplete="email"
-                placeholder="Email*"
-                aria-label="Email"
-                required
-              >
-            </div>
-
-            <div class="form-field">
-              <input
-                id="GearRentalContactPhone--{{ section.id }}"
-                type="tel"
-                name="contact[phone]"
-                class="field__input"
-                value="{{ form.phone }}"
-                aria-required="false"
-                placeholder="Phone"
-                aria-label="Phone"
-              >
-            </div>
-
-            <div class="form-field form-field--submit">
-              <button
-                type="submit"
-                class="contact-form__button field__button primary-button primary-button--black"
-                name="commit"
-                id="GearRentalContactSubmit--{{ section.id }}"
-                aria-label="Submit gear rental inquiry"
-              >
-                <span class="svg-wrapper">Submit 💌</span>
-              </button>
-            </div>
-          </div>
-        {%- endif -%}
-      {% endform %}
     </div>
   </section>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/datepicker-full.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var rangeContainer = document.getElementById('GearRentalHireDates--{{ section.id }}');
+    if (rangeContainer && window.DateRangePicker) {
+      new DateRangePicker(rangeContainer, {
+        autohide: true,
+        minDate: new Date(),
+        format: 'yyyy-mm-dd',
+      });
+    }
+
+    var formEl = document.querySelector('.gear-single__contact-form form.contact-form');
+    if (formEl) {
+      formEl.addEventListener('submit', function () {
+        var first = document.getElementById('GearRentalContactFirstName--{{ section.id }}');
+        var last = document.getElementById('GearRentalContactLastName--{{ section.id }}');
+        var fullHidden = document.getElementById('GearRentalContactFullNameHidden--{{ section.id }}');
+        if (fullHidden) {
+          var firstVal = first && first.value ? first.value.trim() : '';
+          var lastVal = last && last.value ? last.value.trim() : '';
+          var combined = (firstVal + ' ' + lastVal).trim();
+          fullHidden.value = combined;
+        }
+      });
+    }
+  });
+</script>
 
 {% schema %}
 {
