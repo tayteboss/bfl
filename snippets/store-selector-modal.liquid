@@ -4,6 +4,8 @@
   Publishes 'store:selected' via pubsub for downstream listeners.
 {% endcomment %}
 
+{{ 'store-selector-modal.css' | asset_url | stylesheet_tag }}
+
 <details-modal id="StoreSelectorModal" class="store-selector-modal">
   <details>
     <summary class="visually-hidden modal__toggle" aria-haspopup="dialog">
@@ -68,7 +70,7 @@
 
 <div id="StoreSelectorFloating" class="store-selector-floating">
   <div class="store-selector-floating__menu"></div>
-  <div data-hover-shake>
+  <div data-hover-shake class="store-selector-floating__button-wrapper">
     <button
       type="button"
       class="store-selector-floating__button primary-button--store-selector"
@@ -217,7 +219,14 @@
       var menu = node.querySelector('.store-selector-floating__menu');
       if (!menu) return;
       renderFloatingMenu();
-      menu.classList.add('store-selector-floating__menu--open');
+      // Ensure initial (closed) styles are applied before opening so transitions run
+      menu.classList.remove('store-selector-floating__menu--open');
+      // Force reflow to commit initial styles for newly rendered items
+      void menu.offsetWidth;
+      // Defer adding the open class to the next frame to trigger transitions
+      requestAnimationFrame(function() {
+        menu.classList.add('store-selector-floating__menu--open');
+      });
       document.addEventListener('click', onOutsideMenuClick, true);
     }
 

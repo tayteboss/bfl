@@ -55,11 +55,17 @@
   overflow: visible;
 }
 
+.image-carousel__image-inner:hover img {
+  transform: scale(1.02);
+}
+
 .image-carousel-item img {
   display: block;
   width: auto;
   height: 100%;
   border-radius: 1rem;
+
+  transition: all 200ms var(--transition-ease);
 }
 
 .wall-of-fame__ig-button {
