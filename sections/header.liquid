@@ -1,8 +1,6 @@
 {{ 'header.css' | asset_url | stylesheet_tag }}
 
 <header>
-  <a class="header__logo" href="{{ routes.root_url }}"> <span>Bellows </span> <span>Film Lab</span> </a>
-
   <button class="menu-toggle" aria-label="Open Menu" data-text="Menu">
     Menu
     {% if cart.item_count > 0 %}
@@ -85,10 +83,24 @@
       body.classList.toggle('hide-header', shouldHide);
     };
 
-    // Toggle minimise-header when scrolling past MAX_RANGE_PX
-    const updateMinimiseHeader = (y) => {
+    // Toggle minimise-header based on threshold and scroll direction
+    const updateMinimiseHeader = (y, diff) => {
       const currentY = typeof y === 'number' ? y : window.scrollY || window.pageYOffset || 0;
-      header.classList.toggle('minimise-header', currentY > MAX_RANGE_PX);
+      const isPast = currentY > MAX_RANGE_PX;
+      if (!isPast) {
+        body.classList.remove('minimise-header');
+        return;
+      }
+      if (typeof diff === 'number') {
+        if (diff > SCROLL_DIR_THRESHOLD) {
+          body.classList.add('minimise-header');
+        } else if (diff < -SCROLL_DIR_THRESHOLD) {
+          body.classList.remove('minimise-header');
+        }
+      } else {
+        // Default state when past threshold without direction info: minimised
+        body.classList.add('minimise-header');
+      }
     };
 
     menuToggle.addEventListener('click', () => {
@@ -109,16 +121,16 @@
     if (window.ScrollUtils && typeof window.ScrollUtils.onScroll === 'function') {
       const threshold = MAX_RANGE_PX;
       const onScrollUpdate = (y) => {
-        header.classList.toggle('scrolled', y > threshold);
-        updateMinimiseHeader(y);
+        const currentY = typeof y === 'number' ? y : window.scrollY || window.pageYOffset || 0;
+        const diff = currentY - lastScrollY;
+        header.classList.toggle('scrolled', currentY > threshold);
+        updateMinimiseHeader(currentY, diff);
         updateHideHeader();
 
         // Hide the menu toggle when scrolling down, show when scrolling up
-        const currentY = typeof y === 'number' ? y : window.scrollY || window.pageYOffset || 0;
         if (header.classList.contains('menu-open')) {
           menuToggle.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
         } else {
-          const diff = currentY - lastScrollY;
           if (diff > SCROLL_DIR_THRESHOLD) {
             menuToggle.classList.add(MENU_TOGGLE_HIDDEN_CLASS);
           } else if (diff < -SCROLL_DIR_THRESHOLD) {
@@ -135,15 +147,16 @@
       });
     } else {
       const onScrollFallback = () => {
-        updateMinimiseHeader();
+        const currentY = window.scrollY || window.pageYOffset || 0;
+        const diff = currentY - lastScrollY;
+        header.classList.toggle('scrolled', currentY > MAX_RANGE_PX);
+        updateMinimiseHeader(currentY, diff);
         updateHideHeader();
 
         // Hide the menu toggle when scrolling down, show when scrolling up
-        const currentY = window.scrollY || window.pageYOffset || 0;
         if (header.classList.contains('menu-open')) {
           menuToggle.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
         } else {
-          const diff = currentY - lastScrollY;
           if (diff > SCROLL_DIR_THRESHOLD) {
             menuToggle.classList.add(MENU_TOGGLE_HIDDEN_CLASS);
           } else if (diff < -SCROLL_DIR_THRESHOLD) {
@@ -173,10 +186,9 @@
 
       let lastStep = -1;
       let lastWeight = 0;
-      let initialBlinkTimer = null;
+      let initialBlinkTimer = null; // legacy timeout handle
+      let initialBlinkInterval = null; // new dedicated interval for startup blink
       let initialBlinkActive = false;
-      let scrollBlinkStopTimer = null;
-      let unsubscribeScrollBlink;
 
       function randomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -225,10 +237,10 @@
         if (typeof unsubscribeLogo === 'function') unsubscribeLogo();
       });
 
-      // Hover-driven random width variation every 0.5s while hovered
-      const MIN_WDTH = 50;
-      const MAX_WDTH = 150;
+      // Hover-driven random weight variation every 0.3s while hovered
+      const HOVER_INTERVAL_MS = 300;
       let hoverTimer = null;
+      let isHovering = false;
 
       function getCurrentWeight() {
         // Use lastWeight from scroll logic to keep continuity
@@ -241,13 +253,12 @@
         if (headerEl.classList.contains('menu-open')) return;
         hoverTimer = setInterval(() => {
           const yPos = window.scrollY || window.pageYOffset || 0;
-          if (yPos > MAX_RANGE_PX) return; // honor collapse rule
-          const wghtAmount = Math.floor(Math.random() * (MAX_WDTH - MIN_WDTH + 1)) + MIN_WDTH;
+          const wghtAmount = Math.floor(Math.random() * (MAX_WGHT - MIN_WGHT + 1)) + MIN_WGHT;
           // Persist by updating the root variable; stylesheet applies it
           document.documentElement.style.setProperty('--font-weight-header', String(wghtAmount));
-          // Clear inline override if any
-          if (logoEl.style.fontVariationSettings) logoEl.style.fontVariationSettings = '';
-        }, 200);
+          // Only clear inline override below threshold so width collapse remains past threshold
+          if (yPos <= MAX_RANGE_PX && logoEl.style.fontVariationSettings) logoEl.style.fontVariationSettings = '';
+        }, HOVER_INTERVAL_MS);
       }
 
       function stopHoverRandomizer() {
@@ -255,51 +266,53 @@
           clearInterval(hoverTimer);
           hoverTimer = null;
         }
+        isHovering = false;
         // Do not restore inline style; root variable persists the last weight
       }
 
-      // Removed hover-triggered randomizer to disable weight changes on hover
+      // Enable hover-triggered randomizer for weight changes
+      logoEl.addEventListener('mouseenter', () => {
+        isHovering = true;
+        startHoverRandomizer();
+      });
+      logoEl.addEventListener('mouseleave', stopHoverRandomizer);
 
-      // 1) Initial blink on load for 2s
-      initialBlinkActive = true;
-      startHoverRandomizer();
-      initialBlinkTimer = setTimeout(() => {
-        initialBlinkActive = false;
-        stopHoverRandomizer();
-      }, 2000);
-
-      // 2) Blink while scrolling (until MAX_RANGE_PX). Stop shortly after scroll stops
-      const handleScrollBlink = (y) => {
-        const currentY = typeof y === 'number' ? y : window.scrollY || window.pageYOffset || 0;
-        if (initialBlinkActive) {
-          clearTimeout(initialBlinkTimer);
+      // 1) Initial blink on load for 2s using a dedicated interval (separate from hover)
+      function runInitialBlink() {
+        if (initialBlinkInterval) {
+          clearInterval(initialBlinkInterval);
+          initialBlinkInterval = null;
+        }
+        initialBlinkActive = true;
+        initialBlinkInterval = setInterval(() => {
+          const wghtAmount = Math.floor(Math.random() * (MAX_WGHT - MIN_WGHT + 1)) + MIN_WGHT;
+          document.documentElement.style.setProperty('--font-weight-header', String(wghtAmount));
+        }, HOVER_INTERVAL_MS);
+        setTimeout(() => {
           initialBlinkActive = false;
-        }
-        if (currentY <= MAX_RANGE_PX) {
-          startHoverRandomizer();
-          clearTimeout(scrollBlinkStopTimer);
-          scrollBlinkStopTimer = setTimeout(() => {
-            // Only stop if not in initial blink window
-            if (!initialBlinkActive) stopHoverRandomizer();
-          }, 150);
-        } else {
-          stopHoverRandomizer();
-        }
-      };
-
-      if (window.ScrollUtils && typeof window.ScrollUtils.onScroll === 'function') {
-        unsubscribeScrollBlink = window.ScrollUtils.onScroll(handleScrollBlink);
-      } else {
-        const onScrollBlinkFallback = () => handleScrollBlink();
-        window.addEventListener('scroll', onScrollBlinkFallback, { passive: true });
-        unsubscribeScrollBlink = () => window.removeEventListener('scroll', onScrollBlinkFallback);
+          if (initialBlinkInterval) {
+            clearInterval(initialBlinkInterval);
+            initialBlinkInterval = null;
+          }
+        }, 2000);
       }
+
+      runInitialBlink();
 
       document.addEventListener('shopify:section:unload', () => {
         stopHoverRandomizer();
-        if (typeof unsubscribeScrollBlink === 'function') unsubscribeScrollBlink();
         if (initialBlinkTimer) clearTimeout(initialBlinkTimer);
-        if (scrollBlinkStopTimer) clearTimeout(scrollBlinkStopTimer);
+        if (initialBlinkInterval) {
+          clearInterval(initialBlinkInterval);
+          initialBlinkInterval = null;
+        }
+      });
+
+      // Re-run the 2s blink when restored from bfcache (e.g., back/forward nav)
+      window.addEventListener('pageshow', (event) => {
+        if (event && event.persisted) {
+          runInitialBlink();
+        }
       });
     }
 
