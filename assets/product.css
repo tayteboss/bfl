@@ -49,6 +49,7 @@
   padding: 24px 40px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 32px;
   height: 100%;
 
@@ -57,12 +58,24 @@
   }
 }
 
+.product-content--tape-digitization {
+  padding: 0;
+}
+
 .product-content__header {
   max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .product-content__vendor {
   opacity: 0.25;
+  text-align: center;
+}
+
+.product-content__title {
+  text-align: center;
 }
 
 .product-content__price {
@@ -73,6 +86,11 @@
 
 .product-content__description-wrapper {
   max-width: 600px;
+}
+
+.tape-digitization-content__description-wrapper {
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
 .product-form {
@@ -185,4 +203,20 @@
 
 .similar-products__title {
   margin-bottom: 2rem;
+}
+
+.tape-digitization-page {
+  padding-top: 80px;
+}
+
+.tape-digitization-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.tape-digitization-form__bottom {
+  padding-top: 2rem;
 }

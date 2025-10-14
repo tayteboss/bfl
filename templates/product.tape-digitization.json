@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "main": {
+      "type": "product-tape-digitization",
+      "settings": {},
+      "blocks": {
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "dropdown",
+            "swatch_shape": "circle"
+          }
+        }
+      },
+      "block_order": [
+        "variant_picker"
+      ]
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
+

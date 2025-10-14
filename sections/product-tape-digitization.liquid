@@ -1,0 +1,295 @@
+{{ 'product.css' | asset_url | stylesheet_tag }}
+
+<product-info
+  id="MainProduct-{{ section.id }}"
+  class="section-{{ section.id }}-padding"
+  data-section="{{ section.id }}"
+  data-product-id="{{ product.id }}"
+  data-update-url="true"
+  data-url="{{ product.url }}"
+>
+  <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
+  {%- assign product_form_id = 'product-form-' | append: section.id -%}
+
+  <section id="ProductInfo-{{ section.id }}" class="product-page tape-digitization-page">
+    <div class="product-section">
+      <div class="layout-wrapper">
+        <div class="product-content product-content--tape-digitization">
+          <div class="product-content__header">
+            <h1 class="product-content__title type-h1-small">{{ product.title }}</h1>
+          </div>
+
+          <div class="product-content__price badge-button badge-button--highlight">
+            <span id="price-{{ section.id }}" class="type-p-large">{{ product.price | money }}</span>
+          </div>
+
+          <div class="product-form tape-digitization-form">
+            <div class="product-content__description-wrapper tape-digitization-content__description-wrapper">
+              {%- if product.description != blank -%}
+                <div class="product-content__description type-p-large">{{ product.description }}</div>
+              {%- endif -%}
+            </div>
+            {%- if product.has_only_default_variant == false -%}
+              <div class="contact-form__fields">
+                {%- for option in product.options_with_values -%}
+                  <div class="form-field">
+                    <label class="visually-hidden" for="Option-{{ section.id }}-{{ forloop.index0 }}">
+                      {{- option.name -}}
+                    </label>
+                    <div class="select-wrapper">
+                      {%- liquid
+                        assign selected_value = option.selected_value
+                        if option.name == 'Resolution'
+                          assign selected_value = 'Standard Definition'
+                        endif
+                      -%}
+                      <select
+                        id="Option-{{ section.id }}-{{ forloop.index0 }}"
+                        class="select__select"
+                        name="options[{{ option.name | escape }}]"
+                        form="{{ product_form_id }}"
+                        required
+                      >
+                        <option value="" disabled>{{ option.name }}</option>
+                        {%- for value in option.values -%}
+                          <option
+                            value="{{ value | escape }}"
+                            {% if value == selected_value %}
+                              selected
+                            {% endif %}
+                          >
+                            {{ value }}
+                          </option>
+                        {%- endfor -%}
+                      </select>
+                    </div>
+                  </div>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+
+            <div class="contact-form__fields">
+              <div class="form-field">
+                <label class="visually-hidden" for="Delivery-{{ section.id }}">Delivery method</label>
+                <div class="select-wrapper">
+                  <select
+                    id="Delivery-{{ section.id }}"
+                    name="properties[Delivery method]"
+                    form="{{ product_form_id }}"
+                    required
+                  >
+                    <option value="" disabled selected>Delivery method</option>
+                    <option value="WeTransfer">WeTransfer</option>
+                    <option value="Dropbox">Dropbox</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="product-form__bottom tape-digitization-form__bottom">
+              <div class="product-form__buy-button">
+                <div data-hover-shake>
+                  {%- render 'buy-buttons',
+                    product: product,
+                    product_form_id: product_form_id,
+                    section_id: section.id,
+                    show_pickup_availability: false
+                  -%}
+                </div>
+              </div>
+              <div class="quantity-input-wrapper quantity-bubble">
+                <button
+                  type="button"
+                  class="quantity-btn quantity-btn--minus type-button-large"
+                  name="minus"
+                  aria-label="Decrease quantity"
+                >
+                  -
+                </button>
+                <input
+                  id="Quantity-{{ section.id }}"
+                  name="quantity"
+                  type="number"
+                  class="input-selector quantity-input quantity-number type-button-large"
+                  form="{{ product_form_id }}"
+                  min="1"
+                  step="1"
+                  value="1"
+                  aria-label="Number of tapes"
+                >
+                <button
+                  type="button"
+                  class="quantity-btn quantity-btn--plus type-button-large"
+                  name="plus"
+                  aria-label="Increase quantity"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="application/ld+json">
+      {{ product | structured_data }}
+    </script>
+
+    <script type="application/json" data-selected-variant>
+      {{ product.selected_or_first_available_variant | json }}
+    </script>
+
+    <script type="application/json" id="ProductVariants-{{ section.id }}">
+      {{ product.variants | json }}
+    </script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        // Fallback variant switcher: ensure hidden variant id updates when radios change
+        try {
+          const variantsDataEl = document.getElementById('ProductVariants-{{ section.id }}');
+          const variants = variantsDataEl ? JSON.parse(variantsDataEl.textContent) : [];
+          const optionNames = {{ product.options | json }};
+          const root = document.getElementById('MainProduct-{{ section.id }}');
+          const form = document.getElementById('{{ product_form_id }}');
+          const idInput = form && form.querySelector('input[name="id"]');
+          const priceEl = document.getElementById('price-{{ section.id }}');
+
+          function getSelectedOptions() {
+            return optionNames.map((name, index) => {
+              // radios (button picker)
+              const radio = root.querySelector(`input[name="${name}-${index + 1}"]:checked`);
+              if (radio) return radio.value;
+              // dropdown fallback
+              const select = root.querySelector(`select[name="options[${name}]"]`);
+              if (select) return select.value;
+              return null;
+            });
+          }
+
+          function findVariantByOptions(selected) {
+            if (!Array.isArray(selected) || selected.includes(null)) return null;
+            return variants.find((v) => {
+              if (!v || !v.options) return false;
+              return v.options.every((opt, i) => opt === selected[i]);
+            }) || null;
+          }
+
+          function formatCents(cents) {
+            const value = (cents || 0) / 100;
+            try {
+              return new Intl.NumberFormat(undefined, {
+                style: 'currency',
+                currency: '{{ cart.currency.iso_code }}',
+                currencyDisplay: 'symbol',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }).format(value);
+            } catch (e) {
+              return `${'{{ cart.currency.symbol }}'}${value.toFixed(2)}`;
+            }
+          }
+
+          function handleVariantChange() {
+            const selected = getSelectedOptions();
+            const matched = findVariantByOptions(selected);
+            if (matched && idInput) {
+              idInput.value = matched.id;
+              idInput.dispatchEvent(new Event('change', { bubbles: true }));
+              if (priceEl) {
+                priceEl.textContent = formatCents(matched.price);
+              }
+            }
+          }
+
+          root?.querySelector('variant-selects')?.addEventListener('change', handleVariantChange);
+          root?.querySelectorAll('select[name^="options["]').forEach((sel) => sel.addEventListener('change', handleVariantChange));
+
+          // Initialize price and variant on first load
+          handleVariantChange();
+        } catch (e) {
+          console.warn('Variant fallback handler error', e);
+        }
+
+        document.querySelectorAll('.quantity-input-wrapper').forEach((wrapper) => {
+          const input = wrapper.querySelector('.quantity-input');
+          const minusBtn = wrapper.querySelector('.quantity-btn--minus');
+          const plusBtn = wrapper.querySelector('.quantity-btn--plus');
+
+          const step = parseInt(input.step) || 1;
+          const min = parseInt(input.min) || 1;
+          const max = parseInt(input.max) || Infinity;
+
+          function updateButtons() {
+            let value = parseInt(input.value) || min;
+            minusBtn.disabled = value <= min;
+            plusBtn.disabled = value >= max;
+          }
+
+          updateButtons();
+
+          minusBtn.addEventListener('click', () => {
+            let value = parseInt(input.value) || min;
+            if (value > min) {
+              input.value = value - step;
+              input.dispatchEvent(new Event('change', { bubbles: true }));
+              updateButtons();
+            }
+          });
+          plusBtn.addEventListener('click', () => {
+            let value = parseInt(input.value) || min;
+            if (value < max) {
+              input.value = value + step;
+              input.dispatchEvent(new Event('change', { bubbles: true }));
+              updateButtons();
+            }
+          });
+          input.addEventListener('input', updateButtons);
+          input.addEventListener('change', updateButtons);
+        });
+      });
+    </script>
+  </section>
+
+  {% schema %}
+{
+  "name": "Tape Digitization Product",
+  "tag": "section",
+  "class": "section",
+  "blocks": [
+    {
+      "type": "variant_picker",
+      "name": "Variant picker",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "picker_type",
+          "options": [
+            { "value": "dropdown", "label": "Dropdown" },
+            { "value": "button", "label": "Buttons" }
+          ],
+          "default": "button",
+          "label": "Picker type"
+        },
+        {
+          "id": "swatch_shape",
+          "label": "Swatch shape",
+          "type": "select",
+          "options": [
+            { "value": "circle", "label": "Circle" },
+            { "value": "square", "label": "Square" },
+            { "value": "none", "label": "None" }
+          ],
+          "default": "circle"
+        }
+      ]
+    }
+  ],
+  "settings": []
+}
+  {% endschema %}
+</product-info>

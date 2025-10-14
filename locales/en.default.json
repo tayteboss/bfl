@@ -40,9 +40,9 @@
       "reset": "Clear search term"
     },
     "cart": {
-      "view": "View cart ({{ count }})",
-      "view_empty_cart": "View cart",
-      "item_added": "Item added to your cart"
+      "view": "View bag ({{ count }})",
+      "view_empty_cart": "View bag",
+      "item_added": "Item added to your bag"
     },
     "share": {
       "close": "Close share",
@@ -106,7 +106,7 @@
   },
   "products": {
     "product": {
-      "add_to_cart": "Add to cart",
+      "add_to_cart": "Add to bag",
       "choose_options": "Choose options",
       "choose_product_options": "Choose options for {{ product_name }}",
       "description": "Description",
@@ -139,7 +139,7 @@
         "multiples_of": "Increments of {{ quantity }}",
         "min_of": "Min {{ quantity }}",
         "max_of": "Max {{ quantity }}",
-        "in_cart_html": "<span class=\"quantity-cart\">{{ quantity }}</span> in cart",
+        "in_cart_html": "<span class=\"quantity-cart\">{{ quantity }}</span> in bag",
         "note": "View quantity rules"
       },
       "volume_pricing": {
@@ -245,7 +245,7 @@
       "pages": "Pages"
     },
     "cart": {
-      "cart": "Cart"
+      "cart": "Bag"
     },
     "contact": {
       "form": {
@@ -282,15 +282,15 @@
       }
     },
     "cart": {
-      "title": "Your cart",
+      "title": "Your bag",
       "caption": "Cart items",
       "remove_title": "Remove {{ title }}",
       "estimated_total": "Estimated total",
       "new_estimated_total": "New estimated total",
       "note": "Order special instructions",
       "checkout": "Check out",
-      "empty": "Your cart is empty",
-      "cart_error": "There was an error while updating your cart. Please try again.",
+      "empty": "Your bag is empty",
+      "cart_error": "There was an error while updating your bag. Please try again.",
       "cart_quantity_error_html": "You can only add {{ quantity }} of this item to your cart.",
       "duties_and_taxes_included_shipping_at_checkout_with_policy_html": "Duties and taxes included. Discounts and <a href=\"{{ link }}\">shipping</a> calculated at checkout.",
       "duties_and_taxes_included_shipping_at_checkout_without_policy": "Duties and taxes included. Discounts and shipping calculated at checkout.",
@@ -350,7 +350,7 @@
     },
     "quick_order_list": {
       "product_total": "Product subtotal",
-      "view_cart": "View cart",
+      "view_cart": "View bag",
       "each": "{{ money }}/ea",
       "product": "Product",
       "variant": "Variant",
@@ -365,8 +365,8 @@
       },
       "product_variants": "Product variants",
       "total_items": "Total items",
-      "remove_all_single_item_confirmation": "Remove 1 item from your cart?",
-      "remove_all_items_confirmation": "Remove all {{ quantity }} items from your cart?",
+      "remove_all_single_item_confirmation": "Remove 1 item from your bag?",
+      "remove_all_items_confirmation": "Remove all {{ quantity }} items from your bag?",
       "remove_all": "Remove all",
       "cancel": "Cancel",
       "min_error": "This item has a minimum of {{ min }}",
