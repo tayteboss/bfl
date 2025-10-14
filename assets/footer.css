@@ -64,6 +64,10 @@ footer .layout-grid {
 }
 
 .footer-links__address {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
   p {
     opacity: 0.5;
   }

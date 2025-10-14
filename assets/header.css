@@ -268,11 +268,11 @@ header {
     font-size: 32px;
     line-height: 1.1;
     letter-spacing: -0.02rem;
-  }lo
+  }
 }
 
 .menu-list__item:hover {
-  color: var(--color-yellow)
+  color: var(--color-yellow);
 }
 
 .menu-list__item--active {

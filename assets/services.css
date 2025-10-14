@@ -64,6 +64,9 @@
   overflow: hidden;
   border-radius: 2rem;
   max-height: 43.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   @media (max-width: 1024px) {
     grid-column: 2 / -2;
@@ -80,7 +83,7 @@
 
   img {
     width: 100%;
-    height: auto;
+    height: 100%;
     object-fit: cover;
   }
 }

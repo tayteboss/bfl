@@ -21,7 +21,7 @@
       <div class="gear-list__inner">
         {% for rental in shop.metaobjects.gear_rental.values %}
           <div class="gear-card">
-            <div class="gear-card__indicator" aria-hidden="true"></div>
+            {% comment %} <div class="gear-card__indicator" aria-hidden="true"></div> {% endcomment %}
             <div class="gear-card__content">
               <div class="gear-card__title-wrapper">
                 {% if rental.brand_name %}
@@ -49,7 +49,7 @@
                 <div class="gear-card__description">
                   <p class="type-p">
                     <span class="hide-on-desktop">{{ rental.description | strip_html | truncatewords: 50 }}</span>
-                    <span class="hide-on-mobile">{{ rental.description }}</span>
+                    <span class="hide-on-mobile">{{ rental.description | strip_html | truncatewords: 50 }}</span>
                   </p>
                 </div>
               {% endif %}
