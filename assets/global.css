@@ -91,11 +91,6 @@ main {
   display: none !important;
 }
 
-body.menu-open main, body.menu-open .header__logo {
-  filter: blur(25px);
-  opacity: 0.75;
-}
-
 input,
 textarea,
 select,
@@ -582,10 +577,8 @@ a {
   position: relative;
   z-index: 1000;
   padding: 0 !important;
-  mix-blend-mode: darken;
 
   @media (max-width: 768px) {
-    mix-blend-mode: normal;
     z-index: 2000;
   }
 }

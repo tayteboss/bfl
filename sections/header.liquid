@@ -1,26 +1,13 @@
 {{ 'header.css' | asset_url | stylesheet_tag }}
 
 <header>
-  <button class="menu-toggle" aria-label="Open Menu" data-text="Menu">
-    Menu
-    {% if cart.item_count > 0 %}
-      <span class="menu-toggle__number">{{ cart.item_count }}</span>
-    {% endif %}
-  </button>
-
-  <a class="cart-button cart-button--desktop" href="{{ routes.cart_url }}">
-    Bag
-    <div class="cart-button__bubble">
-      <span class="cart-button__number">{{ cart.item_count }}</span>
-    </div>
-  </a>
-
-  <div class="menu-overlay" id="menu-overlay">
+  <div class="menu-list-wrapper">
     <nav class="menu-list">
       {% for link in section.settings.navigation.links %}
         <a
           class="menu-list__item{% if link.active %} menu-list__item--active{% endif %}"
           href="{{ link.url }}"
+          data-hover-shake
         >
           {{- link.title -}}
         </a>
@@ -29,12 +16,23 @@
         <a
           class="menu-list__item{% if routes.account_url == request.path %} menu-list__item--active{% endif %}"
           href="{{ routes.account_url }}"
-          >My Account</a
+          data-hover-shake
         >
+          My Account
+        </a>
       {% endif %}
     </nav>
-    <a class="cart-button cart-button--mobile" href="{{ routes.cart_url }}">
-      Bag
+    <button class="menu-toggle menu-bubble" aria-label="Open Menu" data-text="Menu">
+      <span>Menu</span>
+      {% if cart.item_count > 0 %}
+        <span class="menu-toggle__number">{{ cart.item_count }}</span>
+      {% endif %}
+    </button>
+  </div>
+
+  <div data-hover-shake>
+    <a class="cart-button menu-bubble" href="{{ routes.cart_url }}">
+      <span>Bag</span>
       <div class="cart-button__bubble">
         <span class="cart-button__number">{{ cart.item_count }}</span>
       </div>
@@ -49,6 +47,8 @@
     const body = document.body;
     const footer = document.querySelector('.footer');
     const logoEl = document.querySelector('.header__logo');
+    const menuOverlay = document.getElementById('menu-overlay');
+    const menuListWrapper = document.querySelector('.menu-list-wrapper');
 
     const MAX_RANGE_PX = 200;
     const MIN_WGHT = 50;
@@ -57,7 +57,7 @@
     // Track scroll direction to hide/show the menu toggle button
     let lastScrollY = window.scrollY || window.pageYOffset || 0;
     const SCROLL_DIR_THRESHOLD = 5; // debounce small scroll jitters
-    const MENU_TOGGLE_HIDDEN_CLASS = 'menu-toggle--hidden';
+    const MENU_TOGGLE_HIDDEN_CLASS = 'header--hidden';
 
     let footerHeight = footer ? footer.offsetHeight : 500;
 
@@ -103,18 +103,50 @@
       }
     };
 
-    menuToggle.addEventListener('click', () => {
+    function closeMenu() {
+      if (!header.classList.contains('menu-open')) return;
+      header.classList.remove('menu-open');
+      menuToggle.textContent = 'Menu';
+      menuToggle.setAttribute('aria-label', 'Open Menu');
+      body.classList.remove('overflow-hidden');
+      body.classList.remove('menu-open');
+      document.removeEventListener('click', onDocumentClick, true);
+    }
+
+    function onDocumentClick(e) {
+      if (!header.classList.contains('menu-open')) return;
+      const target = e.target;
+      // Ignore clicks on the toggle itself
+      if (menuToggle && (target === menuToggle || menuToggle.contains(target))) return;
+      // If wrapper exists and the click is inside it, ignore
+      if (menuListWrapper && menuListWrapper.contains(target)) return;
+      // Fallback: if no wrapper, allow clicks inside the menu list to pass
+      if (!menuListWrapper && menuOverlay) {
+        const list = menuOverlay.querySelector('.menu-list');
+        if (list && list.contains(target)) return;
+      }
+      closeMenu();
+    }
+
+    menuToggle.addEventListener('click', (ev) => {
       header.classList.toggle('menu-open');
       const isOpen = header.classList.contains('menu-open');
       menuToggle.textContent = isOpen ? 'Close' : 'Menu';
       menuToggle.setAttribute('aria-label', isOpen ? 'Close Menu' : 'Open Menu');
 
       // Ensure the toggle remains visible while the menu is open
-      if (isOpen) menuToggle.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
+      if (isOpen) header.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
 
       // Toggle overflow hidden on body to prevent scrolling
       body.classList.toggle('overflow-hidden', isOpen);
       body.classList.toggle('menu-open', isOpen);
+
+      // Click-outside listener lifecycle
+      if (isOpen) {
+        document.addEventListener('click', onDocumentClick, true);
+      } else {
+        document.removeEventListener('click', onDocumentClick, true);
+      }
     });
 
     // Toggle `scrolled` and `minimise-header` on header when beyond threshold and hide near page bottom
@@ -129,12 +161,12 @@
 
         // Hide the menu toggle when scrolling down, show when scrolling up
         if (header.classList.contains('menu-open')) {
-          menuToggle.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
+          header.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
         } else {
           if (diff > SCROLL_DIR_THRESHOLD) {
-            menuToggle.classList.add(MENU_TOGGLE_HIDDEN_CLASS);
+            header.classList.add(MENU_TOGGLE_HIDDEN_CLASS);
           } else if (diff < -SCROLL_DIR_THRESHOLD) {
-            menuToggle.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
+            header.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
           }
         }
         lastScrollY = currentY;
@@ -155,12 +187,12 @@
 
         // Hide the menu toggle when scrolling down, show when scrolling up
         if (header.classList.contains('menu-open')) {
-          menuToggle.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
+          header.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
         } else {
           if (diff > SCROLL_DIR_THRESHOLD) {
-            menuToggle.classList.add(MENU_TOGGLE_HIDDEN_CLASS);
+            header.classList.add(MENU_TOGGLE_HIDDEN_CLASS);
           } else if (diff < -SCROLL_DIR_THRESHOLD) {
-            menuToggle.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
+            header.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
           }
         }
         lastScrollY = currentY;
@@ -168,6 +200,7 @@
       window.addEventListener('scroll', onScrollFallback, { passive: true });
       document.addEventListener('shopify:section:unload', () => {
         window.removeEventListener('scroll', onScrollFallback);
+        document.removeEventListener('click', onDocumentClick, true);
       });
     }
 
