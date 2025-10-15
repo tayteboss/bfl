@@ -391,13 +391,16 @@
 }
 
 .gear-single__contact-form {
+	background: var(--color-grey-light);
+	border-radius: 1.5rem;
 	padding-top: 24px;
 	width: 100%;
+	padding: 32px 24px;
 }
 
 .gear-single-contact-form__heading {
-	text-align: left;
-	margin-bottom: 24px;
+	text-align: center;
+	margin-bottom: 40px;
 }
 
 .contact-form__fields .form-field {

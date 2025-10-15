@@ -159,102 +159,116 @@
                 {{ form.errors | json }}
               </small>
             {%- else -%}
-              <h2 class="gear-single-contact-form__heading type-h1-x-small">Interested in renting?</h2>
+              <h2 class="gear-single-contact-form__heading type-h1-x-small">Rental Application</h2>
               <div class="contact-form__fields">
-                <div class="form-field">
-                  <input
-                    id="GearRentalContactFullName--{{ section.id }}"
-                    type="text"
-                    name="contact[name]"
-                    class="field__input"
-                    value="{{ form.name }}"
-                    aria-required="true"
-                    placeholder="Full name*"
-                    aria-label="Full name"
-                    required
-                  >
-                </div>
-
-                <div class="form-field">
-                  <input
-                    id="GearRentalContactEmail--{{ section.id }}"
-                    type="email"
-                    name="contact[email]"
-                    class="field__input"
-                    value="{{ form.email }}"
-                    aria-required="true"
-                    autocorrect="off"
-                    autocapitalize="off"
-                    autocomplete="email"
-                    placeholder="Email*"
-                    aria-label="Email"
-                    required
-                  >
-                </div>
-
-                <div class="form-field">
-                  <input
-                    id="GearRentalContactPhone--{{ section.id }}"
-                    type="tel"
-                    name="contact[phone]"
-                    class="field__input"
-                    value="{{ form.phone }}"
-                    aria-required="false"
-                    placeholder="Phone"
-                    aria-label="Phone"
-                  >
-                </div>
-
-                <div class="form-field">
-                  <legend class="type-p form-field__legend">Hire dates</legend>
-                  <div id="GearRentalHireDates--{{ section.id }}" class="input-daterange">
+                <div class="contact-form__fields-inner">
+                  <legend class="type-p gear-single-contact-form__legend">Contact details</legend>
+                  <div class="form-field">
                     <input
-                      id="GearRentalHireStart--{{ section.id }}"
+                      id="GearRentalContactFullName--{{ section.id }}"
                       type="text"
-                      name="contact[hire_start]"
+                      name="contact[name]"
                       class="field__input"
-                      placeholder="Hire start date"
-                      aria-label="Hire start date"
-                      autocomplete="off"
+                      value="{{ form.name }}"
+                      aria-required="true"
+                      placeholder="Full name*"
+                      aria-label="Full name"
+                      required
                     >
+                  </div>
+
+                  <div class="form-field">
                     <input
-                      id="GearRentalHireEnd--{{ section.id }}"
-                      type="text"
-                      name="contact[hire_end]"
+                      id="GearRentalContactEmail--{{ section.id }}"
+                      type="email"
+                      name="contact[email]"
                       class="field__input"
-                      placeholder="Hire end date"
-                      aria-label="Hire end date"
-                      autocomplete="off"
+                      value="{{ form.email }}"
+                      aria-required="true"
+                      autocorrect="off"
+                      autocapitalize="off"
+                      autocomplete="email"
+                      placeholder="Email*"
+                      aria-label="Email"
+                      required
+                    >
+                  </div>
+
+                  <div class="form-field">
+                    <input
+                      id="GearRentalContactPhone--{{ section.id }}"
+                      type="tel"
+                      name="contact[phone]"
+                      class="field__input"
+                      value="{{ form.phone }}"
+                      aria-required="false"
+                      placeholder="Phone"
+                      aria-label="Phone"
                     >
                   </div>
                 </div>
 
-                <div class="form-field">
-                  <fieldset class="field__group" aria-label="Are you insured?">
-                    <legend class="type-p form-field__legend">Are you insured?</legend>
-                    <div class="bubble-options" role="radiogroup" aria-label="Are you insured?">
-                      <label class="bubble-option">
-                        <input
-                          id="GearRentalInsuredYes--{{ section.id }}"
-                          type="radio"
-                          name="contact[insured]"
-                          value="Yes"
-                          required
-                        >
-                        <span class="bubble-option__label">Yes</span>
-                      </label>
-                      <label class="bubble-option">
-                        <input
-                          id="GearRentalInsuredNo--{{ section.id }}"
-                          type="radio"
-                          name="contact[insured]"
-                          value="No"
-                          required
-                        >
-                        <span class="bubble-option__label">No</span>
-                      </label>
+                <div class="contact-form__fields-inner">
+                  <legend class="type-p gear-single-contact-form__legend">Hire dates</legend>
+                  <div class="form-field">
+                    <div id="GearRentalHireDates--{{ section.id }}" class="input-daterange">
+                      <input
+                        id="GearRentalHireStart--{{ section.id }}"
+                        type="text"
+                        name="contact[hire_start]"
+                        class="field__input"
+                        placeholder="Pickup Date"
+                        aria-label="Pickup Date"
+                        autocomplete="off"
+                      >
+                      <input
+                        id="GearRentalHireEnd--{{ section.id }}"
+                        type="text"
+                        name="contact[hire_end]"
+                        class="field__input"
+                        placeholder="Return"
+                        aria-label="Return"
+                        autocomplete="off"
+                      >
                     </div>
-                  </fieldset>
+                  </div>
+                </div>
+
+                <div class="contact-form__fields-inner">
+                  <legend class="type-p gear-single-contact-form__legend">Already insured?</legend>
+                  <div class="form-field">
+                    <fieldset class="field__group" aria-label="Already insured?">
+                      <div class="bubble-options" role="radiogroup" aria-label="Already insured?">
+                        <label class="bubble-option">
+                          <input
+                            id="GearRentalInsuredYes--{{ section.id }}"
+                            type="radio"
+                            name="contact[insured]"
+                            value="Yes"
+                            required
+                          >
+
+                          <div class="bubble-option__inner">
+                            <div class="bubble-option__icon"></div>
+                            <div class="bubble-option__label">Yes</div>
+                          </div>
+                        </label>
+                        <label class="bubble-option">
+                          <input
+                            id="GearRentalInsuredNo--{{ section.id }}"
+                            type="radio"
+                            name="contact[insured]"
+                            value="No"
+                            required
+                          >
+                          <div class="bubble-option__inner">
+                            <div class="bubble-option__icon"></div>
+                            <div class="bubble-option__label">No</div>
+                          </div>
+                        </label>
+                      </div>
+                    </fieldset>
+                  </div>
                 </div>
 
                 <div class="form-field form-field--submit form-field--submit-gear-rental">
