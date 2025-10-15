@@ -15,14 +15,26 @@
 
   <section id="ProductInfo-{{ section.id }}" class="product-page tape-digitization-page">
     <div class="product-section">
-      <div class="layout-wrapper">
-        <div class="product-content product-content--tape-digitization">
-          <div class="product-content__header">
-            <h1 class="product-content__title type-h1-small">{{ product.title }}</h1>
+      <div class="layout-wrapper layout-grid">
+        <div class="product-images-wrapper">
+          <div class="product-images-wrapper__image">
+            {% if product.featured_image %}
+              <img
+                src="{{ product.featured_image | image_url }}"
+                width="{{ product.featured_image.width }}"
+                height="{{ product.featured_image.height }}"
+                alt="{{ product.title }}"
+                loading="lazy"
+              >
+            {% endif %}
           </div>
-
-          <div class="product-content__price badge-button badge-button--highlight">
-            <span id="price-{{ section.id }}" class="type-p-large">{{ product.price | money }}</span>
+        </div>
+        <div class="product-content product-content--tape-digitization">
+          <div class="product-content__header tape-digitization-content__header">
+            <h1 class="product-content__title type-h1-small">{{ product.title }}</h1>
+            <div class="product-content__price badge-button badge-button--highlight">
+              <span id="price-{{ section.id }}" class="type-p-large">{{ product.price | money }}</span>
+            </div>
           </div>
 
           <div class="product-form tape-digitization-form">
@@ -33,73 +45,123 @@
             </div>
             {%- if product.has_only_default_variant == false -%}
               <div class="contact-form__fields">
-                {%- for option in product.options_with_values -%}
-                  <div class="form-field">
-                    <label class="visually-hidden" for="Option-{{ section.id }}-{{ forloop.index0 }}">
-                      {{- option.name -}}
-                    </label>
-                    <div class="select-wrapper">
-                      {%- liquid
-                        assign selected_value = option.selected_value
-                        if option.name == 'Resolution'
-                          assign selected_value = 'Standard Definition'
-                        endif
-                      -%}
-                      <select
-                        id="Option-{{ section.id }}-{{ forloop.index0 }}"
-                        class="select__select"
-                        name="options[{{ option.name | escape }}]"
-                        form="{{ product_form_id }}"
-                        required
-                      >
-                        <option value="" disabled>{{ option.name }}</option>
-                        {%- for value in option.values -%}
-                          <option
-                            value="{{ value | escape }}"
-                            {% if value == selected_value %}
-                              selected
-                            {% endif %}
-                          >
-                            {{ value }}
-                          </option>
-                        {%- endfor -%}
-                      </select>
+                <div class="contact-form__fields-inner">
+                  <legend class="type-p tape-digitization-contact-form__legend">Type</legend>
+                  {%- for option in product.options_with_values limit: 1 -%}
+                    {%- liquid
+                      assign selected_value = option.selected_value
+                    -%}
+                    <div class="form-field form-field--digitization">
+                      <fieldset class="field__group" aria-label="Type">
+                        <div class="bubble-options" role="radiogroup" aria-label="Type">
+                          {%- for value in option.values -%}
+                            <label class="bubble-option">
+                              <input
+                                id="Option-{{ section.id }}-1-{{ value | handle }}"
+                                type="radio"
+                                name="{{ option.name }}-1"
+                                value="{{ value | escape }}"
+                                {% if value == selected_value %}
+                                  checked
+                                {% endif %}
+                                required
+                              >
+                              <div class="bubble-option__inner">
+                                <div class="bubble-option__icon"></div>
+                                <div class="bubble-option__label">{{ value }}</div>
+                              </div>
+                            </label>
+                          {%- endfor -%}
+                        </div>
+                      </fieldset>
                     </div>
-                  </div>
-                {%- endfor -%}
+                  {%- endfor -%}
+                </div>
+
+                <div class="contact-form__fields-inner">
+                  <legend class="type-p tape-digitization-contact-form__legend">Resolution</legend>
+                  {%- for option in product.options_with_values offset: 1 limit: 1 -%}
+                    {%- liquid
+                      assign selected_value = 'Standard Definition'
+                    -%}
+                    <div class="form-field form-field--digitization form-field--wrap">
+                      <fieldset class="field__group" aria-label="Resolution">
+                        <div class="bubble-options bubble-options--wrap" role="radiogroup" aria-label="Resolution">
+                          {%- for value in option.values -%}
+                            <label class="bubble-option">
+                              <input
+                                id="Option-{{ section.id }}-2-{{ value | handle }}"
+                                type="radio"
+                                name="{{ option.name }}-2"
+                                value="{{ value | escape }}"
+                                {% if value == selected_value %}
+                                  checked
+                                {% endif %}
+                                required
+                              >
+                              <div class="bubble-option__inner">
+                                <div class="bubble-option__icon"></div>
+                                <div class="bubble-option__label">{{ value }}</div>
+                              </div>
+                            </label>
+                          {%- endfor -%}
+                        </div>
+                      </fieldset>
+                    </div>
+                  {%- endfor -%}
+                </div>
               </div>
             {%- endif -%}
 
             <div class="contact-form__fields">
-              <div class="form-field">
-                <label class="visually-hidden" for="Delivery-{{ section.id }}">Delivery method</label>
-                <div class="select-wrapper">
-                  <select
-                    id="Delivery-{{ section.id }}"
-                    name="properties[Delivery method]"
-                    form="{{ product_form_id }}"
-                    required
-                  >
-                    <option value="" disabled selected>Delivery method</option>
-                    <option value="WeTransfer">WeTransfer</option>
-                    <option value="Dropbox">Dropbox</option>
-                  </select>
+              <div class="contact-form__fields-inner">
+                <legend class="type-p tape-digitization-contact-form__legend">Delivery</legend>
+                <div class="form-field form-field--digitization">
+                  <fieldset class="field__group" aria-label="Delivery method">
+                    <div class="bubble-options" role="radiogroup" aria-label="Delivery method">
+                      <label class="bubble-option">
+                        <input
+                          id="DeliveryWeTransfer--{{ section.id }}"
+                          type="radio"
+                          name="properties[Delivery method]"
+                          value="WeTransfer"
+                          checked
+                          required
+                        >
+                        <div class="bubble-option__inner">
+                          <div class="bubble-option__icon"></div>
+                          <div class="bubble-option__label">WeTransfer</div>
+                        </div>
+                      </label>
+                      <label class="bubble-option">
+                        <input
+                          id="DeliveryDropbox--{{ section.id }}"
+                          type="radio"
+                          name="properties[Delivery method]"
+                          value="Dropbox"
+                          required
+                        >
+                        <div class="bubble-option__inner">
+                          <div class="bubble-option__icon"></div>
+                          <div class="bubble-option__label">Dropbox</div>
+                        </div>
+                      </label>
+                    </div>
+                  </fieldset>
                 </div>
               </div>
             </div>
 
             <div class="product-form__bottom tape-digitization-form__bottom">
               <div class="product-form__buy-button">
-                <div data-hover-shake>
-                  {%- render 'buy-buttons',
-                    product: product,
-                    product_form_id: product_form_id,
-                    section_id: section.id,
-                    show_pickup_availability: false
-                  -%}
-                </div>
+                {%- render 'buy-buttons',
+                  product: product,
+                  product_form_id: product_form_id,
+                  section_id: section.id,
+                  show_pickup_availability: false
+                -%}
               </div>
-              <div class="quantity-input-wrapper quantity-bubble">
+              <div class="quantity-input-wrapper quantity-bubble tape-digitization-form__quantity-input-wrapper">
                 <button
                   type="button"
                   class="quantity-btn quantity-btn--minus type-button-large"
@@ -205,8 +267,11 @@
             }
           }
 
-          root?.querySelector('variant-selects')?.addEventListener('change', handleVariantChange);
-          root?.querySelectorAll('select[name^="options["]').forEach((sel) => sel.addEventListener('change', handleVariantChange));
+            root?.querySelector('variant-selects')?.addEventListener('change', handleVariantChange);
+            root?.querySelectorAll('select[name^="options["]').forEach((sel) => sel.addEventListener('change', handleVariantChange));
+            root?.querySelectorAll('input[type="radio"][name$="-1"], input[type="radio"][name$="-2"]').forEach((radio) => {
+              radio.addEventListener('change', handleVariantChange);
+            });
 
           // Initialize price and variant on first load
           handleVariantChange();
