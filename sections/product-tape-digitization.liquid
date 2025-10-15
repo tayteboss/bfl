@@ -153,14 +153,6 @@
             </div>
 
             <div class="product-form__bottom tape-digitization-form__bottom">
-              <div class="product-form__buy-button">
-                {%- render 'buy-buttons',
-                  product: product,
-                  product_form_id: product_form_id,
-                  section_id: section.id,
-                  show_pickup_availability: false
-                -%}
-              </div>
               <div class="quantity-input-wrapper quantity-bubble tape-digitization-form__quantity-input-wrapper">
                 <button
                   type="button"
@@ -189,6 +181,14 @@
                 >
                   +
                 </button>
+              </div>
+              <div class="product-form__buy-button">
+                {%- render 'buy-buttons',
+                  product: product,
+                  product_form_id: product_form_id,
+                  section_id: section.id,
+                  show_pickup_availability: false
+                -%}
               </div>
             </div>
           </div>
