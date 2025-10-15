@@ -1,6 +1,24 @@
 {{ 'gear-rental.css' | asset_url | stylesheet_tag }}
 {{ 'contact.css' | asset_url | stylesheet_tag }}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/css/datepicker.min.css">
+<style>
+  /* Scoped datepicker theme overrides */
+  .gear-single .datepicker-cell.selected,
+  .gear-single .datepicker-cell.range-start,
+  .gear-single .datepicker-cell.range-end {
+    background-color: var(--color-yellow);
+    color: var(--color-black);
+  }
+
+  .gear-single .datepicker-cell.focused:not(.selected):not(.range-start):not(.range-end) {
+    border-color: var(--color-yellow);
+  }
+
+  .gear-single .datepicker-view .week .datepicker-cell:hover {
+    background-color: var(--color-yellow);
+    color: var(--color-black);
+  }
+</style>
 
 <div class="gear-single">
   <section class="gear-single-product">
@@ -145,39 +163,17 @@
               <div class="contact-form__fields">
                 <div class="form-field">
                   <input
-                    id="GearRentalContactFirstName--{{ section.id }}"
+                    id="GearRentalContactFullName--{{ section.id }}"
                     type="text"
-                    name="contact[first_name]"
+                    name="contact[name]"
                     class="field__input"
-                    value=""
+                    value="{{ form.name }}"
                     aria-required="true"
-                    placeholder="First name*"
-                    aria-label="First name"
+                    placeholder="Full name*"
+                    aria-label="Full name"
                     required
                   >
                 </div>
-
-                <div class="form-field">
-                  <input
-                    id="GearRentalContactLastName--{{ section.id }}"
-                    type="text"
-                    name="contact[last_name]"
-                    class="field__input"
-                    value=""
-                    aria-required="true"
-                    placeholder="Last name*"
-                    aria-label="Last name"
-                    required
-                  >
-                </div>
-
-                <input
-                  type="hidden"
-                  id="GearRentalContactFullNameHidden--{{ section.id }}"
-                  name="contact[name]"
-                  value=""
-                  aria-hidden="true"
-                >
 
                 <div class="form-field">
                   <input
@@ -210,6 +206,7 @@
                 </div>
 
                 <div class="form-field">
+                  <legend class="type-p form-field__legend">Hire dates</legend>
                   <div id="GearRentalHireDates--{{ section.id }}" class="input-daterange">
                     <input
                       id="GearRentalHireStart--{{ section.id }}"
@@ -233,19 +230,34 @@
                 </div>
 
                 <div class="form-field">
-                  <select
-                    id="GearRentalInsured--{{ section.id }}"
-                    name="contact[insured]"
-                    class="field__input"
-                    aria-label="Are you insured?"
-                  >
-                    <option value="" selected disabled>Are you insured?</option>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                  </select>
+                  <fieldset class="field__group" aria-label="Are you insured?">
+                    <legend class="type-p form-field__legend">Are you insured?</legend>
+                    <div class="bubble-options" role="radiogroup" aria-label="Are you insured?">
+                      <label class="bubble-option">
+                        <input
+                          id="GearRentalInsuredYes--{{ section.id }}"
+                          type="radio"
+                          name="contact[insured]"
+                          value="Yes"
+                          required
+                        >
+                        <span class="bubble-option__label">Yes</span>
+                      </label>
+                      <label class="bubble-option">
+                        <input
+                          id="GearRentalInsuredNo--{{ section.id }}"
+                          type="radio"
+                          name="contact[insured]"
+                          value="No"
+                          required
+                        >
+                        <span class="bubble-option__label">No</span>
+                      </label>
+                    </div>
+                  </fieldset>
                 </div>
 
-                <div class="form-field form-field--submit">
+                <div class="form-field form-field--submit form-field--submit-gear-rental">
                   <button
                     type="submit"
                     class="contact-form__button field__button primary-button primary-button--black"
@@ -273,24 +285,11 @@
       new DateRangePicker(rangeContainer, {
         autohide: true,
         minDate: new Date(),
-        format: 'yyyy-mm-dd',
+        format: 'mm-dd-yyyy',
       });
     }
 
-    var formEl = document.querySelector('.gear-single__contact-form form.contact-form');
-    if (formEl) {
-      formEl.addEventListener('submit', function () {
-        var first = document.getElementById('GearRentalContactFirstName--{{ section.id }}');
-        var last = document.getElementById('GearRentalContactLastName--{{ section.id }}');
-        var fullHidden = document.getElementById('GearRentalContactFullNameHidden--{{ section.id }}');
-        if (fullHidden) {
-          var firstVal = first && first.value ? first.value.trim() : '';
-          var lastVal = last && last.value ? last.value.trim() : '';
-          var combined = (firstVal + ' ' + lastVal).trim();
-          fullHidden.value = combined;
-        }
-      });
-    }
+    // No need to assemble full name; a single Full Name input is used
   });
 </script>
 

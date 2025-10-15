@@ -626,6 +626,10 @@ main .shopify-section:first-child:has(product-info) {
 
 main .shopify-section:first-child:has(.gear-single) {
   padding-top: calc(var(--logo-height) + 1rem);
+
+  @media (max-width: 768px) {
+    padding-bottom: 80px;
+  }
 }
 
 .primary-button {
@@ -1149,6 +1153,10 @@ cart-items .cart__warnings .cart__login-paragraph a {
   }
 }
 
+.form-field--submit-gear-rental {
+  padding-top: 1.5rem;
+}
+
 .form-field input,
 .form-field select,
 .form-field textarea {
@@ -1207,6 +1215,70 @@ cart-items .cart__warnings .cart__login-paragraph a {
 .form-field select option {
   color: var(--color-black);
 }
+
+.input-daterange {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.form-field__legend {
+  text-align: center;
+  padding: 8px 0 16px;
+}
+
+.bubble-options {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.bubble-option {
+  flex: 1;
+  position: relative;
+  padding: 1.5rem 1rem;
+  background: var(--color-grey-light);
+  border-radius: 1.5rem;
+  border: none;
+  font-family: var(--font-gt-standard-mono-regular);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.3125rem;
+  text-align: center;
+  cursor: pointer;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+
+  &:hover {
+    background: var(--color-highlight);
+    color: var(--color-black);
+  }
+
+  /* Selected state: when the radio inside is checked */
+  &:has(input:checked) {
+    background: var(--color-grey-dark);
+    color: var(--color-white);
+  }
+  &:has(input:focus-visible) {
+    outline: 2px solid var(--color-black);
+    outline-offset: 2px;
+  }
+}
+
+.bubble-option input {
+  padding: 0;
+}
+
+.bubble-option__label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-family: var(--font-gt-standard-mono-regular);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.3125rem;
+}
+
 
 .simple-form__message,
 .contact-form__message,
