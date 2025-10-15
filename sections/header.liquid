@@ -16,7 +16,8 @@
         <a
           class="menu-list__item{% if routes.account_url == request.path %} menu-list__item--active{% endif %}"
           href="{{ routes.account_url }}"
-          data-hover-shake
+          data-hover-shake="left"
+          :
         >
           My Account
         </a>
@@ -60,6 +61,16 @@
     const SCROLL_DIR_THRESHOLD = 5; // debounce small scroll jitters
     const MENU_TOGGLE_HIDDEN_CLASS = 'header--hidden';
 
+    // Hysteresis: after header reappears on upward scroll, require 1/4 window height
+    // of downward scrolling before minimising (hiding) it again. Also run a blink
+    // animation during this grace period.
+    let reMinimiseBlocked = false;
+    let unminimiseAnchorY = 0;
+    let reMinimiseDistancePx = window.innerHeight / 4;
+    const updateReMinimiseDistance = () => {
+      reMinimiseDistancePx = window.innerHeight / 4;
+    };
+
     let footerHeight = footer ? footer.offsetHeight : 500;
 
     const updateFooterHeight = () => {
@@ -90,17 +101,58 @@
       const isPast = currentY > MAX_RANGE_PX;
       if (!isPast) {
         body.classList.remove('minimise-header');
+        // Reset any blocking once well above the fold
+        if (
+          reMinimiseBlocked &&
+          window.HeaderLogoBlink &&
+          typeof window.HeaderLogoBlink.stopReMinimiseBlink === 'function'
+        ) {
+          window.HeaderLogoBlink.stopReMinimiseBlink();
+        }
+        reMinimiseBlocked = false;
         return;
       }
       if (typeof diff === 'number') {
         if (diff > SCROLL_DIR_THRESHOLD) {
-          body.classList.add('minimise-header');
+          // Scrolling down: only minimise if we've scrolled enough since unminimising
+          if (reMinimiseBlocked) {
+            const traveled = currentY - unminimiseAnchorY;
+            if (traveled >= reMinimiseDistancePx) {
+              body.classList.add('minimise-header');
+              reMinimiseBlocked = false;
+              // Ensure any prior blink is stopped (defensive)
+              if (window.HeaderLogoBlink && typeof window.HeaderLogoBlink.stopReMinimiseBlink === 'function') {
+                window.HeaderLogoBlink.stopReMinimiseBlink();
+              }
+            } else {
+              body.classList.remove('minimise-header');
+            }
+          } else {
+            body.classList.add('minimise-header');
+          }
         } else if (diff < -SCROLL_DIR_THRESHOLD) {
+          // Scrolling up: reveal header without triggering weight animation
           body.classList.remove('minimise-header');
+          reMinimiseBlocked = true;
+          unminimiseAnchorY = currentY;
+          // No blink on upward scroll per spec
         }
       } else {
-        // Default state when past threshold without direction info: minimised
-        body.classList.add('minimise-header');
+        // Default state when past threshold without direction info
+        if (reMinimiseBlocked) {
+          const traveled = currentY - unminimiseAnchorY;
+          if (traveled >= reMinimiseDistancePx) {
+            body.classList.add('minimise-header');
+            reMinimiseBlocked = false;
+            if (window.HeaderLogoBlink && typeof window.HeaderLogoBlink.stopReMinimiseBlink === 'function') {
+              window.HeaderLogoBlink.stopReMinimiseBlink();
+            }
+          } else {
+            body.classList.remove('minimise-header');
+          }
+        } else {
+          body.classList.add('minimise-header');
+        }
       }
     };
 
@@ -149,6 +201,25 @@
         document.removeEventListener('click', onDocumentClick, true);
       }
     });
+
+    // Mark fonts-ready to avoid logo shift when variable fonts load
+    (function waitForFonts() {
+      try {
+        if (document && document.fonts && typeof document.fonts.ready?.then === 'function') {
+          document.fonts.ready.then(() => {
+            document.documentElement.classList.add('fonts-ready');
+          });
+        } else {
+          // Fallback: wait for window load
+          window.addEventListener('load', () => {
+            document.documentElement.classList.add('fonts-ready');
+          });
+        }
+      } catch (e) {
+        // Defensive: ensure logo is shown even if fonts API fails
+        document.documentElement.classList.add('fonts-ready');
+      }
+    })();
 
     // Toggle `scrolled` and `minimise-header` on header when beyond threshold and hide near page bottom
     if (window.ScrollUtils && typeof window.ScrollUtils.onScroll === 'function') {
@@ -208,6 +279,7 @@
     window.addEventListener('resize', () => {
       updateFooterHeight();
       updateHideHeader();
+      updateReMinimiseDistance();
     });
 
     updateFooterHeight();
@@ -216,42 +288,77 @@
 
     // Step-based random weight for header logo + collapse via wdth after 500px
     if (logoEl) {
-      const STEP_PX = 60;
+      const STEP_PX = 40;
 
       let lastStep = -1;
       let lastWeight = 0;
+      let lastYForWght = window.scrollY || window.pageYOffset || 0;
       let initialBlinkTimer = null; // legacy timeout handle
       let initialBlinkInterval = null; // new dedicated interval for startup blink
       let initialBlinkActive = false;
 
-      function randomInt(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
+      let weightDirection = 1;
+      const WGHT_STEP = 25;
+      function nextSteppedWeight() {
+        const current = lastWeight || 80;
+        let next = current + weightDirection * WGHT_STEP;
+        if (next >= MAX_WGHT) {
+          next = MAX_WGHT;
+          weightDirection = -1;
+        } else if (next <= MIN_WGHT) {
+          next = MIN_WGHT;
+          weightDirection = 1;
+        }
+        return next;
+      }
+
+      // Seed from current CSS variable to avoid resetting on first scroll
+      function getCurrentVarWeight() {
+        const raw = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--font-weight-header'), 10);
+        if (Number.isNaN(raw)) return null;
+        return raw < MIN_WGHT ? MIN_WGHT : raw > MAX_WGHT ? MAX_WGHT : raw;
+      }
+      const seeded = getCurrentVarWeight();
+      if (seeded !== null) {
+        lastWeight = seeded;
+        if (lastWeight >= MAX_WGHT) weightDirection = -1;
+        else if (lastWeight <= MIN_WGHT) weightDirection = 1;
       }
 
       function applyForY(y) {
         const clampedY = y < 0 ? 0 : y;
+        const isScrollingUp = clampedY < lastYForWght;
         if (clampedY > MAX_RANGE_PX) {
           // Collapse width to 0; keep weight driven by CSS variable
           logoEl.style.fontVariationSettings = `"wght" var(--font-weight-header), "wdth" 0`;
-          return;
+          // Do not return; continue stepping weight while scrolling down past threshold
         }
-        // Lock to 80 weight for first 50px from top
+        // Keep current weight for first 50px from top; do not reset
         if (clampedY < 50) {
           lastStep = Math.floor(clampedY / STEP_PX);
-          lastWeight = 80;
-          document.documentElement.style.setProperty('--font-weight-header', '80');
+          if (!lastWeight) {
+            const seededNow = getCurrentVarWeight();
+            if (seededNow !== null) lastWeight = seededNow;
+          }
           // Clear inline overrides so stylesheet uses the variable
           logoEl.style.fontVariationSettings = '';
+          lastYForWght = clampedY;
           return;
         }
         const step = Math.floor(clampedY / STEP_PX);
         if (step !== lastStep) {
+          // Suppress weight changes when scrolling up within the threshold
+          if (isScrollingUp) {
+            lastYForWght = clampedY;
+            return;
+          }
           lastStep = step;
-          lastWeight = randomInt(MIN_WGHT, MAX_WGHT);
+          lastWeight = nextSteppedWeight();
           document.documentElement.style.setProperty('--font-weight-header', String(lastWeight));
-          // Ensure we don't hold an inline override
-          logoEl.style.fontVariationSettings = '';
+          // Only clear inline override below threshold so width collapse remains past threshold
+          if (clampedY <= MAX_RANGE_PX && logoEl.style.fontVariationSettings) logoEl.style.fontVariationSettings = '';
         }
+        lastYForWght = clampedY;
       }
 
       // Initialize with current position
@@ -271,8 +378,8 @@
         if (typeof unsubscribeLogo === 'function') unsubscribeLogo();
       });
 
-      // Hover-driven random weight variation every 0.3s while hovered
-      const HOVER_INTERVAL_MS = 300;
+      const HOVER_INTERVAL_MS = 120;
+      const INITIAL_TIMER_LENGTH_MS = 1000;
       let hoverTimer = null;
       let isHovering = false;
 
@@ -287,9 +394,8 @@
         if (headerEl.classList.contains('menu-open')) return;
         hoverTimer = setInterval(() => {
           const yPos = window.scrollY || window.pageYOffset || 0;
-          const wghtAmount = Math.floor(Math.random() * (MAX_WGHT - MIN_WGHT + 1)) + MIN_WGHT;
-          // Persist by updating the root variable; stylesheet applies it
-          document.documentElement.style.setProperty('--font-weight-header', String(wghtAmount));
+          lastWeight = nextSteppedWeight();
+          document.documentElement.style.setProperty('--font-weight-header', String(lastWeight));
           // Only clear inline override below threshold so width collapse remains past threshold
           if (yPos <= MAX_RANGE_PX && logoEl.style.fontVariationSettings) logoEl.style.fontVariationSettings = '';
         }, HOVER_INTERVAL_MS);
@@ -303,6 +409,23 @@
         isHovering = false;
         // Do not restore inline style; root variable persists the last weight
       }
+
+      // Re-minimise grace-period blink (used while header is revealed after upward scroll)
+      let reMinimiseBlinkInterval = null;
+      function startReMinimiseBlink() {
+        if (reMinimiseBlinkInterval) return;
+        reMinimiseBlinkInterval = setInterval(() => {
+          lastWeight = nextSteppedWeight();
+          document.documentElement.style.setProperty('--font-weight-header', String(lastWeight));
+        }, HOVER_INTERVAL_MS);
+      }
+      function stopReMinimiseBlink() {
+        if (reMinimiseBlinkInterval) {
+          clearInterval(reMinimiseBlinkInterval);
+          reMinimiseBlinkInterval = null;
+        }
+      }
+      window.HeaderLogoBlink = { startReMinimiseBlink, stopReMinimiseBlink };
 
       // Enable hover-triggered randomizer for weight changes
       logoEl.addEventListener('mouseenter', () => {
@@ -319,8 +442,8 @@
         }
         initialBlinkActive = true;
         initialBlinkInterval = setInterval(() => {
-          const wghtAmount = Math.floor(Math.random() * (MAX_WGHT - MIN_WGHT + 1)) + MIN_WGHT;
-          document.documentElement.style.setProperty('--font-weight-header', String(wghtAmount));
+          lastWeight = nextSteppedWeight();
+          document.documentElement.style.setProperty('--font-weight-header', String(lastWeight));
         }, HOVER_INTERVAL_MS);
         setTimeout(() => {
           initialBlinkActive = false;
@@ -328,13 +451,16 @@
             clearInterval(initialBlinkInterval);
             initialBlinkInterval = null;
           }
-        }, 2000);
+        }, INITIAL_TIMER_LENGTH_MS);
       }
 
       runInitialBlink();
 
       document.addEventListener('shopify:section:unload', () => {
         stopHoverRandomizer();
+        if (window.HeaderLogoBlink && typeof window.HeaderLogoBlink.stopReMinimiseBlink === 'function') {
+          window.HeaderLogoBlink.stopReMinimiseBlink();
+        }
         if (initialBlinkTimer) clearTimeout(initialBlinkTimer);
         if (initialBlinkInterval) {
           clearInterval(initialBlinkInterval);

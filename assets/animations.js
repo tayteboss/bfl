@@ -193,7 +193,7 @@ function getShakeConfig(el) {
     (el.dataset && (el.dataset.hoverShake || el.dataset.shakeSize || el.dataset.hoverShakeSize)) ||
     ''
   ).toLowerCase();
-  const isSmall = raw === 'small' || raw === 'sm' || raw === 's' || raw === 'mini';
+  const isSmall = raw === 'left' || raw === 'small' || raw === 'sm' || raw === 's' || raw === 'mini';
 
   if (isSmall) {
     return {

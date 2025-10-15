@@ -62,6 +62,11 @@ header {
   z-index: 10;
 }
 
+/* Hide the header logo until fonts have loaded to prevent shift */
+html:not(.fonts-ready) .header__logo {
+  visibility: hidden;
+}
+
 .menu-toggle, .cart-button {
   font-family: var(--font-diatype-rounded-bold);
   font-weight: 400;
@@ -199,7 +204,7 @@ header {
   cursor: pointer;
   opacity: 0;
 
-  transition: opacity 150ms var(--transition-ease);
+  transition: opacity 10ms var(--transition-ease);
 
   @media (max-width: 768px) {
     font-size: 1rem;
@@ -232,15 +237,15 @@ header {
 
 /* Stagger timings similar to store-selector floating options */
 .menu-open .menu-list__item:nth-child(10) { transition-delay: 0ms; }
-.menu-open .menu-list__item:nth-child(9) { transition-delay: 50ms; }
-.menu-open .menu-list__item:nth-child(8) { transition-delay: 100ms; }
-.menu-open .menu-list__item:nth-child(7) { transition-delay: 150ms; }
-.menu-open .menu-list__item:nth-child(6) { transition-delay: 200ms; }
-.menu-open .menu-list__item:nth-child(5) { transition-delay: 250ms; }
-.menu-open .menu-list__item:nth-child(4) { transition-delay: 300ms; }
-.menu-open .menu-list__item:nth-child(3) { transition-delay: 350ms; }
-.menu-open .menu-list__item:nth-child(2) { transition-delay: 400ms; }
-.menu-open .menu-list__item:nth-child(1) { transition-delay: 450ms; }
+.menu-open .menu-list__item:nth-child(9) { transition-delay: 35ms; }
+.menu-open .menu-list__item:nth-child(8) { transition-delay: 70ms; }
+.menu-open .menu-list__item:nth-child(7) { transition-delay: 105ms; }
+.menu-open .menu-list__item:nth-child(6) { transition-delay: 140ms; }
+.menu-open .menu-list__item:nth-child(5) { transition-delay: 175ms; }
+.menu-open .menu-list__item:nth-child(4) { transition-delay: 210ms; }
+.menu-open .menu-list__item:nth-child(3) { transition-delay: 245ms; }
+.menu-open .menu-list__item:nth-child(2) { transition-delay: 280ms; }
+.menu-open .menu-list__item:nth-child(1) { transition-delay: 315ms; }
 
 /* Hide header near page bottom */
 body.hide-header header {
