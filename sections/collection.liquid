@@ -34,7 +34,14 @@
     >
       {% assign any_products = false %}
       {% for product in collection.products %}
-        {% unless product.collections contains collections.events %}
+        {% assign hidden = false %}
+        {% for tag in product.tags %}
+          {% if tag == 'Hidden' %}
+            {% assign hidden = true %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+        {% unless product.collections contains collections.events or hidden %}
           {% render 'product-card', product: product %}
           {% assign any_products = true %}
         {% endunless %}

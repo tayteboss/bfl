@@ -165,7 +165,8 @@ function triggerHoverShake(el) {
   if (!motionApi || typeof motionApi.animate !== 'function') return;
 
   if (!el.style.transformOrigin) {
-    el.style.transformOrigin = '50% 50%';
+    const hoverShakeRaw = el.dataset && el.dataset.hoverShake ? el.dataset.hoverShake.toLowerCase() : '';
+    el.style.transformOrigin = hoverShakeRaw === 'left' ? '0% 50%' : '50% 50%';
   }
 
   if (el.__hoverShakeAnimation && typeof el.__hoverShakeAnimation.cancel === 'function') {

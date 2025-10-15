@@ -33,9 +33,26 @@
     role="region"
     aria-label="Featured products"
   >
+    {% assign has_visible_products = false %}
     {% for product in collections.frontpage.products %}
-      {% render 'product-card', product: product %}
+      {% assign hidden = false %}
+      {% for tag in product.tags %}
+        {% if tag == 'Hidden' %}
+          {% assign hidden = true %}
+          {% break %}
+        {% endif %}
+      {% endfor %}
+      {% unless hidden %}
+        {% assign has_visible_products = true %}
+        {% render 'product-card', product: product %}
+      {% endunless %}
     {% endfor %}
+
+    {% unless has_visible_products %}
+      <div class="collection-empty-message">
+        <h2 class="collection-empty-message__title">No products found</h2>
+      </div>
+    {% endunless %}
   </section>
 </div>
 

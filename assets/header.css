@@ -7,7 +7,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px;
+  padding: 24px 2rem;
 
   transition: transform var(--transition-speed-slow) var(--transition-ease);
 

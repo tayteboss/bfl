@@ -7,7 +7,7 @@
         <a
           class="menu-list__item{% if link.active %} menu-list__item--active{% endif %}"
           href="{{ link.url }}"
-          data-hover-shake
+          data-hover-shake="left"
         >
           {{- link.title -}}
         </a>
@@ -49,10 +49,11 @@
     const logoEl = document.querySelector('.header__logo');
     const menuOverlay = document.getElementById('menu-overlay');
     const menuListWrapper = document.querySelector('.menu-list-wrapper');
+    const windowHeight = window.innerHeight;
 
-    const MAX_RANGE_PX = 200;
-    const MIN_WGHT = 50;
-    const MAX_WGHT = 200;
+    const MAX_RANGE_PX = windowHeight / 2;
+    const MIN_WGHT = 10;
+    const MAX_WGHT = 250;
 
     // Track scroll direction to hide/show the menu toggle button
     let lastScrollY = window.scrollY || window.pageYOffset || 0;
