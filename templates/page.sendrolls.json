@@ -77,7 +77,6 @@
           "settings": {
             "label": "35 mm",
             "value": "35 mm",
-            "help_image": "shopify://shop_images/Frame_13.png",
             "help_subtitle": "35mm",
             "help_text": "The most common roll film, in a metal canister."
           }
@@ -177,7 +176,6 @@
           "settings": {
             "label": "Noritsu HS-1800",
             "value": "Noritsu HS-1800",
-            "help_image": "shopify://shop_images/Frame_13_1.png",
             "help_subtitle": "Noritsu HS-1800",
             "help_text": "<ul><li>Look & feel: Crisp, sharp detail with a slightly more neutral/modern colour profile.</li><li>Best for: When you want maximum fine detail, subtle tones, or need flexibility for editing.</li><li>Great with: Colour negative film, B&W film, and high-contrast scenes.</li></ul>"
           }
@@ -347,9 +345,17 @@
         "help_label_delivery": "About our shipping / drop off process",
         "summary_label": "Order Summary"
       }
+    },
+    "new_send_rolls_8DQUky": {
+      "type": "new-send-rolls",
+      "name": "Send Rolls (Metaobjects)",
+      "settings": {
+        "carrier_product": "send-rolls-form-product"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "new_send_rolls_8DQUky"
   ]
 }

@@ -1,0 +1,129 @@
+{%- assign target_product = product -%}
+{%- if target_product == null and section.settings.carrier_product != blank -%}
+  {%- assign target_product = section.settings.carrier_product -%}
+{%- endif -%}
+
+{%- if target_product == null -%}
+  <p><strong>No product selected.</strong> Choose a “Service product (carrier)” in this section’s settings.</p>
+  {% break %}
+{%- endif -%}
+
+{%- assign services = target_product.metafields.custom.film_services.value -%}
+
+{%- if services == blank -%}
+  <p>
+    No services configured on <em>{{ target_product.title }}</em>. Add metaobjects to
+    <code>custom.film_services</code> on that product.
+  </p>
+  {% break %}
+{%- endif -%}
+
+{% for service in services %}
+  {% assign groups = service.option_groups.value %}
+  {% for grp in groups %}
+    <h4>{{ grp.title }}</h4>
+    <pre>{{ grp.options | json }}</pre>
+    <pre>{{ grp.options.value | json }}</pre>
+  {% endfor %}
+  
+{% endfor %}
+
+
+
+
+
+<form id="film-service-form" action="/cart/add" method="post">
+  <input type="hidden" name="id" value="{{ target_product.selected_or_first_available_variant.id }}">
+  <input type="hidden" name="quantity" value="1">
+  
+
+  <!-- SERVICE PICKER -->
+  <fieldset class="service-picker">
+    <legend>Choose a Service</legend>
+    {% for service in services %}
+      <label class="service-option">
+        <input
+          type="radio"
+          name="service_choice"
+          value="{{ service.title | escape }}"
+          data-service-id="{{ service.id }}"
+          data-service-base="{{ service.base_price | default: 0 }}"
+        >
+        {{ service.title }} (+${{ service.base_price | default: 0 }})
+      </label>
+    {% endfor %}
+  </fieldset>
+
+  <!-- SERVICE GROUPS -->
+  <div id="service-groups">
+    {% for service in services %}
+      {% assign groups = service.option_groups.value %}
+      {% if groups and groups.size > 0 %}
+        <div class="service-groups-block" data-for-service="{{ service.id }}">
+          <h3>{{ service.title }} Options</h3>
+
+          {% for grp in groups %}
+            {% assign group_title = grp.title | strip %}
+            {% assign group_slug = group_title | handle %}
+
+            <fieldset
+              class="option-group"
+              data-group-title="{{ group_title | escape }}"
+              data-group-slug="{{ group_slug }}"
+            >
+              <legend>{{ group_title }}</legend>
+
+              {% assign options = grp.film_option.value %}
+              <details>
+                <summary>Debug: {{ grp.title }}</summary>
+                <pre>{{ grp.film_option | json }}</pre>
+                <pre>{{ grp.film_option.value | json }}</pre>
+              </details>
+
+              {% if options and options.size > 0 %}
+                <ul>
+                  {% for opt in options %}
+                    <li>
+                      <label>
+                        <input
+                          type="radio"
+                          name="properties[{{ group_title | escape }}]"
+                          value="{{ opt.title | escape }}"
+                          data-price="{{ opt.price | default: 0 }}"
+                        >
+                        {{ opt.title }}
+                        {% if opt.price %}
+                          (+${{ opt.price }})
+                        {% endif %}
+                        {% if opt.description != blank %}
+                          <br>
+                          <small>{{ opt.description }}</small>
+                        {% endif %}
+                      </label>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <p><em>No film options linked for this group.</em></p>
+              {% endif %}
+            </fieldset>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p>
+          <em>No option groups linked to {{ service.title }}.</em>
+        </p>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <button type="submit">Add to Cart</button>
+</form>
+
+{% schema %}
+{
+  "name": "Send Rolls (Metaobjects)",
+  "settings": [{ "type": "product", "id": "carrier_product", "label": "Service product (carrier)" }],
+  "presets": [{ "name": "Send Rolls (Metaobjects)", "category": "Pages" }]
+}
+{% endschema %}
