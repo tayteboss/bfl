@@ -1,0 +1,29 @@
+{% assign faq_uid = 'next-steps-rolls-accordion-2' %}
+
+<button
+  class="faq-card faq-card--white faq-card--left-align"
+  type="button"
+  aria-expanded="{% if isOpen %}true{% else %}false{% endif %}"
+  aria-controls="faq-content-{{ faq_uid }}"
+  id="{{ faq_uid }}"
+  data-faq-trigger
+>
+  <div class="faq-card__indicator"></div>
+  <p class="faq-card__question type-p">📥 Film Received — Our team prepares your rolls for development.</p>
+  <div
+    class="faq-card__content"
+    id="faq-content-{{ faq_uid }}"
+    role="region"
+    aria-labelledby="{{ faq_uid }}"
+    {% unless isOpen %}
+      hidden
+    {% endunless %}
+    data-faq-content
+  >
+    <div class="faq-card__inner">
+      <div class="faq-answer rich-text">
+        <strong><u>CONTENT TBD</u></strong>
+      </div>
+    </div>
+  </div>
+</button>

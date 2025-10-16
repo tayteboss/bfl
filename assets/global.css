@@ -1350,3 +1350,14 @@ cart-items .cart__warnings .cart__login-paragraph a {
     display: none;
   }
 }
+
+.points-badge {
+  background: var(--color-highlight);
+  color: var(--color-blue);
+  padding: 12px 18px;
+  border-radius: 100px;
+  font-size: 1rem;
+  line-height: 1;
+  font-weight: 700;
+  font-family: var(--font-diatype-rounded-bold);
+}

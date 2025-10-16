@@ -1,0 +1,41 @@
+{%- comment -%}
+  Next-steps content on order status (thank-you) page.
+  Shows sections when purchased products include specific tags:
+  - next-steps:tape-digitization
+  - next-steps:send-us-rolls
+{%- endcomment -%}
+
+{%- assign items = checkout.line_items -%}
+{%- if items == blank and checkout and checkout.order -%}
+  {%- assign items = checkout.order.line_items -%}
+{%- endif -%}
+
+{%- assign has_tape = false -%}
+{%- assign has_rolls = false -%}
+
+{%- for li in items -%}
+  {%- if li.product and li.product.tags contains 'next-steps:tape-digitization' -%}
+    {%- assign has_tape = true -%}
+  {%- endif -%}
+  {%- if li.product and li.product.tags contains 'next-steps:send-us-rolls' -%}
+    {%- assign has_rolls = true -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if has_tape or has_rolls -%}
+  <div id="next-steps" class="NextSteps" role="region" aria-label="What comes next">
+    {%- if has_tape -%}
+      <section id="next-steps-tape" class="NextSteps-section is-tape" aria-labelledby="next-steps-tape-heading">
+        <h2 id="next-steps-tape-heading">What comes next: Tape Digitization</h2>
+        {%- comment -%} Content to be filled later {%- endcomment -%}
+      </section>
+    {%- endif -%}
+
+    {%- if has_rolls -%}
+      <section id="next-steps-rolls" class="NextSteps-section is-rolls" aria-labelledby="next-steps-rolls-heading">
+        <h2 id="next-steps-rolls-heading">What comes next: Send Us Rolls</h2>
+        {%- comment -%} Content to be filled later {%- endcomment -%}
+      </section>
+    {%- endif -%}
+  </div>
+{%- endif -%}

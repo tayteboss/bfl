@@ -1,0 +1,62 @@
+{% assign faq_uid = 'next-steps-tape-accordion-1' %}
+
+<button
+  class="faq-card faq-card--white faq-card--left-align"
+  type="button"
+  aria-expanded="{% if isOpen %}true{% else %}false{% endif %}"
+  aria-controls="faq-content-{{ faq_uid }}"
+  id="{{ faq_uid }}"
+  data-faq-trigger
+>
+  <div class="faq-card__indicator"></div>
+  <p class="faq-card__question type-p">📮 Send Us Your Tapes!</p>
+  <div
+    class="faq-card__content"
+    id="faq-content-{{ faq_uid }}"
+    role="region"
+    aria-labelledby="{{ faq_uid }}"
+    {% unless isOpen %}
+      hidden
+    {% endunless %}
+    data-faq-content
+  >
+    <div class="faq-card__inner">
+      <div class="faq-answer rich-text">
+        <p>
+          <strong><u>Mail in:</u></strong>
+        </p>
+        <p>
+          Upon order completion, you'll be guided through your next steps. To ship to our digitization facility, include
+          your order number with your tapes in a securely packed box or bubble mailer. Use ample padding material to
+          ensure your tapes arrive safely and protected from damage.
+        </p>
+
+        <p>📬 Mail your tapes to us: <a href="#" target="_blank" rel="noopener">Dynamic location go here</a></p>
+
+        <p>📦 Pack your order with:</p>
+        <ul>
+          <li>Your video/audio tapes</li>
+          <li>Your printed order slip</li>
+        </ul>
+      </div>
+      <div class="faq-card-or-divider type-p"></div>
+      <div class="faq-answer rich-text">
+        <p>
+          <strong><u>Drop-off:</u></strong>
+        </p>
+        <p>
+          Upon order completion you'll be guided through your next steps. To drop off, include your order number with
+          your tapes in a securely sealed bag or box to protect them during transport.
+        </p>
+
+        <p>📍 Drop off your tapes at: Any Bellows drop-off location</p>
+
+        <p>📦 What to bring:</p>
+        <ul>
+          <li>Your video/audio tapes</li>
+          <li>Your printed order slip</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</button>

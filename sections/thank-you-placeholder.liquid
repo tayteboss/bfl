@@ -1,0 +1,51 @@
+{% comment %}
+  Thank You placeholder section to simulate the order status page.
+  Assign the 'page.thank-you' template to any Page to preview and style.
+{% endcomment %}
+
+{{ 'next-steps.css' | asset_url | stylesheet_tag }}
+{{ 'faq.css' | asset_url | stylesheet_tag }}
+
+<section class="next-steps">
+  <div class="layout-wrapper layout-grid">
+    <div class="next-steps__inner" data-fly-in-animation>
+      <div class="next-steps-header">
+        <h1 class="type-h2-medium next-steps-header__title">Order confirmed</h1>
+        <h2 class="type-h2-medium next-steps-header__subtitle">What comes next</h2>
+      </div>
+
+      <div class="next-steps-card" role="region">
+        <div class="next-steps-card-heading">
+          <p class="type-p-large">
+            We’ve got your order. Here’s what happens next. You’ll send us your rolls and once they arrive, we’ll get to
+            work — developing, scanning, printing and once ready we will send your files straight to your inbox.
+          </p>
+          <div class="points-badge">+ XXX Bellow Points</div>
+        </div>
+        <div class="next-steps-card-content-list" data-faq-list>
+          {% if section.settings.show_rolls %}
+            {% render 'next-steps-rolls-product-info' %}
+            {% render 'next-steps-rolls-accordion-1', isOpen: true %}
+            {% render 'next-steps-rolls-accordion-2' %}
+            {% render 'next-steps-rolls-accordion-3' %}
+          {% endif %}
+          {% if section.settings.show_tape %}
+            {% render 'next-steps-tape-product-info' %}
+            {% render 'next-steps-tape-accordion-1', isOpen: true %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Thank You placeholder",
+  "settings": [
+    { "type": "checkbox", "id": "show_tape", "label": "Show Tape Digitization section", "default": true },
+    { "type": "checkbox", "id": "show_rolls", "label": "Show Send Us Rolls section", "default": false }
+  ],
+  "presets": [{ "name": "Thank You placeholder" }]
+}
+{% endschema %}
