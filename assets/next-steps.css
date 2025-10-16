@@ -3,7 +3,7 @@
   border-radius: 1.5rem;
   padding: 2rem;
   background: var(--color-grey-light);
-  max-width: 850px;
+  max-width: 824px;
   margin: 0 auto;
 
   @media (max-width: 1024px) {
