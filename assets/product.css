@@ -267,3 +267,7 @@
   align-items: center;
   flex-direction: row;
 }
+
+.tape-digitization-images-wrapper__image img {
+  object-fit: contain;
+}
