@@ -3,7 +3,7 @@
 <div class="contact" role="main" aria-labelledby="contact-page-heading">
   <div class="layout-wrapper">
     <div class="contact__inner">
-      <section class="contact-page__header">
+      <section class="contact-page__header" data-in-view>
         {% if section.settings.heading != blank %}
           <h1
             id="contact-page-heading"
@@ -29,11 +29,11 @@
         {% endif %}
       </section>
       {% if section.settings.paragraph != blank %}
-        <section class="contact-paragraph type-p-large" aria-label="Contact information">
+        <section class="contact-paragraph type-p-large" aria-label="Contact information" data-in-view>
           {{ section.settings.paragraph }}
         </section>
       {% endif %}
-      <section class="contact-page-list-wrapper" aria-label="Contact details">
+      <section class="contact-page-list-wrapper" aria-label="Contact details" data-in-view>
         {% for block in section.blocks %}
           {% if block.settings.heading != blank %}
             {% assign current_heading_id = block.settings.heading | handleize %}

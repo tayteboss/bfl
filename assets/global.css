@@ -858,7 +858,7 @@ main .shopify-section:first-child:has(.gear-single) {
   opacity: 0;
   transform: translateY(10px);
 
-  transition: all 200ms var(--transition-ease);
+  transition: all 250ms var(--transition-ease);
   transition-delay: 100ms;
 
   &.in-view {

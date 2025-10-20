@@ -52,7 +52,11 @@
 
         {% assign present_arr = present_blob | split: '||' %}
         {% assign present_sorted = present_arr | sort %}
-        {% if present_sorted.size > 0 %}
+        {% assign present_has = false %}
+        {% if present_blob contains '::' %}
+          {% assign present_has = true %}
+        {% endif %}
+        {% if present_has %}
           <div class="events-list" aria-labelledby="upcoming-events-heading">
             <h2 class="events-list__heading type-h1-small" id="upcoming-events-heading">
               {{ section.settings.event_present }}
@@ -70,7 +74,11 @@
 
         {% assign past_arr = past_blob | split: '||' %}
         {% assign past_sorted = past_arr | sort %}
-        {% if past_sorted.size > 0 %}
+        {% assign past_has = false %}
+        {% if past_blob contains '::' %}
+          {% assign past_has = true %}
+        {% endif %}
+        {% if past_has %}
           <div class="events-list" aria-labelledby="past-events-heading">
             <h2 class="events-list__heading type-h1-small" id="past-events-heading">
               {{ section.settings.event_past }}
@@ -83,6 +91,12 @@
                 {% endif %}
               {% endfor %}
             </div>
+          </div>
+        {% endif %}
+
+        {% if present_has == false and past_has == false %}
+          <div class="events-empty-message">
+            <p class="events-empty-message__title type-h1-x-small">No events</p>
           </div>
         {% endif %}
 

@@ -96,6 +96,15 @@ function initializeHoverShake(rootEl = document) {
   try {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   } catch (e) {}
+  // Skip on devices without hover/fine pointer (mobile/tablet touch)
+  try {
+    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (!canHover) return;
+  } catch (e) {
+    try {
+      if ('ontouchstart' in window || (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0)) return;
+    } catch (_) {}
+  }
 
   const motionApi = window.motion || window.Motion;
   const hasAnimate = motionApi && typeof motionApi.animate === 'function';
@@ -166,6 +175,15 @@ function registerHoverShakeOnElement(el) {
 function triggerHoverShake(el) {
   const motionApi = window.motion || window.Motion;
   if (!motionApi || typeof motionApi.animate !== 'function') return;
+  // Safety: never run on devices without hover/fine pointer
+  try {
+    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (!canHover) return;
+  } catch (e) {
+    try {
+      if ('ontouchstart' in window || (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0)) return;
+    } catch (_) {}
+  }
 
   if (!el.style.transformOrigin) {
     const hoverShakeRaw = el.dataset && el.dataset.hoverShake ? el.dataset.hoverShake.toLowerCase() : '';

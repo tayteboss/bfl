@@ -40,7 +40,7 @@
           {% assign current_heading_id = block.settings.heading | handleize %}
           {% assign current_heading = block.settings.heading %}
           {% if current_heading != blank %}
-            <div class="faq-page-list-item" id="{{ current_heading_id }}">
+            <div class="faq-page-list-item" id="{{ current_heading_id }}" data-in-view>
               <div class="faq-heading">
                 <h2 class="type-h2">{{ current_heading }}</h2>
               </div>
@@ -64,7 +64,7 @@
     </div>
 
     {% if section.settings.need_help_heading != blank or section.settings.need_help_message != blank %}
-      <div class="need-help type-p-x-large">
+      <div class="need-help type-p-x-large" data-in-view>
         {% if section.settings.need_help_heading != blank %}
           <p class="need-help__heading">{{ section.settings.need_help_heading }}</p>
         {% endif %}

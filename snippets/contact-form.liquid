@@ -6,7 +6,7 @@
   {% render 'contact-form', service_options: section.settings.service_options %}
 {% endcomment %}
 
-<section class="contact-form-section">
+<section class="contact-form-section" data-in-view>
   <div class="layout-wrapper">
     {% form 'customer', class: 'contact-form' %}
       <input type="hidden" name="contact[tags]" value="contact-form" aria-label="Contact form">
