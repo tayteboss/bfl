@@ -18,49 +18,47 @@
   {% break %}
 {%- endif -%}
 
-{% for service in services %}
-  {% assign groups = service.option_groups.value %}
-  {% for grp in groups %}
-    <h4>{{ grp.title }}</h4>
-    <pre>{{ grp.options | json }}</pre>
-    <pre>{{ grp.options.value | json }}</pre>
-  {% endfor %}
-  
-{% endfor %}
-
-
-
-
-
 <form id="film-service-form" action="/cart/add" method="post">
   <input type="hidden" name="id" value="{{ target_product.selected_or_first_available_variant.id }}">
   <input type="hidden" name="quantity" value="1">
-  
 
   <!-- SERVICE PICKER -->
   <fieldset class="service-picker">
     <legend>Choose a Service</legend>
-    {% for service in services %}
-      <label class="service-option">
-        <input
-          type="radio"
-          name="service_choice"
-          value="{{ service.title | escape }}"
-          data-service-id="{{ service.id }}"
-          data-service-base="{{ service.base_price | default: 0 }}"
-        >
-        {{ service.title }} (+${{ service.base_price | default: 0 }})
-      </label>
-    {% endfor %}
+    <div>
+      {% for service in services %}
+        {%- assign sid = service.system.id | split: '/' | last -%}
+
+        <!-- SERVICE PICKER RADIO -->
+        <label class="service-option">
+          <input
+            type="radio"
+            name="service_choice"
+            value="{{ service.title | escape }}"
+            data-service-id="{{ sid }}"
+            data-service-base="{{ service.base_price | default: 0 }}"
+          >
+          {{ service.title }} (+${{ service.base_price | default: 0 }}) -           <pre style="font-size:10px;opacity:0.6;">DEBUG service.id: {{ service.system.id }}</pre>
+
+        </label>
+      {% endfor %}
+    </div>
   </fieldset>
 
   <!-- SERVICE GROUPS -->
   <div id="service-groups">
     {% for service in services %}
+      {%- assign sid = service.system.id | split: '/' | last -%}
       {% assign groups = service.option_groups.value %}
-      {% if groups and groups.size > 0 %}
-        <div class="service-groups-block" data-for-service="{{ service.id }}">
+      {% if groups %}
+        <div
+          class="service-groups-block"
+          data-for-service="{{ sid }}"
+          data-service-title="{{ service.title | escape }}"
+          
+        >
           <h3>{{ service.title }} Options</h3>
+          <pre style="font-size:10px;opacity:0.6;">DEBUG service.id: {{ service.system.id }}</pre>
 
           {% for grp in groups %}
             {% assign group_title = grp.title | strip %}
@@ -73,16 +71,15 @@
             >
               <legend>{{ group_title }}</legend>
 
-              {% assign options = grp.film_option.value %}
-              <details>
-                <summary>Debug: {{ grp.title }}</summary>
-                <pre>{{ grp.film_option | json }}</pre>
-                <pre>{{ grp.film_option.value | json }}</pre>
-              </details>
-
-              {% if options and options.size > 0 %}
+              {% assign options = grp.options.value %}
+              {% if options %}
                 <ul>
                   {% for opt in options %}
+                    {% assign raw_json = opt.conditions | default: '{}' %}
+                    {% capture safe_json %}
+                      {{ raw_json | replace: "\n", " " | replace: "\r", " " | strip }}
+                    {% endcapture %}
+
                     <li>
                       <label>
                         <input
@@ -90,14 +87,12 @@
                           name="properties[{{ group_title | escape }}]"
                           value="{{ opt.title | escape }}"
                           data-price="{{ opt.price | default: 0 }}"
+                          data-conditions="{{ safe_json | escape }}"
+                          data-group="{{ group_title | escape }}"
                         >
                         {{ opt.title }}
                         {% if opt.price %}
                           (+${{ opt.price }})
-                        {% endif %}
-                        {% if opt.description != blank %}
-                          <br>
-                          <small>{{ opt.description }}</small>
                         {% endif %}
                       </label>
                     </li>
@@ -118,7 +113,75 @@
   </div>
 
   <button type="submit">Add to Cart</button>
+
 </form>
+
+<script>
+  console.log('🔍 diagnostic check:');
+  console.log('document', document);
+  console.log('film-service-form exists?', !!document.getElementById('film-service-form'));
+  console.log('All service radios:', document.querySelectorAll('input[name="service_choice"]').length);
+  console.log('All service blocks:', document.querySelectorAll('.service-groups-block').length);
+</script>
+
+
+<script>
+  console.log("Inline test: film-service-form exists?", !!document.getElementById("film-service-form"));
+</script>
+
+<script>
+  (function () {
+    const form = document.getElementById('film-service-form');
+    if (!form) return console.warn('No form found (inline script).');
+
+    const serviceRadios = form.querySelectorAll('input[name="service_choice"]');
+    const serviceBlocks = form.querySelectorAll('.service-groups-block');
+
+    console.log('✅ Inline script found', serviceRadios.length, 'radios');
+    console.log('✅ Inline script found', serviceBlocks.length, 'blocks');
+
+    if (!serviceRadios.length || !serviceBlocks.length) return;
+
+    function toggleServices() {
+      const selected = form.querySelector('input[name="service_choice"]:checked');
+      const selectedId = selected ? selected.dataset.serviceId.trim() : '(none)';
+      console.log('👉 selectedServiceId =', selectedId);
+      serviceBlocks.forEach((block) => {
+        const blockId = block.dataset.forService.trim();
+        const match = blockId === selectedId;
+        console.log(`   comparing ${blockId} === ${selectedId} → ${match}`);
+        block.hidden = !match;
+      });
+    }
+
+    form.addEventListener('change', (e) => {
+      if (e.target.name === 'service_choice') toggleServices();
+    });
+
+    serviceBlocks.forEach((b) => (b.hidden = true));
+  })();
+</script>
+
+{% style %}
+  ul {
+    display: flex;
+    justify-content: center;
+  }
+  input {
+    appearance: auto;
+  }
+  fieldset {
+    margin-bottom: 20px;
+    border: black solid 1px;
+  }
+  legend {
+    margin: auto;
+  }
+  .service-picker div {
+    display: flex;
+    justify-content: center;
+  }
+{% endstyle %}
 
 {% schema %}
 {
