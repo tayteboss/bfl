@@ -3,6 +3,13 @@
   function init() {
     var elements = Array.prototype.slice.call(document.querySelectorAll('[data-in-view]'));
 
+    // Ensure initial hidden state for all targets
+    elements.forEach(function (el) {
+      if (!el.classList.contains('in-view-fade')) {
+        el.classList.add('in-view-fade');
+      }
+    });
+
     if (!('IntersectionObserver' in window)) {
       elements.forEach(function (el) {
         el.classList.add('in-view');
@@ -16,15 +23,11 @@
           var target = entry.target;
           if (entry.isIntersecting) {
             target.classList.add('in-view');
-            if (target.hasAttribute('data-in-view-once')) {
-              observer.unobserve(target);
-            }
-          } else if (!target.hasAttribute('data-in-view-once')) {
-            target.classList.remove('in-view');
+            observer.unobserve(target); // always animate once
           }
         });
       },
-      { root: null, rootMargin: '-50px', threshold: 0.1 }
+      { root: null, rootMargin: '-75px', threshold: 0.1 }
     );
 
     elements.forEach(function (el) {
@@ -38,10 +41,16 @@
         Array.prototype.slice.call(m.addedNodes).forEach(function (node) {
           if (!(node instanceof HTMLElement)) return;
           if (node.hasAttribute && node.hasAttribute('data-in-view')) {
+            if (!node.classList.contains('in-view-fade')) {
+              node.classList.add('in-view-fade');
+            }
             observer.observe(node);
           }
           var nested = node.querySelectorAll ? node.querySelectorAll('[data-in-view]') : [];
           Array.prototype.slice.call(nested).forEach(function (el) {
+            if (!el.classList.contains('in-view-fade')) {
+              el.classList.add('in-view-fade');
+            }
             observer.observe(el);
           });
         });

@@ -156,8 +156,11 @@ function registerHoverShakeOnElement(el) {
   el.__hoverShakeBound = true;
 
   const onEnter = () => triggerHoverShake(el);
+  const onLeave = () => stopHoverShake(el);
   el.addEventListener('mouseenter', onEnter);
   el.addEventListener('focus', onEnter);
+  el.addEventListener('mouseleave', onLeave);
+  el.addEventListener('blur', onLeave);
 }
 
 function triggerHoverShake(el) {
@@ -175,7 +178,16 @@ function triggerHoverShake(el) {
 
   const { rotate, y, duration } = getShakeConfig(el);
 
-  el.__hoverShakeAnimation = motionApi.animate(el, { rotate, y }, { duration, easing: 'ease-in-out' });
+  el.__hoverShakeAnimation = motionApi.animate(
+    el,
+    { rotate, y },
+    {
+      duration,
+      easing: 'ease-in-out',
+      repeat: Infinity,
+      direction: 'alternate',
+    }
+  );
 
   if (
     el.__hoverShakeAnimation &&
@@ -188,25 +200,26 @@ function triggerHoverShake(el) {
   }
 }
 
-function getShakeConfig(el) {
-  const raw = (
-    (el.dataset && (el.dataset.hoverShake || el.dataset.shakeSize || el.dataset.hoverShakeSize)) ||
-    ''
-  ).toLowerCase();
-  const isSmall = raw === 'left' || raw === 'small' || raw === 'sm' || raw === 's' || raw === 'mini';
+function stopHoverShake(el) {
+  if (el.__hoverShakeAnimation && typeof el.__hoverShakeAnimation.cancel === 'function') {
+    el.__hoverShakeAnimation.cancel();
+    el.__hoverShakeAnimation = null;
+  }
+}
 
-  if (isSmall) {
+function getShakeConfig(el) {
+  const raw = el && el.dataset && el.dataset.hoverShake ? el.dataset.hoverShake.toLowerCase() : '';
+  if (raw === 'left') {
     return {
-      rotate: [0, -3, 3, -2, 2, -1, 1, 0],
+      rotate: [0, -2, 2, -2, 2, -1, 1, 0],
       y: [0, -1, 1, 0],
-      duration: 0.24,
+      duration: 0.3,
     };
   }
-
   return {
-    rotate: [0, -5, 5, -3, 3, -2, 2, 0],
-    y: [0, -3, 2, 0],
-    duration: 0.3,
+    rotate: [0, -4, 4, -3, 4, -2, 3, 0],
+    y: [0, -1, 1, 0],
+    duration: 0.35,
   };
 }
 

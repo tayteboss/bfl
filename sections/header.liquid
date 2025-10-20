@@ -23,12 +23,14 @@
         </a>
       {% endif %}
     </nav>
-    <button class="menu-toggle menu-bubble" aria-label="Open Menu" data-text="Menu">
-      <span>Menu</span>
-      {% if cart.item_count > 0 %}
-        <span class="menu-toggle__number">{{ cart.item_count }}</span>
-      {% endif %}
-    </button>
+    <div data-hover-shake>
+      <button class="menu-toggle menu-bubble" aria-label="Open Menu" data-text="Menu">
+        <span>Menu</span>
+        {% if cart.item_count > 0 %}
+          <span class="menu-toggle__number">{{ cart.item_count }}</span>
+        {% endif %}
+      </button>
+    </div>
   </div>
 
   <div data-hover-shake>

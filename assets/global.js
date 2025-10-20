@@ -231,10 +231,7 @@ class QuantityInput extends HTMLElement {
 
   connectedCallback() {
     this.validateQtyRules();
-    this.quantityUpdateUnsubscriber = subscribe(
-      PUB_SUB_EVENTS.quantityUpdate,
-      this.validateQtyRules.bind(this)
-    );
+    this.quantityUpdateUnsubscriber = subscribe(PUB_SUB_EVENTS.quantityUpdate, this.validateQtyRules.bind(this));
   }
 
   disconnectedCallback() {
@@ -254,10 +251,7 @@ class QuantityInput extends HTMLElement {
     const previousValue = this.input.value;
 
     if (button.name === 'plus') {
-      if (
-        parseInt(this.input.dataset.min) > parseInt(this.input.step) &&
-        this.input.value == 0
-      ) {
+      if (parseInt(this.input.dataset.min) > parseInt(this.input.step) && this.input.value == 0) {
         this.input.value = this.input.dataset.min;
       } else {
         this.input.stepUp();
@@ -280,10 +274,7 @@ class QuantityInput extends HTMLElement {
 
     if (this.input.min) {
       const buttonMinus = this.querySelector(".quantity__button[name='minus']");
-      buttonMinus.classList.toggle(
-        'disabled',
-        parseInt(value) <= parseInt(this.input.min)
-      );
+      buttonMinus.classList.toggle('disabled', parseInt(value) <= parseInt(this.input.min));
     }
 
     if (this.input.max) {

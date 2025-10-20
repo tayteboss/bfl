@@ -49,7 +49,7 @@ footer .layout-grid {
 .footer-links__item a,
 .footer-links__item p,
 .footer-links__item h3,
-.footer-links__item address {
+.footer-links__item div {
   @media (max-width: 768px) {
     font-size: 0.75rem !important;
   }

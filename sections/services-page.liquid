@@ -5,7 +5,7 @@
   aria-labelledby="services-heading"
 >
   <div class="layout-wrapper">
-    <div class="services__header">
+    <div class="services__header" data-in-view>
       {% if section.settings.heading != blank %}
         <h2
           id="services-heading"
@@ -33,15 +33,15 @@
     >
       <div class="layout-grid">
         {% if section.settings.subheading != blank %}
-          <h2 class="services-intro__subheading type-h1-small">{{ section.settings.subheading }}</h2>
+          <h2 class="services-intro__subheading type-h1-small" data-in-view>{{ section.settings.subheading }}</h2>
         {% endif %}
         {% if section.settings['services-paragraph-1'] != blank %}
-          <p class="services-intro__paragraph-1 type-p-x-large">
+          <p class="services-intro__paragraph-1 type-p-x-large" data-in-view>
             {{ section.settings['services-paragraph-1'] | newline_to_br }}
           </p>
         {% endif %}
         {% if section.settings.servicesimage != blank %}
-          <div class="services-intro__image-wrapper">
+          <div class="services-intro__image-wrapper" data-in-view>
             <img
               src="{{ section.settings.servicesimage | image_url }}"
               width="auto"

@@ -241,8 +241,8 @@ h6,
 .type-p-x-large {
   font-family: var(--font-gt-standard-mono-light);
   font-weight: 300;
-  font-size: 1.25rem; /* 20px */
-  line-height: 1.75rem; /* 28px */
+  font-size: 1.10rem; /* 20px */
+  line-height: 1.65rem; /* 28px */
 
   @media (max-width: 768px) {
     font-size: 1rem; /* 16px */
@@ -253,8 +253,8 @@ h6,
   p, div, a {
     font-family: var(--font-gt-standard-mono-light);
     font-weight: 300;
-    font-size: 1.25rem; /* 20px */
-    line-height: 1.75rem; /* 28px */
+    font-size: 1.10rem; /* 20px */
+    line-height: 1.65rem; /* 28px */
   
     @media (max-width: 768px) {
       font-size: 1rem; /* 16px */
@@ -856,13 +856,17 @@ main .shopify-section:first-child:has(.gear-single) {
 
 .in-view-fade {
   opacity: 0;
-  transition: all 400ms var(--transition-ease);
+  transform: translateY(10px);
+
+  transition: all 200ms var(--transition-ease);
   transition-delay: 100ms;
 
   &.in-view {
     opacity: 1;
+    transform: translateY(0);
   }
 }
+
 .rotate-stamp-animation {
   animation: rotate-stamp 35s linear infinite;
 }

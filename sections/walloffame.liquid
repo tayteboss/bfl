@@ -5,12 +5,12 @@
   aria-label="Wall of Fame Image Gallery"
 >
   <div class="layout-wrapper">
-    <div class="wall-of-fame__header-wrapper">
+    <div class="wall-of-fame__header-wrapper" data-in-view>
       <h2 class="type-h1-large" id="wall-of-fame-title">{{ section.settings.heading }}</h2>
       <p class="type-p-large" id="wall-of-fame-description">{{ section.settings.text }}</p>
     </div>
   </div>
-  <div class="image-carousel__inner">
+  <div class="image-carousel__inner" data-in-view>
     <div
       class="swiper js-wall-of-fame-carousel image-carousel"
       style="--swiper-wrapper-transition-timing-function: linear;"
