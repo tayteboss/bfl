@@ -27,14 +27,11 @@
         </a>
       {% endif %}
       <a
-        class="menu-list__item menu-list__item--yellow cart-button cart-button--mobile menu-bubble"
+        class="menu-list__item cart-button cart-button--mobile menu-bubble"
         href="{{ routes.cart_url }}"
       >
         <span class="menu-list__item__icon"></span>
         <span>Bag</span>
-        <div class="cart-button__bubble">
-          <span class="cart-button__number">{{ cart.item_count }}</span>
-        </div>
       </a>
     </nav>
     <div data-hover-shake="left">
