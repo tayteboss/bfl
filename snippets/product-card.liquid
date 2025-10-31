@@ -41,14 +41,15 @@
     {% endif %}
 
     <div class="product-card__image-ratio">
-      {% if bg_image %}
+      {% assign background_image = product.metafields.custom.background_image %}
+      {% if background_image %}
         <div
           class="product-card__bg-image-inner"
           role="img"
           aria-label="Background image for {{ product.title }}"
         >
           <img
-            src="{{ bg_image.src | image_url }}"
+            src="{{ background_image | image_url }}"
             alt=""
             class="product-card__bg-image"
             width="auto"
