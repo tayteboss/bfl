@@ -187,7 +187,13 @@ function triggerHoverShake(el) {
 
   if (!el.style.transformOrigin) {
     const hoverShakeRaw = el.dataset && el.dataset.hoverShake ? el.dataset.hoverShake.toLowerCase() : '';
-    el.style.transformOrigin = hoverShakeRaw === 'left' ? '0% 50%' : '50% 50%';
+    if (hoverShakeRaw === 'left') {
+      el.style.transformOrigin = '0% 50%';
+    } else if (hoverShakeRaw === 'right') {
+      el.style.transformOrigin = '100% 50%';
+    } else {
+      el.style.transformOrigin = '50% 50%';
+    }
   }
 
   if (el.__hoverShakeAnimation && typeof el.__hoverShakeAnimation.cancel === 'function') {
@@ -230,6 +236,13 @@ function getShakeConfig(el) {
   if (raw === 'left') {
     return {
       rotate: [0, -2, 2, -2, 2, -1, 1, 0],
+      y: [0, -1, 1, 0],
+      duration: 0.3,
+    };
+  }
+  if (raw === 'right') {
+    return {
+      rotate: [0, 2, -2, 2, -2, 1, -1, 0],
       y: [0, -1, 1, 0],
       duration: 0.3,
     };

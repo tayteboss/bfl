@@ -9,7 +9,10 @@
           href="{{ link.url }}"
           data-hover-shake="left"
         >
-          {{- link.title -}}
+          <span class="menu-list__item__icon"></span>
+          <span>
+            {{- link.title -}}
+          </span>
         </a>
       {% endfor %}
       {% if shop.customer_accounts_enabled %}
@@ -19,21 +22,24 @@
           data-hover-shake="left"
           :
         >
-          My Account
+          <span class="menu-list__item__icon"></span>
+          <span> My Account </span>
         </a>
       {% endif %}
       <a
         class="menu-list__item menu-list__item--yellow cart-button cart-button--mobile menu-bubble"
         href="{{ routes.cart_url }}"
       >
+        <span class="menu-list__item__icon"></span>
         <span>Bag</span>
         <div class="cart-button__bubble">
           <span class="cart-button__number">{{ cart.item_count }}</span>
         </div>
       </a>
     </nav>
-    <div data-hover-shake>
+    <div data-hover-shake="left">
       <button class="menu-toggle menu-bubble" aria-label="Open Menu" data-text="Menu">
+        <div class="menu-toggle__icon"></div>
         <span>Menu</span>
         {% if cart.item_count > 0 %}
           <span class="menu-toggle__number">{{ cart.item_count }}</span>
@@ -42,7 +48,7 @@
     </div>
   </div>
 
-  <div data-hover-shake>
+  <div data-hover-shake="right">
     <a class="cart-button cart-button--desktop menu-bubble" href="{{ routes.cart_url }}">
       <span>Bag</span>
       <div class="cart-button__bubble">
@@ -170,7 +176,8 @@
     function closeMenu() {
       if (!header.classList.contains('menu-open')) return;
       header.classList.remove('menu-open');
-      menuToggle.textContent = 'Menu';
+      const menuTextSpan = menuToggle.querySelector('span:not(.menu-toggle__number)');
+      if (menuTextSpan) menuTextSpan.textContent = 'Menu';
       menuToggle.setAttribute('aria-label', 'Open Menu');
       body.classList.remove('overflow-hidden');
       body.classList.remove('menu-open');
@@ -195,7 +202,8 @@
     menuToggle.addEventListener('click', (ev) => {
       header.classList.toggle('menu-open');
       const isOpen = header.classList.contains('menu-open');
-      menuToggle.textContent = isOpen ? 'Close' : 'Menu';
+      const menuTextSpan = menuToggle.querySelector('span:not(.menu-toggle__number)');
+      if (menuTextSpan) menuTextSpan.textContent = isOpen ? 'Close' : 'Menu';
       menuToggle.setAttribute('aria-label', isOpen ? 'Close Menu' : 'Open Menu');
 
       // Ensure the toggle remains visible while the menu is open
