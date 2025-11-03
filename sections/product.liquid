@@ -15,13 +15,69 @@
 
     <div class="product-section">
       <div class="layout-wrapper layout-grid">
-        <div class="product-images-wrapper">
+        <div
+          class="product-images-wrapper"
+          data-has-foreground-image="{% if product.metafields.custom.foreground_image %}true{% else %}false{% endif %}"
+        >
           {% if product.metafields.custom.product_badge %}
             <div class="product-images-wrapper__badge badge-button">
               {{ product.metafields.custom.product_badge | metafield_tag }}
             </div>
           {% endif %}
-          {% render 'image', class: 'product-images-wrapper__image', image: product.featured_image %}
+
+          {% assign foreground_image = product.metafields.custom.foreground_image %}
+          {% assign media_count = product.media.size %}
+          {% if foreground_image %}
+            {% assign media_count = media_count | plus: 1 %}
+          {% endif %}
+
+          {% if media_count > 1 %}
+            <div class="swiper product-images-swiper">
+              <div class="swiper-wrapper">
+                {% if foreground_image %}
+                  <div class="swiper-slide product-images-wrapper__slide">
+                    <div class="product-images-wrapper__image product-images-wrapper__image--foreground">
+                      <img
+                        src="{{ foreground_image | image_url }}"
+                        alt="{{ product.title }}"
+                        class="product-images-wrapper__img"
+                        width="auto"
+                        height="auto"
+                      >
+                    </div>
+                  </div>
+                {% endif %}
+                {% for media in product.media %}
+                  <div class="swiper-slide product-images-wrapper__slide">
+                    <div class="product-images-wrapper__image">
+                      <img
+                        src="{{ media.src | image_url }}"
+                        alt="{{ media.alt | default: product.title }}"
+                        class="product-images-wrapper__img"
+                        width="auto"
+                        height="auto"
+                      >
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          {% else %}
+            {% if foreground_image %}
+              <div class="product-images-wrapper__image product-images-wrapper__image--foreground">
+                <img
+                  src="{{ foreground_image | image_url }}"
+                  alt="{{ product.title }}"
+                  class="product-images-wrapper__img"
+                  width="auto"
+                  height="auto"
+                >
+              </div>
+            {% else %}
+              {% render 'image', class: 'product-images-wrapper__image', image: product.featured_image %}
+            {% endif %}
+          {% endif %}
         </div>
 
         <div class="product-content">
@@ -33,10 +89,10 @@
             <span class="type-p-large">{{ cart.currency.iso_code }}</span>
             <span class="type-p-large">{{ product.price | money }}</span>
           </div>
-          <div class="product-content__description-wrapper">
-            <p class="product-content__description type-p">{{ product.description }}</p>
+          <div class="product-content__description-wrapper rich-text type-p">
+            {{ product.description }}
           </div>
-
+          {% render 'product-film-features' %}
           <div class="product-form">
             {% comment %}
               {% if product.variants.size > 1 %}
@@ -208,6 +264,21 @@
         input.addEventListener('input', updateButtons);
         input.addEventListener('change', updateButtons);
       });
+
+      // Initialize Swiper for product images
+      const productImagesSwiper = document.querySelector('.product-images-swiper');
+      if (productImagesSwiper && typeof window.Swiper === 'function') {
+        new window.Swiper(productImagesSwiper, {
+          slidesPerView: 1,
+          spaceBetween: 0,
+          loop: false,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+            type: 'bullets',
+          },
+        });
+      }
     });
   </script>
 </product-info>

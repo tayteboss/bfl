@@ -24,7 +24,12 @@
     {% endfor %}
   "
 >
-  {% assign product_image = product.media | first %}
+  {% assign foreground_image = product.metafields.custom.foreground_image %}
+  {% if foreground_image %}
+    {% assign product_image = foreground_image %}
+  {% else %}
+    {% assign product_image = product.media | first %}
+  {% endif %}
   {% assign bg_image = product.media[1] %}
 
   <div
@@ -64,7 +69,7 @@
           aria-label="Primary image of {{ product.title }}"
         >
           <img
-            src="{{ product_image.src | image_url }}"
+            src="{% if foreground_image %}{{ product_image | image_url }}{% else %}{{ product_image.src | image_url }}{% endif %}"
             alt=""
             class="product-card__image product-card__image--primary"
             width="auto"
