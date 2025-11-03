@@ -1,0 +1,185 @@
+{%- assign exposure_option_index = null -%}
+{%- assign selected_exposure_value = null -%}
+{%- for option in product.options_with_values -%}
+  {%- if option.name == 'Exposures' -%}
+    {%- assign exposure_option_index = forloop.index0 -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if exposure_option_index != null -%}
+  {%- if exposure_option_index == 0 -%}
+    {%- assign selected_exposure_value = product.selected_or_first_available_variant.option1 -%}
+  {%- elsif exposure_option_index == 1 -%}
+    {%- assign selected_exposure_value = product.selected_or_first_available_variant.option2 -%}
+  {%- else -%}
+    {%- assign selected_exposure_value = product.selected_or_first_available_variant.option3 -%}
+  {%- endif -%}
+
+  <div
+    class="exposure-variants"
+    data-exposure-index="{{ exposure_option_index }}"
+    data-form-id="{{ product_form_id }}"
+    data-section-id="{{ section_id }}"
+  >
+    <fieldset class="variant-options">
+      <legend class="variant-options__legend type-p">Exposures:</legend>
+      <div class="exposure-variants__options">
+        {%- for option in product.options_with_values -%}
+          {%- if option.name == 'Exposures' -%}
+            {%- for value in option.values -%}
+              {%- assign available_for_value = false -%}
+              {%- for v in product.variants -%}
+                {%- if exposure_option_index == 0 and v.option1 == value and v.available -%}
+                  {%- assign available_for_value = true -%}
+                  {%- break -%}
+                {%- elsif exposure_option_index == 1 and v.option2 == value and v.available -%}
+                  {%- assign available_for_value = true -%}
+                  {%- break -%}
+                {%- elsif exposure_option_index == 2 and v.option3 == value and v.available -%}
+                  {%- assign available_for_value = true -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+              <label
+                for="Exposure-{{ section_id }}-{{ value | handle }}"
+                class="exposure-variants__option{% if value == selected_exposure_value %} is-active{% endif %}"
+              >
+                <input
+                  type="radio"
+                  id="Exposure-{{ section_id }}-{{ value | handle }}"
+                  name="exposure-choice"
+                  value="{{ value | escape }}"
+                  {% if value == selected_exposure_value %}
+                    checked
+                  {% endif %}
+                >
+                <span class="exposure-variants__option-label type-h1-small">{{ value }}</span>
+                <div class="exposure-variants__option-icon">
+                  <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3.13537 8.56035C2.77613 8.56035 2.58398 8.3682 2.58398 8.00897V3.26374C2.58398 2.90451 2.77613 2.71236 3.13537 2.71236H6.20974C6.54391 2.71236 6.75277 2.87944 6.75277 3.17184C6.75277 3.46424 6.54391 3.63968 6.20974 3.63968H3.67839V5.07662H6.07607C6.41024 5.07662 6.6191 5.2437 6.6191 5.5361C6.6191 5.8285 6.41024 6.00394 6.07607 6.00394H3.67839V7.63303H6.3267C6.66087 7.63303 6.86973 7.80011 6.86973 8.09251C6.86973 8.38491 6.66087 8.56035 6.3267 8.56035H3.13537Z" fill="currentColor" />
+                    <path d="M7.61384 8.67731C7.29638 8.67731 6.87031 8.31808 7.28803 7.75834L8.98395 5.51104L7.49689 3.52272C7.07917 2.96299 7.51359 2.5954 7.83106 2.5954C8.06498 2.5954 8.22371 2.72907 8.41586 2.9964L9.36824 4.34144C9.44343 4.45005 9.52697 4.56701 9.60216 4.70903C9.67735 4.56701 9.76925 4.45005 9.84444 4.34144L10.7801 2.98805C10.9639 2.72907 11.1143 2.5954 11.3482 2.5954C11.6657 2.5954 12.0917 2.95463 11.674 3.51437L10.1953 5.49433L11.8745 7.74163C12.2922 8.30137 11.8578 8.67731 11.5404 8.67731C11.3064 8.67731 11.131 8.54364 10.9388 8.26795L9.86115 6.73912C9.76925 6.6138 9.669 6.45507 9.58545 6.29634C9.49356 6.45507 9.3766 6.62216 9.2847 6.75583L8.18194 8.28466C7.99814 8.54364 7.84776 8.67731 7.61384 8.67731Z" fill="currentColor" />
+                    <path d="M13.1786 8.67731C12.8277 8.67731 12.6355 8.45174 12.6355 8.04239V3.26374C12.6355 2.90451 12.8277 2.71236 13.1869 2.71236H15.0917C16.3114 2.71236 17.2304 3.23032 17.2304 4.46676C17.2304 5.7366 16.2697 6.22115 15.0917 6.22115H13.73V8.04239C13.73 8.45174 13.5295 8.67731 13.1786 8.67731ZM15.0917 5.29383C15.7935 5.29383 16.1026 4.97637 16.1026 4.46676C16.1026 3.95714 15.8102 3.63968 15.0917 3.63968H13.73V5.29383H15.0917Z" fill="currentColor" />
+                    <path d="M16.9375 11.4974H2.36434C1.05663 11.4974 0 10.5559 0 9.39463V2.10281C0 0.941555 1.05663 0 2.36434 0H16.9375C18.2452 0 19.3019 0.941555 19.3019 2.10281V9.39463C19.3019 10.5559 18.2452 11.4974 16.9375 11.4974ZM2.36434 1.14033C1.76803 1.14033 1.27633 1.56926 1.27633 2.10281V9.39463C1.27633 9.92818 1.76803 10.3571 2.36434 10.3571H16.9375C17.5339 10.3571 18.0255 9.92818 18.0255 9.39463V2.10281C18.0255 1.56926 17.5339 1.14033 16.9375 1.14033H2.36434Z" fill="currentColor" />
+                  </svg>
+                </div>
+              </label>
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </fieldset>
+  </div>
+
+  <script type="application/json" id="ProductVariants-{{ section_id }}">
+    {{ product.variants | json }}
+  </script>
+
+  <script>
+    (function () {
+      function init() {
+        const root = document.getElementById('MainProduct-{{ section_id }}');
+        if (!root) return;
+        const wrap = root.querySelector('.exposure-variants[data-section-id="{{ section_id }}"]');
+        if (!wrap) return;
+        const form = document.getElementById('{{ product_form_id }}');
+        if (!form) return;
+        const idInput = form.querySelector('input[name="id"]');
+        if (!idInput) return;
+        const variantsEl = document.getElementById('ProductVariants-{{ section_id }}');
+        let variants = [];
+        try {
+          variants = JSON.parse(variantsEl?.textContent || '[]');
+        } catch (e) {}
+        const exposureIndex = parseInt(wrap.getAttribute('data-exposure-index') || '0', 10);
+        const optionNames = {{ product.options | json }};
+
+        function getSelectedOptions() {
+          return optionNames.map((_, idx) => {
+            if (idx === exposureIndex) {
+              const r = wrap.querySelector('input[name="exposure-choice"]:checked');
+              return r ? r.value : null;
+            }
+            const sel = root.querySelector(`#Option-{{ section_id }}-${idx}`);
+            return sel ? sel.value : null;
+          });
+        }
+
+        function findVariantByOptions(selected) {
+          if (!Array.isArray(selected) || selected.includes(null)) return null;
+          return variants.find((v) => Array.isArray(v.options) && v.options.every((opt, i) => opt === selected[i])) || null;
+        }
+
+        function formatCents(cents) {
+          const value = (cents || 0) / 100;
+          try {
+            return new Intl.NumberFormat(undefined, {
+              style: 'currency',
+              currency: '{{ cart.currency.iso_code }}',
+              currencyDisplay: 'symbol',
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            }).format(value);
+          } catch (e) {
+            return `${'{{ cart.currency.symbol }}'}${value.toFixed(2)}`;
+          }
+        }
+
+        function updateActiveState() {
+          wrap.querySelectorAll('.exposure-variants__option').forEach((opt) => opt.classList.remove('is-active'));
+          const checked = wrap.querySelector('input[name="exposure-choice"]:checked');
+          if (checked) checked.closest('.exposure-variants__option')?.classList.add('is-active');
+        }
+
+        function handleVariantChange() {
+          updateActiveState();
+          const selected = getSelectedOptions();
+          const matched = findVariantByOptions(selected);
+          if (!matched) return;
+          idInput.value = matched.id;
+          idInput.toggleAttribute('disabled', !matched.available);
+          idInput.dispatchEvent(new Event('change', { bubbles: true }));
+
+          // Update price in-place (fallback)
+          const priceNodes = root.querySelectorAll('.product-content__price .type-p-large');
+          const priceEl = priceNodes && priceNodes[priceNodes.length - 1];
+          if (priceEl) priceEl.textContent = formatCents(matched.price);
+
+          // Toggle submit button disabled state for UX
+          const submit = document.getElementById('ProductSubmitButton-{{ section_id }}');
+          if (submit) submit.toggleAttribute('disabled', !matched.available);
+        }
+
+        // Click the entire option to select
+        wrap.querySelectorAll('.exposure-variants__option').forEach((opt) => {
+          opt.addEventListener('click', (e) => {
+            const input = opt.querySelector('input[type="radio"]');
+            if (!input || input.disabled) return;
+            if (!input.checked) {
+              input.checked = true;
+              input.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+          });
+        });
+
+        // Bind to radio changes
+        wrap.querySelectorAll('input[type="radio"][name="exposure-choice"]').forEach((radio) => {
+          radio.addEventListener('change', handleVariantChange);
+        });
+
+        // Also react to changes on other option selects
+        root.querySelectorAll('select[id^="Option-{{ section_id }}-"]').forEach((sel) => {
+          sel.addEventListener('change', handleVariantChange);
+        });
+
+        // Initialize
+        handleVariantChange();
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init, { once: true });
+      } else {
+        init();
+      }
+    })();
+  </script>
+{%- endif -%}

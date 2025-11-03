@@ -1,0 +1,94 @@
+{%- assign has_other_options = false -%}
+{%- for option in product.options_with_values -%}
+  {%- if option.name != 'Exposures' -%}
+    {%- assign has_other_options = true -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if has_other_options -%}
+  <div class="other-variant-options" data-section-id="{{ section_id }}">
+    {%- for option in product.options_with_values -%}
+      {%- if option.name == 'Exposures' -%}{%- continue -%}{%- endif -%}
+      <div class="product-form__input">
+        <label class="form__label" for="Option-{{ section_id }}-{{ forloop.index0 }}">{{ option.name }}</label>
+        <div class="select">
+          <select
+            id="Option-{{ section_id }}-{{ forloop.index0 }}"
+            class="select__select"
+            name="options[{{ option.name | escape }}]"
+            form="{{ product_form_id }}"
+          >
+            {%- for value in option.values -%}
+              <option
+                value="{{ value | escape }}"
+                {% if value == option.selected_value %}selected{% endif %}
+              >
+                {{ value }}
+              </option>
+            {%- endfor -%}
+          </select>
+          <span class="svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  {%- unless product.options contains 'Exposures' -%}
+    <script type="application/json" id="ProductVariants-{{ section_id }}">
+      {{ product.variants | json }}
+    </script>
+  {%- endunless -%}
+
+  <script>
+    (function() {
+      const root = document.getElementById('MainProduct-{{ section_id }}');
+      if (!root) return;
+      const form = document.getElementById('{{ product_form_id }}');
+      if (!form) return;
+      const idInput = form.querySelector('input[name="id"]');
+      if (!idInput) return;
+      const variantsEl = document.getElementById('ProductVariants-{{ section_id }}');
+      let variants = [];
+      try { variants = JSON.parse(variantsEl?.textContent || '[]'); } catch (e) {}
+
+      const optionNames = {{ product.options | json }};
+
+      function getSelectedForName(name, index) {
+        // Use exposure radio if present
+        if (name === 'Exposures') {
+          const exp = root.querySelector('input[name="exposure-choice"]:checked');
+          return exp ? exp.value : null;
+        }
+        // Otherwise look for our select
+        const sel = root.querySelector(`select[name="options[${CSS.escape(name)}]"]`);
+        if (sel) return sel.value;
+        return null;
+      }
+
+      function findVariantByOptions(selected) {
+        if (!Array.isArray(selected) || selected.includes(null)) return null;
+        return variants.find((v) => Array.isArray(v.options) && v.options.every((opt, i) => opt === selected[i])) || null;
+      }
+
+      function handleVariantChange() {
+        const selected = optionNames.map((name, idx) => getSelectedForName(name, idx));
+        const matched = findVariantByOptions(selected);
+        if (!matched) return;
+        idInput.value = matched.id;
+        idInput.toggleAttribute('disabled', !matched.available);
+        idInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+
+      // Bind to our selects
+      root.querySelectorAll('.other-variant-options select').forEach((sel) => sel.addEventListener('change', handleVariantChange));
+      // Also react to exposure changes if present
+      root.querySelectorAll('input[name="exposure-choice"]').forEach((radio) => radio.addEventListener('change', handleVariantChange));
+
+      // Initialize
+      handleVariantChange();
+    })();
+  </script>
+{%- endif -%}
+
+

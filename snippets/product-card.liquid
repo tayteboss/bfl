@@ -34,6 +34,7 @@
 
   <div
     class="product-card__image-wrapper"
+    data-has-foreground-image="{% if foreground_image %}true{% else %}false{% endif %}"
   >
     {% if product.metafields.custom.product_badge %}
       <div

@@ -89,12 +89,14 @@
         "image_TLMjtc": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/tshirt-placeholder.jpg",
             "alt": "Carousel image"
           }
         },
         "image_XU3RBp": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/placeholder-product-background-2.png",
             "alt": "Carousel image"
           }
         }
