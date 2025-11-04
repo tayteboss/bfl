@@ -10,11 +10,6 @@
     id="product-film-features"
     class="product-film-features"
   >
-    {%- comment -%} Labels and data resolved via case statements (no parse_json). {%- endcomment -%}
-
-    {%- comment -%}
-      Feature hint/image provided via case blocks below.
-    {%- endcomment -%}
     {% assign feature_keys = 'format,color,grain,sharpness,latitude,tone,usage' | split: ',' %}
     <ul class="product-film-features__list">
       {% for key in feature_keys %}
@@ -44,45 +39,45 @@
           {% case key %}
             {% when 'format' %}
               {% case value %}
+                {% when '120mm' -%}
+                  {%- assign hint_text = 'Medium format, extremely high detail for large prints and professional work.' -%}
                 {% when '35mm' -%}
                   {%- assign hint_text = 'Highest image detail and dynamic range; professional-quality stills.' -%}
-                  {%- assign image_url = 'https://placehold.co/124x24?text=35mm' %}
                 {% when '16mm' -%}
                   {%- assign hint_text = 'Cinematic texture with balanced quality and portability.' -%}
-                  {%- assign image_url = 'https://placehold.co/124x24?text=16mm' %}
                 {% when '8mm' -%}
                   {%- assign hint_text = 'Nostalgic, lo-fi look reminiscent of home movies.' -%}
-                  {%- assign image_url = 'https://placehold.co/124x24?text=8mm' %}
+                {% when 'Instax' -%}
+                  {%- assign hint_text = 'Instant prints for quick sharing and fun moments.' -%}
+                {% when 'Sheet' -%}
+                  {%- assign hint_text = 'Large format sheets offer ultimate resolution and creative control.' -%}
               {% endcase %}
             {% when 'color' %}
               {% case value %}
                 {% when 'Full Color' -%}
                   {%- assign hint_text = 'Vibrant, true-to-life hues across the full spectrum.' -%}
-                  {%- assign image_url = 'https://cdn.shopify.com/s/files/1/0776/3129/1647/files/full-color.png?v=1761917939' %}
+                  {%- assign image_url = 'https://cdn.shopify.com/s/files/1/0776/3129/1647/files/full-colour.png?v=1762244994' %}
                 {% when 'Black & White' -%}
                   {%- assign hint_text = 'Emphasizes contrast, texture, and composition.' -%}
-                  {%- assign image_url = 'https://placehold.co/124x24?text=B%26W' %}
+                  {%- assign image_url = 'https://cdn.shopify.com/s/files/1/0776/3129/1647/files/black-white.png?v=1762244994' %}
               {% endcase %}
             {% when 'grain' %}
               {% case value %}
-                {% when 'Low Grain' -%}
+                {% when 'Fine Grain' -%}
                   {%- assign hint_text = 'Smooth, clean images with minimal texture.' -%}
-                  {%- assign image_url = 'https://placehold.co/124x24?text=Low+Grain' %}
+                  {%- assign image_url = 'https://cdn.shopify.com/s/files/1/0776/3129/1647/files/grain-fine.png?v=1762244994' %}
                 {% when 'Medium Grain' -%}
                   {%- assign hint_text = 'Balanced classic film texture.' -%}
-                  {%- assign image_url = 'https://cdn.shopify.com/s/files/1/0776/3129/1647/files/medium-grain.png?v=1761917938' %}
-                {% when 'High Grain' -%}
+                  {%- assign image_url = 'https://cdn.shopify.com/s/files/1/0776/3129/1647/files/grain-medium.png?v=1762244994' %}
+                {% when 'Heavy Grain' -%}
                   {%- assign hint_text = 'Gritty, expressive look with strong character.' -%}
-                  {%- assign image_url = 'https://placehold.co/124x24?text=High+Grain' %}
+                  {%- assign image_url = 'https://cdn.shopify.com/s/files/1/0776/3129/1647/files/grain-heavy.png?v=1762244994' %}
               {% endcase %}
             {% when 'sharpness' %}
               {% case value %}
-                {% when 'Very Sharp' -%}
+                {% when 'Sharp' -%}
                   {%- assign hint_text = 'Crisp detail and high definition.' -%}
                   {%- assign image_url = 'https://cdn.shopify.com/s/files/1/0776/3129/1647/files/very-sharp.png?v=1761917938' %}
-                {% when 'Moderate' -%}
-                  {%- assign hint_text = 'Balanced clarity with natural softness.' -%}
-                  {%- assign image_url = 'https://placehold.co/124x24?text=Moderate' %}
                 {% when 'Soft' -%}
                   {%- assign hint_text = 'Gentle, dreamy visuals with reduced edge definition.' -%}
                   {%- assign image_url = 'https://placehold.co/124x24?text=Soft' %}
@@ -91,43 +86,43 @@
               {% case value %}
                 {% when 'Narrow Latitude' -%}
                   {%- assign hint_text = 'Precise exposure needed; bold contrast.' -%}
-                  {%- assign image_url = 'https://placehold.co/124x24?text=Narrow' %}
+                  {%- assign image_url = 'https://cdn.shopify.com/s/files/1/0776/3129/1647/files/narrow-latitude.png?v=1762244994' %}
                 {% when 'Moderate Latitude' -%}
                   {%- assign hint_text = 'Some flexibility with consistent results.' -%}
-                  {%- assign image_url = 'https://placehold.co/124x24?text=Moderate+Lat' %}
+                  {%- assign image_url = 'https://cdn.shopify.com/s/files/1/0776/3129/1647/files/moderate-latitude.png?v=1762244994' %}
                 {% when 'Wide Latitude' -%}
                   {%- assign hint_text = 'Handles varied lighting; preserves highlights and shadows.' -%}
-                  {%- assign image_url = 'https://cdn.shopify.com/s/files/1/0776/3129/1647/files/wide-latitude.png?v=1761917939' %}
+                  {%- assign image_url = 'https://cdn.shopify.com/s/files/1/0776/3129/1647/files/wide-latitude_38e9818f-7fc7-4998-aa5e-bb2bdff261e0.png?v=1762244994' %}
               {% endcase %}
             {% when 'tone' %}
               {% case value %}
                 {% when 'Warm Tone' -%}
                   {%- assign hint_text = 'Golden, reddish hues; cozy and inviting.' -%}
-                  {%- assign image_url = 'https://placehold.co/124x24?text=Warm' %}
+                  {%- assign image_url = 'https://cdn.shopify.com/s/files/1/0776/3129/1647/files/warm-tone.png?v=1762244994' %}
                 {% when 'Neutral Tone' -%}
                   {%- assign hint_text = 'Balanced colors; neither warm nor cool.' -%}
-                  {%- assign image_url = 'https://cdn.shopify.com/s/files/1/0776/3129/1647/files/neutral-tone.png?v=1761917938' %}
+                  {%- assign image_url = 'https://cdn.shopify.com/s/files/1/0776/3129/1647/files/neutral-tone_d3577140-af3e-478e-afce-c5dea389dac8.png?v=1762244994' %}
                 {% when 'Cool Tone' -%}
                   {%- assign hint_text = 'Bluish tones; calm, moody, or modern.' -%}
-                  {%- assign image_url = 'https://placehold.co/124x24?text=Cool' %}
+                  {%- assign image_url = 'https://cdn.shopify.com/s/files/1/0776/3129/1647/files/cool-tone.png?v=1762244994' %}
               {% endcase %}
             {% when 'usage' %}
               {% case value %}
                 {% when 'People' -%}
                   {%- assign hint_text = 'Ideal for natural skin tones and expressions.' -%}
-                  {%- assign image_url = 'https://cdn.shopify.com/s/files/1/0776/3129/1647/files/best-used.png?v=1761917938' %}
+                  {%- assign image_url = 'https://cdn.shopify.com/s/files/1/0776/3129/1647/files/people.png?v=1762244994' %}
                 {% when 'Places' -%}
                   {%- assign hint_text = 'Landscapes, architecture, and travel scenes.' -%}
-                  {%- assign image_url = 'https://placehold.co/124x24?text=Places' %}
+                  {%- assign image_url = 'https://cdn.shopify.com/s/files/1/0776/3129/1647/files/places.png?v=1762244994' %}
                 {% when 'Motion' -%}
                   {%- assign hint_text = 'Enhances movement with dynamic contrast.' -%}
-                  {%- assign image_url = 'https://placehold.co/124x24?text=Motion' %}
+                  {%- assign image_url = 'https://cdn.shopify.com/s/files/1/0776/3129/1647/files/motion.png?v=1762244994' %}
                 {% when 'Mood' -%}
                   {%- assign hint_text = 'Supports atmospheric, emotional storytelling.' -%}
-                  {%- assign image_url = 'https://placehold.co/124x24?text=Mood' %}
+                  {%- assign image_url = 'https://cdn.shopify.com/s/files/1/0776/3129/1647/files/mood.png?v=1762244994' %}
                 {% when 'All round' -%}
                   {%- assign hint_text = 'Versatile choice for a wide range of scenarios.' -%}
-                  {%- assign image_url = 'https://placehold.co/124x24?text=All+Round' %}
+                  {%- assign image_url = 'https://cdn.shopify.com/s/files/1/0776/3129/1647/files/all-round.png?v=1762244994' %}
               {% endcase %}
           {% endcase %}
           {% if image_url == blank %}
