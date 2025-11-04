@@ -66,7 +66,12 @@
     const menuListWrapper = document.querySelector('.menu-list-wrapper');
     const windowHeight = window.innerHeight;
 
+    // Use 100px threshold for non-home pages, windowHeight / 2 for home page
+    {% if request.page_type == 'index' %}
     const MAX_RANGE_PX = windowHeight / 2;
+    {% else %}
+    const MAX_RANGE_PX = 50;
+    {% endif %}
     const MIN_WGHT = 10;
     const MAX_WGHT = 250;
 

@@ -1,196 +1,217 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.querySelector('#film-service-form');
+(function () {
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+  const form = document.getElementById('film-service-form');
   if (!form) return;
 
-  const totalDisplay = document.querySelector('#film-total-display');
-  const basePrice = Number(document.querySelector('#base-price').dataset.base);
-  const variantInput = form.querySelector('input[name="id"]');
-  const submitBtn = form.querySelector('button[type="submit"]');
-  const serviceRadios = form.querySelectorAll('input[name="service"]');
-  const serviceBlocks = form.querySelectorAll('.service-groups-block');
-  let total = basePrice;
+  const totalEl = document.getElementById('film-total');
+  const submitBtn = document.getElementById('film-submit');
+  const propService = document.getElementById('prop-service');
+  const propTotal = document.getElementById('prop-total');
 
-  // Hide all service groups initially
-  serviceBlocks.forEach((block) => (block.style.display = 'none'));
+  const currency = totalEl?.dataset.currencySymbol || '$';
 
-  // Utility: normalize keys/values so JSON keys like "Film Format", "film_format" match radio.name "film-format"
-  const normKey = (s) =>
-    (s || '')
-      .toString()
-      .trim()
-      .toLowerCase()
-      .replace(/\s+/g, '-') // spaces -> hyphen
-      .replace(/_+/g, '-'); // underscores -> hyphen
+  let activeServiceId = null;
+  let serviceBase = 0;
 
-  const normVal = (s) => (s || '').toString().trim().toLowerCase();
+  // Convenience getters
+  const getServiceBlocks = () => $$('#service-groups .service-groups-block');
+  const getActiveBlock = () => $(`#service-groups .service-groups-block[data-for-service="${activeServiceId}"]`);
+  const money = (n) => `${currency}${(Math.max(0, Number(n) || 0)).toFixed(2)}`;
 
-  // --- Handle service change (show only selected service block) ---
-  serviceRadios.forEach((radio) => {
-    radio.addEventListener('change', (e) => {
-      const selectedService = e.target.value;
-      serviceBlocks.forEach((block) => (block.style.display = 'none'));
-      const activeBlock = form.querySelector(`.service-groups-block[data-for-service="${selectedService}"]`);
-      if (activeBlock) activeBlock.style.display = 'block';
-      applyConditions();
-    });
-  });
-
-  // // Optionally auto-select first service block (keep if you want)
-  // if (serviceRadios.length > 0 && !form.querySelector('input[name="service"]:checked')) {
-  //   serviceRadios[0].checked = true;
-  //   serviceRadios[0].dispatchEvent(new Event('change'));
-  // }
-
-  // --- Total calc ---
-  function calculateTotal() {
-    total = basePrice;
-    form.querySelectorAll('input[type="radio"]:checked').forEach((input) => {
-      total += Number(input.dataset.price || 0);
-    });
-    totalDisplay.textContent = `Total: $${total.toFixed(2)}`;
-  }
-
-  // --- Conditions (show-if + price-overrides) with normalized keys ---
-  function applyConditions() {
-    // Build selected map with multiple aliases for robustness
-    const selected = {};
-    form.querySelectorAll('input[type="radio"]:checked').forEach((r) => {
-      const keyHyphen = normKey(r.name); // e.g., film-format
-      const keyUnder = keyHyphen.replace(/-/g, '_'); // e.g., film_format
-      selected[keyHyphen] = r.value;
-      selected[keyUnder] = r.value;
-    });
-
-    const hasLocation = !!selected['location'];
-    const hasService = !!selected['service'];
-
-    // Enforce required picks
-    if (submitBtn) submitBtn.disabled = !(hasLocation && hasService);
-
-    form.querySelectorAll('input[type="radio"]').forEach((radio) => {
-      const label = radio.closest('label');
-      if (!label) return;
-
-      // Safe parse helpers
-      const parseJSON = (raw) => {
-        if (!raw || raw === 'null' || raw === '{}' || raw === 'undefined') return null;
-        try {
-          // Decode Shopify's escaped quotes first
-          const decoded = raw
-            .replace(/&quot;/g, '"')
-            .replace(/&#39;/g, "'")
-            .replace(/&amp;/g, '&');
-          return JSON.parse(decoded);
-        } catch (err) {
-          console.warn('Invalid JSON in data attribute:', raw);
-          return null;
-        }
-      };
-
-      const showIfRaw = radio.dataset.showIf;
-      const priceOverridesRaw = radio.dataset.priceOverrides;
-
-      const showIf = parseJSON(showIfRaw);
-      const priceOverrides = parseJSON(priceOverridesRaw);
-
-      // --- Visibility
-      let shouldShow = true;
-      if (showIf) {
-        // Require ALL show-if groups to match (change to .some if you want "any")
-        shouldShow = Object.entries(showIf).every(([k, allowed]) => {
-          const key = normKey(k); // normalize group key
-          const sel = selected[key] || selected[key.replace(/-/g, '_')];
-          if (!Array.isArray(allowed) || !allowed.length) return true;
-          const allowedNorm = allowed.map(normVal);
-          return sel ? allowedNorm.includes(normVal(sel)) : false;
-        });
+  // Reset groups UI
+  function resetGroups(block) {
+    if (!block) return;
+    $$('input', block).forEach((inp) => {
+      if (inp.type === 'radio' || inp.type === 'checkbox') {
+        inp.checked = false;
+        inp.disabled = false;
+        inp.closest('label')?.classList.remove('disabled');
       }
-
-      // Hide/show option; uncheck if it becomes hidden
-      label.style.display = shouldShow ? '' : 'none';
-      if (!shouldShow && radio.checked) radio.checked = false;
-
-      // --- Dynamic price override
-      let newPrice = Number(radio.dataset.basePrice || radio.dataset.price || 0);
-      if (priceOverrides) {
-        for (const [k, map] of Object.entries(priceOverrides)) {
-          const key = normKey(k);
-          const sel = selected[key] || selected[key.replace(/-/g, '_')];
-          if (sel != null && map && Object.prototype.hasOwnProperty.call(map, sel)) {
-            newPrice = map[sel];
-          } else if (sel != null) {
-            // Try case-insensitive match on values if needed
-            const found = Object.entries(map || {}).find(([valKey]) => normVal(valKey) === normVal(sel));
-            if (found) newPrice = found[1];
-          }
-        }
-      }
-      radio.dataset.price = newPrice;
-
-      // Update visible price text
-      const priceEl = label.querySelector('.opt-price');
-      if (priceEl) priceEl.textContent = newPrice > 0 ? `$${newPrice}` : 'Free';
     });
-
-    calculateTotal();
   }
 
-  // React to any radio change
-  form.addEventListener('change', (e) => {
-    if (e.target.matches('input[type="radio"]')) applyConditions();
-  });
-
-  // Match variant by price
-  function findVariantByPrice(priceDollars) {
-    const cents = Math.round(priceDollars * 100);
-    return window.productVariants.find((v) => Number(v.price) === cents);
-  }
-
-  // Submit
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const location = form.querySelector('input[name="location"]:checked');
-    const service = form.querySelector('input[name="service"]:checked');
-    if (!location || !service) {
-      alert('Please choose both a location and a service before continuing.');
-      return;
-    }
-
-    const matchedVariant = findVariantByPrice(total);
-    if (!matchedVariant) {
-      alert(`No variant found for $${total.toFixed(2)} — please check variant setup.`);
-      return;
-    }
-
-    variantInput.value = matchedVariant.id;
-
-    const fd = new FormData();
-    fd.append('id', matchedVariant.id);
-    fd.append('quantity', 1);
-
-    // --- Append selected options ---
-    form.querySelectorAll('fieldset').forEach((fs) => {
-      const checked = fs.querySelector('input[type="radio"]:checked');
-      if (checked) fd.append(`properties[${fs.dataset.group}]`, checked.value);
-    });
-
-    // --- Total price summary ---
-    fd.append('properties[Total Price]', `$${total.toFixed(2)}`);
-
-    // ✅ UNIQUE TIMESTAMP to prevent Shopify from merging identical line items
-    fd.append('properties[_timestamp]', Date.now());
-
+  // Parse JSON safely from data-conditions
+  function getConditions(input) {
+    const raw = input.getAttribute('data-conditions') || '{}';
     try {
-      const res = await fetch('/cart/add.js', { method: 'POST', body: fd });
-      if (!res.ok) throw new Error(await res.text());
-      window.location.href = '/cart';
-    } catch (err) {
-      console.error(err);
-      alert('Error adding to cart');
+      return JSON.parse(raw);
+    } catch (e) {
+      return {};
+    }
+  }
+
+  // Get current selection for a given group title (string)
+  function getSelection(groupTitle) {
+    const block = getActiveBlock();
+    if (!block) return null;
+    // radios
+    const checkedRadio = block.querySelector(`.option-group[data-group-title="${CSS.escape(groupTitle)}"] input[type="radio"]:checked`);
+    if (checkedRadio) return { type: 'radio', input: checkedRadio, value: checkedRadio.value };
+    // checkboxes
+    const checkedBoxes = block.querySelectorAll(`.option-group[data-group-title="${CSS.escape(groupTitle)}"] input[type="checkbox"]:checked`);
+    if (checkedBoxes.length) return { type: 'checkbox', inputs: Array.from(checkedBoxes), values: Array.from(checkedBoxes).map(i => i.value) };
+    return null;
+  }
+
+  // Compute total with conditional pricing rules
+  function computeTotal() {
+    let total = Number(serviceBase) || 0;
+
+    const block = getActiveBlock();
+    if (!block) return total;
+
+    // Gather selected inputs (radios + checkboxes)
+    const selectedInputs = [
+      ...block.querySelectorAll('input[type="radio"]:checked'),
+      ...block.querySelectorAll('input[type="checkbox"]:checked')
+    ];
+
+    // Pull selected "Format" for conditional rules (adjust names if you use different group titles)
+    const formatSel = getSelection('Film Development Format');
+    const selectedFormat = formatSel && formatSel.value ? formatSel.value : null;
+
+    // Walk each selected option and sum price, applying conditions
+    selectedInputs.forEach((inp) => {
+      const basePrice = Number(inp.dataset.price || 0);
+      const cond = getConditions(inp);
+
+      let add = basePrice;
+
+      // Example conditional schema you can store in option.conditions:
+      // {
+      //   "onlyFormats": ["35mm"],                 // show/enable only for these formats
+      //   "notFormats": ["120mm"],                 // disable for these formats
+      //   "altPriceByFormat": { "120mm": 3, "8x10 Sheet": 3 },  // override base price per format
+      //   "requiresService": ["Develop & Scan"],   // only valid for listed services
+      //   "incompatibleWith": { "group": "Border Options", "options": ["Overscan (sprockets - 35mm only)"] }
+      //   // You can expand this as needed
+      // }
+
+      // altPriceByFormat overrides base
+      if (cond.altPriceByFormat && selectedFormat && cond.altPriceByFormat[selectedFormat] != null) {
+        add = Number(cond.altPriceByFormat[selectedFormat]);
+      }
+
+      // Example: B&W only valid for some formats with extra +2 base
+      // This can be represented as altPriceByFormat or as a simple surcharge map:
+      // { "surchargeByFormat": {"120mm": 2, "8x10 Sheet": 2} }
+      if (cond.surchargeByFormat && selectedFormat && cond.surchargeByFormat[selectedFormat] != null) {
+        add += Number(cond.surchargeByFormat[selectedFormat]);
+      }
+
+      total += add;
+    });
+
+    return total;
+  }
+
+  // Enable/disable options based on rules + current selections
+  function enforceRules() {
+    const block = getActiveBlock();
+    if (!block) return;
+
+    const formatSel = getSelection('Film Development Format');
+    const selectedFormat = formatSel && formatSel.value ? formatSel.value : null;
+
+    const chosenService = propService.value || '';
+
+    // Iterate all inputs in active block
+    $$('input[type="radio"], input[type="checkbox"]', block).forEach((inp) => {
+      const cond = getConditions(inp);
+      let disable = false;
+
+      // onlyFormats / notFormats
+      if (cond.onlyFormats && selectedFormat && !cond.onlyFormats.includes(selectedFormat)) {
+        disable = true;
+      }
+      if (cond.notFormats && selectedFormat && cond.notFormats.includes(selectedFormat)) {
+        disable = true;
+      }
+
+      // requiresService
+      if (cond.requiresService && chosenService && !cond.requiresService.includes(chosenService)) {
+        disable = true;
+      }
+
+      // If disabling, also uncheck
+      const label = inp.closest('label');
+      if (disable) {
+        inp.checked = false;
+        inp.disabled = true;
+        label && label.classList.add('disabled');
+      } else {
+        inp.disabled = false;
+        label && label.classList.remove('disabled');
+      }
+    });
+
+    // Example: Show/hide dependent groups — e.g., Printing → Copies
+    const printing = getSelection('Do You Need Printing?');
+    const copiesGroup = block.querySelector(`.option-group[data-group-title="Copies"]`);
+    if (copiesGroup) {
+      if (printing && printing.value === 'Yes') {
+        copiesGroup.hidden = false;
+      } else {
+        // Uncheck any prior copies choice if hiding
+        $$('input', copiesGroup).forEach(i => (i.checked = false));
+        copiesGroup.hidden = true;
+      }
+    }
+  }
+
+  // Update UI total + hidden property
+  function updateTotals() {
+    const total = computeTotal();
+    if (totalEl) totalEl.textContent = money(total);
+    if (propTotal) propTotal.value = money(total);
+    submitBtn.disabled = !activeServiceId; // require a service to be selected
+  }
+
+  // When service changes, toggle blocks
+  function onServiceChange(radio) {
+    activeServiceId = radio.getAttribute('data-service-id');
+    serviceBase = Number(radio.getAttribute('data-service-base') || 0);
+    propService.value = radio.value;
+
+    // Hide all, show chosen
+    getServiceBlocks().forEach((blk) => {
+      blk.hidden = blk.getAttribute('data-for-service') !== activeServiceId;
+    });
+
+    // Reset the newly active groups
+    const blk = getActiveBlock();
+    resetGroups(blk);
+
+    // Initial state for dependent groups (e.g., Copies hidden until "Printing: Yes")
+    if (blk) {
+      const copiesGroup = blk.querySelector(`.option-group[data-group-title="Copies"]`);
+      if (copiesGroup) copiesGroup.hidden = true;
+    }
+
+    enforceRules();
+    updateTotals();
+  }
+
+  // Event wiring
+  form.addEventListener('change', (e) => {
+    const t = e.target;
+    if (t.name === 'service_choice' && t.checked) {
+      onServiceChange(t);
+      return;
+    }
+
+    if (!activeServiceId) return;
+
+    // Any change inside the active service block:
+    const blk = getActiveBlock();
+    if (blk && blk.contains(t)) {
+      enforceRules();
+      updateTotals();
     }
   });
 
-  // Init
-  applyConditions();
-});
+  // Disable submit until a service is picked
+  submitBtn.disabled = true;
+})();
