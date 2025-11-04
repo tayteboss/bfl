@@ -42,8 +42,9 @@
               {%- endfor -%}
               <label
                 for="Exposure-{{ section_id }}-{{ value | handle }}"
-                class="exposure-variants__option{% if value == selected_exposure_value %} is-active{% endif %}"
+                class="exposure-variants__option{% if value == selected_exposure_value %} is-active{% endif %}{% unless available_for_value %} is-unavailable{% endunless %}"
               >
+                <div class="product-film-features__hint-value product-film-features__hint-value--bottom">Sold Out</div>
                 <input
                   type="radio"
                   id="Exposure-{{ section_id }}-{{ value | handle }}"
@@ -52,6 +53,9 @@
                   {% if value == selected_exposure_value %}
                     checked
                   {% endif %}
+                  {% unless available_for_value %}
+                    disabled
+                  {% endunless %}
                 >
                 <span class="exposure-variants__option-label type-h1-small">{{ value }}</span>
                 <div class="exposure-variants__option-icon">
@@ -106,7 +110,25 @@
 
         function findVariantByOptions(selected) {
           if (!Array.isArray(selected) || selected.includes(null)) return null;
-          return variants.find((v) => Array.isArray(v.options) && v.options.every((opt, i) => opt === selected[i])) || null;
+          
+          // First try to find an available variant that matches all options
+          const availableVariant = variants.find((v) => 
+            v.available && 
+            Array.isArray(v.options) && 
+            v.options.every((opt, i) => opt === selected[i])
+          );
+          
+          if (availableVariant) {
+            return availableVariant;
+          }
+          
+          // If no available variant, find any matching variant (for display purposes)
+          const anyVariant = variants.find((v) => 
+            Array.isArray(v.options) && 
+            v.options.every((opt, i) => opt === selected[i])
+          );
+          
+          return anyVariant || null;
         }
 
         function formatCents(cents) {
@@ -129,14 +151,133 @@
           const checked = wrap.querySelector('input[name="exposure-choice"]:checked');
           if (checked) checked.closest('.exposure-variants__option')?.classList.add('is-active');
         }
+        
+        function updateAvailabilityState() {
+          // Update availability state for all exposure options based on current variants
+          wrap.querySelectorAll('.exposure-variants__option').forEach((optionEl) => {
+            const radio = optionEl.querySelector('input[type="radio"]');
+            if (!radio) return;
+            
+            const exposureValue = radio.value;
+            
+            // Check if there's any available variant with this exposure
+            const hasAvailableVariant = variants.some((v) => {
+              if (!v.available) return false;
+              if (!Array.isArray(v.options)) return false;
+              return v.options[exposureIndex] === exposureValue;
+            });
+            
+            if (hasAvailableVariant) {
+              optionEl.classList.remove('is-unavailable');
+              radio.disabled = false;
+            } else {
+              optionEl.classList.add('is-unavailable');
+              radio.disabled = true;
+              // If this option is checked but unavailable, uncheck it
+              if (radio.checked) {
+                radio.checked = false;
+                // Find and select the first available option
+                const firstAvailable = wrap.querySelector('.exposure-variants__option:not(.is-unavailable) input[type="radio"]');
+                if (firstAvailable) {
+                  firstAvailable.checked = true;
+                  firstAvailable.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+              }
+            }
+          });
+        }
 
         function handleVariantChange() {
           updateActiveState();
           const selected = getSelectedOptions();
+          console.log('Getting variant for selected options:', selected);
+          
           const matched = findVariantByOptions(selected);
-          if (!matched) return;
+          
+          // If no match OR if matched variant is unavailable, try to find an available variant
+          if (!matched || !matched.available) {
+            const exposureValue = selected[exposureIndex];
+            if (exposureValue) {
+              console.log('Matched variant is unavailable or not found. Searching for available variant with exposure:', exposureValue);
+              
+              // Find any available variant with the selected exposure
+              const availableWithExposure = variants.find((v) => {
+                if (!v.available) return false;
+                if (!Array.isArray(v.options)) return false;
+                return v.options[exposureIndex] === exposureValue;
+              });
+              
+              if (availableWithExposure) {
+                console.log('Found available variant with matching exposure:', availableWithExposure);
+                console.log('Available variant options:', availableWithExposure.options);
+                
+                // Update other option selects to match this available variant
+                let optionsUpdated = false;
+                optionNames.forEach((name, idx) => {
+                  if (idx !== exposureIndex && availableWithExposure.options[idx]) {
+                    const sel = root.querySelector(`#Option-{{ section_id }}-${idx}`);
+                    if (sel && sel.value !== availableWithExposure.options[idx]) {
+                      sel.value = availableWithExposure.options[idx];
+                      optionsUpdated = true;
+                      console.log(`Updated option ${idx} (${name}) to:`, availableWithExposure.options[idx]);
+                    }
+                  }
+                });
+                
+                // If we updated options, retry matching
+                if (optionsUpdated) {
+                  const updatedSelected = getSelectedOptions();
+                  console.log('Retrying with updated options:', updatedSelected);
+                  const retryMatched = findVariantByOptions(updatedSelected);
+                  if (retryMatched && retryMatched.available) {
+                    console.log('Found available variant after updating other options:', retryMatched);
+                    updateVariantUI(retryMatched);
+                    return;
+                  }
+                } else {
+                  // Options didn't need updating, use the available variant directly
+                  console.log('Using available variant directly:', availableWithExposure);
+                  updateVariantUI(availableWithExposure);
+                  return;
+                }
+              } else {
+                console.warn('No available variant found with exposure:', exposureValue);
+                // Still no available variant - disable button
+                if (matched && !matched.available) {
+                  console.warn('Matched variant exists but is unavailable:', matched);
+                  updateVariantUI(matched); // Still update UI to show it's unavailable
+                  return;
+                }
+              }
+            }
+            
+            // No match at all - disable button
+            if (!matched) {
+              console.warn('No variant matched for selected options:', selected);
+              const submit = document.getElementById('ProductSubmitButton-{{ section_id }}');
+              if (submit) {
+                submit.setAttribute('disabled', 'disabled');
+                submit.setAttribute('aria-disabled', 'true');
+              }
+              return;
+            }
+          }
+          
+          // Matched variant is available - use it
+          updateVariantUI(matched);
+        }
+        
+        function updateVariantUI(matched) {
+          console.log('Variant changed:', {
+            variantId: matched.id,
+            available: matched.available,
+            options: matched.options
+          });
+          
+          // Update variant ID input
           idInput.value = matched.id;
-          idInput.toggleAttribute('disabled', !matched.available);
+          // Never disable the input - just disable the button if unavailable
+          idInput.removeAttribute('disabled');
           idInput.dispatchEvent(new Event('change', { bubbles: true }));
 
           // Update price in-place (fallback)
@@ -146,7 +287,32 @@
 
           // Toggle submit button disabled state for UX
           const submit = document.getElementById('ProductSubmitButton-{{ section_id }}');
-          if (submit) submit.toggleAttribute('disabled', !matched.available);
+          if (submit) {
+            if (matched.available) {
+              submit.removeAttribute('disabled');
+              submit.removeAttribute('aria-disabled');
+            } else {
+              submit.setAttribute('disabled', 'disabled');
+              submit.setAttribute('aria-disabled', 'true');
+            }
+            console.log('Submit button state updated:', {
+              disabled: submit.disabled,
+              ariaDisabled: submit.getAttribute('aria-disabled'),
+              variantId: matched.id,
+              available: matched.available
+            });
+          }
+          
+          // Ensure form is properly initialized after variant change
+          // Check if product-form element exists and re-initialize if needed
+          const productForm = form.closest('product-form');
+          if (productForm && typeof productForm.initialize === 'function') {
+            // Just verify form is still initialized, don't re-init unnecessarily
+            if (!productForm._initialized) {
+              console.log('Re-initializing product form after variant change');
+              productForm.initialize();
+            }
+          }
         }
 
         // Click the entire option to select
@@ -168,10 +334,14 @@
 
         // Also react to changes on other option selects
         root.querySelectorAll('select[id^="Option-{{ section_id }}-"]').forEach((sel) => {
-          sel.addEventListener('change', handleVariantChange);
+          sel.addEventListener('change', () => {
+            updateAvailabilityState();
+            handleVariantChange();
+          });
         });
 
         // Initialize
+        updateAvailabilityState();
         handleVariantChange();
       }
 

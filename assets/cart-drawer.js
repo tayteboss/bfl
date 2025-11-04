@@ -1,10 +1,28 @@
 class CartDrawer extends HTMLElement {
   constructor() {
     super();
-
     this.addEventListener('keyup', (evt) => evt.code === 'Escape' && this.close());
-    this.querySelector('#CartDrawer-Overlay').addEventListener('click', this.close.bind(this));
+  }
+
+  connectedCallback() {
+    // Set up overlay click handler
+    this.setupOverlayClick();
+    
+    // Set up header cart icon
     this.setHeaderCartIconAccessibility();
+  }
+
+  setupOverlayClick() {
+    const overlay = this.querySelector('#CartDrawer-Overlay');
+    if (overlay) {
+      // Remove any existing listeners to prevent duplicates
+      overlay.replaceWith(overlay.cloneNode(true));
+      const newOverlay = this.querySelector('#CartDrawer-Overlay');
+      newOverlay.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.close();
+      });
+    }
   }
 
   setHeaderCartIconAccessibility() {
@@ -41,7 +59,9 @@ class CartDrawer extends HTMLElement {
           ? this.querySelector('.drawer__inner-empty')
           : document.getElementById('CartDrawer');
         const focusElement = this.querySelector('.drawer__inner') || this.querySelector('.drawer__close');
-        trapFocus(containerToTrapFocusOn, focusElement);
+        if (containerToTrapFocusOn && typeof trapFocus === 'function') {
+          trapFocus(containerToTrapFocusOn, focusElement);
+        }
       },
       { once: true }
     );
@@ -51,7 +71,9 @@ class CartDrawer extends HTMLElement {
 
   close() {
     this.classList.remove('active');
-    removeTrapFocus(this.activeElement);
+    if (typeof removeTrapFocus === 'function') {
+      removeTrapFocus(this.activeElement);
+    }
     document.body.classList.remove('overflow-hidden');
   }
 
@@ -71,26 +93,136 @@ class CartDrawer extends HTMLElement {
   }
 
   renderContents(parsedState) {
-    this.querySelector('.drawer__inner').classList.contains('is-empty') &&
-      this.querySelector('.drawer__inner').classList.remove('is-empty');
-    this.productId = parsedState.id;
-    this.getSectionsToRender().forEach((section) => {
-      const sectionElement = section.selector
-        ? document.querySelector(section.selector)
-        : document.getElementById(section.id);
+    if (!parsedState) {
+      console.error('No parsed state provided to renderContents');
+      return;
+    }
 
-      if (!sectionElement) return;
-      sectionElement.innerHTML = this.getSectionInnerHTML(parsedState.sections[section.id], section.selector);
-    });
+    const drawerInner = this.querySelector('.drawer__inner');
+    if (drawerInner && drawerInner.classList.contains('is-empty')) {
+      drawerInner.classList.remove('is-empty');
+    }
+    
+    if (parsedState.id) {
+      this.productId = parsedState.id;
+    }
+    
+    if (parsedState.sections) {
+      this.getSectionsToRender().forEach((section) => {
+        if (!parsedState.sections[section.id]) {
+          console.warn(`Section ${section.id} not found in response`);
+          return;
+        }
+
+        const sectionElement = section.selector
+          ? document.querySelector(section.selector)
+          : document.getElementById(section.id);
+
+        if (!sectionElement) {
+          console.warn(`Section element not found for ${section.id} with selector ${section.selector}`);
+          return;
+        }
+        
+        try {
+          const sectionHTML = this.getSectionInnerHTML(parsedState.sections[section.id], section.selector);
+          if (sectionHTML) {
+            sectionElement.innerHTML = sectionHTML;
+          }
+        } catch (e) {
+          console.error(`Error rendering section ${section.id}:`, e);
+        }
+      });
+    } else {
+      console.warn('No sections in parsed state response');
+    }
+
+    // Publish cart update event to sync header counts
+    // Fetch current cart state to get accurate item_count
+    if (typeof publish === 'function' && typeof PUB_SUB_EVENTS !== 'undefined' && typeof routes !== 'undefined') {
+      fetch(`${routes.cart_url}.js`)
+        .then(res => res.json())
+        .then(cart => {
+          console.log('Cart drawer: fetched cart state, item_count:', cart.item_count);
+          publish(PUB_SUB_EVENTS.cartUpdate, {
+            source: 'cart-drawer',
+            cartData: {
+              item_count: cart.item_count,
+              items: cart.items,
+              total_quantity: cart.total_quantity
+            }
+          });
+        })
+        .catch(e => {
+          console.error('Cart drawer: error fetching cart state:', e);
+          // Fallback: try to extract from parsedState
+          if (parsedState.item_count !== undefined) {
+            publish(PUB_SUB_EVENTS.cartUpdate, {
+              source: 'cart-drawer',
+              cartData: {
+                item_count: parsedState.item_count,
+                items: parsedState.items,
+                total_quantity: parsedState.total_quantity
+              }
+            });
+          } else if (Array.isArray(parsedState.items)) {
+            publish(PUB_SUB_EVENTS.cartUpdate, {
+              source: 'cart-drawer',
+              cartData: {
+                item_count: parsedState.items.length,
+                items: parsedState.items
+              }
+            });
+          }
+        });
+    }
 
     setTimeout(() => {
-      this.querySelector('#CartDrawer-Overlay').addEventListener('click', this.close.bind(this));
+      // Re-setup overlay click after content update
+      this.setupOverlayClick();
       this.open();
-    });
+    }, 100);
   }
 
   getSectionInnerHTML(html, selector = '.shopify-section') {
-    return new DOMParser().parseFromString(html, 'text/html').querySelector(selector).innerHTML;
+    try {
+      const parsed = new DOMParser().parseFromString(html, 'text/html');
+      
+      // First try to find the element by the provided selector
+      let element = parsed.querySelector(selector);
+      
+      // If selector is '#CartDrawer', we need to look inside the .shopify-section wrapper
+      if (!element && selector === '#CartDrawer') {
+        const shopifySection = parsed.querySelector('.shopify-section');
+        if (shopifySection) {
+          element = shopifySection.querySelector('#CartDrawer') || shopifySection.querySelector('cart-drawer') || shopifySection;
+        }
+      }
+      
+      // If still not found, try alternative selectors
+      if (!element) {
+        element = parsed.querySelector('cart-drawer') || parsed.querySelector('#CartDrawer') || parsed.querySelector('.shopify-section');
+      }
+      
+      // If we found an element, return its innerHTML
+      if (element) {
+        // If it's the cart-drawer custom element, get the inner content
+        if (element.tagName === 'CART-DRAWER') {
+          return element.innerHTML;
+        }
+        // If it's #CartDrawer, get its innerHTML
+        if (element.id === 'CartDrawer') {
+          return element.innerHTML;
+        }
+        // Otherwise return the element's innerHTML
+        return element.innerHTML;
+      }
+      
+      // Fallback: return the body content
+      return parsed.body ? parsed.body.innerHTML : html;
+    } catch (e) {
+      console.error('Error parsing section HTML:', e);
+      return html;
+    }
   }
 
   getSectionsToRender() {
