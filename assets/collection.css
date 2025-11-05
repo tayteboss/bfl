@@ -150,8 +150,24 @@
   align-items: center;
 }
 
+.filter-group__item {
+  position: relative;
+  cursor: pointer;
+}
+
+.filter-group__item.is-active {
+  background: var(--color-yellow);
+  color: var(--color-black);
+}
+
 .filter-group__item input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 /* Lock page scroll when modal is open */
@@ -192,3 +208,8 @@ body.is-modal-open {
   top: -4px; 
 }
 
+.filters-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}

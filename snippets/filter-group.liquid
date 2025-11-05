@@ -12,9 +12,11 @@
     <div class="filter-group__items">
       {% for item in items %}
         {% if item != blank %}
-          <label class="filter-group__item primary-button primary-button--modal-filter">
+          {% assign item_id = item | handleize | append: '-' | append: type | append: '-' | append: forloop.index %}
+          <label class="filter-group__item primary-button primary-button--modal-filter" for="{{ item_id }}">
             <input
               type="checkbox"
+              id="{{ item_id }}"
               value="{{ item | escape }}"
               class="filter-option"
               data-filter-type="{{ type }}"

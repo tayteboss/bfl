@@ -50,10 +50,12 @@
     var carousels = document.querySelectorAll('.js-image-carousel');
     if (!carousels || carousels.length === 0) return;
 
+    var autoplayEnabled = {{ section.settings.autoplay | json }};
+
     carousels.forEach(function (carouselEl) {
       if (typeof window.Swiper !== 'function') return;
 
-      new window.Swiper(carouselEl, {
+      var options = {
         slidesPerView: 'auto',
         breakpoints: {
           0: {
@@ -66,7 +68,20 @@
         loop: false,
         freeMode: true,
         grabCursor: true,
-      });
+      };
+
+      if (autoplayEnabled) {
+        options.loop = false;
+        options.freeMode = true;
+        options.allowTouchMove = true;
+        options.autoplay = {
+          disableOnInteraction: true,
+          reverseDirection: true,
+        };
+        options.speed = 10000; // continuous ticker speed
+      }
+
+      new window.Swiper(carouselEl, options);
     });
   }
 
@@ -80,7 +95,14 @@
 {% schema %}
 {
   "name": "Image Carousel",
-  "settings": [],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": true
+    }
+  ],
   "blocks": [
     {
       "type": "image",

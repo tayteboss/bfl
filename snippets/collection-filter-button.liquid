@@ -1,18 +1,17 @@
 <!-- Filter Trigger -->
-<div data-hover-shake="small">
-  <button
-    id="open-filters"
-    type="button"
-    aria-haspopup="dialog"
-    aria-controls="filters-modal"
-    class="primary-button primary-button--small"
-  >
-    + Filters
-  </button>
+<div class="filters-wrapper" id="active-filters">
+  <div class="filter-trigger" data-hover-shake="small">
+    <button
+      id="open-filters"
+      type="button"
+      aria-haspopup="dialog"
+      aria-controls="filters-modal"
+      class="primary-button primary-button--small"
+    >
+      + Filters
+    </button>
+  </div>
 </div>
-
-<!-- Active Filters -->
-<div id="active-filters"></div>
 
 <!-- Modal -->
 <div
@@ -59,9 +58,11 @@
       {% for coll in collections %}
         {% if coll.handle != 'events' and coll.handle != 'all' and coll.handle != 'new-arrivals' and coll.handle != 'sale' %}
           {% assign coll_count = coll.products_count | plus: 0 %}
-          <a href="{{ coll.url }}" class="primary-button primary-button--modal-filter">
-            {{ coll.title }}{% if coll_count > 0 %} <span>{{ coll_count }}</span>{% endif %}
-          </a>
+          {% if coll_count > 0 %}
+            <a href="{{ coll.url }}" class="primary-button primary-button--modal-filter">
+              {{ coll.title }} <span>{{ coll_count }}</span>
+            </a>
+          {% endif %}
         {% endif %}
       {% endfor %}
     {% endcapture %}
@@ -92,6 +93,13 @@
         Apply
       </button>
       <button
+        id="clear-filters"
+        type="button"
+        class="primary-button primary-button--modal-filter primary-button--outline-white"
+      >
+        Clear
+      </button>
+      <button
         id="close-filters"
         type="button"
         class="primary-button primary-button--modal-filter primary-button--outline-white"
@@ -107,11 +115,30 @@
     const openBtn = document.getElementById('open-filters');
     const closeBtn = document.getElementById('close-filters');
     const applyBtn = document.getElementById('apply-filters');
+    const clearBtn = document.getElementById('clear-filters');
     const modal = document.getElementById('filters-modal');
-    const activeFiltersDiv = document.getElementById('active-filters');
-    const filterOptions = document.querySelectorAll('.filter-option');
+    const filtersWrapper = document.getElementById('active-filters');
+    const filterTrigger = filtersWrapper.querySelector('.filter-trigger');
+    let filterOptions = document.querySelectorAll('.filter-option');
 
     let activeFilters = [];
+
+    // Update filter options when modal opens (in case of dynamic content)
+    function refreshFilterOptions() {
+      filterOptions = document.querySelectorAll('.filter-option');
+    }
+
+    // Update active state styling
+    function updateActiveStates() {
+      filterOptions.forEach((opt) => {
+        const label = opt.closest('label.filter-group__item');
+        if (opt.checked) {
+          label?.classList.add('is-active');
+        } else {
+          label?.classList.remove('is-active');
+        }
+      });
+    }
 
     // Move modal to end of body to avoid stacking context issues
     if (modal && modal.parentNode !== document.body) {
@@ -120,6 +147,13 @@
 
     // Modal toggle
     function openModal() {
+      refreshFilterOptions();
+      // Sync checkboxes with currently active filters
+      filterOptions.forEach((opt) => {
+        const isActive = activeFilters.some((f) => f.type === opt.dataset.filterType && f.value === opt.value);
+        opt.checked = isActive;
+      });
+      updateActiveStates();
       modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
       document.body.classList.add('is-modal-open');
@@ -137,6 +171,24 @@
       if (e.target === modal) closeModal();
     });
 
+    // Update active state when checkboxes change
+    document.addEventListener('change', (e) => {
+      if (e.target.classList.contains('filter-option')) {
+        updateActiveStates();
+      }
+    });
+
+    // Clear all filters
+    clearBtn.addEventListener('click', () => {
+      activeFilters = [];
+      filterOptions.forEach((opt) => {
+        opt.checked = false;
+      });
+      updateActiveStates();
+      renderActiveFilters();
+      filterProducts();
+    });
+
     // Apply filters
     applyBtn.addEventListener('click', () => {
       activeFilters = [];
@@ -152,39 +204,50 @@
 
     // Render filter chips
     function renderActiveFilters() {
-      activeFiltersDiv.innerHTML = '';
+      // Remove existing active filter buttons (but keep filter-trigger)
+      const existingFilters = filtersWrapper.querySelectorAll('.primary-button--active-filter');
+      existingFilters.forEach((el) => el.remove());
+
+      // Add active filter buttons
       activeFilters.forEach((f) => {
-        const chip = document.createElement('span');
-        chip.className = 'active-filter-chip';
-        chip.textContent = f.value + ' ';
-        const remove = document.createElement('button');
-        remove.type = 'button';
-        remove.textContent = '×';
-        remove.setAttribute('aria-label', 'Remove filter ' + f.value);
-        remove.addEventListener('click', () => {
-          activeFilters = activeFilters.filter((x) => x.value !== f.value);
+        const filterButton = document.createElement('button');
+        filterButton.type = 'button';
+        filterButton.className = 'primary-button primary-button--small primary-button--active-filter';
+        filterButton.innerHTML = '<span class="active-filter-remove">×</span> ' + f.value;
+        filterButton.setAttribute('aria-label', 'Remove filter ' + f.value);
+        filterButton.addEventListener('click', () => {
+          activeFilters = activeFilters.filter((x) => !(x.type === f.type && x.value === f.value));
           filterOptions.forEach((opt) => {
-            if (opt.value === f.value) opt.checked = false;
+            if (opt.dataset.filterType === f.type && opt.value === f.value) {
+              opt.checked = false;
+            }
           });
+          updateActiveStates();
           renderActiveFilters();
           filterProducts();
         });
-        chip.appendChild(remove);
-        activeFiltersDiv.appendChild(chip);
+        // Insert after filter-trigger
+        filterTrigger.insertAdjacentElement('afterend', filterButton);
       });
     }
 
     // Dynamic filtering
     function filterProducts() {
-      const products = document.querySelectorAll('[data-product-tags][data-product-vendor][data-product-collections]');
+      const products = document.querySelectorAll(
+        '.product-card[data-product-tags], .product-card[data-product-vendor]'
+      );
 
       const filterHandlers = {
-        tag: (prod, value) =>
-          (prod.dataset.productTags || '')
-            .split(',')
-            .map((s) => s.trim())
-            .includes(value),
-        vendor: (prod, value) => prod.dataset.productVendor === value,
+        tag: (prod, value) => {
+          const tags = (prod.dataset.productTags || '').split(',').map((s) => s.trim());
+          return tags.includes(value);
+        },
+        vendor: (prod, value) => {
+          const vendor = prod.dataset.productVendor || '';
+          // Handle vendor string that might have ||| separator
+          const vendorParts = vendor.split('|||').map((s) => s.trim());
+          return vendorParts.includes(value) || vendor === value;
+        },
         collection: (prod, value) =>
           (prod.dataset.productCollections || '')
             .split(',')
@@ -197,8 +260,32 @@
       };
 
       products.forEach((prod) => {
-        const match = activeFilters.some((f) => filterHandlers[f.type]?.(prod, f.value));
-        prod.style.display = match || activeFilters.length === 0 ? '' : 'none';
+        if (activeFilters.length === 0) {
+          prod.style.display = '';
+          return;
+        }
+
+        // Group filters by type
+        const filtersByType = {};
+        activeFilters.forEach((f) => {
+          if (!filtersByType[f.type]) {
+            filtersByType[f.type] = [];
+          }
+          filtersByType[f.type].push(f.value);
+        });
+
+        // Product must match ALL filter types (AND logic)
+        // But can match ANY value within each type (OR logic)
+        let matchesAll = true;
+        for (const [type, values] of Object.entries(filtersByType)) {
+          const matchesThisType = values.some((val) => filterHandlers[type]?.(prod, val));
+          if (!matchesThisType) {
+            matchesAll = false;
+            break;
+          }
+        }
+
+        prod.style.display = matchesAll ? '' : 'none';
       });
     }
   });

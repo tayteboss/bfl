@@ -597,7 +597,9 @@ a {
   }
 }
 
-.shopify-section:has(product-info) {
+.shopify-section:has(product-info),
+.shopify-section:has(.faq),
+.shopify-section:has(footer) {
   overflow: visible;
 }
 
@@ -654,6 +656,21 @@ main .shopify-section:first-child:has(cart-items) {
     background: var(--color-yellow);
   }
 }
+
+.primary-button--active-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--color-yellow);
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+}
+
+.primary-button--active-filter:hover {
+  background: var(--color-black) !important;
+  color: var(--color-yellow);
+}
+
 
 .primary-button--small {
   font-family: var(--font-gt-standard-mono-regular);
