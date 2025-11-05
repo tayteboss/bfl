@@ -109,9 +109,46 @@
               -%}
             {%- endif -%}
 
+            {%- assign has_color_option = false -%}
+            {%- for opt in product.options -%}
+              {%- assign opt_down = opt | downcase -%}
+              {%- if opt_down == 'color' -%}
+                {%- assign has_color_option = true -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if has_color_option -%}
+              {%- render 'product-color-variants',
+                product: product,
+                product_form_id: product_form_id,
+                section_id: section.id
+              -%}
+            {%- endif -%}
+
+            {%- assign has_size_option = false -%}
+            {%- for opt in product.options -%}
+              {%- assign opt_down = opt | downcase -%}
+              {%- if opt_down == 'size' -%}
+                {%- assign has_size_option = true -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if has_size_option -%}
+              {%- render 'product-size-variants',
+                product: product,
+                product_form_id: product_form_id,
+                section_id: section.id
+              -%}
+            {%- endif -%}
+
             {%- assign has_other_variant_options = false -%}
             {%- for option in product.options_with_values -%}
-              {%- if option.name != 'Exposures' -%}
+              {%- assign opt_down = option.name | downcase -%}
+              {%- if opt_down != 'exposures'
+                and opt_down != 'exposure'
+                and opt_down != 'color'
+                and opt_down != 'size'
+              -%}
                 {%- assign has_other_variant_options = true -%}
                 {%- break -%}
               {%- endif -%}

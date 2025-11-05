@@ -1,56 +1,56 @@
-{%- assign exposure_option_index = null -%}
-{%- assign selected_exposure_value = null -%}
+{%- assign size_option_index = null -%}
+{%- assign selected_size_value = null -%}
 {%- for option in product.options_with_values -%}
-  {%- if option.name == 'Exposures' -%}
-    {%- assign exposure_option_index = forloop.index0 -%}
+  {%- if option.name == 'Size' -%}
+    {%- assign size_option_index = forloop.index0 -%}
   {%- endif -%}
 {%- endfor -%}
 
-{%- if exposure_option_index != null -%}
-  {%- if exposure_option_index == 0 -%}
-    {%- assign selected_exposure_value = product.selected_or_first_available_variant.option1 -%}
-  {%- elsif exposure_option_index == 1 -%}
-    {%- assign selected_exposure_value = product.selected_or_first_available_variant.option2 -%}
+{%- if size_option_index != null -%}
+  {%- if size_option_index == 0 -%}
+    {%- assign selected_size_value = product.selected_or_first_available_variant.option1 -%}
+  {%- elsif size_option_index == 1 -%}
+    {%- assign selected_size_value = product.selected_or_first_available_variant.option2 -%}
   {%- else -%}
-    {%- assign selected_exposure_value = product.selected_or_first_available_variant.option3 -%}
+    {%- assign selected_size_value = product.selected_or_first_available_variant.option3 -%}
   {%- endif -%}
 
   <div
     class="variant-selector"
-    data-variant-index="{{ exposure_option_index }}"
+    data-variant-index="{{ size_option_index }}"
     data-form-id="{{ product_form_id }}"
     data-section-id="{{ section_id }}"
   >
     <fieldset class="variant-options">
-      <legend class="variant-options__legend type-p">Exposures:</legend>
+      <legend class="variant-options__legend type-p">Size:</legend>
       <div class="variant-selector__options">
         {%- for option in product.options_with_values -%}
-          {%- if option.name == 'Exposures' -%}
+          {%- if option.name == 'Size' -%}
             {%- for value in option.values -%}
               {%- assign available_for_value = false -%}
               {%- for v in product.variants -%}
-                {%- if exposure_option_index == 0 and v.option1 == value and v.available -%}
+                {%- if size_option_index == 0 and v.option1 == value and v.available -%}
                   {%- assign available_for_value = true -%}
                   {%- break -%}
-                {%- elsif exposure_option_index == 1 and v.option2 == value and v.available -%}
+                {%- elsif size_option_index == 1 and v.option2 == value and v.available -%}
                   {%- assign available_for_value = true -%}
                   {%- break -%}
-                {%- elsif exposure_option_index == 2 and v.option3 == value and v.available -%}
+                {%- elsif size_option_index == 2 and v.option3 == value and v.available -%}
                   {%- assign available_for_value = true -%}
                   {%- break -%}
                 {%- endif -%}
               {%- endfor -%}
               <label
-                for="Exposure-{{ section_id }}-{{ value | handle }}"
-                class="variant-selector__option{% if value == selected_exposure_value %} is-active{% endif %}{% unless available_for_value %} is-unavailable{% endunless %}"
+                for="Size-{{ section_id }}-{{ value | handle }}"
+                class="variant-selector__option{% if value == selected_size_value %} is-active{% endif %}{% unless available_for_value %} is-unavailable{% endunless %}"
               >
                 <div class="product-film-features__hint-value product-film-features__hint-value--bottom">Sold Out</div>
                 <input
                   type="radio"
-                  id="Exposure-{{ section_id }}-{{ value | handle }}"
-                  name="exposure-choice"
+                  id="Size-{{ section_id }}-{{ value | handle }}"
+                  name="size-choice"
                   value="{{ value | escape }}"
-                  {% if value == selected_exposure_value %}
+                  {% if value == selected_size_value %}
                     checked
                   {% endif %}
                   {% unless available_for_value %}
@@ -58,7 +58,7 @@
                   {% endunless %}
                 >
                 <span class="variant-selector__option-label type-h1-small">{{ value }}</span>
-                <div class="variant-selector__option-icon">EXP</div>
+                <div class="variant-selector__option-icon">SIZE</div>
               </label>
             {%- endfor -%}
           {%- endif -%}
@@ -67,18 +67,31 @@
     </fieldset>
   </div>
 
-  <script type="application/json" id="ProductVariants-{{ section_id }}">
-    {{ product.variants | json }}
-  </script>
+  {%- assign has_exposure_option = false -%}
+  {%- assign has_color_option = false -%}
+  {%- for opt in product.options -%}
+    {%- assign opt_down = opt | downcase -%}
+    {%- if opt_down == 'exposures' or opt_down == 'exposure' -%}
+      {%- assign has_exposure_option = true -%}
+    {%- endif -%}
+    {%- if opt_down == 'color' -%}
+      {%- assign has_color_option = true -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- unless has_exposure_option or has_color_option -%}
+    <script type="application/json" id="ProductVariants-{{ section_id }}">
+      {{ product.variants | json }}
+    </script>
+  {%- endunless -%}
 
   <script>
     (function () {
       function init() {
         const root = document.getElementById('MainProduct-{{ section_id }}');
         if (!root) return;
-        // Find the specific variant selector for exposures by looking for the exposure-choice input
-        const exposureInput = root.querySelector('input[name="exposure-choice"]');
-        const wrap = exposureInput ? exposureInput.closest('.variant-selector') : null;
+        // Find the specific variant selector for sizes by looking for the size-choice input
+        const sizeInput = root.querySelector('input[name="size-choice"]');
+        const wrap = sizeInput ? sizeInput.closest('.variant-selector') : null;
         if (!wrap) return;
         const form = document.getElementById('{{ product_form_id }}');
         if (!form) return;
@@ -89,16 +102,27 @@
         try {
           variants = JSON.parse(variantsEl?.textContent || '[]');
         } catch (e) {}
-        const exposureIndex = parseInt(wrap.getAttribute('data-variant-index') || '0', 10);
+        const sizeIndex = parseInt(wrap.getAttribute('data-variant-index') || '0', 10);
         const optionNames = {{ product.options | json }};
 
         function getSelectedOptions() {
           return optionNames.map((_, idx) => {
-            if (idx === exposureIndex) {
-              const r = wrap.querySelector('input[name="exposure-choice"]:checked');
+            if (idx === sizeIndex) {
+              const r = wrap.querySelector('input[name="size-choice"]:checked');
               return r ? r.value : null;
             }
-            // Check for other variant selectors (color, size)
+            // Check for other variant selectors (exposure, color)
+            const exposureRadio = root.querySelector('input[name="exposure-choice"]:checked');
+            if (exposureRadio) {
+              const exposureWrap = root.querySelector('.variant-selector input[name="exposure-choice"]');
+              if (exposureWrap) {
+                const exposureWrapParent = exposureWrap.closest('.variant-selector');
+                const exposureIndex = parseInt(exposureWrapParent?.getAttribute('data-variant-index') || '-1', 10);
+                if (idx === exposureIndex) {
+                  return exposureRadio.value;
+                }
+              }
+            }
             const colorRadio = root.querySelector('input[name="color-choice"]:checked');
             if (colorRadio) {
               const colorWrap = root.querySelector('.variant-selector input[name="color-choice"]');
@@ -107,17 +131,6 @@
                 const colorIndex = parseInt(colorWrapParent?.getAttribute('data-variant-index') || '-1', 10);
                 if (idx === colorIndex) {
                   return colorRadio.value;
-                }
-              }
-            }
-            const sizeRadio = root.querySelector('input[name="size-choice"]:checked');
-            if (sizeRadio) {
-              const sizeWrap = root.querySelector('.variant-selector input[name="size-choice"]');
-              if (sizeWrap) {
-                const sizeWrapParent = sizeWrap.closest('.variant-selector');
-                const sizeIndex = parseInt(sizeWrapParent?.getAttribute('data-variant-index') || '-1', 10);
-                if (idx === sizeIndex) {
-                  return sizeRadio.value;
                 }
               }
             }
@@ -166,23 +179,23 @@
 
         function updateActiveState() {
           wrap.querySelectorAll('.variant-selector__option').forEach((opt) => opt.classList.remove('is-active'));
-          const checked = wrap.querySelector('input[name="exposure-choice"]:checked');
+          const checked = wrap.querySelector('input[name="size-choice"]:checked');
           if (checked) checked.closest('.variant-selector__option')?.classList.add('is-active');
         }
         
         function updateAvailabilityState() {
-          // Update availability state for all exposure options based on current variants
+          // Update availability state for all size options based on current variants
           wrap.querySelectorAll('.variant-selector__option').forEach((optionEl) => {
             const radio = optionEl.querySelector('input[type="radio"]');
             if (!radio) return;
             
-            const exposureValue = radio.value;
+            const sizeValue = radio.value;
             
-            // Check if there's any available variant with this exposure
+            // Check if there's any available variant with this size
             const hasAvailableVariant = variants.some((v) => {
               if (!v.available) return false;
               if (!Array.isArray(v.options)) return false;
-              return v.options[exposureIndex] === exposureValue;
+              return v.options[sizeIndex] === sizeValue;
             });
             
             if (hasAvailableVariant) {
@@ -214,30 +227,30 @@
           
           // If no match OR if matched variant is unavailable, try to find an available variant
           if (!matched || !matched.available) {
-            const exposureValue = selected[exposureIndex];
-            if (exposureValue) {
-              console.log('Matched variant is unavailable or not found. Searching for available variant with exposure:', exposureValue);
+            const sizeValue = selected[sizeIndex];
+            if (sizeValue) {
+              console.log('Matched variant is unavailable or not found. Searching for available variant with size:', sizeValue);
               
-              // Find any available variant with the selected exposure
-              const availableWithExposure = variants.find((v) => {
+              // Find any available variant with the selected size
+              const availableWithSize = variants.find((v) => {
                 if (!v.available) return false;
                 if (!Array.isArray(v.options)) return false;
-                return v.options[exposureIndex] === exposureValue;
+                return v.options[sizeIndex] === sizeValue;
               });
               
-              if (availableWithExposure) {
-                console.log('Found available variant with matching exposure:', availableWithExposure);
-                console.log('Available variant options:', availableWithExposure.options);
+              if (availableWithSize) {
+                console.log('Found available variant with matching size:', availableWithSize);
+                console.log('Available variant options:', availableWithSize.options);
                 
                 // Update other option selects to match this available variant
                 let optionsUpdated = false;
                 optionNames.forEach((name, idx) => {
-                  if (idx !== exposureIndex && availableWithExposure.options[idx]) {
+                  if (idx !== sizeIndex && availableWithSize.options[idx]) {
                     const sel = root.querySelector(`#Option-{{ section_id }}-${idx}`);
-                    if (sel && sel.value !== availableWithExposure.options[idx]) {
-                      sel.value = availableWithExposure.options[idx];
+                    if (sel && sel.value !== availableWithSize.options[idx]) {
+                      sel.value = availableWithSize.options[idx];
                       optionsUpdated = true;
-                      console.log(`Updated option ${idx} (${name}) to:`, availableWithExposure.options[idx]);
+                      console.log(`Updated option ${idx} (${name}) to:`, availableWithSize.options[idx]);
                     }
                   }
                 });
@@ -254,12 +267,12 @@
                   }
                 } else {
                   // Options didn't need updating, use the available variant directly
-                  console.log('Using available variant directly:', availableWithExposure);
-                  updateVariantUI(availableWithExposure);
+                  console.log('Using available variant directly:', availableWithSize);
+                  updateVariantUI(availableWithSize);
                   return;
                 }
               } else {
-                console.warn('No available variant found with exposure:', exposureValue);
+                console.warn('No available variant found with size:', sizeValue);
                 // Still no available variant - disable button
                 if (matched && !matched.available) {
                   console.warn('Matched variant exists but is unavailable:', matched);
@@ -346,7 +359,7 @@
         });
 
         // Bind to radio changes
-        wrap.querySelectorAll('input[type="radio"][name="exposure-choice"]').forEach((radio) => {
+        wrap.querySelectorAll('input[type="radio"][name="size-choice"]').forEach((radio) => {
           radio.addEventListener('change', handleVariantChange);
         });
 
@@ -358,8 +371,8 @@
           });
         });
 
-        // React to changes in other variant selectors (color, size)
-        root.querySelectorAll('input[name="color-choice"], input[name="size-choice"]').forEach((radio) => {
+        // React to changes in other variant selectors (exposure, color)
+        root.querySelectorAll('input[name="exposure-choice"], input[name="color-choice"]').forEach((radio) => {
           radio.addEventListener('change', () => {
             updateAvailabilityState();
             handleVariantChange();
