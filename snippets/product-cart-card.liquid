@@ -68,10 +68,14 @@
         {%- endif -%}
       </div>
 
-      <cart-remove-button class="cart-remove-button" id="CartDrawer-Remove-{{ index }}" data-index="{{ index }}">
+      <cart-remove-button
+        class="cart-remove-button type-p-small"
+        id="CartDrawer-Remove-{{ index }}"
+        data-index="{{ index }}"
+      >
         <button
           type="button"
-          class="button button--tertiary cart-remove-button"
+          class="button button--tertiary cart-remove-button type-p-small"
           aria-label="{{ 'sections.cart.remove_title' | t: title: item.title | escape }}"
           data-variant-id="{{ item.variant.id }}"
         >

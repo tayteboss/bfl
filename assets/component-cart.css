@@ -56,16 +56,6 @@ cart-items.is-empty .title-wrapper-with-link,
   }
 }
 
-cart-items {
-  display: block;
-}
-
-.cart__items {
-  position: relative;
-  padding-bottom: 0 !important;
-  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
-}
-
 .cart__items--disabled {
   pointer-events: none;
 }
@@ -156,14 +146,6 @@ cart-items {
   }
 }
 
-.cart__ctas button {
-  width: 100%;
-}
-
-.cart__ctas > * + * {
-  margin-top: 1rem;
-}
-
 .cart__update-button {
   margin-bottom: 1rem;
 }
@@ -187,18 +169,8 @@ cart-items {
   line-height: calc(1 + 1 / var(--font-body-scale));
 }
 
-.tax-note {
-  margin: 2.2rem 0 1.6rem auto;
-  text-align: center;
-  display: block;
-}
-
 .cart__checkout-button {
   max-width: 36rem;
-}
-
-.cart__ctas {
-  text-align: center;
 }
 
 @media screen and (min-width: 750px) {
@@ -219,18 +191,12 @@ cart-items {
   [data-shopify-buttoncontainer] {
     justify-content: flex-end;
   }
-
-  .cart__ctas {
-    display: flex;
-    gap: 1rem;
-  }
 }
 
 /* CUSTOM CSS */
 
 .cart-items {
   padding-top: 0 !important;
-
 }
 
 .cart-items a:hover {
@@ -263,17 +229,6 @@ cart-items {
   opacity: 0.6;
   letter-spacing: 0.02em;
   padding: 0.75rem 0;
-  border-bottom: 1px solid rgba(0,0,0,0.08);
-}
-
-.cart-item {
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-}
-
-.cart-item__media,
-.cart-item__details {
-  padding: 1rem 0;
-  vertical-align: middle;
 }
 
 .cart-item__image-container {
@@ -306,6 +261,8 @@ cart-items {
   justify-content: center;
   max-width: 24px;
   background: transparent;
+  font-family: var(--font-gt-standard-mono-regular);
+  font-size: 1rem;
 }
 
 .cart-quantity .quantity__input::-webkit-outer-spin-button,
@@ -321,32 +278,20 @@ cart-items {
 }
 
 .cart-quantity .quantity__button {
-  height: 20px;
+  height: 15px;
   width: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 100px;
+  font-family: var(--font-gt-standard-mono-regular);
+  font-size: 1rem;
   transition: all var(--transition-speed-default) var(--transition-ease);
 }
 
 .cart-quantity .quantity__button:hover {
   opacity: 0.3;
 }
-
-/* Remove link as subtle button */
-/* cart-remove-button .button {
-  border: 1px solid var(--color-black);
-  border-radius: 999px;
-  padding: 0.375rem 0.75rem;
-  background: var(--color-grey-dark);
-}
-
-@media (hover: hover) {
-  cart-remove-button .button:hover {
-    background: var(--color-yellow);
-  }
-} */
 
 /* Header area */
 .title-wrapper-with-link .primary-button--small {
@@ -358,24 +303,6 @@ cart-items {
   padding: 4rem 0 2rem;
 }
 
-/* Responsive refinements */
-@media (max-width: 768px) {
-  .cart-item__media,
-  .cart-item__details {
-    padding: 0.75rem 0;
-  }
-
-  .cart-quantity {
-    padding: 0 20px;
-  }
-
-  .cart-quantity .quantity__button {
-    height: 28px;
-    width: 28px;
-    background: var(--color-grey-mid);
-  }
-}
-
 .cart__items {
   transition: all var(--transition-speed-slow) var(--transition-ease);
 }
@@ -384,41 +311,8 @@ cart-items {
   opacity: 0.25;
 }
 
-.cart-item {
-  @media (max-width: 768px) {
-    row-gap: 16px !important;
-    padding: 24px 0 !important;
-  }
-}
-
-.cart-item td {
-  padding-top: 24px !important;
-  padding-bottom: 24px !important;
-
-  @media (max-width: 768px) {
-    padding-top: 0px !important;
-    padding-bottom: 0px !important;
-  }
-}
-
 .cart-item__details {
   width: auto !important;
-}
-
-.cart-item__media-inner {
-  display: flex;
-  align-items: flex-start;
-  gap: 24px;
-}
-
-.cart-item__media {
-  background: var(--color-grey-light) !important;
-  border-radius: 0.75rem;
-  overflow: hidden;
-
-  @media (max-width: 768px) {
-    grid-column: 1 / -1 !important;
-  }
 }
 
 .product-option {
@@ -434,46 +328,11 @@ cart-items {
   }
 }
 
-cart-remove-button {
-  margin: 0 !important;
-  margin-top: 16px !important;
-  width: auto !important;
-  height: auto !important;
-}
-
-cart-remove-button a {
-  margin: 0 !important;
-  background: var(--color-grey-light);
-  padding: 4px 8px;
-  border-radius: 100px;
-  white-space: nowrap;
-
-  transition: all var(--transition-speed-default) var(--transition-ease);
-}
-
-cart-remove-button a:hover {
-  background: var(--color-red);
-  color: var(--color-white);
-}
-
 .blank-td {
   padding: 0 !important;
 
   @media (max-width: 768px) {
     display: none !important;
-  }
-}
-
-thead tr {
-  @media (max-width: 768px) {
-    border-bottom: 1px solid rgba(0,0,0,0.08) !important;
-    margin-bottom: 16px !important;
-  }
-}
-
-thead tr th {
-  @media (max-width: 768px) {
-    border-bottom: none !important;
   }
 }
 
