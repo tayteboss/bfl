@@ -578,6 +578,11 @@
   }
 }
 
+.tape-digitization-form__bottom {
+  display: flex;
+  gap: 4px;
+}
+
 .tape-digitization-form__bottom .product-form__buy-button {
   flex: 1;
 }

@@ -97,6 +97,10 @@
 	}
 }
 
+.gear-card--hidden {
+	display: none;
+}
+
 @media (min-width: 769px) {
 	.gear-card:hover {
 		background: var(--color-yellow);
@@ -405,4 +409,24 @@
 
 .contact-form__fields .form-field {
 	width: 100%;
+}
+
+.pagination-button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 2rem;
+}
+
+.pagination-button.is-loading .primary-button {
+	opacity: 0.5;
+	pointer-events: none;
+	cursor: not-allowed;
+	filter: grayscale(100%);
+}
+
+@media (max-width: 768px) {
+	.pagination-button .primary-button {
+		width: 100%;
+	}
 }

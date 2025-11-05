@@ -243,6 +243,11 @@ class CartItems extends HTMLElement {
       rowElement.classList.add('is-loading');
     }
 
+    const drawerRowElement = document.getElementById(`CartDrawer-Item-${line}`);
+    if (drawerRowElement) {
+      drawerRowElement.classList.add('is-loading');
+    }
+
     document.activeElement.blur();
     this.lineItemStatusElement.setAttribute('aria-hidden', false);
   }
@@ -260,6 +265,11 @@ class CartItems extends HTMLElement {
     const rowElement = document.getElementById(`CartItem-${line}`);
     if (rowElement) {
       rowElement.classList.remove('is-loading');
+    }
+
+    const drawerRowElement = document.getElementById(`CartDrawer-Item-${line}`);
+    if (drawerRowElement) {
+      drawerRowElement.classList.remove('is-loading');
     }
   }
 }

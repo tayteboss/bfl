@@ -143,9 +143,9 @@ cart-items .title-wrapper-with-link {
 }
 
 /* Row loading state */
-.cart-item.is-loading .cart-item__price-wrapper,
-.cart-item.is-loading .price {
-  opacity: 0.25;
+.cart-item.is-loading {
+  opacity: 0.5;
+  pointer-events: none;
   transition: opacity var(--transition-speed-default) var(--transition-ease);
 }
 

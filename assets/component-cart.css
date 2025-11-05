@@ -342,7 +342,8 @@ cart-items.is-empty .title-wrapper-with-link,
 }
 
 .cart__items .is-loading {
-  opacity: 0.25;
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .cart-item__details {
@@ -354,7 +355,6 @@ cart-items.is-empty .title-wrapper-with-link,
   line-height: 1.25rem; /* 20px */
   display: flex;
   gap: 4px;
-  margin-bottom: 12px;
 
   @media (max-width: 768px) {
     font-size: 0.8125rem; /* 13px */
