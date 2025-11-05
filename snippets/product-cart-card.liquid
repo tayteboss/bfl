@@ -5,7 +5,10 @@
 
 {%- assign index = index | default: item.index | plus: 1 -%}
 
-<div id="CartDrawer-Item-{{ index }}" class="cart-item cart-card">
+<div
+  id="{% if context == 'page' %}CartItem-{{ index }}{% else %}CartDrawer-Item-{{ index }}{% endif %}"
+  class="cart-item cart-card"
+>
   <div class="cart-card__inner">
     <div class="cart-item__media">
       {% assign fg_image = item.product.metafields.custom.foreground_image %}

@@ -91,6 +91,10 @@ function percentageSeen(element) {
   return Math.round(percentage);
 }
 
+// Track modal close state to prevent immediate shake restart
+let modalJustClosed = false;
+let modalCloseCooldown = null;
+
 // Hover shake animation for elements with [data-hover-shake]
 function initializeHoverShake(rootEl = document) {
   try {
@@ -130,6 +134,12 @@ function initializeHoverShake(rootEl = document) {
       (event) => {
         const el = event.target && event.target.closest ? event.target.closest('[data-hover-shake]') : null;
         if (!el) return;
+        if (isModalOpen()) return; // Don't trigger if modal is open
+        if (modalJustClosed) return; // Don't trigger immediately after modal closes
+        if (el.__hoverShakeNeedsReenter) {
+          // Clear the flag since user is hovering again
+          el.__hoverShakeNeedsReenter = false;
+        }
         registerHoverShakeOnElement(el);
         if (hasAnimate) triggerHoverShake(el);
       },
@@ -138,8 +148,106 @@ function initializeHoverShake(rootEl = document) {
     document.addEventListener('focusin', (event) => {
       const el = event.target && event.target.closest ? event.target.closest('[data-hover-shake]') : null;
       if (!el) return;
+      if (isModalOpen()) return; // Don't trigger if modal is open
+      if (modalJustClosed) return; // Don't trigger immediately after modal closes
+      if (el.__hoverShakeNeedsReenter) {
+        // Clear the flag since user is focusing again
+        el.__hoverShakeNeedsReenter = false;
+      }
       registerHoverShakeOnElement(el);
       if (hasAnimate) triggerHoverShake(el);
+    });
+    // Listen for modal events to stop shaking
+    document.addEventListener('modalClosed', () => {
+      stopAllHoverShake();
+      // Set cooldown to prevent immediate restart
+      modalJustClosed = true;
+      if (modalCloseCooldown) clearTimeout(modalCloseCooldown);
+      modalCloseCooldown = setTimeout(() => {
+        modalJustClosed = false;
+        modalCloseCooldown = null;
+      }, 100); // 100ms cooldown after modal closes
+    });
+    // Watch for modals opening/closing via attribute or class changes
+    const modalObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes') {
+          const target = mutation.target;
+
+          // Handle 'open' attribute changes
+          if (mutation.attributeName === 'open') {
+            // Check if this is a modal element
+            if (
+              target.matches &&
+              (target.matches('modal-dialog') ||
+                target.matches('details-modal') ||
+                target.matches('product-modal') ||
+                target.matches('[data-modal]') ||
+                target.closest('modal-dialog, details-modal, product-modal'))
+            ) {
+              const wasOpen = mutation.oldValue !== null;
+              const isNowOpen = target.hasAttribute('open');
+
+              // Stop all shaking when modal state changes
+              stopAllHoverShake();
+
+              // If modal just closed (was open, now not open), set cooldown
+              if (wasOpen && !isNowOpen) {
+                modalJustClosed = true;
+                if (modalCloseCooldown) clearTimeout(modalCloseCooldown);
+                modalCloseCooldown = setTimeout(() => {
+                  modalJustClosed = false;
+                  modalCloseCooldown = null;
+                }, 100); // 100ms cooldown after modal closes
+              }
+            }
+          }
+
+          // Handle class changes for class-based modals
+          if (mutation.attributeName === 'class') {
+            const classList = target.classList;
+            let modalClosed = false;
+
+            // Check if modal visibility classes were removed (modal closed)
+            const hadStoreSelector = mutation.oldValue && mutation.oldValue.includes('store-selector-modal--visible');
+            const hasStoreSelector = classList.contains('store-selector-modal--visible');
+            const hadFiltersModal =
+              mutation.oldValue && mutation.oldValue.includes('filters-modal') && mutation.oldValue.includes('is-open');
+            const hasFiltersModal = classList.contains('filters-modal') && classList.contains('is-open');
+
+            if (
+              classList.contains('store-selector-modal--visible') ||
+              (classList.contains('filters-modal') && classList.contains('is-open'))
+            ) {
+              stopAllHoverShake();
+              // If modal was visible before and is now not, it closed
+              if ((hadStoreSelector && !hasStoreSelector) || (hadFiltersModal && !hasFiltersModal)) {
+                modalClosed = true;
+              }
+            }
+            // Also check if this element is inside a modal
+            if (target.closest('modal-dialog, cart-drawer, details-modal, product-modal')) {
+              stopAllHoverShake();
+            }
+
+            // Set cooldown if modal closed
+            if (modalClosed) {
+              modalJustClosed = true;
+              if (modalCloseCooldown) clearTimeout(modalCloseCooldown);
+              modalCloseCooldown = setTimeout(() => {
+                modalJustClosed = false;
+                modalCloseCooldown = null;
+              }, 100);
+            }
+          }
+        }
+      });
+    });
+    modalObserver.observe(document.body, {
+      attributes: true,
+      subtree: true,
+      attributeFilter: ['open', 'class'],
+      attributeOldValue: true, // Need old value to detect if modal closed
     });
   }
 
@@ -164,11 +272,22 @@ function registerHoverShakeOnElement(el) {
   if (el.__hoverShakeBound) return;
   el.__hoverShakeBound = true;
 
-  const onEnter = () => triggerHoverShake(el);
-  const onLeave = () => stopHoverShake(el);
+  const onEnter = () => {
+    if (isModalOpen()) return; // Don't trigger if modal is open
+    if (modalJustClosed) return; // Don't trigger immediately after modal closes
+    // Clear the "needs reenter" flag when user actually hovers again
+    el.__hoverShakeNeedsReenter = false;
+    triggerHoverShake(el);
+  };
+  const onLeave = () => {
+    stopHoverShake(el);
+    // Clear the flag when user leaves
+    el.__hoverShakeNeedsReenter = false;
+  };
   el.addEventListener('mouseenter', onEnter);
   el.addEventListener('focus', onEnter);
   el.addEventListener('mouseleave', onLeave);
+  el.addEventListener('pointerleave', onLeave); // Also stop on pointerleave
   el.addEventListener('blur', onLeave);
 }
 
@@ -183,6 +302,24 @@ function triggerHoverShake(el) {
     try {
       if ('ontouchstart' in window || (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0)) return;
     } catch (_) {}
+  }
+
+  // Don't trigger if a modal is currently open
+  if (isModalOpen()) {
+    stopHoverShake(el);
+    return;
+  }
+
+  // Don't trigger if modal just closed (cooldown period)
+  if (modalJustClosed) {
+    stopHoverShake(el);
+    return;
+  }
+
+  // Don't trigger if element needs a fresh hover event (was stopped by modal)
+  if (el.__hoverShakeNeedsReenter) {
+    stopHoverShake(el);
+    return;
   }
 
   if (!el.style.transformOrigin) {
@@ -229,6 +366,38 @@ function stopHoverShake(el) {
     el.__hoverShakeAnimation.cancel();
     el.__hoverShakeAnimation = null;
   }
+}
+
+// Stop all hover shake animations on all elements and mark them as needing re-hover
+function stopAllHoverShake() {
+  const elements = Array.from(document.querySelectorAll('[data-hover-shake]'));
+  elements.forEach((el) => {
+    stopHoverShake(el);
+    // Mark element as needing a fresh hover event to restart shake
+    el.__hoverShakeNeedsReenter = true;
+  });
+}
+
+// Check if any modal is currently open
+function isModalOpen() {
+  // Check for modal-dialog elements with open attribute
+  if (document.querySelector('modal-dialog[open]')) return true;
+  // Check for details-modal with open attribute (details element inside details-modal)
+  if (document.querySelector('details-modal details[open]')) return true;
+  // Check for product-modal with open attribute
+  if (document.querySelector('product-modal[open]')) return true;
+  // Check for store selector modal (uses class-based visibility)
+  if (document.querySelector('.store-selector-modal--visible')) return true;
+  // Check for filters modal (uses class-based visibility)
+  if (document.querySelector('.filters-modal.is-open')) return true;
+  // Check for any element with [open] that might be a modal
+  const openElements = document.querySelectorAll('[open]');
+  for (const el of openElements) {
+    if (el.matches('modal-dialog, product-modal') || el.closest('modal-dialog, details-modal, product-modal')) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function getShakeConfig(el) {

@@ -625,6 +625,10 @@ main .shopify-section:first-child:has(.gear-single) {
   }
 }
 
+main .shopify-section:first-child:has(cart-items) {
+  padding-top: calc(var(--logo-height) + 80px);
+}
+
 .primary-button {
   font-size: 1.25rem;
   padding: 1.375rem 2rem 1.3125rem;
