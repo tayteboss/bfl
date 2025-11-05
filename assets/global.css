@@ -597,6 +597,10 @@ a {
   }
 }
 
+.shopify-section:has(product-info) {
+  overflow: visible;
+}
+
 main .shopify-section:first-child {
   padding-top: calc(var(--logo-height) + 9.375rem);
 

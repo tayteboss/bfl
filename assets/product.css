@@ -36,6 +36,8 @@
 
   @media (max-width: 768px) {
     min-height: 400px;
+    max-width: 400px;
+    height: 400px;
     position: relative;
     top: unset;
   }
@@ -459,14 +461,23 @@
   position: relative;
 }
 
+.exposure-variants__option:hover .exposure-variants__option-label,
+.exposure-variants__option:hover .exposure-variants__option-icon {
+  opacity: 0.75;
+}
+
 .exposure-variants__option-label {
   opacity: 0.25;
   line-height: 0.7;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
 }
 
 .exposure-variants__option .exposure-variants__option-icon {
   opacity: 0.25;
   line-height: 0.6;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
 }
 
 /* Default icon/text color */
