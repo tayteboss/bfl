@@ -1,0 +1,131 @@
+.drawer {
+	visibility: hidden;
+}
+
+.drawer.active {
+	visibility: visible;
+}
+
+cart-drawer {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	pointer-events: none;
+}
+
+cart-drawer.active {
+	pointer-events: auto;
+}
+
+.cart-drawer {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+/* Modal layout polish */
+.drawer__inner {
+	padding: 32px;
+}
+
+.drawer__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 24px;
+}
+
+.drawer__heading {
+	margin: 0;
+}
+
+.cart-drawer__overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.55);
+	backdrop-filter: blur(6px);
+	-webkit-backdrop-filter: blur(6px);
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+cart-drawer.active .cart-drawer__overlay {
+	opacity: 1;
+}
+
+.drawer__inner {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: min(92vw, 52rem);
+	max-height: min(92vh, 48rem);
+	height: auto;
+	background: white;
+	border-radius: var(--bfl-modal-radius, 20px);
+	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+	transform: translate(-50%, -50%) scale(0.98);
+	opacity: 0;
+	transition: transform 0.28s ease, opacity 0.2s ease;
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	z-index: 1;
+}
+
+cart-drawer.active .drawer__inner {
+	transform: translate(-50%, -50%) scale(1);
+	opacity: 1;
+}
+
+/* Product row styling (borrowed from cart page, scoped to modal) */
+.drawer__inner .cart-items {
+	width: 100%;
+	border-collapse: collapse;
+}
+.drawer__inner .cart-items thead th {
+	text-transform: uppercase;
+	opacity: 0.6;
+	letter-spacing: 0.02em;
+	padding: 12px 0;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+.drawer__inner .cart-item {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+.drawer__inner .cart-item__media,
+.drawer__inner .cart-item__details {
+	padding: 16px 0;
+	vertical-align: middle;
+}
+.drawer__inner .cart-item__image {
+	display: block;
+	border-radius: 12px;
+	background: var(--color-grey-light);
+}
+.drawer__inner {
+	margin: 4px 0 4px;
+}
+.drawer__inner .cart-item__old-price {
+	opacity: 0.5;
+}
+
+/* Quantity controls inherit global cart styles to match main cart */
+
+@media (max-width: 768px) {
+	.drawer__inner {
+		width: 100vw;
+		max-width: 100vw;
+		max-height: 100vh;
+		height: 100vh;
+		border-radius: 0;
+		padding: 16px;
+	}
+}

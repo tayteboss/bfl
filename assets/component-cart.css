@@ -245,10 +245,6 @@ cart-items {
   margin-bottom: 5rem;
 }
 
-.cart-item__vendor {
-  opacity: 0.25;
-}
-
 .cart-item__details {
   display: flex;
   flex-direction: column;
@@ -275,9 +271,7 @@ cart-items {
 }
 
 .cart-item__media,
-.cart-item__details,
-.cart-item__quantity,
-.cart-item__totals {
+.cart-item__details {
   padding: 1rem 0;
   vertical-align: middle;
 }
@@ -288,38 +282,8 @@ cart-items {
   background: var(--color-grey-light);
 }
 
-.cart-item__name {
-  margin: 0.25rem 0 0.25rem;
-
-  transition: all var(--transition-speed-default) var(--transition-ease);
-}
-
-.cart-item__name:hover {
-  opacity: 0.5;
-}
-
-.cart-item__discounted-prices,
-.cart-item__price-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.5rem;
-}
-
-@media (max-width: 768px) {
-  .cart-item__price-wrapper {
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
-}
-
 .cart-item__old-price {
   opacity: 0.5;
-}
-
-.cart-item__final-price,
-.cart-item__price-wrapper .price {
-  font-weight: 600;
 }
 
 /* Quantity controls (match product quantity styles) */
@@ -327,10 +291,10 @@ cart-items {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: var(--color-grey-light);
+  background: var(--color-grey-light) !important;
   border-radius: 100px;
-  padding: 0 20px;
-  height: 52px;
+  padding: 0 12px;
+  height: 42px;
 }
 
 .cart-quantity .quantity__input {
@@ -340,7 +304,7 @@ cart-items {
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 40px;
+  max-width: 24px;
   background: transparent;
 }
 
@@ -397,9 +361,7 @@ cart-items {
 /* Responsive refinements */
 @media (max-width: 768px) {
   .cart-item__media,
-  .cart-item__details,
-  .cart-item__quantity,
-  .cart-item__totals {
+  .cart-item__details {
     padding: 0.75rem 0;
   }
 
@@ -439,10 +401,6 @@ cart-items {
   }
 }
 
-.cart-item__name {
-  margin-bottom: 8px !important;
-}
-
 .cart-item__details {
   width: auto !important;
 }
@@ -454,21 +412,20 @@ cart-items {
 }
 
 .cart-item__media {
-  @media (max-width: 768px) {
-    grid-column: 1 / -1 !important;
-  }
-}
+  background: var(--color-grey-light) !important;
+  border-radius: 0.75rem;
+  overflow: hidden;
 
-.cart-item__quantity {
   @media (max-width: 768px) {
     grid-column: 1 / -1 !important;
   }
 }
 
 .product-option {
-  margin: 0 !important;
   font-size: 0.875rem; /* 14px */
   line-height: 1.25rem; /* 20px */
+  display: flex;
+  gap: 4px;
 
   @media (max-width: 768px) {
     font-size: 0.8125rem; /* 13px */
