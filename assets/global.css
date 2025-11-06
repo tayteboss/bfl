@@ -1372,8 +1372,8 @@ cart-items .cart__warnings .cart__login-paragraph a {
 }
 
 .bubble-option__icon {
-  min-width: 24px;
-  min-height: 24px;
+  min-width: 18px;
+  min-height: 18px;
   background: transparent;
   border: 1px solid var(--color-black);
   border-radius: 50%;
@@ -1388,7 +1388,7 @@ cart-items .cart__warnings .cart__login-paragraph a {
   text-align: center;
   font-family: var(--font-gt-standard-mono-regular);
   font-weight: 400;
-  font-size: 0.9rem;
+  font-size: 14px;
   line-height: 1;
 
   @media (max-width: 768px) {

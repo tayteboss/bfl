@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const variantInput = form.querySelector('input[name="id"]');
   const submitBtn = form.querySelector('button[type="submit"]');
   const serviceRadios = form.querySelectorAll('input[name="service"]');
-  const serviceBlocks = form.querySelectorAll('.service-groups-block');
+  const serviceBlocks = form.querySelectorAll('.service-groups-wrapper');
   let total = basePrice;
 
   // Hide all service groups initially
@@ -28,9 +28,24 @@ document.addEventListener('DOMContentLoaded', () => {
   serviceRadios.forEach((radio) => {
     radio.addEventListener('change', (e) => {
       const selectedService = e.target.value;
-      serviceBlocks.forEach((block) => (block.style.display = 'none'));
-      const activeBlock = form.querySelector(`.service-groups-block[data-for-service="${selectedService}"]`);
+      // Hide all service blocks first
+      serviceBlocks.forEach((block) => {
+        block.style.display = 'none';
+      });
+
+      // Show active block for selected service
+      const activeBlock = form.querySelector(`.service-groups-wrapper[data-for-service="${selectedService}"]`);
       if (activeBlock) activeBlock.style.display = 'block';
+
+      // Uncheck radios in all non-active service blocks to prevent stale selections affecting totals
+      serviceBlocks.forEach((block) => {
+        if (block !== activeBlock) {
+          block.querySelectorAll('input[type="radio"]:checked').forEach((input) => {
+            input.checked = false;
+          });
+        }
+      });
+
       applyConditions();
     });
   });

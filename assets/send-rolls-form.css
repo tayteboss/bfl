@@ -1,48 +1,76 @@
-/* these two styles are for positioning the summary box */
-.film-service {
-  position: relative;
-}
-
-.order-summary-wrapper {
-  position: absolute;
-  top: 0px;
-  right: 15px;
-  width: 250px;
-  background-color: #FFF750;
-  color: black;
-  padding: 10px 15px;
-  border-radius: 15px;
-}
-
-.summary-details {
-  display: flex;
-  justify-content: space-between;
-  color: grey;
-  font-size: 14px;
-}
-
-.help-div {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* styling for the help icon */
-.help-image {
-  width: 50px;
-  height: auto;
-}
-
-.help-text-wrapper {
-  display: flex;
-}
-
-.help-text-div {
+.rolls-form-cards-wrapper {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  max-width: 780px;
+  margin: 0 auto;
 }
 
-/* literally just for the scan image (this is the actual image) */
-.help-image-scanner {
+.rolls-form-cards-wrapper fieldset {
+  border: none;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+  border: none;
+  min-inline-size: min-content;
+}
+
+.rolls-form-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
+  background: var(--color-grey-light);
+  padding: 24px;
+  border-radius: 24px;
+}
+
+.rolls-form-card__heading {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.rolls-form-card__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  width: 100%;
+  background: var(--color-white);
+  padding: 24px;
+  border-radius: 24px;
+}
+
+.rolls-form-card__inner--content {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.rolls-form-card__subheading {
+  text-align: center;
+}
+
+.rolls-form-card__options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.service-groups-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.rolls-form-card-content {
+  background: var(--color-highlight);
+  width: 100%;
+  padding: 24px;
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
 }

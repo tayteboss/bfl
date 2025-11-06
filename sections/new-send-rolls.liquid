@@ -10,6 +10,8 @@
 
 {%- assign form_data = target_product.metafields.custom.film_services_json.value -%}
 
+{{ 'send-rolls-form.css' | asset_url | stylesheet_tag }}
+
 <form id="film-service-form" action="{{ routes.cart_add_url }}" method="post">
   <input type="hidden" name="quantity" value="1">
   <input type="hidden" name="id" value="{{ target_product.selected_or_first_available_variant.id }}">
@@ -19,113 +21,177 @@
     Base: ${{ target_product.price | money_without_currency }}
   </div>
 
-  <!-- LOCATION PICKER -->
-  <fieldset data-group="location">
-    <legend>Choose a Location</legend>
-    <label
-      ><input type="radio" name="location" value="Miami" data-price="0" required> Miami (<span class="opt-price"
-        >$0</span
-      >)</label
-    >
-    <label
-      ><input type="radio" name="location" value="Chicago" data-price="2"> Chicago (<span class="opt-price">$2</span
-      >)</label
-    >
-    <label
-      ><input type="radio" name="location" value="Orlando" data-price="0"> Orlando (<span class="opt-price">$0</span
-      >)</label
-    >
-    <label
-      ><input type="radio" name="location" value="Atlanta" data-price="0"> Atlanta (<span class="opt-price">$0</span
-      >)</label
-    >
-  </fieldset>
+  <div class="rolls-form-cards-wrapper">
+    <!-- LOCATION PICKER -->
+    <fieldset data-group="location" class="rolls-form-card">
+      <h3 class="rolls-form-card__heading type-h1-x-small">Choose a Location</h3>
+      <div class="rolls-form-card__inner">
+        <p class="rolls-form-card__subheading type-p">Pick your preferred location.</p>
+        <div class="rolls-form-card__options">
+          <label class="bubble-option">
+            <input
+              id="LocationMiami"
+              type="radio"
+              name="location"
+              value="Miami"
+              data-price="0"
+              required
+            >
+            <div class="bubble-option__inner">
+              <div class="bubble-option__icon"></div>
+              <div class="bubble-option__label">Miami (<span class="opt-price">$0</span>)</div>
+            </div>
+          </label>
+          <label class="bubble-option" for="LocationChicago">
+            <input
+              id="LocationChicago"
+              type="radio"
+              name="location"
+              value="Chicago"
+              data-price="2"
+            >
+            <div class="bubble-option__inner">
+              <div class="bubble-option__icon"></div>
+              <div class="bubble-option__label">Chicago (<span class="opt-price">$2</span>)</div>
+            </div>
+          </label>
+          <label class="bubble-option" for="LocationOrlando">
+            <input
+              id="LocationOrlando"
+              type="radio"
+              name="location"
+              value="Orlando"
+              data-price="0"
+            >
+            <div class="bubble-option__inner">
+              <div class="bubble-option__icon"></div>
+              <div class="bubble-option__label">Orlando (<span class="opt-price">$0</span>)</div>
+            </div>
+          </label>
+          <label class="bubble-option" for="LocationAtlanta">
+            <input
+              id="LocationAtlanta"
+              type="radio"
+              name="location"
+              value="Atlanta"
+              data-price="0"
+            >
+            <div class="bubble-option__inner">
+              <div class="bubble-option__icon"></div>
+              <div class="bubble-option__label">Atlanta (<span class="opt-price">$0</span>)</div>
+            </div>
+          </label>
+        </div>
+      </div>
+    </fieldset>
 
-  <!-- SERVICE PICKER -->
-  <fieldset data-group="Service">
-    <legend>Choose a Service</legend>
-    {% for service_name in form_data %}
-      {% assign service_key = service_name[0] %}
-      {% assign service_object = service_name[1] %}
-      {% assign show_if = service_object.show_if | default: '{}' | json | escape %}
+    <!-- SERVICE PICKER -->
+    <fieldset data-group="Service" class="rolls-form-card">
+      <h3 class="rolls-form-card__heading type-h1-x-small">Choose a Service</h3>
+      <div class="rolls-form-card__inner">
+        <p class="rolls-form-card__subheading type-p">What services are you looking for?</p>
+        <div class="rolls-form-card__options">
+          {% for service_name in form_data %}
+            {% assign service_key = service_name[0] %}
+            {% assign service_object = service_name[1] %}
+            {% assign show_if = service_object.show_if | default: '{}' | json | escape %}
 
-      <label>
-        <input
-          type="radio"
-          name="service"
-          value="{{ service_key | escape }}"
-          data-price="0"
-          data-show-if="{{ show_if }}"
-          required
-        >
-        {{ service_key }} (<span class="opt-price">$0</span>)
-      </label>
-    {% endfor %}
-  </fieldset>
-
-  <!-- SERVICE GROUPS -->
-  {% for service in form_data %}
-    {% assign service_name = service[0] %}
-    {% assign groups = service[1] %}
-    <div class="service-groups-block" data-for-service="{{ service_name | escape }}">
-      {% for group in groups %}
-        {% assign group_name = group[0] %}
-        {% assign group_data = group[1] %}
-        {% assign accordion_title = group_data.accordion_title %}
-        {% assign accordion_sub_title = group_data.accordion_sub_title %}
-        {% assign options = group_data.options | default: group_data %}
-
-        <fieldset data-group="{{ group_name | escape }}">
-          <legend>{{ group_name }}</legend>
-
-          {% for opt in options %}
-            <label>
+            <label class="bubble-option" for="Service-{{ service_key | handle }}">
               <input
+                id="Service-{{ service_key | handle }}"
                 type="radio"
-                name="{{ group_name | handle }}"
-                value="{{ opt.label | escape }}"
-                data-price="{{ opt.price | default: 0 }}"
-                data-show-if="{{ opt.show_if | json | escape }}"
-                data-price-overrides="{{ opt.price_overrides | json | escape }}"
+                name="service"
+                value="{{ service_key | escape }}"
+                data-price="0"
+                data-show-if="{{ show_if }}"
+                required
               >
-              {{ opt.label }} (<span class="opt-price">${{ opt.price | default: 0 }}</span>)
+              <div class="bubble-option__inner">
+                <div class="bubble-option__icon"></div>
+                <div class="bubble-option__label">{{ service_key }} (<span class="opt-price">$0</span>)</div>
+              </div>
             </label>
           {% endfor %}
+        </div>
+      </div>
+    </fieldset>
 
-          {% if accordion_title or accordion_sub_title %}
-            <details class="accordion-send-rolls">
-              <summary>{{ accordion_title | default: group_name }}</summary>
-              {% if accordion_sub_title %}
-                <p class="accordion-subtitle">{{ accordion_sub_title }}</p>
-              {% endif %}
+    <!-- SERVICE GROUPS -->
+    {% for service in form_data %}
+      {% assign service_name = service[0] %}
+      {% assign groups = service[1] %}
+      <div class="service-groups-wrapper" data-for-service="{{ service_name | escape }}">
+        {% for group in groups %}
+          {% assign group_name = group[0] %}
+          {% assign group_data = group[1] %}
+          {% assign accordion_title = group_data.accordion_title %}
+          {% assign accordion_sub_title = group_data.accordion_sub_title %}
+          {% assign options = group_data.options | default: group_data %}
 
-              {% for opt in options %}
-                {% if opt.description or opt.description_image %}
-                  <div class="accordion-option">
-                    {% if opt.description_image %}
-                      <img
-                        src="{{ opt.description_image }}"
-                        alt=""
-                        class="desc-image"
-                        width="50px"
-                        height="50px"
-                      >
-                    {% endif %}
-                    <div class="accordion-inner-send-rolls">
-                      <strong>{{ opt.label }}</strong>
-                      {% if opt.description %}
-                        <p>{{ opt.description }}</p>
-                      {% endif %}
+          <fieldset
+            data-group="{{ group_name | escape }}"
+            class="rolls-form-card"
+          >
+            <h3 class="rolls-form-card__heading type-h1-x-small">{{ group_name }}</h3>
+            <div class="rolls-form-card__inner {% if accordion_title %}rolls-form-card__inner--content{% endif %}">
+              <p class="rolls-form-card__subheading type-p">{{ accordion_sub_title }}</p>
+              <div class="rolls-form-card__options">
+                {% for opt in options %}
+                  <label class="bubble-option" for="{{ group_name | handle }}-{{ opt.label | handle }}">
+                    <input
+                      id="{{ group_name | handle }}-{{ opt.label | handle }}"
+                      type="radio"
+                      name="{{ group_name | handle }}"
+                      value="{{ opt.label | escape }}"
+                      data-price="{{ opt.price | default: 0 }}"
+                      data-show-if="{{ opt.show_if | json | escape }}"
+                      data-price-overrides="{{ opt.price_overrides | json | escape }}"
+                    >
+                    <div class="bubble-option__inner">
+                      <div class="bubble-option__icon"></div>
+                      <div class="bubble-option__label">
+                        {{ opt.label }} (<span class="opt-price">${{ opt.price | default: 0 }}</span>)
+                      </div>
                     </div>
-                  </div>
+                  </label>
+                {% endfor %}
+              </div>
+            </div>
+            {% if accordion_title or accordion_sub_title %}
+              <div class="rolls-form-card-content">
+                <h4 class="rolls-form-card-content__heading type-p">{{ accordion_title | default: group_name }}</h4>
+                {% if accordion_sub_title %}
+                  <p class="rolls-form-card-content__subheading type-p">{{ accordion_sub_title }}</p>
                 {% endif %}
-              {% endfor %}
-            </details>
-          {% endif %}
-        </fieldset>
-      {% endfor %}
-    </div>
-  {% endfor %}
+
+                {% for opt in options %}
+                  {% if opt.description or opt.description_image %}
+                    <div class="accordion-option">
+                      {% if opt.description_image %}
+                        <img
+                          src="{{ opt.description_image }}"
+                          alt=""
+                          class="desc-image"
+                          width="50px"
+                          height="50px"
+                        >
+                      {% endif %}
+                      <div class="accordion-inner-send-rolls">
+                        <strong>{{ opt.label }}</strong>
+                        {% if opt.description %}
+                          <p>{{ opt.description }}</p>
+                        {% endif %}
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endif %}
+          </fieldset>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
 
   <div class="end-form">
     <button type="submit">Submit Form</button>
@@ -139,47 +205,5 @@
 </script>
 
 <script src="{{ 'film-service.js' | asset_url }}" defer="defer"></script>
-
-{% style %}
-  fieldset {
-    margin-bottom: 20px;
-    border: 1px solid black;
-    padding: 1rem;
-    border-radius: 6px;
-  }
-
-  legend {
-    margin: auto;
-    font-weight: 600;
-  }
-
-  label {
-    margin-bottom: 0.25rem;
-  }
-
-  input {
-    appearance: auto;
-  }
-
-  .opt-price {
-    font-weight: 600;
-  }
-
-  .end-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .desc-image {
-    width: 50px;
-    height: 50px;
-  }
-
-  .accordion-option {
-    display: flex;
-  }
-{% endstyle %}
 
 {% schema %} { "name": "Send Rolls (Dynamic)", "settings": [ { "type": "product", "id": "carrier_product", "label": "Service product (carrier)" } ], "presets": [ { "name": "Send Rolls (Dynamic)" } ] } {% endschema %}
