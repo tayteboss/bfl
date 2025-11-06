@@ -143,7 +143,7 @@
         {% comment %} Render regular groups (non-Add Ons) {% endcomment %}
         {% for group in groups %}
           {% assign group_name = group[0] %}
-          {% unless group_name contains 'Add Ons -' %}
+          {% unless group_name contains 'Add Ons -' or group_name == 'show_if' %}
             {% assign group_data = group[1] %}
             {% assign group_show_if = group_data.show_if | default: null %}
             {% assign sub_title = group_data.sub_title %}
