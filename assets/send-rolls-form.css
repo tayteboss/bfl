@@ -7,6 +7,13 @@
   margin: 0 auto;
 }
 
+.rolls-form-cards-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
 .rolls-form-cards-wrapper fieldset {
   border: none;
   margin-inline-start: 0;
@@ -41,6 +48,11 @@
   border-radius: 24px;
 }
 
+.rolls-form-card__inner--addon {
+  background: none;
+  gap: 8px;
+}
+
 .rolls-form-card__inner--content {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -58,6 +70,13 @@
   gap: 8px;
 }
 
+.rolls-form-card__options--addon {
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
+
 .service-groups-wrapper {
   display: flex;
   flex-direction: column;
@@ -73,4 +92,122 @@
   padding: 24px;
   border-bottom-left-radius: 24px;
   border-bottom-right-radius: 24px;
+}
+
+.rolls-form-card-content--drop-off {
+  padding: 0;
+}
+
+.rolls-form-card-content__subheading {
+  opacity: 0.5;
+  padding-top: 24px;
+}
+
+.rolls-form-card-content__drop-off-map {
+  position: relative;
+  z-index: 2;
+}
+
+.rolls-form-card-content-options {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding-top: 24px;
+}
+
+.rolls-form-card-content-option {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.rolls-form-card-content-option__image {
+  width: 64px;
+  height: 64px;
+  min-width: 64px;
+  min-height: 64px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.rolls-form-card-content-option__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.rolls-form-card-content-option__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rolls-form-card-content-option__description {
+  opacity: 0.5;
+}
+
+.rolls-form-card__addon-heading {
+  text-align: center;
+}
+
+.rolls-form-card__addon-section {
+  background: var(--color-white);
+  padding: 16px;
+  border-radius: 24px;
+  width: 100%;
+}
+
+.rolls-form-card__addon-option,
+.rolls-form-card__addon-heading {
+  flex: 1;
+}
+
+.rolls-form-card-content__feature-image {
+  margin-bottom: 16px;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  overflow: hidden;
+  padding-top: 24px;
+}
+
+.rolls-form-card-content__feature-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rolls-form-card-content__drop-off-map  {
+  width: 100%;
+  overflow: hidden;
+}
+
+.rolls-form-card-content__drop-off-map .drop-off-map__map {
+  height: 350px !important;
+  min-height: 350px !important;
+
+  @media (max-width: 900px) {
+    height: 350px !important;
+    min-height: 350px !important;
+  }
+}
+
+.rolls-form-card-content__drop-off-map .drop-off-map__inner {
+  border-radius: 0;
+}
+
+.rolls-form-card-content__columns {
+  display: flex;
+  gap: 16px;
+  padding: 24px;
+}
+
+.rolls-form-card-content__columns .faq-card-or-divider::before {
+  background: var(--color-highlight);
+}
+
+.rolls-form-card-content__column-one,
+.rolls-form-card-content__column-two {
+  flex: 1;
 }

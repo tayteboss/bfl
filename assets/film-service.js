@@ -20,9 +20,35 @@ document.addEventListener('DOMContentLoaded', () => {
       .trim()
       .toLowerCase()
       .replace(/\s+/g, '-') // spaces -> hyphen
-      .replace(/_+/g, '-'); // underscores -> hyphen
+      .replace(/_+/g, '-') // underscores -> hyphen
+      .replace(/-+/g, '-'); // normalize multiple hyphens to single hyphen
 
   const normVal = (s) => (s || '').toString().trim().toLowerCase();
+
+  // Helper to get value from selected map with multiple key variations
+  const getSelectedValue = (key, selected) => {
+    // Try original key (lowercased) first
+    const originalLower = (key || '').toString().trim().toLowerCase();
+    if (selected[originalLower] !== undefined) return selected[originalLower];
+
+    // Try normalized key
+    const normalized = normKey(key);
+    if (selected[normalized] !== undefined) return selected[normalized];
+
+    // Try with underscores
+    const withUnderscores = normalized.replace(/-/g, '_');
+    if (selected[withUnderscores] !== undefined) return selected[withUnderscores];
+
+    // Try with multiple hyphens (for cases like "Add Ons - Contact Sheet" -> "add-ons---contact-sheet")
+    const withMultiHyphens = originalLower.replace(/\s+/g, '---').replace(/_+/g, '---');
+    if (selected[withMultiHyphens] !== undefined) return selected[withMultiHyphens];
+
+    // Try original with spaces replaced by single hyphens
+    const withSingleHyphens = originalLower.replace(/\s+/g, '-');
+    if (selected[withSingleHyphens] !== undefined) return selected[withSingleHyphens];
+
+    return null;
+  };
 
   // --- Handle service change (show only selected service block) ---
   serviceRadios.forEach((radio) => {
@@ -35,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Show active block for selected service
       const activeBlock = form.querySelector(`.service-groups-wrapper[data-for-service="${selectedService}"]`);
-      if (activeBlock) activeBlock.style.display = 'block';
+      if (activeBlock) activeBlock.style.display = 'flex';
 
       // Uncheck radios in all non-active service blocks to prevent stale selections affecting totals
       serviceBlocks.forEach((block) => {
@@ -70,10 +96,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Build selected map with multiple aliases for robustness
     const selected = {};
     form.querySelectorAll('input[type="radio"]:checked').forEach((r) => {
-      const keyHyphen = normKey(r.name); // e.g., film-format
+      const keyHyphen = normKey(r.name); // e.g., film-format (normalized)
       const keyUnder = keyHyphen.replace(/-/g, '_'); // e.g., film_format
+      const keyMultiHyphen = r.name.toLowerCase().replace(/\s+/g, '-'); // original with spaces->hyphens (may have multiple hyphens)
       selected[keyHyphen] = r.value;
       selected[keyUnder] = r.value;
+      // Also store the original name variations for matching
+      if (keyMultiHyphen !== keyHyphen) {
+        selected[keyMultiHyphen] = r.value;
+      }
+      // Store original name as-is (lowercased)
+      selected[r.name.toLowerCase()] = r.value;
     });
 
     const hasLocation = !!selected['location'];
@@ -113,8 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (showIf) {
         // Require ALL show-if groups to match (change to .some if you want "any")
         shouldShow = Object.entries(showIf).every(([k, allowed]) => {
-          const key = normKey(k); // normalize group key
-          const sel = selected[key] || selected[key.replace(/-/g, '_')];
+          const sel = getSelectedValue(k, selected);
           if (!Array.isArray(allowed) || !allowed.length) return true;
           const allowedNorm = allowed.map(normVal);
           return sel ? allowedNorm.includes(normVal(sel)) : false;
@@ -145,6 +177,52 @@ document.addEventListener('DOMContentLoaded', () => {
       // Update visible price text
       const priceEl = label.querySelector('.opt-price');
       if (priceEl) priceEl.textContent = newPrice > 0 ? `$${newPrice}` : 'Free';
+    });
+
+    // --- Handle section-level show-if (for Add Ons sections) ---
+    form.querySelectorAll('[data-show-if]').forEach((section) => {
+      // Skip radio buttons (already handled above)
+      if (section.tagName === 'INPUT') return;
+
+      const showIfRaw = section.dataset.showIf;
+      if (!showIfRaw) return;
+
+      const parseJSON = (raw) => {
+        if (!raw || raw === 'null' || raw === '{}' || raw === 'undefined') return null;
+        try {
+          const decoded = raw
+            .replace(/&quot;/g, '"')
+            .replace(/&#39;/g, "'")
+            .replace(/&amp;/g, '&');
+          return JSON.parse(decoded);
+        } catch (err) {
+          console.warn('Invalid JSON in data attribute:', raw);
+          return null;
+        }
+      };
+
+      const showIf = parseJSON(showIfRaw);
+      let shouldShow = true;
+
+      if (showIf) {
+        // Require ALL show-if groups to match
+        shouldShow = Object.entries(showIf).every(([k, allowed]) => {
+          const sel = getSelectedValue(k, selected);
+          if (!Array.isArray(allowed) || !allowed.length) return true;
+          const allowedNorm = allowed.map(normVal);
+          return sel ? allowedNorm.includes(normVal(sel)) : false;
+        });
+      }
+
+      // Hide/show entire section
+      section.style.display = shouldShow ? '' : 'none';
+
+      // Uncheck all radios in section if it becomes hidden
+      if (!shouldShow) {
+        section.querySelectorAll('input[type="radio"]:checked').forEach((radio) => {
+          radio.checked = false;
+        });
+      }
     });
 
     calculateTotal();
