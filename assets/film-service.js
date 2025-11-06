@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.querySelector('#film-service-form');
   if (!form) return;
+  // Disable native constraint validation so our custom validator handles errors/scroll
+  try {
+    form.setAttribute('novalidate', 'novalidate');
+  } catch (_) {}
 
   const totalDisplay = document.querySelector('#film-total-display');
   const basePrice = Number(document.querySelector('#base-price').dataset.base);
@@ -12,6 +16,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Hide all service groups initially
   serviceBlocks.forEach((block) => (block.style.display = 'none'));
+
+  // --- Visibility helpers for validation ---
+  const isVisible = (el) => {
+    if (!el) return false;
+    const style = window.getComputedStyle(el);
+    if (style.display === 'none' || style.visibility === 'hidden') return false;
+    return !!(el.offsetParent || style.position === 'fixed');
+  };
+
+  const getVisibleFieldsets = () =>
+    Array.from(form.querySelectorAll('fieldset.rolls-form-card')).filter((fs) => isVisible(fs));
+
+  const getVisibleRadiosInFieldset = (fs) =>
+    Array.from(fs.querySelectorAll('input[type="radio"]')).filter((r) => {
+      const carrier = r.closest('label') || r;
+      return isVisible(carrier);
+    });
+
+  const clearErrorsOnHidden = () => {
+    form.querySelectorAll('fieldset.rolls-form-card').forEach((fs) => {
+      if (!isVisible(fs)) fs.classList.remove('rolls-form-card--error');
+    });
+  };
+
+  const validateOpenFields = () => {
+    const errors = [];
+    getVisibleFieldsets().forEach((fs) => {
+      const visibleRadios = getVisibleRadiosInFieldset(fs);
+      if (visibleRadios.length === 0) {
+        fs.classList.remove('rolls-form-card--error');
+        return;
+      }
+      const anyChecked = visibleRadios.some((r) => r.checked);
+      if (!anyChecked) {
+        fs.classList.add('rolls-form-card--error');
+        errors.push(fs);
+      } else {
+        fs.classList.remove('rolls-form-card--error');
+      }
+    });
+    return { errors };
+  };
 
   // Utility: normalize keys/values so JSON keys like "Film Format", "film_format" match radio.name "film-format"
   const normKey = (s) =>
@@ -109,11 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
       selected[r.name.toLowerCase()] = r.value;
     });
 
-    const hasLocation = !!selected['location'];
-    const hasService = !!selected['service'];
-
-    // Enforce required picks
-    if (submitBtn) submitBtn.disabled = !(hasLocation && hasService);
+    // We no longer disable the submit button live; submission is blocked by custom validation
 
     form.querySelectorAll('input[type="radio"]').forEach((radio) => {
       const label = radio.closest('label');
@@ -225,12 +267,23 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Clear any lingering error states on hidden sections
+    clearErrorsOnHidden();
+
     calculateTotal();
   }
 
   // React to any radio change
   form.addEventListener('change', (e) => {
-    if (e.target.matches('input[type="radio"]')) applyConditions();
+    if (e.target.matches('input[type="radio"]')) {
+      applyConditions();
+      const fs = e.target.closest('fieldset.rolls-form-card');
+      if (fs) {
+        const visibleRadios = getVisibleRadiosInFieldset(fs);
+        const anyChecked = visibleRadios.some((r) => r.checked);
+        if (anyChecked) fs.classList.remove('rolls-form-card--error');
+      }
+    }
   });
 
   // Match variant by price
@@ -243,10 +296,17 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const location = form.querySelector('input[name="location"]:checked');
-    const service = form.querySelector('input[name="service"]:checked');
-    if (!location || !service) {
-      alert('Please choose both a location and a service before continuing.');
+    // Validate all currently open/visible fields
+    const { errors } = validateOpenFields();
+    if (errors.length > 0) {
+      // Scroll to first error section (100px above)
+      const first = errors
+        .map((fs) => ({ fs, top: fs.getBoundingClientRect().top + window.scrollY }))
+        .sort((a, b) => a.top - b.top)[0].fs;
+      const targetY = Math.max(0, first.getBoundingClientRect().top + window.scrollY - 250);
+      window.scrollTo({ top: targetY, behavior: 'smooth' });
+      const focusTarget = first.querySelector('input[type="radio"]');
+      if (focusTarget) focusTarget.focus({ preventScroll: true });
       return;
     }
 
