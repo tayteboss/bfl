@@ -60,6 +60,15 @@
   </div>
 </header>
 
+{% liquid
+  assign should_minimise_header = false
+  if request.page_type == 'product'
+    assign should_minimise_header = true
+  elsif request.path contains '/pages/gear-rental/' or request.path contains 'gear-rental-single' or request.path contains 'tape-digitization'
+    assign should_minimise_header = true
+  endif
+%}
+
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const header = document.querySelector('header');
@@ -79,6 +88,12 @@
     {% endif %}
     const MIN_WGHT = 10;
     const MAX_WGHT = 250;
+    const SHOULD_MINIMISE_ON_LOAD = {{ should_minimise_header | json }};
+    let forceInitialMinimise = SHOULD_MINIMISE_ON_LOAD;
+
+    if (SHOULD_MINIMISE_ON_LOAD) {
+      body.classList.add('minimise-header');
+    }
 
     // Track scroll direction to hide/show the menu toggle button
     let lastScrollY = window.scrollY || window.pageYOffset || 0;
@@ -122,6 +137,16 @@
     // Toggle minimise-header based on threshold and scroll direction
     const updateMinimiseHeader = (y, diff) => {
       const currentY = typeof y === 'number' ? y : window.scrollY || window.pageYOffset || 0;
+      if (forceInitialMinimise) {
+        const hasPassedThreshold = currentY > MAX_RANGE_PX;
+        if (hasPassedThreshold || (typeof diff === 'number' && diff < -SCROLL_DIR_THRESHOLD)) {
+          forceInitialMinimise = false;
+        } else {
+          body.classList.add('minimise-header');
+          return;
+        }
+      }
+
       const isPast = currentY > MAX_RANGE_PX;
       if (!isPast) {
         body.classList.remove('minimise-header');
@@ -313,7 +338,17 @@
     updateMinimiseHeader();
 
     // Step-based random weight for header logo + collapse via wdth after 500px
-    if (logoEl) {
+    if (logoEl && SHOULD_MINIMISE_ON_LOAD) {
+      const currentHeaderWeight = parseInt(
+        getComputedStyle(document.documentElement).getPropertyValue('--font-weight-header'),
+        10
+      );
+      if (Number.isNaN(currentHeaderWeight) || currentHeaderWeight <= 0) {
+        document.documentElement.style.setProperty('--font-weight-header', '80');
+      }
+      logoEl.style.display = 'none';
+      logoEl.style.fontVariationSettings = '';
+    } else if (logoEl) {
       const STEP_PX = 40;
 
       let lastStep = -1;

@@ -29,20 +29,23 @@
             {% endif %}
           </div>
         </div>
-        <div class="product-content product-content--tape-digitization">
+        <div class="product-content product-content">
           <div class="product-content__header tape-digitization-content__header">
             <h1 class="product-content__title type-h1-small">{{ product.title }}</h1>
-            <div class="product-content__price badge-button badge-button--highlight">
-              <span id="price-{{ section.id }}" class="type-p-large">{{ product.price | money }}</span>
-            </div>
+          </div>
+
+          <div class="product-content__price">
+            <span id="price-{{ section.id }}" class="type-p">{{ product.price | money }}</span>
+          </div>
+
+          <div class="product-content__description-wrapper product-content__description-wrapper--tape-digitization">
+            {%- if product.description != blank -%}
+              <div class="product-content__description type-p">{{ product.description }}</div>
+            {%- endif -%}
           </div>
 
           <div class="product-form tape-digitization-form">
-            <div class="product-content__description-wrapper tape-digitization-content__description-wrapper">
-              {%- if product.description != blank -%}
-                <div class="product-content__description type-p-large">{{ product.description }}</div>
-              {%- endif -%}
-            </div>
+            <h2 class="tape-digitization-form__heading type-h1-x-small">Select details</h2>
             {%- if product.has_only_default_variant == false -%}
               <div class="contact-form__fields">
                 <div class="contact-form__fields-inner">

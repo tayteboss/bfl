@@ -93,6 +93,7 @@
           </div>
           {% render 'product-film-features' %}
           <div class="product-form">
+            <p class="variant-options__legend type-p">Options:</p>
             {%- assign has_exposure_option = false -%}
             {%- for opt in product.options -%}
               {%- assign opt_down = opt | downcase -%}
@@ -101,6 +102,7 @@
                 {%- break -%}
               {%- endif -%}
             {%- endfor -%}
+
             {%- if has_exposure_option -%}
               {%- render 'product-exposure-variants',
                 product: product,

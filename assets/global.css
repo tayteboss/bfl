@@ -598,6 +598,7 @@ a {
 }
 
 .shopify-section:has(product-info),
+.shopify-section:has(.gear-single),
 .shopify-section:has(.faq),
 .shopify-section:has(footer) {
   overflow: visible;
@@ -619,16 +620,10 @@ main .shopify-section:first-child:has(.drop-off) {
   }
 }
 
-main .shopify-section:first-child:has(product-info) {
-  padding-top: calc(var(--logo-height) + 1rem);
-}
-
+main .shopify-section:first-child:has(product-info),
+main .shopify-section:first-child:has(.tape-digitization-page),
 main .shopify-section:first-child:has(.gear-single) {
-  padding-top: calc(var(--logo-height) + 1rem);
-
-  @media (max-width: 768px) {
-    padding-bottom: 80px;
-  }
+  padding-top: 24px;
 }
 
 main .shopify-section:first-child:has(cart-items) {
