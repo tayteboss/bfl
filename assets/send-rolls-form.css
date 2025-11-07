@@ -226,6 +226,14 @@
   flex: 1;
 }
 
+.rolls-form-card__addon-option:last-child {
+  text-align: right;
+}
+
+.rolls-form-card__addon-option .bubble-option {
+  display: inline-flex;
+}
+
 .rolls-form-card-content__feature-image {
   margin-bottom: 16px;
   width: 100%;
@@ -263,7 +271,7 @@
 .rolls-form-card-content__columns {
   display: flex;
   gap: 16px;
-  padding: 24px;
+  padding-top: 24px;
 }
 
 .rolls-form-card-content__columns .faq-card-or-divider::before {

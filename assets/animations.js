@@ -494,8 +494,14 @@ function initializeFAQAccordions(rootEl = document) {
   function primeStates(root) {
     root.querySelectorAll('[data-faq-content]').forEach((content) => {
       const inner = content.querySelector('.faq-card__inner');
-      const btn = content.closest('.faq-card');
       const hidden = content.hasAttribute('hidden');
+      // Prefer trigger that references this content via aria-controls
+      let btn = null;
+      if (content.id) {
+        btn = root.querySelector('[data-faq-trigger][aria-controls="' + content.id + '"]');
+      }
+      // Fallback to legacy structure where trigger wraps content
+      if (!btn) btn = content.closest('[data-faq-trigger], .faq-card');
       if (btn) btn.setAttribute('aria-expanded', hidden ? 'false' : 'true');
       if (inner) inner.style.opacity = hidden ? '0' : '1';
     });
@@ -509,19 +515,17 @@ function initializeFAQAccordions(rootEl = document) {
       const btn = e.target.closest('[data-faq-trigger]');
       if (!btn || !list.contains(btn)) return;
       let content = btn.querySelector('[data-faq-content]');
+      // Support external content via aria-controls
       if (!content) {
         const controlsId = btn.getAttribute('aria-controls');
         if (controlsId) content = document.getElementById(controlsId);
       }
+      // Fallback: adjacent sibling
       if (!content) {
         const maybeSibling = btn.nextElementSibling;
         if (maybeSibling && maybeSibling.matches && maybeSibling.matches('[data-faq-content]')) {
           content = maybeSibling;
         }
-      }
-      if (!content) {
-        const card = btn.closest('.rolls-form-card-content, .faq-card');
-        if (card) content = card.querySelector('[data-faq-content]');
       }
       if (!content) return;
       toggle(btn, content);

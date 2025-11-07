@@ -221,7 +221,9 @@
                     aria-controls="rfc-content-{{ content_uid }}"
                     id="rfc-btn-{{ content_uid }}"
                     data-faq-trigger
-                  ></button>
+                  >
+                    <div class="rolls-form-card-content-trigger" data-content-trigger></div>
+                  </button>
 
                   <div
                     class="rolls-form-card-content-outer"
@@ -230,7 +232,6 @@
                     aria-labelledby="rfc-btn-{{ content_uid }}"
                     hidden
                     data-faq-content
-                    onclick="event.stopPropagation()"
                   >
                     <div class="rolls-form-card-content-inner faq-card__inner">
                       {% if accordion_sub_title %}
@@ -383,7 +384,9 @@
                             aria-controls="rfc-content-{{ content_uid }}"
                             id="rfc-btn-{{ content_uid }}"
                             data-faq-trigger
-                          ></button>
+                          >
+                            <div class="rolls-form-card-content-trigger"></div>
+                          </button>
 
                           <div
                             class="rolls-form-card-content-outer"
@@ -392,7 +395,6 @@
                             aria-labelledby="rfc-btn-{{ content_uid }}"
                             hidden
                             data-faq-content
-                            onclick="event.stopPropagation()"
                           >
                             <div class="rolls-form-card-content-inner faq-card__inner"></div>
                           </div>
@@ -495,19 +497,21 @@
                 </div>
                 {% if accordion_title or accordion_sub_title %}
                   {% assign content_uid = service_name | append: '-' | append: group_name | handle %}
-                  <button
-                    type="button"
-                    class="rolls-form-card-content"
-                    aria-expanded="false"
-                    aria-controls="rfc-content-{{ content_uid }}"
-                    id="rfc-btn-{{ content_uid }}"
-                    data-faq-trigger
-                  >
+                  <div class="rolls-form-card-content">
                     <h3 class="rolls-form-card-content__heading type-p">
                       {{ accordion_title | default: stripped_name }}
                     </h3>
 
-                    <div class="rolls-form-card-content-trigger"></div>
+                    <button
+                      type="button"
+                      class="rolls-form-card-content-trigger-btn"
+                      aria-expanded="false"
+                      aria-controls="rfc-content-{{ content_uid }}"
+                      id="rfc-btn-{{ content_uid }}"
+                      data-faq-trigger
+                    >
+                      <div class="rolls-form-card-content-trigger"></div>
+                    </button>
 
                     <div
                       class="rolls-form-card-content-outer"
@@ -516,7 +520,6 @@
                       aria-labelledby="rfc-btn-{{ content_uid }}"
                       hidden
                       data-faq-content
-                      onclick="event.stopPropagation()"
                     >
                       <div class="rolls-form-card-content-inner faq-card__inner">
                         {% if accordion_sub_title %}
@@ -562,7 +565,7 @@
                         {% endif %}
                       </div>
                     </div>
-                  </button>
+                  </div>
                 {% endif %}
               </fieldset>
             {% endif %}
