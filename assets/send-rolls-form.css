@@ -95,15 +95,70 @@
   padding: 24px;
   border-bottom-left-radius: 24px;
   border-bottom-right-radius: 24px;
+  position: relative;
+}
+
+.rolls-form-card-content-trigger-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 24px;
+  height: 24px;
+  background: var(--color-black);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.25;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+}
+
+.rolls-form-card-content-trigger-btn[aria-expanded="true"] {
+  transform: rotate(45deg);
+}
+
+.rolls-form-card-content-trigger-btn:hover {
+  opacity: 1;
+}
+
+.rolls-form-card-content-trigger-btn::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 1px;
+  background: var(--color-highlight);
+  border-radius: 1px;
+  transform: translate(-50%, -50%);
+}
+
+.rolls-form-card-content-trigger-btn::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1px;
+  height: 12px;
+  background: var(--color-highlight);
+  border-radius: 1px;
+  transform: translate(-50%, -50%);
 }
 
 .rolls-form-card-content--drop-off {
   padding: 0;
 }
 
+.rolls-form-card-content__heading {
+  text-align: left;
+}
+
 .rolls-form-card-content__subheading {
   opacity: 0.5;
-  padding-top: 24px;
+  padding-top: 16px;
+  text-align: left;
 }
 
 .rolls-form-card-content__drop-off-map {
@@ -123,6 +178,11 @@
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+.rolls-form-card-content-option__label {
+  font-family: var(--font-diatype-rounded-bold);
+  text-align: left;
 }
 
 .rolls-form-card-content-option__image {

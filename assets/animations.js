@@ -508,7 +508,21 @@ function initializeFAQAccordions(rootEl = document) {
     list.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-faq-trigger]');
       if (!btn || !list.contains(btn)) return;
-      const content = btn.querySelector('[data-faq-content]');
+      let content = btn.querySelector('[data-faq-content]');
+      if (!content) {
+        const controlsId = btn.getAttribute('aria-controls');
+        if (controlsId) content = document.getElementById(controlsId);
+      }
+      if (!content) {
+        const maybeSibling = btn.nextElementSibling;
+        if (maybeSibling && maybeSibling.matches && maybeSibling.matches('[data-faq-content]')) {
+          content = maybeSibling;
+        }
+      }
+      if (!content) {
+        const card = btn.closest('.rolls-form-card-content, .faq-card');
+        if (card) content = card.querySelector('[data-faq-content]');
+      }
       if (!content) return;
       toggle(btn, content);
     });

@@ -30,7 +30,7 @@
     Base: ${{ target_product.price | money_without_currency }}
   </div>
 
-  <div class="rolls-form-cards-wrapper">
+  <div class="rolls-form-cards-wrapper" data-faq-list>
     <!-- LOCATION PICKER -->
     <fieldset data-group="location" class="rolls-form-card">
       <h3 class="rolls-form-card__heading type-h1-x-small">Choose a Location</h3>
@@ -208,73 +208,95 @@
                 {% endfor %}
               {% endif %}
               {% if has_content %}
+                {% assign content_uid = service_name | append: '-' | append: group_name | handle %}
                 <div class="rolls-form-card-content">
                   {% if accordion_title %}
                     <h3 class="rolls-form-card-content__heading type-p">{{ accordion_title }}</h3>
                   {% endif %}
-                  {% if accordion_sub_title %}
-                    <p class="rolls-form-card-content__subheading type-p">{{ accordion_sub_title }}</p>
-                  {% endif %}
 
-                  {% assign has_opts_desc = false %}
-                  {% if options and options.size > 0 %}
-                    {% for opt in options %}
-                      {% if opt.description or opt.description_image %}
-                        {% assign has_opts_desc = true %}
+                  <button
+                    type="button"
+                    class="rolls-form-card-content-trigger-btn"
+                    aria-expanded="false"
+                    aria-controls="rfc-content-{{ content_uid }}"
+                    id="rfc-btn-{{ content_uid }}"
+                    data-faq-trigger
+                  ></button>
+
+                  <div
+                    class="rolls-form-card-content-outer"
+                    id="rfc-content-{{ content_uid }}"
+                    role="region"
+                    aria-labelledby="rfc-btn-{{ content_uid }}"
+                    hidden
+                    data-faq-content
+                    onclick="event.stopPropagation()"
+                  >
+                    <div class="rolls-form-card-content-inner faq-card__inner">
+                      {% if accordion_sub_title %}
+                        <p class="rolls-form-card-content__subheading type-p">{{ accordion_sub_title }}</p>
                       {% endif %}
-                    {% endfor %}
-                  {% endif %}
-                  {% if has_opts_desc %}
-                    <div class="rolls-form-card-content-options">
-                      {% for opt in options %}
-                        {% if opt.description or opt.description_image %}
-                          <div class="rolls-form-card-content-option">
-                            {% if opt.description_image %}
-                              <div class="rolls-form-card-content-option__image">
-                                <img
-                                  src="{{ opt.description_image }}"
-                                  alt=""
-                                  class="desc-image"
-                                  width="50px"
-                                  height="50px"
-                                >
+                      {% assign has_opts_desc = false %}
+                      {% if options and options.size > 0 %}
+                        {% for opt in options %}
+                          {% if opt.description or opt.description_image %}
+                            {% assign has_opts_desc = true %}
+                          {% endif %}
+                        {% endfor %}
+                      {% endif %}
+                      {% if has_opts_desc %}
+                        <div class="rolls-form-card-content-options">
+                          {% for opt in options %}
+                            {% if opt.description or opt.description_image %}
+                              <div class="rolls-form-card-content-option">
+                                {% if opt.description_image %}
+                                  <div class="rolls-form-card-content-option__image">
+                                    <img
+                                      src="{{ opt.description_image }}"
+                                      alt=""
+                                      class="desc-image"
+                                      width="50px"
+                                      height="50px"
+                                    >
+                                  </div>
+                                {% endif %}
+                                <div class="rolls-form-card-content-option__content">
+                                  <p class="rolls-form-card-content-option__label type-p-large">{{ opt.label }}</p>
+                                  {% if opt.description %}
+                                    <p class="rolls-form-card-content-option__description type-p">
+                                      {{ opt.description }}
+                                    </p>
+                                  {% endif %}
+                                </div>
                               </div>
                             {% endif %}
-                            <div class="rolls-form-card-content-option__content">
-                              <p class="rolls-form-card-content-option__label type-p">{{ opt.label }}</p>
-                              {% if opt.description %}
-                                <p class="rolls-form-card-content-option__description type-p">
-                                  {{ opt.description }}
-                                </p>
-                              {% endif %}
-                            </div>
-                          </div>
-                        {% endif %}
-                      {% endfor %}
-                    </div>
-                  {% endif %}
+                          {% endfor %}
+                        </div>
+                      {% endif %}
 
-                  {% if feature_image or column_one_richtext or column_two_richtext %}
-                    {% if feature_image %}
-                      <div class="rolls-form-card-content__feature-image">
-                        <img src="{{ feature_image }}" alt="" width="100%" height="auto" style="border-radius:8px;">
-                      </div>
-                    {% endif %}
-                    {% if column_one_richtext or column_two_richtext %}
-                      <div class="rolls-form-card-content__columns rich-text">
-                        {% if column_one_richtext %}
-                          <div class="rolls-form-card-content__column-one">
-                            {{ column_one_richtext }}
+                      {% if feature_image or column_one_richtext or column_two_richtext %}
+                        {% if feature_image %}
+                          <div class="rolls-form-card-content__feature-image">
+                            <img src="{{ feature_image }}" alt="" width="100%" height="auto" style="border-radius:8px;">
                           </div>
                         {% endif %}
-                        {% if column_two_richtext %}
-                          <div class="rolls-form-card-content__column-two">
-                            {{ column_two_richtext }}
+                        {% if column_one_richtext or column_two_richtext %}
+                          <div class="rolls-form-card-content__columns rich-text">
+                            {% if column_one_richtext %}
+                              <div class="rolls-form-card-content__column-one">
+                                {{ column_one_richtext }}
+                              </div>
+                            {% endif %}
+                            {% if column_two_richtext %}
+                              <div class="rolls-form-card-content__column-two">
+                                {{ column_two_richtext }}
+                              </div>
+                            {% endif %}
                           </div>
                         {% endif %}
-                      </div>
-                    {% endif %}
-                  {% endif %}
+                      {% endif %}
+                    </div>
+                  </div>
                 </div>
               {% endif %}
             </fieldset>
@@ -348,10 +370,32 @@
                         </div>
                       </div>
                       {% if accordion_title or accordion_sub_title %}
+                        {% assign content_uid = service_name | append: '-' | append: group_name | handle %}
                         <div class="rolls-form-card-content">
                           <h3 class="rolls-form-card-content__heading type-p">
                             {{ accordion_title | default: stripped_name }}
                           </h3>
+
+                          <button
+                            type="button"
+                            class="rolls-form-card-content-trigger-btn"
+                            aria-expanded="false"
+                            aria-controls="rfc-content-{{ content_uid }}"
+                            id="rfc-btn-{{ content_uid }}"
+                            data-faq-trigger
+                          ></button>
+
+                          <div
+                            class="rolls-form-card-content-outer"
+                            id="rfc-content-{{ content_uid }}"
+                            role="region"
+                            aria-labelledby="rfc-btn-{{ content_uid }}"
+                            hidden
+                            data-faq-content
+                            onclick="event.stopPropagation()"
+                          >
+                            <div class="rolls-form-card-content-inner faq-card__inner"></div>
+                          </div>
                           {% if accordion_sub_title %}
                             <p class="rolls-form-card-content__subheading type-p">{{ accordion_sub_title }}</p>
                           {% endif %}
@@ -381,7 +425,7 @@
                                       </div>
                                     {% endif %}
                                     <div class="rolls-form-card-content-option__content">
-                                      <p class="rolls-form-card-content-option__label type-p">{{ opt.label }}</p>
+                                      <p class="rolls-form-card-content-option__label type-p-large">{{ opt.label }}</p>
                                       {% if opt.description %}
                                         <p class="rolls-form-card-content-option__description type-p">
                                           {{ opt.description }}
@@ -450,52 +494,75 @@
                   </div>
                 </div>
                 {% if accordion_title or accordion_sub_title %}
-                  <div class="rolls-form-card-content">
+                  {% assign content_uid = service_name | append: '-' | append: group_name | handle %}
+                  <button
+                    type="button"
+                    class="rolls-form-card-content"
+                    aria-expanded="false"
+                    aria-controls="rfc-content-{{ content_uid }}"
+                    id="rfc-btn-{{ content_uid }}"
+                    data-faq-trigger
+                  >
                     <h3 class="rolls-form-card-content__heading type-p">
                       {{ accordion_title | default: stripped_name }}
                     </h3>
-                    {% if accordion_sub_title %}
-                      <p class="rolls-form-card-content__subheading type-p">{{ accordion_sub_title }}</p>
-                    {% endif %}
 
-                    {% assign has_opts_desc = false %}
-                    {% if options and options.size > 0 %}
-                      {% for opt in options %}
-                        {% if opt.description or opt.description_image %}
-                          {% assign has_opts_desc = true %}
+                    <div class="rolls-form-card-content-trigger"></div>
+
+                    <div
+                      class="rolls-form-card-content-outer"
+                      id="rfc-content-{{ content_uid }}"
+                      role="region"
+                      aria-labelledby="rfc-btn-{{ content_uid }}"
+                      hidden
+                      data-faq-content
+                      onclick="event.stopPropagation()"
+                    >
+                      <div class="rolls-form-card-content-inner faq-card__inner">
+                        {% if accordion_sub_title %}
+                          <p class="rolls-form-card-content__subheading type-p">{{ accordion_sub_title }}</p>
                         {% endif %}
-                      {% endfor %}
-                    {% endif %}
-                    {% if has_opts_desc %}
-                      <div class="rolls-form-card-content-options">
-                        {% for opt in options %}
-                          {% if opt.description or opt.description_image %}
-                            <div class="rolls-form-card-content-option">
-                              {% if opt.description_image %}
-                                <div class="rolls-form-card-content-option__image">
-                                  <img
-                                    src="{{ opt.description_image }}"
-                                    alt=""
-                                    class="desc-image"
-                                    width="50px"
-                                    height="50px"
-                                  >
+
+                        {% assign has_opts_desc = false %}
+                        {% if options and options.size > 0 %}
+                          {% for opt in options %}
+                            {% if opt.description or opt.description_image %}
+                              {% assign has_opts_desc = true %}
+                            {% endif %}
+                          {% endfor %}
+                        {% endif %}
+                        {% if has_opts_desc %}
+                          <div class="rolls-form-card-content-options">
+                            {% for opt in options %}
+                              {% if opt.description or opt.description_image %}
+                                <div class="rolls-form-card-content-option">
+                                  {% if opt.description_image %}
+                                    <div class="rolls-form-card-content-option__image">
+                                      <img
+                                        src="{{ opt.description_image }}"
+                                        alt=""
+                                        class="desc-image"
+                                        width="50px"
+                                        height="50px"
+                                      >
+                                    </div>
+                                  {% endif %}
+                                  <div class="rolls-form-card-content-option__content">
+                                    <p class="rolls-form-card-content-option__label type-p-large">{{ opt.label }}</p>
+                                    {% if opt.description %}
+                                      <p class="rolls-form-card-content-option__description type-p">
+                                        {{ opt.description }}
+                                      </p>
+                                    {% endif %}
+                                  </div>
                                 </div>
                               {% endif %}
-                              <div class="rolls-form-card-content-option__content">
-                                <p class="rolls-form-card-content-option__label type-p">{{ opt.label }}</p>
-                                {% if opt.description %}
-                                  <p class="rolls-form-card-content-option__description type-p">
-                                    {{ opt.description }}
-                                  </p>
-                                {% endif %}
-                              </div>
-                            </div>
-                          {% endif %}
-                        {% endfor %}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
                       </div>
-                    {% endif %}
-                  </div>
+                    </div>
+                  </button>
                 {% endif %}
               </fieldset>
             {% endif %}
