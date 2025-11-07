@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const osList = document.querySelector('[data-os-list]');
   const osToggle = document.querySelector('[data-os-toggle]');
   const osDetails = document.querySelector('[data-os-details]');
+  const orderSummary = document.querySelector('[data-order-summary]');
   // Feature flag: show per-option prices in the Order Summary
   const OS_SHOW_PRICES = true;
   const basePrice = Number(document.querySelector('#base-price').dataset.base);
@@ -133,6 +134,12 @@ document.addEventListener('DOMContentLoaded', () => {
   //   serviceRadios[0].dispatchEvent(new Event('change'));
   // }
 
+  const updateOrderSummaryVisibility = () => {
+    if (!orderSummary) return;
+    const anyChecked = !!form.querySelector('input[type="radio"]:checked');
+    orderSummary.style.display = anyChecked ? '' : 'none';
+  };
+
   // --- UI helpers for Order Summary ---
   const formatMoney = (num) => `$${Number(num || 0).toFixed(2)}`;
 
@@ -189,7 +196,15 @@ document.addEventListener('DOMContentLoaded', () => {
       ).trim();
       const labelEl = checked.closest('label');
       const valueEl = labelEl ? labelEl.querySelector('.bubble-option__label') : null;
-      const valueText = valueEl ? valueEl.textContent.trim() : checked.value;
+      // Extract only the option label text, explicitly excluding any .opt-price span
+      let valueText = '';
+      if (valueEl) {
+        const copy = valueEl.cloneNode(true);
+        copy.querySelectorAll('.opt-price').forEach((n) => n.remove());
+        valueText = (copy.textContent || '').trim();
+      } else {
+        valueText = (checked.value || '').trim();
+      }
       const priceNum = Number(checked.dataset.price || 0);
       createRow(labelText, valueText, priceNum);
     });
@@ -216,6 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     if (totalDisplay) totalDisplay.textContent = formatMoney(total);
     renderSummary();
+    updateOrderSummaryVisibility();
   }
 
   // --- Conditions (show-if + price-overrides) with normalized keys ---
@@ -364,6 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const anyChecked = visibleRadios.some((r) => r.checked);
         if (anyChecked) fs.classList.remove('rolls-form-card--error');
       }
+      updateOrderSummaryVisibility();
     }
   });
 
@@ -427,4 +444,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Init
   applyConditions();
+  updateOrderSummaryVisibility();
 });

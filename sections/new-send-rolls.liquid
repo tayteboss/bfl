@@ -21,398 +21,235 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
 
-<section class="send-rolls-title-wrapper">
-  <h1 class="send-rolls-title type-h2-medium">Send us your rolls</h1>
-  <h2 class="send-rolls-subtitle type-h2-medium">Film Development & Scanning</h2>
-</section>
+<div class="send-rolls">
+  <div class="layout-wrapper">
+    <section class="send-rolls-title-wrapper">
+      <h1 class="send-rolls-title type-h2-medium">Send us your rolls</h1>
+      <h2 class="send-rolls-subtitle type-h2-medium">Film Development & Scanning</h2>
+    </section>
 
-<form id="film-service-form" action="{{ routes.cart_add_url }}" method="post">
-  <input type="hidden" name="quantity" value="1">
-  <input type="hidden" name="id" value="{{ target_product.selected_or_first_available_variant.id }}">
+    <form id="film-service-form" action="{{ routes.cart_add_url }}" method="post">
+      <input type="hidden" name="quantity" value="1">
+      <input type="hidden" name="id" value="{{ target_product.selected_or_first_available_variant.id }}">
 
-  <!-- BASE PRICE -->
-  <div id="base-price" data-base="{{ target_product.price | money_without_currency | default: 0 }}">
-    Base: ${{ target_product.price | money_without_currency }}
-  </div>
-
-  <div class="rolls-form-cards-wrapper" data-faq-list>
-    <!-- LOCATION PICKER -->
-    <fieldset data-group="location" class="rolls-form-card">
-      <h3 class="rolls-form-card__heading type-h1-x-small" order-summary-heading="Location">Choose a Location</h3>
-      <div class="rolls-form-card__inner">
-        <p class="rolls-form-card__subheading type-p">Pick your preferred location.</p>
-        <div class="rolls-form-card__options">
-          <label class="bubble-option">
-            <input
-              id="LocationMiami"
-              type="radio"
-              name="location"
-              value="Miami"
-              data-price="0"
-              required
-            >
-            <div class="bubble-option__inner">
-              <div class="bubble-option__icon"></div>
-              <div class="bubble-option__label">Miami <span class="opt-price">($0)</span></div>
-            </div>
-          </label>
-          <label class="bubble-option" for="LocationChicago">
-            <input
-              id="LocationChicago"
-              type="radio"
-              name="location"
-              value="Chicago"
-              data-price="2"
-            >
-            <div class="bubble-option__inner">
-              <div class="bubble-option__icon"></div>
-              <div class="bubble-option__label">Chicago <span class="opt-price">($2)</span></div>
-            </div>
-          </label>
-          <label class="bubble-option" for="LocationOrlando">
-            <input
-              id="LocationOrlando"
-              type="radio"
-              name="location"
-              value="Orlando"
-              data-price="0"
-            >
-            <div class="bubble-option__inner">
-              <div class="bubble-option__icon"></div>
-              <div class="bubble-option__label">Orlando <span class="opt-price">($0)</span></div>
-            </div>
-          </label>
-          <label class="bubble-option" for="LocationAtlanta">
-            <input
-              id="LocationAtlanta"
-              type="radio"
-              name="location"
-              value="Atlanta"
-              data-price="0"
-            >
-            <div class="bubble-option__inner">
-              <div class="bubble-option__icon"></div>
-              <div class="bubble-option__label">Atlanta <span class="opt-price">($0)</span></div>
-            </div>
-          </label>
-        </div>
+      <!-- BASE PRICE -->
+      <div id="base-price" data-base="{{ target_product.price | money_without_currency | default: 0 }}">
+        Base: ${{ target_product.price | money_without_currency }}
       </div>
-    </fieldset>
 
-    <!-- SERVICE PICKER -->
-    <fieldset data-group="Service" class="rolls-form-card">
-      <h3 class="rolls-form-card__heading type-h1-x-small" order-summary-heading="Service">Choose a Service</h3>
-      <div class="rolls-form-card__inner">
-        <p class="rolls-form-card__subheading type-p">What services are you looking for?</p>
-        <div class="rolls-form-card__options">
-          {% for service_name in form_data %}
-            {% assign service_key = service_name[0] %}
-            {% assign service_object = service_name[1] %}
-            {% assign show_if = service_object.show_if | default: '{}' | json | escape %}
-
-            <label class="bubble-option" for="Service-{{ service_key | handle }}">
-              <input
-                id="Service-{{ service_key | handle }}"
-                type="radio"
-                name="service"
-                value="{{ service_key | escape }}"
-                data-price="0"
-                data-show-if="{{ show_if }}"
-                required
-              >
-              <div class="bubble-option__inner">
-                <div class="bubble-option__icon"></div>
-                <div class="bubble-option__label">
-                  {{ service_key }}
-                  <span class="opt-price">($0)</span>
+      <div class="rolls-form-cards-wrapper" data-faq-list>
+        <!-- LOCATION PICKER -->
+        <fieldset data-group="location" class="rolls-form-card">
+          <h3 class="rolls-form-card__heading type-h1-x-small" order-summary-heading="Location">Choose a Location</h3>
+          <div class="rolls-form-card__inner">
+            <p class="rolls-form-card__subheading type-p">Pick your preferred location.</p>
+            <div class="rolls-form-card__options">
+              <label class="bubble-option">
+                <input
+                  id="LocationMiami"
+                  type="radio"
+                  name="location"
+                  value="Miami"
+                  data-price="0"
+                  required
+                >
+                <div class="bubble-option__inner">
+                  <div class="bubble-option__icon"></div>
+                  <div class="bubble-option__label">Miami <span class="opt-price">($0)</span></div>
                 </div>
-              </div>
-            </label>
-          {% endfor %}
-        </div>
-      </div>
-    </fieldset>
-
-    <!-- SERVICE GROUPS -->
-    {% for service in form_data %}
-      {% assign service_name = service[0] %}
-      {% assign groups = service[1] %}
-      <div class="service-groups-wrapper" data-for-service="{{ service_name | escape }}">
-        {% comment %} Check if there are any Add Ons groups {% endcomment %}
-        {% assign has_addons = false %}
-        {% for group in groups %}
-          {% assign group_name = group[0] %}
-          {% if group_name contains 'Add Ons -' %}
-            {% assign has_addons = true %}
-            {% break %}
-          {% endif %}
-        {% endfor %}
-
-        {% comment %} Render regular groups (non-Add Ons) {% endcomment %}
-        {% for group in groups %}
-          {% assign group_name = group[0] %}
-          {% unless group_name contains 'Add Ons -' or group_name == 'show_if' %}
-            {% assign group_data = group[1] %}
-            {% assign group_show_if = group_data.show_if | default: null %}
-            {% assign sub_title = group_data.sub_title %}
-            {% assign accordion_title = group_data.accordion_title %}
-            {% assign accordion_sub_title = group_data.accordion_sub_title %}
-            {% assign options = group_data.options | default: group_data %}
-            {% assign feature_image = group_data.feature_image %}
-            {% assign column_one_richtext = group_data.column_one_richtext %}
-            {% assign column_two_richtext = group_data.column_two_richtext %}
-
-            <fieldset
-              data-group="{{ group_name | escape }}"
-              class="rolls-form-card"
-              {% if group_show_if %}
-                data-show-if="{{ group_show_if | json | escape }}"
-              {% endif %}
-            >
-              <h3 class="rolls-form-card__heading type-h1-x-small" order-summary-heading="{{ group_name }}">
-                {{ group_name }}
-              </h3>
-              <div class="rolls-form-card__inner {% if accordion_title %}rolls-form-card__inner--content{% endif %}">
-                {% if sub_title %}
-                  <p class="rolls-form-card__subheading type-p">{{ sub_title }}</p>
-                {% endif %}
-                <div class="rolls-form-card__options">
-                  {% if options and options.size > 0 %}
-                    {% for opt in options %}
-                      <label class="bubble-option" for="{{ group_name | handle }}-{{ opt.label | handle }}">
-                        <input
-                          id="{{ group_name | handle }}-{{ opt.label | handle }}"
-                          type="radio"
-                          name="{{ group_name | handle }}"
-                          value="{{ opt.label | escape }}"
-                          data-price="{{ opt.price | default: 0 }}"
-                          data-show-if="{{ opt.show_if | json | escape }}"
-                          data-price-overrides="{{ opt.price_overrides | json | escape }}"
-                        >
-                        <div class="bubble-option__inner">
-                          <div class="bubble-option__icon"></div>
-                          <div class="bubble-option__label">
-                            {{ opt.label }}
-                            <span class="opt-price">(${{ opt.price | default: 0 }})</span>
-                          </div>
-                        </div>
-                      </label>
-                    {% endfor %}
-                  {% endif %}
+              </label>
+              <label class="bubble-option" for="LocationChicago">
+                <input
+                  id="LocationChicago"
+                  type="radio"
+                  name="location"
+                  value="Chicago"
+                  data-price="2"
+                >
+                <div class="bubble-option__inner">
+                  <div class="bubble-option__icon"></div>
+                  <div class="bubble-option__label">Chicago <span class="opt-price">($2)</span></div>
                 </div>
-              </div>
+              </label>
+              <label class="bubble-option" for="LocationOrlando">
+                <input
+                  id="LocationOrlando"
+                  type="radio"
+                  name="location"
+                  value="Orlando"
+                  data-price="0"
+                >
+                <div class="bubble-option__inner">
+                  <div class="bubble-option__icon"></div>
+                  <div class="bubble-option__label">Orlando <span class="opt-price">($0)</span></div>
+                </div>
+              </label>
+              <label class="bubble-option" for="LocationAtlanta">
+                <input
+                  id="LocationAtlanta"
+                  type="radio"
+                  name="location"
+                  value="Atlanta"
+                  data-price="0"
+                >
+                <div class="bubble-option__inner">
+                  <div class="bubble-option__icon"></div>
+                  <div class="bubble-option__label">Atlanta <span class="opt-price">($0)</span></div>
+                </div>
+              </label>
+            </div>
+          </div>
+        </fieldset>
 
-              {% assign has_content = false %}
-              {% if accordion_title
-                or accordion_sub_title
-                or feature_image
-                or column_one_richtext
-                or column_two_richtext
-              %}
-                {% assign has_content = true %}
-              {% endif %}
-              {% if has_content == false and options and options.size > 0 %}
-                {% for opt in options %}
-                  {% if opt.description or opt.description_image %}
-                    {% assign has_content = true %}
-                  {% endif %}
-                {% endfor %}
-              {% endif %}
-              {% if has_content %}
-                {% assign content_uid = service_name | append: '-' | append: group_name | handle %}
-                <div class="rolls-form-card-content">
-                  {% if accordion_title %}
-                    <h3 class="rolls-form-card-content__heading type-p">{{ accordion_title }}</h3>
-                  {% endif %}
+        <!-- SERVICE PICKER -->
+        <fieldset data-group="Service" class="rolls-form-card">
+          <h3 class="rolls-form-card__heading type-h1-x-small" order-summary-heading="Service">Choose a Service</h3>
+          <div class="rolls-form-card__inner">
+            <p class="rolls-form-card__subheading type-p">What services are you looking for?</p>
+            <div class="rolls-form-card__options">
+              {% for service_name in form_data %}
+                {% assign service_key = service_name[0] %}
+                {% assign service_object = service_name[1] %}
+                {% assign show_if = service_object.show_if | default: '{}' | json | escape %}
 
-                  <button
-                    type="button"
-                    class="rolls-form-card-content-trigger-btn"
-                    aria-expanded="false"
-                    aria-controls="rfc-content-{{ content_uid }}"
-                    id="rfc-btn-{{ content_uid }}"
-                    data-faq-trigger
+                <label class="bubble-option" for="Service-{{ service_key | handle }}">
+                  <input
+                    id="Service-{{ service_key | handle }}"
+                    type="radio"
+                    name="service"
+                    value="{{ service_key | escape }}"
+                    data-price="0"
+                    data-show-if="{{ show_if }}"
+                    required
                   >
-                    <div class="rolls-form-card-content-trigger" data-content-trigger></div>
-                  </button>
+                  <div class="bubble-option__inner">
+                    <div class="bubble-option__icon"></div>
+                    <div class="bubble-option__label">
+                      {{ service_key }}
+                      <span class="opt-price">($0)</span>
+                    </div>
+                  </div>
+                </label>
+              {% endfor %}
+            </div>
+          </div>
+        </fieldset>
 
-                  <div
-                    class="rolls-form-card-content-outer"
-                    id="rfc-content-{{ content_uid }}"
-                    role="region"
-                    aria-labelledby="rfc-btn-{{ content_uid }}"
-                    hidden
-                    data-faq-content
-                  >
-                    <div class="rolls-form-card-content-inner faq-card__inner">
-                      {% if accordion_sub_title %}
-                        <p class="rolls-form-card-content__subheading type-p">{{ accordion_sub_title }}</p>
-                      {% endif %}
-                      {% assign has_opts_desc = false %}
+        <!-- SERVICE GROUPS -->
+        {% for service in form_data %}
+          {% assign service_name = service[0] %}
+          {% assign groups = service[1] %}
+          <div class="service-groups-wrapper" data-for-service="{{ service_name | escape }}">
+            {% comment %} Check if there are any Add Ons groups {% endcomment %}
+            {% assign has_addons = false %}
+            {% for group in groups %}
+              {% assign group_name = group[0] %}
+              {% if group_name contains 'Add Ons -' %}
+                {% assign has_addons = true %}
+                {% break %}
+              {% endif %}
+            {% endfor %}
+
+            {% comment %} Render regular groups (non-Add Ons) {% endcomment %}
+            {% for group in groups %}
+              {% assign group_name = group[0] %}
+              {% unless group_name contains 'Add Ons -' or group_name == 'show_if' %}
+                {% assign group_data = group[1] %}
+                {% assign group_show_if = group_data.show_if | default: null %}
+                {% assign sub_title = group_data.sub_title %}
+                {% assign accordion_title = group_data.accordion_title %}
+                {% assign accordion_sub_title = group_data.accordion_sub_title %}
+                {% assign options = group_data.options | default: group_data %}
+                {% assign feature_image = group_data.feature_image %}
+                {% assign column_one_richtext = group_data.column_one_richtext %}
+                {% assign column_two_richtext = group_data.column_two_richtext %}
+
+                <fieldset
+                  data-group="{{ group_name | escape }}"
+                  class="rolls-form-card"
+                  {% if group_show_if %}
+                    data-show-if="{{ group_show_if | json | escape }}"
+                  {% endif %}
+                >
+                  <h3 class="rolls-form-card__heading type-h1-x-small" order-summary-heading="{{ group_name }}">
+                    {{ group_name }}
+                  </h3>
+                  <div class="rolls-form-card__inner {% if accordion_title %}rolls-form-card__inner--content{% endif %}">
+                    {% if sub_title %}
+                      <p class="rolls-form-card__subheading type-p">{{ sub_title }}</p>
+                    {% endif %}
+                    <div class="rolls-form-card__options">
                       {% if options and options.size > 0 %}
                         {% for opt in options %}
-                          {% if opt.description or opt.description_image %}
-                            {% assign has_opts_desc = true %}
-                          {% endif %}
+                          <label class="bubble-option" for="{{ group_name | handle }}-{{ opt.label | handle }}">
+                            <input
+                              id="{{ group_name | handle }}-{{ opt.label | handle }}"
+                              type="radio"
+                              name="{{ group_name | handle }}"
+                              value="{{ opt.label | escape }}"
+                              data-price="{{ opt.price | default: 0 }}"
+                              data-show-if="{{ opt.show_if | json | escape }}"
+                              data-price-overrides="{{ opt.price_overrides | json | escape }}"
+                            >
+                            <div class="bubble-option__inner">
+                              <div class="bubble-option__icon"></div>
+                              <div class="bubble-option__label">
+                                {{ opt.label }}
+                                <span class="opt-price">(${{ opt.price | default: 0 }})</span>
+                              </div>
+                            </div>
+                          </label>
                         {% endfor %}
-                      {% endif %}
-                      {% if has_opts_desc %}
-                        <div class="rolls-form-card-content-options">
-                          {% for opt in options %}
-                            {% if opt.description or opt.description_image %}
-                              <div class="rolls-form-card-content-option">
-                                {% if opt.description_image %}
-                                  <div class="rolls-form-card-content-option__image">
-                                    <img
-                                      src="{{ opt.description_image }}"
-                                      alt=""
-                                      class="desc-image"
-                                      width="50px"
-                                      height="50px"
-                                    >
-                                  </div>
-                                {% endif %}
-                                <div class="rolls-form-card-content-option__content">
-                                  <p class="rolls-form-card-content-option__label type-p-large">{{ opt.label }}</p>
-                                  {% if opt.description %}
-                                    <p class="rolls-form-card-content-option__description type-p">
-                                      {{ opt.description }}
-                                    </p>
-                                  {% endif %}
-                                </div>
-                              </div>
-                            {% endif %}
-                          {% endfor %}
-                        </div>
-                      {% endif %}
-
-                      {% if feature_image or column_one_richtext or column_two_richtext %}
-                        {% if feature_image %}
-                          <div class="rolls-form-card-content__feature-image">
-                            <img src="{{ feature_image }}" alt="" width="100%" height="auto" style="border-radius:8px;">
-                          </div>
-                        {% endif %}
-                        {% if column_one_richtext or column_two_richtext %}
-                          <div class="rolls-form-card-content__columns rich-text">
-                            {% if column_one_richtext %}
-                              <div class="rolls-form-card-content__column-one">
-                                {{ column_one_richtext }}
-                              </div>
-                            {% endif %}
-                            {% if column_two_richtext %}
-                              <div class="rolls-form-card-content__column-two">
-                                {{ column_two_richtext }}
-                              </div>
-                            {% endif %}
-                          </div>
-                        {% endif %}
                       {% endif %}
                     </div>
                   </div>
-                </div>
-              {% endif %}
-            </fieldset>
-          {% endunless %}
-        {% endfor %}
 
-        {% if has_addons %}
-          <fieldset
-            data-group="Add Ons"
-            class="rolls-form-card"
-          >
-            <h3 class="rolls-form-card__heading type-h1-x-small">Add Ons</h3>
-            <div class="rolls-form-card__inner rolls-form-card__inner--addon">
-              {% for group in groups %}
-                {% assign group_name = group[0] %}
-                {% if group_name contains 'Add Ons -' %}
-                  {% assign group_data = group[1] %}
-                  {% assign group_show_if = group_data.show_if | default: null %}
-                  {% comment %} Only render Add Ons without show_if conditions here {% endcomment %}
-                  {% unless group_show_if %}
-                    {% assign stripped_name = group_name | replace: 'Add Ons -', '' | strip %}
-                    {% assign sub_title = group_data.sub_title %}
-                    {% assign accordion_title = group_data.accordion_title %}
-                    {% assign accordion_sub_title = group_data.accordion_sub_title %}
-                    {% assign options = group_data.options | default: group_data %}
+                  {% assign has_content = false %}
+                  {% if accordion_title
+                    or accordion_sub_title
+                    or feature_image
+                    or column_one_richtext
+                    or column_two_richtext
+                  %}
+                    {% assign has_content = true %}
+                  {% endif %}
+                  {% if has_content == false and options and options.size > 0 %}
+                    {% for opt in options %}
+                      {% if opt.description or opt.description_image %}
+                        {% assign has_content = true %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                  {% if has_content %}
+                    {% assign content_uid = service_name | append: '-' | append: group_name | handle %}
+                    <div class="rolls-form-card-content">
+                      {% if accordion_title %}
+                        <h3 class="rolls-form-card-content__heading type-p">{{ accordion_title }}</h3>
+                      {% endif %}
 
-                    <div class="rolls-form-card__addon-section">
-                      <div class="rolls-form-card__options rolls-form-card__options--addon">
-                        <div class="rolls-form-card__addon-option">
-                          <label class="bubble-option" for="{{ group_name | handle }}-{{ options[0].label | handle }}">
-                            <input
-                              id="{{ group_name | handle }}-{{ options[0].label | handle }}"
-                              type="radio"
-                              name="{{ group_name | handle }}"
-                              value="{{ options[0].label | escape }}"
-                              data-price="{{ options[0].price | default: 0 }}"
-                              data-show-if="{{ options[0].show_if | json | escape }}"
-                              data-price-overrides="{{ options[0].price_overrides | json | escape }}"
-                            >
-                            <div class="bubble-option__inner">
-                              <div class="bubble-option__icon"></div>
-                              <div class="bubble-option__label">
-                                {{ options[0].label }}
-                                <span class="opt-price">(${{ options[0].price | default: 0 }})</span>
-                              </div>
-                            </div>
-                          </label>
-                        </div>
+                      <button
+                        type="button"
+                        class="rolls-form-card-content-trigger-btn"
+                        aria-expanded="false"
+                        aria-controls="rfc-content-{{ content_uid }}"
+                        id="rfc-btn-{{ content_uid }}"
+                        data-faq-trigger
+                      >
+                        <div class="rolls-form-card-content-trigger" data-content-trigger></div>
+                      </button>
 
-                        <p class="rolls-form-card__addon-heading type-p">{{ stripped_name }}</p>
-
-                        <div class="rolls-form-card__addon-option">
-                          <label class="bubble-option" for="{{ group_name | handle }}-{{ options[1].label | handle }}">
-                            <input
-                              id="{{ group_name | handle }}-{{ options[1].label | handle }}"
-                              type="radio"
-                              name="{{ group_name | handle }}"
-                              value="{{ options[1].label | escape }}"
-                              data-price="{{ options[1].price | default: 0 }}"
-                              data-show-if="{{ options[1].show_if | json | escape }}"
-                              data-price-overrides="{{ options[1].price_overrides | json | escape }}"
-                            >
-                            <div class="bubble-option__inner">
-                              <div class="bubble-option__icon"></div>
-                              <div class="bubble-option__label">
-                                {{ options[1].label }}
-                                <span class="opt-price">(${{ options[1].price | default: 0 }})</span>
-                              </div>
-                            </div>
-                          </label>
-                        </div>
-                      </div>
-                      {% if accordion_title or accordion_sub_title %}
-                        {% assign content_uid = service_name | append: '-' | append: group_name | handle %}
-                        <div class="rolls-form-card-content">
-                          <h3 class="rolls-form-card-content__heading type-p">
-                            {{ accordion_title | default: stripped_name }}
-                          </h3>
-
-                          <button
-                            type="button"
-                            class="rolls-form-card-content-trigger-btn"
-                            aria-expanded="false"
-                            aria-controls="rfc-content-{{ content_uid }}"
-                            id="rfc-btn-{{ content_uid }}"
-                            data-faq-trigger
-                          >
-                            <div class="rolls-form-card-content-trigger"></div>
-                          </button>
-
-                          <div
-                            class="rolls-form-card-content-outer"
-                            id="rfc-content-{{ content_uid }}"
-                            role="region"
-                            aria-labelledby="rfc-btn-{{ content_uid }}"
-                            hidden
-                            data-faq-content
-                          >
-                            <div class="rolls-form-card-content-inner faq-card__inner"></div>
-                          </div>
+                      <div
+                        class="rolls-form-card-content-outer"
+                        id="rfc-content-{{ content_uid }}"
+                        role="region"
+                        aria-labelledby="rfc-btn-{{ content_uid }}"
+                        hidden
+                        data-faq-content
+                      >
+                        <div class="rolls-form-card-content-inner faq-card__inner">
                           {% if accordion_sub_title %}
                             <p class="rolls-form-card-content__subheading type-p">{{ accordion_sub_title }}</p>
                           {% endif %}
-
                           {% assign has_opts_desc = false %}
                           {% if options and options.size > 0 %}
                             {% for opt in options %}
@@ -450,331 +287,512 @@
                               {% endfor %}
                             </div>
                           {% endif %}
-                        </div>
-                      {% endif %}
-                    </div>
-                  {% endunless %}
-                {% endif %}
-              {% endfor %}
-            </div>
-          </fieldset>
-        {% endif %}
 
-        {% comment %} Render conditional Add Ons groups (with show_if) as regular fieldsets after Add Ons section {% endcomment %}
-        {% for group in groups %}
-          {% assign group_name = group[0] %}
-          {% if group_name contains 'Add Ons -' %}
-            {% assign group_data = group[1] %}
-            {% assign group_show_if = group_data.show_if | default: null %}
-            {% if group_show_if %}
-              {% assign stripped_name = group_name | replace: 'Add Ons -', '' | strip %}
-              {% assign sub_title = group_data.sub_title %}
-              {% assign accordion_title = group_data.accordion_title %}
-              {% assign accordion_sub_title = group_data.accordion_sub_title %}
-              {% assign options = group_data.options | default: group_data %}
-
-              <fieldset
-                data-group="{{ group_name | escape }}"
-                class="rolls-form-card"
-                data-show-if="{{ group_show_if | json | escape }}"
-                data-conditional-addon="true"
-              >
-                <h3 class="rolls-form-card__heading type-h1-x-small" order-summary-heading="{{ stripped_name }}">
-                  {{ stripped_name }}
-                </h3>
-                <div class="rolls-form-card__inner {% if accordion_title %}rolls-form-card__inner--content{% endif %}">
-                  {% if sub_title %}
-                    <p class="rolls-form-card__subheading type-p">{{ sub_title }}</p>
-                  {% endif %}
-                  <div class="rolls-form-card__options">
-                    {% for opt in options %}
-                      <label class="bubble-option" for="{{ group_name | handle }}-{{ opt.label | handle }}">
-                        <input
-                          id="{{ group_name | handle }}-{{ opt.label | handle }}"
-                          type="radio"
-                          name="{{ group_name | handle }}"
-                          value="{{ opt.label | escape }}"
-                          data-price="{{ opt.price | default: 0 }}"
-                          data-show-if="{{ opt.show_if | json | escape }}"
-                          data-price-overrides="{{ opt.price_overrides | json | escape }}"
-                        >
-                        <div class="bubble-option__inner">
-                          <div class="bubble-option__icon"></div>
-                          <div class="bubble-option__label">
-                            {{ opt.label }}
-                            <span class="opt-price">(${{ opt.price | default: 0 }})</span>
-                          </div>
-                        </div>
-                      </label>
-                    {% endfor %}
-                  </div>
-                </div>
-                {% if accordion_title or accordion_sub_title %}
-                  {% assign content_uid = service_name | append: '-' | append: group_name | handle %}
-                  <div class="rolls-form-card-content">
-                    <h3 class="rolls-form-card-content__heading type-p">
-                      {{ accordion_title | default: stripped_name }}
-                    </h3>
-
-                    <button
-                      type="button"
-                      class="rolls-form-card-content-trigger-btn"
-                      aria-expanded="false"
-                      aria-controls="rfc-content-{{ content_uid }}"
-                      id="rfc-btn-{{ content_uid }}"
-                      data-faq-trigger
-                    >
-                      <div class="rolls-form-card-content-trigger"></div>
-                    </button>
-
-                    <div
-                      class="rolls-form-card-content-outer"
-                      id="rfc-content-{{ content_uid }}"
-                      role="region"
-                      aria-labelledby="rfc-btn-{{ content_uid }}"
-                      hidden
-                      data-faq-content
-                    >
-                      <div class="rolls-form-card-content-inner faq-card__inner">
-                        {% if accordion_sub_title %}
-                          <p class="rolls-form-card-content__subheading type-p">{{ accordion_sub_title }}</p>
-                        {% endif %}
-
-                        {% assign has_opts_desc = false %}
-                        {% if options and options.size > 0 %}
-                          {% for opt in options %}
-                            {% if opt.description or opt.description_image %}
-                              {% assign has_opts_desc = true %}
+                          {% if feature_image or column_one_richtext or column_two_richtext %}
+                            {% if feature_image %}
+                              <div class="rolls-form-card-content__feature-image">
+                                <img
+                                  src="{{ feature_image }}"
+                                  alt=""
+                                  width="100%"
+                                  height="auto"
+                                  style="border-radius:8px;"
+                                >
+                              </div>
                             {% endif %}
-                          {% endfor %}
-                        {% endif %}
-                        {% if has_opts_desc %}
-                          <div class="rolls-form-card-content-options">
-                            {% for opt in options %}
-                              {% if opt.description or opt.description_image %}
-                                <div class="rolls-form-card-content-option">
-                                  {% if opt.description_image %}
-                                    <div class="rolls-form-card-content-option__image">
-                                      <img
-                                        src="{{ opt.description_image }}"
-                                        alt=""
-                                        class="desc-image"
-                                        width="50px"
-                                        height="50px"
-                                      >
-                                    </div>
-                                  {% endif %}
-                                  <div class="rolls-form-card-content-option__content">
-                                    <p class="rolls-form-card-content-option__label type-p-large">{{ opt.label }}</p>
-                                    {% if opt.description %}
-                                      <p class="rolls-form-card-content-option__description type-p">
-                                        {{ opt.description }}
-                                      </p>
-                                    {% endif %}
+                            {% if column_one_richtext or column_two_richtext %}
+                              <div class="rolls-form-card-content__columns rich-text">
+                                {% if column_one_richtext %}
+                                  <div class="rolls-form-card-content__column-one">
+                                    {{ column_one_richtext }}
                                   </div>
-                                </div>
-                              {% endif %}
-                            {% endfor %}
-                          </div>
-                        {% endif %}
+                                {% endif %}
+                                {% if column_two_richtext %}
+                                  <div class="rolls-form-card-content__column-two">
+                                    {{ column_two_richtext }}
+                                  </div>
+                                {% endif %}
+                              </div>
+                            {% endif %}
+                          {% endif %}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                {% endif %}
-              </fieldset>
-            {% endif %}
-          {% endif %}
-        {% endfor %}
-      </div>
-    {% endfor %}
+                  {% endif %}
+                </fieldset>
+              {% endunless %}
+            {% endfor %}
 
-    <!-- Delivery Options -->
-    <fieldset data-group="location" class="rolls-form-card">
-      <h3 class="rolls-form-card__heading type-h1-x-small" order-summary-heading="Delivery">Delivery</h3>
-      <div class="rolls-form-card__inner rolls-form-card__inner--content">
-        <p class="rolls-form-card__subheading type-p">Pick how you'd like to send your film.</p>
-        <div class="rolls-form-card__options rolls-form-card__options--addon">
-          <div class="rolls-form-card__addon-option">
-            <label class="bubble-option" for="LocationMailIn">
-              <input
-                id="LocationMailIn"
-                type="radio"
-                name="delivery"
-                value="Mail In"
-                data-price="0"
-                required
+            {% if has_addons %}
+              <fieldset
+                data-group="Add Ons"
+                class="rolls-form-card"
               >
-              <div class="bubble-option__inner">
-                <div class="bubble-option__icon"></div>
-                <div class="bubble-option__label">Mail In <span class="opt-price">($0)</span></div>
-              </div>
-            </label>
-          </div>
+                <h3 class="rolls-form-card__heading type-h1-x-small">Add Ons</h3>
+                <div class="rolls-form-card__inner rolls-form-card__inner--addon">
+                  {% for group in groups %}
+                    {% assign group_name = group[0] %}
+                    {% if group_name contains 'Add Ons -' %}
+                      {% assign group_data = group[1] %}
+                      {% assign group_show_if = group_data.show_if | default: null %}
+                      {% comment %} Only render Add Ons without show_if conditions here {% endcomment %}
+                      {% unless group_show_if %}
+                        {% assign stripped_name = group_name | replace: 'Add Ons -', '' | strip %}
+                        {% assign sub_title = group_data.sub_title %}
+                        {% assign accordion_title = group_data.accordion_title %}
+                        {% assign accordion_sub_title = group_data.accordion_sub_title %}
+                        {% assign options = group_data.options | default: group_data %}
 
-          <p class="rolls-form-card__addon-heading type-p">Delivery Method</p>
-
-          <div class="rolls-form-card__addon-option">
-            <label class="bubble-option" for="LocationDropOff">
-              <input
-                id="LocationDropOff"
-                type="radio"
-                name="delivery"
-                value="Drop Off"
-                data-price="0"
-              >
-              <div class="bubble-option__inner">
-                <div class="bubble-option__icon"></div>
-                <div class="bubble-option__label">Drop Off <span class="opt-price">($0)</span></div>
-              </div>
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <div class="rolls-form-card-content rolls-form-card-content--drop-off">
-        <div class="rolls-form-card-content__drop-off-map">
-          <div class="drop-off">
-            {% render 'drop-off-map', use_small_map: true %}
-            <script id="dropOffLocations" type="application/json">
-              [
-                {% for block in section.blocks %}
-                {
-                  "id": {{ block.settings.id | json }},
-                  "name": {{ block.settings.name | json }},
-                  "address": {{ block.settings.address | json }},
-                  "lat": {{ block.settings.lat | json }},
-                  "lng": {{ block.settings.lng | json }},
-                  "phone": {{ block.settings.phone | json }},
-                  "website": {{ block.settings.website | json }},
-                  "googleMapsUrl": {{ block.settings.google_maps_url | json }},
-                  "thumbnail": {% if block.settings.thumbnail %}{{ block.settings.thumbnail | image_url: width: 800 | json }}{% else %}null{% endif %}
-                }{% unless forloop.last %},{% endunless %}
-                {% endfor %}
-              ]
-            </script>
-          </div>
-        </div>
-
-        <div class="rolls-form-card-content rolls-form-card-content--mail-in rich-text">
-          <div class="rolls-form-card-content__column-one">
-            <div class="rich-text">
-              <p>
-                <strong><u>Mail in:</u></strong>
-              </p>
-              <p>
-                Upon order completion, you’ll be guided through your next steps. To ship to the lab, include your order
-                number with your film in a securely packed box or bubble mailer. Use ample material and tape to ensure
-                your film arrives safely.
-              </p>
-
-              <p>📬 Mail your film to us:</p>
-              <ul
-                role="list"
-                class="mail-in-locations-list"
-                data-locations-list-mail-in
-              ></ul>
-              <script>
-                (function () {
-                  // Prevent duplicates: Always clear the list before populating it
-                  const locationsList = document.querySelector('[data-locations-list-mail-in]');
-                  if (!locationsList) return;
-
-                  // Remove previous list items if present
-                  locationsList.innerHTML = '';
-
-                  const jsonUrl =
-                    window.Shopify && window.Shopify.assetUrl
-                      ? window.Shopify.assetUrl('locations.json')
-                      : '{{ "locations.json" | asset_url }}';
-
-                  fetch(jsonUrl, { credentials: 'same-origin' })
-                    .then((r) => (r.ok ? r.json() : null))
-                    .then((locations) => {
-                      if (!locations || !Array.isArray(locations)) return;
-
-                      locations.forEach((location) => {
-                        const li = document.createElement('li');
-                        li.className = 'mail-in-locations-list__item';
-                        li.style.marginBottom = '1.25em';
-
-                        li.innerHTML = `
-                          <div class="mail-in-location">
-                            <div class="mail-in-location__title type-p">${location.name}</div>
-                            <div class="mail-in-location__address">
-                              <a
-                                href="${location.addressUrl}"
-                                target="_blank"
-                                rel="noopener"
-                                class="type-p-small"
-                                style="text-decoration:underline;"
-                              >${location.address}</a>
+                        <div class="rolls-form-card__addon-section">
+                          <div class="rolls-form-card__options rolls-form-card__options--addon">
+                            <div class="rolls-form-card__addon-option">
+                              <label
+                                class="bubble-option"
+                                for="{{ group_name | handle }}-{{ options[0].label | handle }}"
+                              >
+                                <input
+                                  id="{{ group_name | handle }}-{{ options[0].label | handle }}"
+                                  type="radio"
+                                  name="{{ group_name | handle }}"
+                                  value="{{ options[0].label | escape }}"
+                                  data-price="{{ options[0].price | default: 0 }}"
+                                  data-show-if="{{ options[0].show_if | json | escape }}"
+                                  data-price-overrides="{{ options[0].price_overrides | json | escape }}"
+                                >
+                                <div class="bubble-option__inner">
+                                  <div class="bubble-option__icon"></div>
+                                  <div class="bubble-option__label">
+                                    {{ options[0].label }}
+                                    <span class="opt-price">(${{ options[0].price | default: 0 }})</span>
+                                  </div>
+                                </div>
+                              </label>
                             </div>
-                            <div class="mail-in-location__phone">
-                              <a
-                                href="tel:${location.phoneFormatted}"
-                                aria-label="${location.ariaLabel}"
-                                class="type-p-small"
-                                style="color:inherit; text-decoration:underline;"
-                              >${location.phone}</a>
+
+                            <p class="rolls-form-card__addon-heading type-p">{{ stripped_name }}</p>
+
+                            <div class="rolls-form-card__addon-option">
+                              <label
+                                class="bubble-option"
+                                for="{{ group_name | handle }}-{{ options[1].label | handle }}"
+                              >
+                                <input
+                                  id="{{ group_name | handle }}-{{ options[1].label | handle }}"
+                                  type="radio"
+                                  name="{{ group_name | handle }}"
+                                  value="{{ options[1].label | escape }}"
+                                  data-price="{{ options[1].price | default: 0 }}"
+                                  data-show-if="{{ options[1].show_if | json | escape }}"
+                                  data-price-overrides="{{ options[1].price_overrides | json | escape }}"
+                                >
+                                <div class="bubble-option__inner">
+                                  <div class="bubble-option__icon"></div>
+                                  <div class="bubble-option__label">
+                                    {{ options[1].label }}
+                                    <span class="opt-price">(${{ options[1].price | default: 0 }})</span>
+                                  </div>
+                                </div>
+                              </label>
                             </div>
                           </div>
-                        `;
+                          {% if accordion_title or accordion_sub_title %}
+                            {% assign content_uid = service_name | append: '-' | append: group_name | handle %}
+                            <div class="rolls-form-card-content">
+                              <h3 class="rolls-form-card-content__heading type-p">
+                                {{ accordion_title | default: stripped_name }}
+                              </h3>
 
-                        locationsList.appendChild(li);
-                      });
-                    })
-                    .catch(() => {});
-                })();
-              </script>
+                              <button
+                                type="button"
+                                class="rolls-form-card-content-trigger-btn"
+                                aria-expanded="false"
+                                aria-controls="rfc-content-{{ content_uid }}"
+                                id="rfc-btn-{{ content_uid }}"
+                                data-faq-trigger
+                              >
+                                <div class="rolls-form-card-content-trigger"></div>
+                              </button>
 
-              <p>📦 Pack your order with:</p>
-              <ul>
-                <li>Your film rolls</li>
-                <li>Your printed order slip</li>
-              </ul>
-            </div>
-            <div class="faq-card-or-divider type-p"></div>
-            <div class="rich-text">
-              <p>
-                <strong><u>Drop-off:</u></strong>
-              </p>
-              <p>
-                Upon order completion you'll be guided through your next steps. To drop off, include your order number
-                with your film in a securely sealed bag.
-              </p>
+                              <div
+                                class="rolls-form-card-content-outer"
+                                id="rfc-content-{{ content_uid }}"
+                                role="region"
+                                aria-labelledby="rfc-btn-{{ content_uid }}"
+                                hidden
+                                data-faq-content
+                              >
+                                <div class="rolls-form-card-content-inner faq-card__inner"></div>
+                              </div>
+                              {% if accordion_sub_title %}
+                                <p class="rolls-form-card-content__subheading type-p">{{ accordion_sub_title }}</p>
+                              {% endif %}
 
-              <p>📍 Drop off your film at: Any Bellows drop-off location</p>
+                              {% assign has_opts_desc = false %}
+                              {% if options and options.size > 0 %}
+                                {% for opt in options %}
+                                  {% if opt.description or opt.description_image %}
+                                    {% assign has_opts_desc = true %}
+                                  {% endif %}
+                                {% endfor %}
+                              {% endif %}
+                              {% if has_opts_desc %}
+                                <div class="rolls-form-card-content-options">
+                                  {% for opt in options %}
+                                    {% if opt.description or opt.description_image %}
+                                      <div class="rolls-form-card-content-option">
+                                        {% if opt.description_image %}
+                                          <div class="rolls-form-card-content-option__image">
+                                            <img
+                                              src="{{ opt.description_image }}"
+                                              alt=""
+                                              class="desc-image"
+                                              width="50px"
+                                              height="50px"
+                                            >
+                                          </div>
+                                        {% endif %}
+                                        <div class="rolls-form-card-content-option__content">
+                                          <p class="rolls-form-card-content-option__label type-p-large">
+                                            {{ opt.label }}
+                                          </p>
+                                          {% if opt.description %}
+                                            <p class="rolls-form-card-content-option__description type-p">
+                                              {{ opt.description }}
+                                            </p>
+                                          {% endif %}
+                                        </div>
+                                      </div>
+                                    {% endif %}
+                                  {% endfor %}
+                                </div>
+                              {% endif %}
+                            </div>
+                          {% endif %}
+                        </div>
+                      {% endunless %}
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </fieldset>
+            {% endif %}
 
-              <p>📦 What to bring:</p>
-              <ul>
-                <li>Your film rolls</li>
-                <li>Your printed order slip</li>
-              </ul>
+            {% comment %} Render conditional Add Ons groups (with show_if) as regular fieldsets after Add Ons section {% endcomment %}
+            {% for group in groups %}
+              {% assign group_name = group[0] %}
+              {% if group_name contains 'Add Ons -' %}
+                {% assign group_data = group[1] %}
+                {% assign group_show_if = group_data.show_if | default: null %}
+                {% if group_show_if %}
+                  {% assign stripped_name = group_name | replace: 'Add Ons -', '' | strip %}
+                  {% assign sub_title = group_data.sub_title %}
+                  {% assign accordion_title = group_data.accordion_title %}
+                  {% assign accordion_sub_title = group_data.accordion_sub_title %}
+                  {% assign options = group_data.options | default: group_data %}
+
+                  <fieldset
+                    data-group="{{ group_name | escape }}"
+                    class="rolls-form-card"
+                    data-show-if="{{ group_show_if | json | escape }}"
+                    data-conditional-addon="true"
+                  >
+                    <h3 class="rolls-form-card__heading type-h1-x-small" order-summary-heading="{{ stripped_name }}">
+                      {{ stripped_name }}
+                    </h3>
+                    <div class="rolls-form-card__inner {% if accordion_title %}rolls-form-card__inner--content{% endif %}">
+                      {% if sub_title %}
+                        <p class="rolls-form-card__subheading type-p">{{ sub_title }}</p>
+                      {% endif %}
+                      <div class="rolls-form-card__options">
+                        {% for opt in options %}
+                          <label class="bubble-option" for="{{ group_name | handle }}-{{ opt.label | handle }}">
+                            <input
+                              id="{{ group_name | handle }}-{{ opt.label | handle }}"
+                              type="radio"
+                              name="{{ group_name | handle }}"
+                              value="{{ opt.label | escape }}"
+                              data-price="{{ opt.price | default: 0 }}"
+                              data-show-if="{{ opt.show_if | json | escape }}"
+                              data-price-overrides="{{ opt.price_overrides | json | escape }}"
+                            >
+                            <div class="bubble-option__inner">
+                              <div class="bubble-option__icon"></div>
+                              <div class="bubble-option__label">
+                                {{ opt.label }}
+                                <span class="opt-price">(${{ opt.price | default: 0 }})</span>
+                              </div>
+                            </div>
+                          </label>
+                        {% endfor %}
+                      </div>
+                    </div>
+                    {% if accordion_title or accordion_sub_title %}
+                      {% assign content_uid = service_name | append: '-' | append: group_name | handle %}
+                      <div class="rolls-form-card-content">
+                        <h3 class="rolls-form-card-content__heading type-p">
+                          {{ accordion_title | default: stripped_name }}
+                        </h3>
+
+                        <button
+                          type="button"
+                          class="rolls-form-card-content-trigger-btn"
+                          aria-expanded="false"
+                          aria-controls="rfc-content-{{ content_uid }}"
+                          id="rfc-btn-{{ content_uid }}"
+                          data-faq-trigger
+                        >
+                          <div class="rolls-form-card-content-trigger"></div>
+                        </button>
+
+                        <div
+                          class="rolls-form-card-content-outer"
+                          id="rfc-content-{{ content_uid }}"
+                          role="region"
+                          aria-labelledby="rfc-btn-{{ content_uid }}"
+                          hidden
+                          data-faq-content
+                        >
+                          <div class="rolls-form-card-content-inner faq-card__inner">
+                            {% if accordion_sub_title %}
+                              <p class="rolls-form-card-content__subheading type-p">{{ accordion_sub_title }}</p>
+                            {% endif %}
+
+                            {% assign has_opts_desc = false %}
+                            {% if options and options.size > 0 %}
+                              {% for opt in options %}
+                                {% if opt.description or opt.description_image %}
+                                  {% assign has_opts_desc = true %}
+                                {% endif %}
+                              {% endfor %}
+                            {% endif %}
+                            {% if has_opts_desc %}
+                              <div class="rolls-form-card-content-options">
+                                {% for opt in options %}
+                                  {% if opt.description or opt.description_image %}
+                                    <div class="rolls-form-card-content-option">
+                                      {% if opt.description_image %}
+                                        <div class="rolls-form-card-content-option__image">
+                                          <img
+                                            src="{{ opt.description_image }}"
+                                            alt=""
+                                            class="desc-image"
+                                            width="50px"
+                                            height="50px"
+                                          >
+                                        </div>
+                                      {% endif %}
+                                      <div class="rolls-form-card-content-option__content">
+                                        <p class="rolls-form-card-content-option__label type-p-large">
+                                          {{ opt.label }}
+                                        </p>
+                                        {% if opt.description %}
+                                          <p class="rolls-form-card-content-option__description type-p">
+                                            {{ opt.description }}
+                                          </p>
+                                        {% endif %}
+                                      </div>
+                                    </div>
+                                  {% endif %}
+                                {% endfor %}
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                    {% endif %}
+                  </fieldset>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endfor %}
+
+        <!-- Delivery Options -->
+        <fieldset data-group="location" class="rolls-form-card">
+          <h3 class="rolls-form-card__heading type-h1-x-small" order-summary-heading="Delivery">Delivery</h3>
+          <div class="rolls-form-card__inner rolls-form-card__inner--content">
+            <p class="rolls-form-card__subheading type-p">Pick how you'd like to send your film.</p>
+            <div class="rolls-form-card__options rolls-form-card__options--addon">
+              <div class="rolls-form-card__addon-option">
+                <label class="bubble-option" for="LocationMailIn">
+                  <input
+                    id="LocationMailIn"
+                    type="radio"
+                    name="delivery"
+                    value="Mail In"
+                    data-price="0"
+                    required
+                  >
+                  <div class="bubble-option__inner">
+                    <div class="bubble-option__icon"></div>
+                    <div class="bubble-option__label">Mail In <span class="opt-price">($0)</span></div>
+                  </div>
+                </label>
+              </div>
+
+              <p class="rolls-form-card__addon-heading type-p">Delivery Method</p>
+
+              <div class="rolls-form-card__addon-option">
+                <label class="bubble-option" for="LocationDropOff">
+                  <input
+                    id="LocationDropOff"
+                    type="radio"
+                    name="delivery"
+                    value="Drop Off"
+                    data-price="0"
+                  >
+                  <div class="bubble-option__inner">
+                    <div class="bubble-option__icon"></div>
+                    <div class="bubble-option__label">Drop Off <span class="opt-price">($0)</span></div>
+                  </div>
+                </label>
+              </div>
             </div>
           </div>
-        </div>
+
+          <div class="rolls-form-card-content rolls-form-card-content--drop-off">
+            <div class="rolls-form-card-content__drop-off-map">
+              <div class="drop-off">
+                {% render 'drop-off-map', use_small_map: true %}
+                <script id="dropOffLocations" type="application/json">
+                  [
+                    {% for block in section.blocks %}
+                    {
+                      "id": {{ block.settings.id | json }},
+                      "name": {{ block.settings.name | json }},
+                      "address": {{ block.settings.address | json }},
+                      "lat": {{ block.settings.lat | json }},
+                      "lng": {{ block.settings.lng | json }},
+                      "phone": {{ block.settings.phone | json }},
+                      "website": {{ block.settings.website | json }},
+                      "googleMapsUrl": {{ block.settings.google_maps_url | json }},
+                      "thumbnail": {% if block.settings.thumbnail %}{{ block.settings.thumbnail | image_url: width: 800 | json }}{% else %}null{% endif %}
+                    }{% unless forloop.last %},{% endunless %}
+                    {% endfor %}
+                  ]
+                </script>
+              </div>
+            </div>
+
+            <div class="rolls-form-card-content rolls-form-card-content--mail-in rich-text">
+              <div class="rolls-form-card-content__column-one">
+                <div class="rich-text">
+                  <p>
+                    <strong><u>Mail in:</u></strong>
+                  </p>
+                  <p>
+                    Upon order completion, you’ll be guided through your next steps. To ship to the lab, include your
+                    order number with your film in a securely packed box or bubble mailer. Use ample material and tape
+                    to ensure your film arrives safely.
+                  </p>
+
+                  <p>📬 Mail your film to us:</p>
+                  <ul
+                    role="list"
+                    class="mail-in-locations-list"
+                    data-locations-list-mail-in
+                  ></ul>
+                  <script>
+                    (function () {
+                      // Prevent duplicates: Always clear the list before populating it
+                      const locationsList = document.querySelector('[data-locations-list-mail-in]');
+                      if (!locationsList) return;
+
+                      // Remove previous list items if present
+                      locationsList.innerHTML = '';
+
+                      const jsonUrl =
+                        window.Shopify && window.Shopify.assetUrl
+                          ? window.Shopify.assetUrl('locations.json')
+                          : '{{ "locations.json" | asset_url }}';
+
+                      fetch(jsonUrl, { credentials: 'same-origin' })
+                        .then((r) => (r.ok ? r.json() : null))
+                        .then((locations) => {
+                          if (!locations || !Array.isArray(locations)) return;
+
+                          locations.forEach((location) => {
+                            const li = document.createElement('li');
+                            li.className = 'mail-in-locations-list__item';
+                            li.style.marginBottom = '1.25em';
+
+                            li.innerHTML = `
+                              <div class="mail-in-location">
+                                <div class="mail-in-location__title type-p">${location.name}</div>
+                                <div class="mail-in-location__address">
+                                  <a
+                                    href="${location.addressUrl}"
+                                    target="_blank"
+                                    rel="noopener"
+                                    class="type-p-small"
+                                    style="text-decoration:underline;"
+                                  >${location.address}</a>
+                                </div>
+                                <div class="mail-in-location__phone">
+                                  <a
+                                    href="tel:${location.phoneFormatted}"
+                                    aria-label="${location.ariaLabel}"
+                                    class="type-p-small"
+                                    style="color:inherit; text-decoration:underline;"
+                                  >${location.phone}</a>
+                                </div>
+                              </div>
+                            `;
+
+                            locationsList.appendChild(li);
+                          });
+                        })
+                        .catch(() => {});
+                    })();
+                  </script>
+
+                  <p>📦 Pack your order with:</p>
+                  <ul>
+                    <li>Your film rolls</li>
+                    <li>Your printed order slip</li>
+                  </ul>
+                </div>
+                <div class="faq-card-or-divider type-p"></div>
+                <div class="rich-text">
+                  <p>
+                    <strong><u>Drop-off:</u></strong>
+                  </p>
+                  <p>
+                    Upon order completion you'll be guided through your next steps. To drop off, include your order
+                    number with your film in a securely sealed bag.
+                  </p>
+
+                  <p>📍 Drop off your film at: Any Bellows drop-off location</p>
+
+                  <p>📦 What to bring:</p>
+                  <ul>
+                    <li>Your film rolls</li>
+                    <li>Your printed order slip</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+        <aside class="order-summary" data-order-summary>
+          <div class="order-summary__header">
+            <h3 class="order-summary__title type-h1-x-small">Order Summary</h3>
+            <div class="order-summary__total type-p" id="film-total-display" aria-live="polite">$0.00</div>
+          </div>
+
+          <div class="order-summary__details" data-os-details>
+            <dl class="order-summary__list" data-os-list>
+              <!-- rows injected by film-service.js -->
+            </dl>
+          </div>
+
+          <div class="send-rolls-form-submit">
+            <button type="submit" class="primary-button primary-button--black">Add to Bag</button>
+          </div>
+        </aside>
       </div>
-    </fieldset>
-    <div class="send-rolls-form-submit">
-      <button type="submit" class="primary-button primary-button--black">Add to Bag</button>
-    </div>
-
-    <aside class="order-summary" data-order-summary>
-      <h3 class="order-summary__title type-h1-x-small">Order Summary</h3>
-      <div class="order-summary__total secondary-button type-p" id="film-total-display" aria-live="polite">$0.00</div>
-
-      <button type="button" class="order-summary__toggle type-p" data-os-toggle aria-expanded="false">
-        <span>Show Details</span><span>(+)</span>
-      </button>
-
-      <div class="order-summary__details" data-os-details hidden>
-        <dl class="order-summary__list" data-os-list>
-          <!-- rows injected by film-service.js -->
-        </dl>
-      </div>
-    </aside>
+    </form>
   </div>
-</form>
+</div>
 
 <!-- VARIANT DATA -->
 <script>

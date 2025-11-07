@@ -6,6 +6,13 @@
   display: none;
 }
 
+/* #film-service-form {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 24px;
+} */
+
 .send-rolls-title-wrapper {
   margin: 0 auto 120px;
   display: flex;
@@ -32,8 +39,9 @@
   flex-direction: column;
   align-items: center;
   gap: 40px;
-  max-width: 780px;
   margin: 0 auto;
+  max-width: 780px;
+  position: relative;
 }
 
 .rolls-form-cards-inner {
@@ -58,6 +66,10 @@
   background: var(--color-grey-light);
   padding: 24px;
   border-radius: 24px;
+
+  @media (max-width: 768px) {
+    padding: 24px 8px 16px 8px;
+  }
 }
 
 .rolls-form-card--error {
@@ -78,11 +90,20 @@
   background: var(--color-white);
   padding: 24px;
   border-radius: 24px;
+
+  @media (max-width: 768px) {
+    padding: 24px 16px 16px 16px;
+    gap: 32px;
+  }
 }
 
 .rolls-form-card__inner--addon {
   background: none;
   gap: 8px;
+
+  @media (max-width: 768px) {
+    padding: 24px 0 16px 0;
+  }
 }
 
 .rolls-form-card__inner--content {
@@ -107,6 +128,11 @@
   justify-content: space-between;
   gap: 10px;
   width: 100%;
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
 
 .service-groups-wrapper {
@@ -125,6 +151,16 @@
   border-bottom-left-radius: 24px;
   border-bottom-right-radius: 24px;
   position: relative;
+
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
+}
+
+.rolls-form-card-content-inner {
+  @media (max-width: 768px) {
+    padding-bottom: 16px;
+  }
 }
 
 .rolls-form-card-content-trigger-btn {
@@ -142,6 +178,10 @@
   opacity: 0.25;
 
   transition: all var(--transition-speed-default) var(--transition-ease);
+
+  @media (max-width: 768px) {
+    top: 17px;
+  }
 }
 
 .rolls-form-card-content-trigger-btn[aria-expanded="true"] {
@@ -182,6 +222,7 @@
 
 .rolls-form-card-content__heading {
   text-align: left;
+  padding-right: 40px;
 }
 
 .rolls-form-card-content__subheading {
@@ -201,12 +242,21 @@
   align-items: flex-start;
   gap: 12px;
   padding-top: 24px;
+
+  @media (max-width: 768px) {
+    gap: 32px;
+  }
 }
 
 .rolls-form-card-content-option {
   display: flex;
   align-items: center;
   gap: 16px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 .rolls-form-card-content-option__label {
@@ -253,6 +303,23 @@
 .rolls-form-card__addon-option,
 .rolls-form-card__addon-heading {
   flex: 1;
+}
+
+@media (max-width: 768px) {
+  .rolls-form-card__addon-option:first-child {
+    order: 2;
+    flex: unset;
+  }
+
+  .rolls-form-card__addon-option:last-child {
+    order: 3;
+    flex: unset;
+  }
+
+  .rolls-form-card__addon-heading {
+    order: 1;
+    min-width: 100%;
+  }
 }
 
 .rolls-form-card__addon-option:last-child {
@@ -325,6 +392,7 @@
 
 .send-rolls-form-submit button {
   width: 100%;
+  color: var(--color-yellow);
 }
 
 /* Order Summary (minimal styling; tweak as you like) */
@@ -333,29 +401,36 @@
   border-radius: 24px;
   padding: 24px;
   min-width: 350px;
+  /* position: sticky;
+  top: 24px; */
+  /* position: absolute;
+  left: calc(100% + 24px);
+  top: 0; */
+
+  @media (max-width: 480px) {
+    width: 100%;
+  }
+}
+
+.order-summary__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
 .order-summary__title {
-  margin-bottom: 24px;
-  text-align: center;
+  text-align: left;
+  white-space: nowrap;
 }
 
 .order-summary__total {
   display: block;
-  text-align: center;
+  text-align: right;
   font-family: var(--font-gt-standard-mono-regular);
-  margin-bottom: 32px;
   width: 100%;
-  background: var(--color-black);
-  color: var(--color-yellow);
-  border-radius: 50px;
-}
-
-.order-summary__total:hover {
-  background: var(--color-black);
-  color: var(--color-yellow);
-  border-radius: 50px;
-  transform: scale(1);
+  color: var(--color-black);
 }
 
 .order-summary__toggle {
@@ -375,7 +450,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding-top: 32px;
+  padding: 24px 0;
 }
 
 .order-summary__row {
@@ -383,11 +458,14 @@
   justify-content: space-between;
   align-items: baseline;
   width: 100%;
-  gap: 16px;
+  gap: 40px;
   border-bottom: 1px solid rgba(0,0,0,0.1);
   padding-bottom: 4px;
 }
 
+.order-summary__row:last-child {
+  border-bottom: none;
+}
 .order-summary__label {
   margin: 0;
 }
@@ -407,5 +485,9 @@
 }
 
 .order-summary__price {
-  opacity: 0.8;
+  opacity: 0.5;
+}
+
+.order-summary__details {
+  margin-bottom: 24px;
 }
