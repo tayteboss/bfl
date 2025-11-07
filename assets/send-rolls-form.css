@@ -1,3 +1,32 @@
+#base-price {
+  display: none;
+}
+
+.opt-price {
+  display: none;
+}
+
+.send-rolls-title-wrapper {
+  margin: 0 auto 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    margin: 0 auto 40px;
+  }
+}
+
+.send-rolls-title {
+  opacity: 0.25;
+  text-align: center;
+}
+
+.send-rolls-subtitle {
+  text-align: center;
+}
+
 .rolls-form-cards-wrapper {
   display: flex;
   flex-direction: column;
@@ -274,7 +303,11 @@
   padding-top: 24px;
 }
 
-.rolls-form-card-content__columns .faq-card-or-divider::before {
+.rolls-form-card-content--mail-in {
+  padding: 24px 24px 0 24px;
+}
+
+.rolls-form-card-content .faq-card-or-divider::before {
   background: var(--color-highlight);
 }
 
@@ -292,4 +325,87 @@
 
 .send-rolls-form-submit button {
   width: 100%;
+}
+
+/* Order Summary (minimal styling; tweak as you like) */
+.order-summary {
+  background: var(--color-yellow);
+  border-radius: 24px;
+  padding: 24px;
+  min-width: 350px;
+}
+
+.order-summary__title {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.order-summary__total {
+  display: block;
+  text-align: center;
+  font-family: var(--font-gt-standard-mono-regular);
+  margin-bottom: 32px;
+  width: 100%;
+  background: var(--color-black);
+  color: var(--color-yellow);
+  border-radius: 50px;
+}
+
+.order-summary__total:hover {
+  background: var(--color-black);
+  color: var(--color-yellow);
+  border-radius: 50px;
+  transform: scale(1);
+}
+
+.order-summary__toggle {
+  display: block;
+  margin: 0 auto;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.order-summary__toggle span:first-child {
+  text-decoration: underline;
+}
+
+.order-summary__list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 32px;
+}
+
+.order-summary__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  width: 100%;
+  gap: 16px;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  padding-bottom: 4px;
+}
+
+.order-summary__label {
+  margin: 0;
+}
+
+.order-summary__value-wrap {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+  gap: 8px;
+  margin: 0;
+}
+
+.order-summary__value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.order-summary__price {
+  opacity: 0.8;
 }

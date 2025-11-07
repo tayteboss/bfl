@@ -21,6 +21,11 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
 
+<section class="send-rolls-title-wrapper">
+  <h1 class="send-rolls-title type-h2-medium">Send us your rolls</h1>
+  <h2 class="send-rolls-subtitle type-h2-medium">Film Development & Scanning</h2>
+</section>
+
 <form id="film-service-form" action="{{ routes.cart_add_url }}" method="post">
   <input type="hidden" name="quantity" value="1">
   <input type="hidden" name="id" value="{{ target_product.selected_or_first_available_variant.id }}">
@@ -33,7 +38,7 @@
   <div class="rolls-form-cards-wrapper" data-faq-list>
     <!-- LOCATION PICKER -->
     <fieldset data-group="location" class="rolls-form-card">
-      <h3 class="rolls-form-card__heading type-h1-x-small">Choose a Location</h3>
+      <h3 class="rolls-form-card__heading type-h1-x-small" order-summary-heading="Location">Choose a Location</h3>
       <div class="rolls-form-card__inner">
         <p class="rolls-form-card__subheading type-p">Pick your preferred location.</p>
         <div class="rolls-form-card__options">
@@ -48,7 +53,7 @@
             >
             <div class="bubble-option__inner">
               <div class="bubble-option__icon"></div>
-              <div class="bubble-option__label">Miami (<span class="opt-price">$0</span>)</div>
+              <div class="bubble-option__label">Miami <span class="opt-price">($0)</span></div>
             </div>
           </label>
           <label class="bubble-option" for="LocationChicago">
@@ -61,7 +66,7 @@
             >
             <div class="bubble-option__inner">
               <div class="bubble-option__icon"></div>
-              <div class="bubble-option__label">Chicago (<span class="opt-price">$2</span>)</div>
+              <div class="bubble-option__label">Chicago <span class="opt-price">($2)</span></div>
             </div>
           </label>
           <label class="bubble-option" for="LocationOrlando">
@@ -74,7 +79,7 @@
             >
             <div class="bubble-option__inner">
               <div class="bubble-option__icon"></div>
-              <div class="bubble-option__label">Orlando (<span class="opt-price">$0</span>)</div>
+              <div class="bubble-option__label">Orlando <span class="opt-price">($0)</span></div>
             </div>
           </label>
           <label class="bubble-option" for="LocationAtlanta">
@@ -87,7 +92,7 @@
             >
             <div class="bubble-option__inner">
               <div class="bubble-option__icon"></div>
-              <div class="bubble-option__label">Atlanta (<span class="opt-price">$0</span>)</div>
+              <div class="bubble-option__label">Atlanta <span class="opt-price">($0)</span></div>
             </div>
           </label>
         </div>
@@ -96,7 +101,7 @@
 
     <!-- SERVICE PICKER -->
     <fieldset data-group="Service" class="rolls-form-card">
-      <h3 class="rolls-form-card__heading type-h1-x-small">Choose a Service</h3>
+      <h3 class="rolls-form-card__heading type-h1-x-small" order-summary-heading="Service">Choose a Service</h3>
       <div class="rolls-form-card__inner">
         <p class="rolls-form-card__subheading type-p">What services are you looking for?</p>
         <div class="rolls-form-card__options">
@@ -117,7 +122,10 @@
               >
               <div class="bubble-option__inner">
                 <div class="bubble-option__icon"></div>
-                <div class="bubble-option__label">{{ service_key }} (<span class="opt-price">$0</span>)</div>
+                <div class="bubble-option__label">
+                  {{ service_key }}
+                  <span class="opt-price">($0)</span>
+                </div>
               </div>
             </label>
           {% endfor %}
@@ -161,7 +169,9 @@
                 data-show-if="{{ group_show_if | json | escape }}"
               {% endif %}
             >
-              <h3 class="rolls-form-card__heading type-h1-x-small">{{ group_name }}</h3>
+              <h3 class="rolls-form-card__heading type-h1-x-small" order-summary-heading="{{ group_name }}">
+                {{ group_name }}
+              </h3>
               <div class="rolls-form-card__inner {% if accordion_title %}rolls-form-card__inner--content{% endif %}">
                 {% if sub_title %}
                   <p class="rolls-form-card__subheading type-p">{{ sub_title }}</p>
@@ -182,7 +192,8 @@
                         <div class="bubble-option__inner">
                           <div class="bubble-option__icon"></div>
                           <div class="bubble-option__label">
-                            {{ opt.label }} (<span class="opt-price">${{ opt.price | default: 0 }}</span>)
+                            {{ opt.label }}
+                            <span class="opt-price">(${{ opt.price | default: 0 }})</span>
                           </div>
                         </div>
                       </label>
@@ -341,7 +352,7 @@
                               <div class="bubble-option__icon"></div>
                               <div class="bubble-option__label">
                                 {{ options[0].label }}
-                                (<span class="opt-price">${{ options[0].price | default: 0 }}</span>)
+                                <span class="opt-price">(${{ options[0].price | default: 0 }})</span>
                               </div>
                             </div>
                           </label>
@@ -364,7 +375,7 @@
                               <div class="bubble-option__icon"></div>
                               <div class="bubble-option__label">
                                 {{ options[1].label }}
-                                (<span class="opt-price">${{ options[1].price | default: 0 }}</span>)
+                                <span class="opt-price">(${{ options[1].price | default: 0 }})</span>
                               </div>
                             </div>
                           </label>
@@ -468,7 +479,9 @@
                 data-show-if="{{ group_show_if | json | escape }}"
                 data-conditional-addon="true"
               >
-                <h3 class="rolls-form-card__heading type-h1-x-small">{{ stripped_name }}</h3>
+                <h3 class="rolls-form-card__heading type-h1-x-small" order-summary-heading="{{ stripped_name }}">
+                  {{ stripped_name }}
+                </h3>
                 <div class="rolls-form-card__inner {% if accordion_title %}rolls-form-card__inner--content{% endif %}">
                   {% if sub_title %}
                     <p class="rolls-form-card__subheading type-p">{{ sub_title }}</p>
@@ -488,7 +501,8 @@
                         <div class="bubble-option__inner">
                           <div class="bubble-option__icon"></div>
                           <div class="bubble-option__label">
-                            {{ opt.label }} (<span class="opt-price">${{ opt.price | default: 0 }}</span>)
+                            {{ opt.label }}
+                            <span class="opt-price">(${{ opt.price | default: 0 }})</span>
                           </div>
                         </div>
                       </label>
@@ -576,7 +590,7 @@
 
     <!-- Delivery Options -->
     <fieldset data-group="location" class="rolls-form-card">
-      <h3 class="rolls-form-card__heading type-h1-x-small">Delivery</h3>
+      <h3 class="rolls-form-card__heading type-h1-x-small" order-summary-heading="Delivery">Delivery</h3>
       <div class="rolls-form-card__inner rolls-form-card__inner--content">
         <p class="rolls-form-card__subheading type-p">Pick how you'd like to send your film.</p>
         <div class="rolls-form-card__options rolls-form-card__options--addon">
@@ -592,7 +606,7 @@
               >
               <div class="bubble-option__inner">
                 <div class="bubble-option__icon"></div>
-                <div class="bubble-option__label">Mail In (<span class="opt-price">$0</span>)</div>
+                <div class="bubble-option__label">Mail In <span class="opt-price">($0)</span></div>
               </div>
             </label>
           </div>
@@ -610,7 +624,7 @@
               >
               <div class="bubble-option__inner">
                 <div class="bubble-option__icon"></div>
-                <div class="bubble-option__label">Drop Off (<span class="opt-price">$0</span>)</div>
+                <div class="bubble-option__label">Drop Off <span class="opt-price">($0)</span></div>
               </div>
             </label>
           </div>
@@ -641,7 +655,7 @@
           </div>
         </div>
 
-        <div class="rolls-form-card-content__columns rich-text">
+        <div class="rolls-form-card-content rolls-form-card-content--mail-in rich-text">
           <div class="rolls-form-card-content__column-one">
             <div class="rich-text">
               <p>
@@ -744,7 +758,21 @@
     <div class="send-rolls-form-submit">
       <button type="submit" class="primary-button primary-button--black">Add to Bag</button>
     </div>
-    <div id="film-total-display">Total: $0.00</div>
+
+    <aside class="order-summary" data-order-summary>
+      <h3 class="order-summary__title type-h1-x-small">Order Summary</h3>
+      <div class="order-summary__total secondary-button type-p" id="film-total-display" aria-live="polite">$0.00</div>
+
+      <button type="button" class="order-summary__toggle type-p" data-os-toggle aria-expanded="false">
+        <span>Show Details</span><span>(+)</span>
+      </button>
+
+      <div class="order-summary__details" data-os-details hidden>
+        <dl class="order-summary__list" data-os-list>
+          <!-- rows injected by film-service.js -->
+        </dl>
+      </div>
+    </aside>
   </div>
 </form>
 

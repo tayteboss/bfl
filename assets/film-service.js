@@ -7,6 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
   } catch (_) {}
 
   const totalDisplay = document.querySelector('#film-total-display');
+  const osList = document.querySelector('[data-os-list]');
+  const osToggle = document.querySelector('[data-os-toggle]');
+  const osDetails = document.querySelector('[data-os-details]');
+  // Feature flag: show per-option prices in the Order Summary
+  const OS_SHOW_PRICES = true;
   const basePrice = Number(document.querySelector('#base-price').dataset.base);
   const variantInput = form.querySelector('input[name="id"]');
   const submitBtn = form.querySelector('button[type="submit"]');
@@ -128,13 +133,89 @@ document.addEventListener('DOMContentLoaded', () => {
   //   serviceRadios[0].dispatchEvent(new Event('change'));
   // }
 
+  // --- UI helpers for Order Summary ---
+  const formatMoney = (num) => `$${Number(num || 0).toFixed(2)}`;
+
+  const createRow = (labelText, valueText, priceNum) => {
+    if (!osList) return;
+    const row = document.createElement('div');
+    row.className = 'order-summary__row';
+
+    const dt = document.createElement('dt');
+    dt.className = 'order-summary__label type-p';
+    dt.textContent = labelText;
+
+    const dd = document.createElement('dd');
+    dd.className = 'order-summary__value-wrap';
+
+    const value = document.createElement('span');
+    value.className = 'order-summary__value type-p';
+    value.textContent = valueText;
+
+    dd.appendChild(value);
+    if (OS_SHOW_PRICES && Number(priceNum) > 0) {
+      const price = document.createElement('span');
+      price.className = 'order-summary__price type-p';
+      price.textContent = formatMoney(priceNum);
+      dd.appendChild(price);
+    }
+    row.appendChild(dt);
+    row.appendChild(dd);
+    osList.appendChild(row);
+  };
+
+  const renderSummary = () => {
+    if (!osList) return;
+    osList.innerHTML = '';
+
+    // Fieldsets in DOM order with checked radios
+    form.querySelectorAll('fieldset.rolls-form-card').forEach((fs) => {
+      const checked = fs.querySelector('input[type="radio"]:checked');
+      if (!checked) return;
+      // Skip neutral/base selections in the summary
+      if ((checked.value || '').toString().trim().toLowerCase() === 'base') return;
+      const heading = fs.querySelector('.rolls-form-card__heading');
+      // Prefer explicit short heading attribute when provided
+      const attrFromFs = fs.getAttribute('order-summary-heading') || fs.dataset.orderSummaryHeading;
+      const attrFromHeading = heading
+        ? heading.getAttribute('order-summary-heading') || heading.dataset.orderSummaryHeading
+        : null;
+      const labelText = (
+        attrFromFs ||
+        attrFromHeading ||
+        (heading ? heading.textContent.trim() : '') ||
+        fs.dataset.group ||
+        'Option'
+      ).trim();
+      const labelEl = checked.closest('label');
+      const valueEl = labelEl ? labelEl.querySelector('.bubble-option__label') : null;
+      const valueText = valueEl ? valueEl.textContent.trim() : checked.value;
+      const priceNum = Number(checked.dataset.price || 0);
+      createRow(labelText, valueText, priceNum);
+    });
+  };
+
+  // Toggle behavior
+  if (osToggle && osDetails) {
+    osToggle.addEventListener('click', () => {
+      const expanded = osToggle.getAttribute('aria-expanded') === 'true';
+      osToggle.setAttribute('aria-expanded', String(!expanded));
+      osDetails.hidden = expanded;
+      const first = osToggle.querySelector('span:first-child');
+      const second = osToggle.querySelector('span:last-child');
+      if (first) first.textContent = expanded ? 'Show Details' : 'Hide Details';
+      if (second) second.textContent = expanded ? '(+)' : '(-)';
+    });
+  }
+
   // --- Total calc ---
   function calculateTotal() {
     total = basePrice;
     form.querySelectorAll('input[type="radio"]:checked').forEach((input) => {
       total += Number(input.dataset.price || 0);
     });
-    totalDisplay.textContent = `Total: $${total.toFixed(2)}`;
+    if (totalDisplay) totalDisplay.textContent = formatMoney(total);
+    renderSummary();
   }
 
   // --- Conditions (show-if + price-overrides) with normalized keys ---
