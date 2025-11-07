@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const basePrice = Number(document.querySelector('#base-price').dataset.base);
   const variantInput = form.querySelector('input[name="id"]');
   const submitBtn = form.querySelector('button[type="submit"]');
+  const cartDrawer = document.querySelector('cart-drawer');
   const serviceRadios = form.querySelectorAll('input[name="service"]');
   const serviceBlocks = form.querySelectorAll('.service-groups-wrapper');
   let total = basePrice;
@@ -432,13 +433,66 @@ document.addEventListener('DOMContentLoaded', () => {
     // ✅ UNIQUE TIMESTAMP to prevent Shopify from merging identical line items
     fd.append('properties[_timestamp]', Date.now());
 
+    const resetButtonState = () => {
+      if (!submitBtn) return;
+      submitBtn.disabled = false;
+      submitBtn.removeAttribute('aria-disabled');
+      submitBtn.classList.remove('is-loading');
+    };
+
+    const setLoadingState = () => {
+      if (!submitBtn) return;
+      submitBtn.disabled = true;
+      submitBtn.setAttribute('aria-disabled', 'true');
+      submitBtn.classList.add('is-loading');
+    };
+
+    setLoadingState();
+
     try {
-      const res = await fetch('/cart/add.js', { method: 'POST', body: fd });
-      if (!res.ok) throw new Error(await res.text());
-      window.location.href = '/cart';
+      if (window.CartDrawerAPI && typeof window.CartDrawerAPI.addToCart === 'function') {
+        await window.CartDrawerAPI.addToCart(fd, submitBtn);
+        resetButtonState();
+        return;
+      }
+
+      const endpoint = typeof routes !== 'undefined' && routes?.cart_add_url ? routes.cart_add_url : '/cart/add.js';
+      const config = typeof fetchConfig === 'function' ? fetchConfig('javascript') : { method: 'POST', headers: {} };
+      config.headers = config.headers || {};
+      config.headers['X-Requested-With'] = 'XMLHttpRequest';
+      delete config.headers['Content-Type'];
+      config.body = fd;
+
+      const response = await fetch(endpoint, config);
+      const text = await response.text();
+      let data;
+      try {
+        data = text ? JSON.parse(text) : {};
+      } catch (parseErr) {
+        data = { status: 'error', description: text || 'Unknown error' };
+      }
+
+      if (!response.ok || data?.status === 'error') {
+        const message = data?.description || data?.message || 'Error adding to cart';
+        console.error('Film service add to cart error:', data);
+        alert(message);
+        resetButtonState();
+        return;
+      }
+
+      if (cartDrawer && typeof cartDrawer.renderContents === 'function') {
+        cartDrawer.renderContents(data);
+      } else if (typeof routes !== 'undefined' && routes?.cart_url) {
+        window.location.href = routes.cart_url;
+      } else {
+        window.location.href = '/cart';
+      }
+
+      resetButtonState();
     } catch (err) {
       console.error(err);
       alert('Error adding to cart');
+      resetButtonState();
     }
   });
 

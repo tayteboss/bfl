@@ -406,20 +406,20 @@ function getShakeConfig(el) {
     return {
       rotate: [0, -2, 2, -2, 2, -1, 1, 0],
       y: [0, -1, 1, 0],
-      duration: 0.3,
+      duration: 0.4,
     };
   }
   if (raw === 'right') {
     return {
       rotate: [0, 2, -2, 2, -2, 1, -1, 0],
       y: [0, -1, 1, 0],
-      duration: 0.3,
+      duration: 0.4,
     };
   }
   return {
     rotate: [0, -4, 4, -3, 4, -2, 3, 0],
     y: [0, -1, 1, 0],
-    duration: 0.35,
+    duration: 0.4,
   };
 }
 

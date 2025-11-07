@@ -98,10 +98,17 @@ class CartDrawer extends HTMLElement {
       return;
     }
 
+    // Clear empty state classes on the host and items wrapper
+    this.classList.remove('is-empty');
+    const itemsWrapper = this.querySelector('cart-drawer-items');
+    if (itemsWrapper) itemsWrapper.classList.remove('is-empty');
+
     const drawerInner = this.querySelector('.drawer__inner');
     if (drawerInner && drawerInner.classList.contains('is-empty')) {
       drawerInner.classList.remove('is-empty');
     }
+    const emptyInner = this.querySelector('.drawer__inner-empty');
+    if (emptyInner) emptyInner.remove();
     
     if (parsedState.id) {
       this.productId = parsedState.id;
@@ -143,6 +150,31 @@ class CartDrawer extends HTMLElement {
         .then(res => res.json())
         .then(cart => {
           console.log('Cart drawer: fetched cart state, item_count:', cart.item_count);
+          // If the cart isn't empty, ensure empty classes are removed
+          if (cart && Array.isArray(cart.items) && cart.items.length > 0) {
+            this.classList.remove('is-empty');
+            const iw = this.querySelector('cart-drawer-items');
+            if (iw) iw.classList.remove('is-empty');
+            const emptyBlock = this.querySelector('.drawer__inner-empty');
+            if (emptyBlock) emptyBlock.remove();
+
+            // If DOM doesn't yet have the items list (first add race), fetch the section fresh
+            const hasItemsList = !!this.querySelector('.cart-items-list');
+            if (!hasItemsList && typeof routes !== 'undefined') {
+              fetch(`${routes.cart_url}?section_id=cart-drawer`)
+                .then(r => r.text())
+                .then(html => {
+                  const sections = { 'cart-drawer': html };
+                  // Re-render only the drawer section
+                  const sectionHTML = this.getSectionInnerHTML(sections['cart-drawer'], '#CartDrawer');
+                  const sectionElement = document.querySelector('#CartDrawer');
+                  if (sectionElement && sectionHTML) {
+                    sectionElement.innerHTML = sectionHTML;
+                  }
+                })
+                .catch(() => {});
+            }
+          }
           publish(PUB_SUB_EVENTS.cartUpdate, {
             source: 'cart-drawer',
             cartData: {

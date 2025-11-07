@@ -297,13 +297,41 @@ if (!customElements.get('product-form')) {
         if (this.cart && typeof this.cart.getSectionsToRender === 'function') {
           const sections = this.cart.getSectionsToRender();
           if (sections && sections.length > 0) {
-            formData.append('sections', sections.map((section) => section.id).join(','));
+            formData.append(
+              'sections',
+              sections.map((section) => section.id).join(',')
+            );
             formData.append('sections_url', window.location.pathname);
           }
           if (typeof this.cart.setActiveElement === 'function') {
             this.cart.setActiveElement(document.activeElement);
           }
         }
+
+        // Universal path: use CartDrawerAPI if present
+        if (window.CartDrawerAPI && typeof window.CartDrawerAPI.addToCart === 'function') {
+          console.log('Product form: using CartDrawerAPI');
+          window.CartDrawerAPI
+            .addToCart(formData, this.submitButton)
+            .then(() => {
+              this.error = false;
+              this.submitButton.classList.remove('loading');
+              this.submitButton.removeAttribute('aria-disabled');
+              const loadingSpinner = this.submitButton.querySelector('.loading__spinner') || this.querySelector('.loading__spinner');
+              if (loadingSpinner) loadingSpinner.classList.add('hidden');
+            })
+            .catch((err) => {
+              console.error('CartDrawerAPI error:', err);
+              this.handleErrorMessage(err?.message || 'Unable to add item to cart. Please try again.');
+              this.error = true;
+              this.submitButton.classList.remove('loading');
+              this.submitButton.removeAttribute('aria-disabled');
+              const loadingSpinner = this.submitButton.querySelector('.loading__spinner') || this.querySelector('.loading__spinner');
+              if (loadingSpinner) loadingSpinner.classList.add('hidden');
+            });
+          return;
+        }
+
         config.body = formData;
 
         console.log('Product form: sending request to:', routes.cart_add_url);

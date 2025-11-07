@@ -1275,3 +1275,98 @@ class BulkAdd extends HTMLElement {
 if (!customElements.get('bulk-add')) {
   customElements.define('bulk-add', BulkAdd);
 }
+
+// Cart Drawer API - universal helper to add to cart and open the drawer
+(function () {
+  if (window.CartDrawerAPI) return;
+
+  function ensureCartDrawer() {
+    return document.querySelector('cart-drawer');
+  }
+
+  async function addToCart(formData, activeElement) {
+    try {
+      const cartDrawer = ensureCartDrawer();
+      if (cartDrawer && typeof cartDrawer.setActiveElement === 'function' && activeElement) {
+        cartDrawer.setActiveElement(activeElement);
+      }
+
+      // Ensure sections are requested so the drawer can re-render
+      let sectionIds = [];
+      if (cartDrawer && typeof cartDrawer.getSectionsToRender === 'function') {
+        const sections = cartDrawer.getSectionsToRender();
+        if (sections && sections.length > 0) {
+          sectionIds = sections.map((s) => s.id).filter(Boolean);
+          if (!formData.get('sections')) {
+            formData.append('sections', sectionIds.join(','));
+          }
+          if (!formData.get('sections_url')) {
+            formData.append('sections_url', window.location.pathname);
+          }
+        }
+      } else {
+        // Fallback default sections
+        sectionIds = ['cart-drawer', 'cart-icon-bubble'];
+        if (!formData.get('sections')) {
+          formData.append('sections', sectionIds.join(','));
+        }
+        if (!formData.get('sections_url')) {
+          formData.append('sections_url', window.location.pathname);
+        }
+      }
+
+      const endpoint = typeof routes !== 'undefined' && routes?.cart_add_url ? routes.cart_add_url : '/cart/add.js';
+      const config = typeof fetchConfig === 'function' ? fetchConfig('javascript') : { method: 'POST', headers: {} };
+      config.headers = config.headers || {};
+      config.headers['X-Requested-With'] = 'XMLHttpRequest';
+      delete config.headers['Content-Type'];
+      config.body = formData;
+
+      const res = await fetch(endpoint, config);
+      const text = await res.text();
+      let data;
+      try {
+        data = text ? JSON.parse(text) : {};
+      } catch (e) {
+        data = { status: 'error', description: text || 'Unknown error' };
+      }
+
+      if (!res.ok || data?.status) {
+        const errMessage = data?.description || data?.message || 'Unable to add to cart';
+        throw new Error(errMessage);
+      }
+
+      // If server returned sections, render directly
+      if (data.sections && cartDrawer && typeof cartDrawer.renderContents === 'function') {
+        cartDrawer.renderContents(data);
+        return data;
+      }
+
+      // Fallback: fetch required sections HTML and render
+      if (cartDrawer && sectionIds.length > 0) {
+        const results = await Promise.all(
+          sectionIds.map(async (id) => {
+            try {
+              const r = await fetch(`${routes?.cart_url || '/cart'}?section_id=${encodeURIComponent(id)}`);
+              const html = await r.text();
+              return [id, html];
+            } catch (_) {
+              return [id, ''];
+            }
+          })
+        );
+        const sectionsMap = results.reduce((acc, [id, html]) => {
+          acc[id] = html;
+          return acc;
+        }, {});
+        cartDrawer.renderContents({ sections: sectionsMap });
+      }
+
+      return data;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  window.CartDrawerAPI = { addToCart };
+})();

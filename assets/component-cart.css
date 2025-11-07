@@ -355,6 +355,7 @@ cart-items.is-empty .title-wrapper-with-link,
   line-height: 1.25rem; /* 20px */
   display: flex;
   gap: 4px;
+  text-transform: capitalize;
 
   @media (max-width: 768px) {
     font-size: 0.8125rem; /* 13px */

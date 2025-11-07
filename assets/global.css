@@ -636,7 +636,7 @@ main .shopify-section:first-child:has(cart-items) {
 }
 
 main .shopify-section:first-child:has(#film-service-form) {
-  padding-top: calc(var(--logo-height) + 80px);
+  padding-top: calc(var(--logo-height) + 120px);
 
   @media (max-width: 768px) {
     padding-bottom: 80px;
