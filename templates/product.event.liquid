@@ -17,46 +17,49 @@
             {{ product.description }}
           </div>
         {% endif %}
-        <div class="product-event-content-card-wrapper">
-          {% if product.metafields.custom.where_event != blank %}
-            <div class="product-event-content-card">
-              <p class="product-event-content-card__subtitle">Where</p>
-              <p class="product-event-content-card__text">{{ product.metafields.custom.where_event }}</p>
-            </div>
-          {% endif %}
-          {% if product.metafields.custom.when_event != blank %}
-            <div class="product-event-content-card">
-              <p class="product-event-content-card__subtitle">When</p>
-              <p class="product-event-content-card__text">{{ product.metafields.custom.when_event }}</p>
-            </div>
-          {% endif %}
-          {% if product.metafields.custom.events_links.value != blank %}
-            <div class="product-event-content-card type-p">
-              <p class="product-event-content-card__subtitle" id="event-links">Links</p>
-              <div role="list" aria-labelledby="event-links">
-                {% for link in product.metafields.custom.events_links.value %}
-                  {% if link.link_url.value != blank and link.link_text.value != blank %}
-                    <a
-                      class="product-event-content-card__link"
-                      href="{{ link.link_url.value }}"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      role="listitem"
-                    >
-                      {{ link.link_text.value }}
-                    </a>
-                  {% endif %}
-                {% endfor %}
+        {% comment %}
+          <div class="product-event-content-card-wrapper">
+            {% if product.metafields.custom.where_event != blank %}
+              <div class="product-event-content-card">
+                <p class="product-event-content-card__subtitle">Where</p>
+                <p class="product-event-content-card__text">{{ product.metafields.custom.where_event }}</p>
               </div>
-            </div>
-          {% endif %}
-        </div>
+            {% endif %}
+            {% if product.metafields.custom.when_event != blank %}
+              <div class="product-event-content-card">
+                <p class="product-event-content-card__subtitle">When</p>
+                <p class="product-event-content-card__text">{{ product.metafields.custom.when_event }}</p>
+              </div>
+            {% endif %}
+            {% if product.metafields.custom.events_links.value != blank %}
+              <div class="product-event-content-card type-p">
+                <p class="product-event-content-card__subtitle" id="event-links">Links</p>
+                <div role="list" aria-labelledby="event-links">
+                  {% for link in product.metafields.custom.events_links.value %}
+                    {% if link.link_url.value != blank and link.link_text.value != blank %}
+                      <a
+                        class="product-event-content-card__link"
+                        href="{{ link.link_url.value }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        role="listitem"
+                      >
+                        {{ link.link_text.value }}
+                      </a>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        {% endcomment %}
       </div>
       <div class="product-event-ctas">
         {% if product.metafields.custom.1_cta_link != blank and product.metafields.custom.1_cta_text != blank %}
           <div data-hover-shake>
             <a
               class="event-text primary-button primary-button--highlight"
+              target="_blank"
               href="{{ product.metafields.custom.1_cta_link }}"
               aria-label="{{ product.metafields.custom.1_cta_text }}"
             >
@@ -68,6 +71,7 @@
           <div data-hover-shake>
             <a
               class="event-text primary-button"
+              target="_blank"
               href="{{ product.metafields.custom.2_cta_link }}"
               aria-label="{{ product.metafields.custom.2_cta_text }}"
             >

@@ -1,5 +1,6 @@
 .product-event {
-  padding: calc(var(--logo-height) + 1rem) 0;
+  padding-top: 24px;
+	padding-bottom: 80px;
 }
 
 .product-event .layout-wrapper {
@@ -14,9 +15,16 @@
 
 .product-event__image-wrapper {
 	grid-column: span 6;
+	position: sticky;
+	top: 24px;
 
 	@media (max-width: 48rem) {
 		grid-column: 1 / -1;
+	}
+
+	@media (max-width: 768px) {
+		position: relative;
+		top: unset;
 	}
 }
 

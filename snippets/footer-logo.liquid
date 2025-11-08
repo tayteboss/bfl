@@ -5,6 +5,21 @@
   {% render 'footer-logo' %}
 {% endcomment %}
 
-<div class="footer__logo">Bellows Film Lab</div>
+<div class="footer__logo">
+  <div class="footer__logo-video">
+    <video
+      src="https://cdn.shopify.com/videos/c/o/v/6fcc7fa28ab44b7c8ee1ad243bba6d6d.mp4"
+      autoplay
+      muted
+      loop
+      playsinline
+    ></video>
+  </div>
+  <div class="footer__logo-text">Bellows Film Lab</div>
+</div>
 
-<script></script>
+<script>
+  document.querySelector('.footer__logo-inner').addEventListener('click', () => {
+    window.location.href = '/';
+  });
+</script>

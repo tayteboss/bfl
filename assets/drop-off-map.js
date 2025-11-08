@@ -139,7 +139,9 @@
     map.setView([39.5, -98.35], initialZoom);
 
     // Tiles (OSM). You may replace with your preferred tile provider.
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    // Pick maps here
+    // https://leaflet-extras.github.io/leaflet-providers/preview/index.html
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
       maxZoom: 19,
       attribution: '&copy; OpenStreetMap contributors',
     }).addTo(map);

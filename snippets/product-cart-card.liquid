@@ -12,7 +12,8 @@
   <div class="cart-card__inner">
     <div class="cart-item__media">
       {% assign fg_image = item.product.metafields.custom.foreground_image %}
-      {% if item.image %}
+      {% assign bg_image = item.product.metafields.custom.background_image %}
+      {% if item.image and item.product.title != 'Tape Digitization' %}
         <a href="{{ item.url }}" class="cart-item__link" tabindex="-1" aria-hidden="true"> </a>
         <img
           class="cart-item__image"
@@ -23,6 +24,26 @@
           height="{{ 150 | divided_by: item.image.aspect_ratio | ceil }}"
           style="object-fit: cover; width: 100%; height: 100%;"
         >
+      {% elsif item.product.title == 'Tape Digitization' and bg_image != blank %}
+        <img
+          class="cart-item__image cart-item__image--background"
+          src="{{ bg_image | image_url: width: 300 }}"
+          alt="{{ item.product.title | escape }}"
+          loading="lazy"
+          width="160"
+          height="160"
+          style="object-fit: cover; width: 100%; height: 100%;"
+        >
+      {% elsif item.product.title == 'Tape Digitization' and fg_image != blank %}
+        <img
+          class="cart-item__image cart-item__image--foreground"
+          src="{{ fg_image | image_url: width: 300 }}"
+          alt="{{ item.product.title | escape }}"
+          loading="lazy"
+          width="160"
+          height="160"
+          style="object-fit: contain;"
+        >
       {% elsif fg_image != blank %}
         <img
           class="cart-item__image cart-item__image--foreground"
@@ -32,6 +53,16 @@
           width="160"
           height="160"
           style="object-fit: contain;"
+        >
+      {% elsif bg_image != blank %}
+        <img
+          class="cart-item__image cart-item__image--background"
+          src="{{ bg_image | image_url: width: 300 }}"
+          alt="{{ item.product.title | escape }}"
+          loading="lazy"
+          width="160"
+          height="160"
+          style="object-fit: cover; width: 100%; height: 100%;"
         >
       {% endif %}
     </div>
