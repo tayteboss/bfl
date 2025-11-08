@@ -1,12 +1,17 @@
 {%- assign target_product = product -%}
-{%- if target_product == null and section.settings.carrier_product != blank -%}
-  {%- assign target_product = section.settings.carrier_product -%}
+
+{%- if target_product == null and section.settings.main_form_product != blank -%}
+  {%- assign target_product = section.settings.main_form_product -%}
 {%- endif -%}
 
 {%- if target_product == null -%}
-  <p><strong>No product selected.</strong> Choose a “Service product (carrier)” in this section’s settings.</p>
+  <p><strong>No main product assigned.</strong> Choose a “Main Film Service Product” in the section settings.</p>
   {% break %}
 {%- endif -%}
+
+{% assign carrier_a = section.settings.carrier_product_a %}
+{% assign carrier_b = section.settings.carrier_product_b %}
+{% assign carrier_c = section.settings.carrier_product_c %}
 
 {%- assign form_data = target_product.metafields.custom.film_services_json.value -%}
 
@@ -796,8 +801,11 @@
 
 <!-- VARIANT DATA -->
 <script>
-  window.productVariants = {{ target_product.variants | json }};
+  window.carrierA = {{ carrier_a.variants | json }};
+  window.carrierB = {{ carrier_b.variants | json }};
+  window.carrierC = {{ carrier_c.variants | json }};
 </script>
+
 <script
   src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
   integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
@@ -809,4 +817,35 @@
 
 <script src="{{ 'film-service.js' | asset_url }}" defer="defer"></script>
 
-{% schema %} { "name": "Send Rolls (Dynamic)", "settings": [ { "type": "product", "id": "carrier_product", "label": "Service product (carrier)" } ], "presets": [ { "name": "Send Rolls (Dynamic)" } ] } {% endschema %}
+{% schema %}
+{
+  "name": "Send Rolls (Dynamic)",
+  "settings": [
+    {
+      "type": "product",
+      "id": "main_form_product",
+      "label": "Main Film Service Product (metafields + UI)"
+    },
+    {
+      "type": "product",
+      "id": "carrier_product_a",
+      "label": "Carrier Product A (0–100)"
+    },
+    {
+      "type": "product",
+      "id": "carrier_product_b",
+      "label": "Carrier Product B (101–200)"
+    },
+    {
+      "type": "product",
+      "id": "carrier_product_c",
+      "label": "Carrier Product C (201–300)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Send Rolls (Dynamic)"
+    }
+  ]
+}
+{% endschema %}

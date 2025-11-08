@@ -388,7 +388,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // Match variant by price
   function findVariantByPrice(priceDollars) {
     const cents = Math.round(priceDollars * 100);
-    return window.productVariants.find((v) => Number(v.price) === cents);
+
+    let carrier;
+
+    if (priceDollars <= 100) carrier = window.carrierA;
+    else if (priceDollars <= 200) carrier = window.carrierB;
+    else carrier = window.carrierC;
+
+    return carrier.find((v) => Number(v.price) === cents);
   }
 
   // Submit

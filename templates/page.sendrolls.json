@@ -13,7 +13,10 @@
       "type": "new-send-rolls",
       "name": "Send Rolls (Metaobjects)",
       "settings": {
-        "carrier_product": "develop-scan-service"
+        "main_form_product": "send-rolls-form-0-100",
+        "carrier_product_a": "send-rolls-form-0-100",
+        "carrier_product_b": "send-rolls-form-100-200",
+        "carrier_product_c": "send-rolls-form-200-300"
       }
     }
   },
