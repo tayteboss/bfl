@@ -213,9 +213,9 @@ footer .layout-grid {
   height: 100%;
   width: 100%;
   font-family: var(--font-tiny);
-  font-variation-settings: "wght" var(--font-weight-header);
+  font-variation-settings: "wght" 200;
   text-transform: uppercase;
-  font-size: 17.2vw;
+  font-size: 17.15vw;
   line-height: 0.75;
   text-align: center;
   white-space: nowrap;
@@ -223,8 +223,12 @@ footer .layout-grid {
   position: relative;
   mix-blend-mode: screen;
 
+  @media (max-width: 1000px) {
+    font-size: 16.8vw;
+  }
+
   @media (max-width: 768px) {
-    font-size: 15.4vw;
+    font-size: 16.5vw;
   }
 }
 

@@ -63,11 +63,11 @@ main {
   position: relative;
   z-index: 1;
   background-color: var(--color-white);
-  padding-bottom: 5rem; /* 80px */
+  padding-bottom: 120px;
   min-height: 100vh;
 
   @media (max-width: 768px) {
-    padding-bottom: 2rem;
+    padding-bottom: 80px;
   }
 }
 
@@ -697,6 +697,7 @@ main .shopify-section:first-child:has(#film-service-form) {
 
   @media (max-width: 768px) {
     background: var(--color-grey-light);
+    padding: 0.35rem 0.7rem 0.45rem;
   }
 }
 

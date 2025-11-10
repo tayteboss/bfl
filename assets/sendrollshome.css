@@ -65,6 +65,12 @@
   }
 }
 
+.send-rolls-content__image-link {
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
 .primary-button {
   @media (max-width: 480px) {
     width: 100%;
