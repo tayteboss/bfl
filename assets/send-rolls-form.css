@@ -480,6 +480,10 @@
   gap: 40px;
   border-bottom: 1px solid rgba(0,0,0,0.1);
   padding-bottom: 4px;
+
+  @media (max-width: 768px) {
+    gap: 16px;
+  }
 }
 
 .order-summary__row:last-child {

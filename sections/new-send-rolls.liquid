@@ -622,26 +622,33 @@
           <div class="rolls-form-card__inner">
             <div class="rolls-form-card__options">
               <div class="cart-item__quantity-wrapper quantity-popover-wrapper">
-                <div class="quantity-popover-container">
-                  <quantity-input class="quantity cart-quantity">
-                    <button class="quantity__button" name="minus" type="button">
-                      <span class="visually-hidden">Decrease quantity</span>
-                      <span class="svg-wrapper"> - </span>
-                    </button>
-                    <input
-                      class="quantity__input"
-                      type="number"
-                      name="quantity"
-                      value="1"
-                      min="1"
-                      step="1"
-                      aria-label="Quantity"
-                    >
-                    <button class="quantity__button" name="plus" type="button">
-                      <span class="visually-hidden">Increase quantity</span>
-                      <span class="svg-wrapper"> + </span>
-                    </button>
-                  </quantity-input>
+                <div class="quantity-input-wrapper quantity-bubble">
+                  <button
+                    type="button"
+                    class="quantity-btn quantity-btn--minus type-button-large"
+                    name="minus"
+                    aria-label="Decrease quantity"
+                  >
+                    -
+                  </button>
+                  <input
+                    id="Quantity-NewSendRolls"
+                    name="quantity"
+                    type="number"
+                    class="input-selector quantity-input quantity-number type-button-large"
+                    min="1"
+                    step="1"
+                    value="1"
+                    aria-label="quantity"
+                  >
+                  <button
+                    type="button"
+                    class="quantity-btn quantity-btn--plus type-button-large"
+                    name="plus"
+                    aria-label="Increase quantity"
+                  >
+                    +
+                  </button>
                 </div>
               </div>
             </div>
