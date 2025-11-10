@@ -255,6 +255,34 @@
       }
     }
 
+    var selectionTargetZoom = typeof window !== 'undefined' && window.innerWidth < 900 ? 12 : 13;
+
+    function adjustMapView(loc, options) {
+      if (!loc) return;
+      var opts = options || {};
+      var shouldZoom = !!opts.zoom;
+      try {
+        map.panTo([loc.lat, loc.lng]);
+        if (!shouldZoom) return;
+        var currentZoom = typeof map.getZoom === 'function' ? map.getZoom() : undefined;
+        var maxZoom = typeof map.getMaxZoom === 'function' ? map.getMaxZoom() : undefined;
+        if (typeof maxZoom !== 'number' || !isFinite(maxZoom)) maxZoom = 16;
+        var hasCurrentZoom = typeof currentZoom === 'number' && isFinite(currentZoom);
+        var targetZoom;
+        if (typeof opts.targetZoom === 'number' && isFinite(opts.targetZoom)) {
+          targetZoom = Math.min(opts.targetZoom, maxZoom);
+        } else if (hasCurrentZoom && typeof opts.zoomIncrement === 'number') {
+          targetZoom = Math.min(currentZoom + opts.zoomIncrement, maxZoom);
+        } else if (hasCurrentZoom) {
+          targetZoom = currentZoom;
+        } else {
+          targetZoom = maxZoom;
+        }
+        if (opts.onlyIncrease && hasCurrentZoom && currentZoom >= targetZoom) return;
+        map.setView([loc.lat, loc.lng], targetZoom, { animate: opts.animate !== false });
+      } catch (_e) {}
+    }
+
     var markers = [];
 
     function renderLocations() {
@@ -276,10 +304,12 @@
           var l = mk.loc;
           setActiveMarkerById(l.id);
           renderOverlayForLocation(l);
-          // Center the map on the selected pin without changing zoom
-          try {
-            map.panTo([l.lat, l.lng]);
-          } catch (_e) {}
+          adjustMapView(l, {
+            zoom: true,
+            targetZoom: selectionTargetZoom,
+            onlyIncrease: true,
+            animate: true,
+          });
         });
         if (clusterGroup) {
           clusterGroup.addLayer(m);
@@ -345,12 +375,16 @@
       return { loc: nearest, km: nearestKm };
     }
 
-    function focusLocation(loc) {
+    function focusLocation(loc, opts) {
       if (!loc) return;
-      // Center on the location without altering current zoom level
-      try {
-        map.panTo([loc.lat, loc.lng]);
-      } catch (_e) {}
+      var options = opts || {};
+      adjustMapView(loc, {
+        zoom: !!options.zoom,
+        targetZoom: options.targetZoom,
+        zoomIncrement: typeof options.zoomIncrement === 'number' ? options.zoomIncrement : undefined,
+        onlyIncrease: !!options.onlyIncrease,
+        animate: options.animate,
+      });
       var marker = markers.find(function (m) {
         return m.loc.id === loc.id;
       });
@@ -413,7 +447,11 @@
             var r = results[0];
             var target = { lat: parseFloat(r.lat), lng: parseFloat(r.lon) };
             var nearest = findNearest(target);
-            focusLocation(nearest.loc);
+            focusLocation(nearest.loc, {
+              zoom: true,
+              targetZoom: selectionTargetZoom,
+              onlyIncrease: true,
+            });
           })
           .catch(function () {
             showSearchError('Search failed. Please try again.');
@@ -435,7 +473,11 @@
           function (pos) {
             var target = { lat: pos.coords.latitude, lng: pos.coords.longitude };
             var nearest = findNearest(target);
-            focusLocation(nearest.loc);
+            focusLocation(nearest.loc, {
+              zoom: true,
+              targetZoom: selectionTargetZoom,
+              onlyIncrease: true,
+            });
           },
           function () {
             /* silent */

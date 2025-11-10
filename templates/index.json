@@ -108,7 +108,9 @@
         "image_XU3RBp"
       ],
       "name": "Image Carousel",
-      "settings": {}
+      "settings": {
+        "autoplay": true
+      }
     },
     "sendrollshome_aLTPmr": {
       "type": "sendrollshome",
@@ -119,7 +121,7 @@
         "paragraph-2": "",
         "sendrollsimage": "shopify://shop_images/stamp.png",
         "button": "Send Us Your Rolls",
-        "cta": "#"
+        "cta": "shopify://pages/send-us-your-rolls"
       }
     },
     "walloffame_AnARbN": {
@@ -221,7 +223,7 @@
       "settings": {
         "heading": "Frequently Asked Questions",
         "show_view_all": true,
-        "view_all_link": "shopify://pages/faq",
+        "view_all_link": "shopify://pages/faqs",
         "view_all_text": "View all FAQs",
         "photo": "shopify://shop_images/side.png"
       }

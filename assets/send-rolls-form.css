@@ -135,13 +135,30 @@
   }
 }
 
+.rolls-form-card .quantity-popover-container {
+  max-width: 25rem;
+  width: 120px;
+}
+
+.rolls-form-card .cart-quantity {
+  height: 44px;
+  width: 100%;
+  justify-content: space-between;
+}
+
 .service-groups-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 40px;
   max-width: 780px;
+  width: 780px;
   margin: 0 auto;
+
+  @media (max-width: 900px) {
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
 .rolls-form-card-content {

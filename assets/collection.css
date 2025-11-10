@@ -153,11 +153,24 @@
 .filter-group__item {
   position: relative;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filter-group__item .active-filter-remove {
+  position: relative;
+  top: 0;
+  display: none;
 }
 
 .filter-group__item.is-active {
   background: var(--color-yellow);
   color: var(--color-black);
+}
+
+.filter-group__item.is-active .active-filter-remove {
+  display: block;
 }
 
 .filter-group__item input {

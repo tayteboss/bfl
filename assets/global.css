@@ -659,24 +659,10 @@ main .shopify-section:first-child:has(#film-service-form) {
 
   @media (max-width: 768px) {
     border-radius: 1rem;
-    padding: 1.375rem 2rem 1.3125rem;
+    padding: 1.25rem 2rem 1.25rem;
     font-size: 1rem;
     background: var(--color-yellow);
   }
-}
-
-.primary-button--active-filter {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--color-yellow);
-
-  transition: all var(--transition-speed-default) var(--transition-ease);
-}
-
-.primary-button--active-filter:hover {
-  background: var(--color-black) !important;
-  color: var(--color-yellow);
 }
 
 
@@ -690,6 +676,24 @@ main .shopify-section:first-child:has(#film-service-form) {
   @media (max-width: 768px) {
     background: var(--color-grey-light);
   }
+}
+
+.primary-button--active-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--color-yellow);
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+
+  @media (max-width: 768px) {
+    background: var(--color-yellow);
+  }
+}
+
+.primary-button--active-filter:hover {
+  background: var(--color-black) !important;
+  color: var(--color-yellow);
 }
 
 .primary-button--modal-filter {
@@ -1518,4 +1522,59 @@ cart-items .cart__warnings .cart__login-paragraph a {
 			grid-column: 1 / -1;
 		}
 	}
+}
+
+.cart-quantity {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--color-grey-light) !important;
+  border-radius: 100px;
+  padding: 0 12px;
+  height: 42px;
+
+  @media (max-width: 768px) {
+    height: 36px;
+  }
+}
+
+.cart-quantity .quantity__input {
+  padding: 0;
+  width: auto;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 24px;
+  background: transparent;
+  font-family: var(--font-gt-standard-mono-regular);
+  font-size: 1rem;
+}
+
+.cart-quantity .quantity__input::-webkit-outer-spin-button,
+.cart-quantity .quantity__input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+.cart-quantity .quantity__input[type=number] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.cart-quantity .quantity__button {
+  height: 15px;
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100px;
+  font-family: var(--font-gt-standard-mono-regular);
+  font-size: 1rem;
+  transition: all var(--transition-speed-default) var(--transition-ease);
+}
+
+.cart-quantity .quantity__button:hover {
+  opacity: 0.3;
 }

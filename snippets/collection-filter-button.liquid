@@ -56,10 +56,16 @@
     {% comment %} Here will be the list of collections which are buttons that immediately send the user to /collection/chosen-collection-name {% endcomment %}
     {% capture collections_links_html %}
       {% for coll in collections %}
-        {% if coll.handle != 'events' and coll.handle != 'all' and coll.handle != 'new-arrivals' and coll.handle != 'sale' %}
+        {%
+          if coll.handle != 'events' and 
+          coll.handle != 'all' and 
+          coll.handle != 'new-arrivals' and 
+          coll.handle != 'sale' and 
+          coll.handle != 'frontpage'
+        %}
           {% assign coll_count = coll.products_count | plus: 0 %}
           {% if coll_count > 0 %}
-            <a href="{{ coll.url }}" class="primary-button primary-button--modal-filter">
+            <a data-attribute-name="{{ coll.handle }}" href="{{ coll.url }}" class="primary-button primary-button--modal-filter">
               {{ coll.title }} <span>{{ coll_count }}</span>
             </a>
           {% endif %}

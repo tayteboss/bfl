@@ -34,7 +34,6 @@
     </section>
 
     <form id="film-service-form" action="{{ routes.cart_add_url }}" method="post">
-      <input type="hidden" name="quantity" value="1">
       <input type="hidden" name="id" value="{{ target_product.selected_or_first_available_variant.id }}">
 
       <!-- BASE PRICE -->
@@ -186,9 +185,12 @@
                     <div class="rolls-form-card__options">
                       {% if options and options.size > 0 %}
                         {% for opt in options %}
-                          <label class="bubble-option" for="{{ group_name | handle }}-{{ opt.label | handle }}">
+                          <label
+                            class="bubble-option"
+                            for="{{ service_name | handle }}-{{ group_name | handle }}-{{ opt.label | handle }}"
+                          >
                             <input
-                              id="{{ group_name | handle }}-{{ opt.label | handle }}"
+                              id="{{ service_name | handle }}-{{ group_name | handle }}-{{ opt.label | handle }}"
                               type="radio"
                               name="{{ group_name | handle }}"
                               value="{{ opt.label | escape }}"
@@ -353,10 +355,10 @@
                             <div class="rolls-form-card__addon-option">
                               <label
                                 class="bubble-option"
-                                for="{{ group_name | handle }}-{{ options[0].label | handle }}"
+                                for="{{ service_name | handle }}-{{ group_name | handle }}-{{ options[0].label | handle }}"
                               >
                                 <input
-                                  id="{{ group_name | handle }}-{{ options[0].label | handle }}"
+                                  id="{{ service_name | handle }}-{{ group_name | handle }}-{{ options[0].label | handle }}"
                                   type="radio"
                                   name="{{ group_name | handle }}"
                                   value="{{ options[0].label | escape }}"
@@ -379,10 +381,10 @@
                             <div class="rolls-form-card__addon-option">
                               <label
                                 class="bubble-option"
-                                for="{{ group_name | handle }}-{{ options[1].label | handle }}"
+                                for="{{ service_name | handle }}-{{ group_name | handle }}-{{ options[1].label | handle }}"
                               >
                                 <input
-                                  id="{{ group_name | handle }}-{{ options[1].label | handle }}"
+                                  id="{{ service_name | handle }}-{{ group_name | handle }}-{{ options[1].label | handle }}"
                                   type="radio"
                                   name="{{ group_name | handle }}"
                                   value="{{ options[1].label | escape }}"
@@ -509,9 +511,12 @@
                       {% endif %}
                       <div class="rolls-form-card__options">
                         {% for opt in options %}
-                          <label class="bubble-option" for="{{ group_name | handle }}-{{ opt.label | handle }}">
+                          <label
+                            class="bubble-option"
+                            for="{{ service_name | handle }}-{{ group_name | handle }}-{{ opt.label | handle }}"
+                          >
                             <input
-                              id="{{ group_name | handle }}-{{ opt.label | handle }}"
+                              id="{{ service_name | handle }}-{{ group_name | handle }}-{{ opt.label | handle }}"
                               type="radio"
                               name="{{ group_name | handle }}"
                               value="{{ opt.label | escape }}"
@@ -610,6 +615,38 @@
             {% endfor %}
           </div>
         {% endfor %}
+
+        <!-- Quantity // How many rolls - sheets? -->
+        <fieldset data-group="Quantity" class="rolls-form-card">
+          <h3 class="rolls-form-card__heading type-h1-x-small">How many rolls / sheets?</h3>
+          <div class="rolls-form-card__inner">
+            <div class="rolls-form-card__options">
+              <div class="cart-item__quantity-wrapper quantity-popover-wrapper">
+                <div class="quantity-popover-container">
+                  <quantity-input class="quantity cart-quantity">
+                    <button class="quantity__button" name="minus" type="button">
+                      <span class="visually-hidden">Decrease quantity</span>
+                      <span class="svg-wrapper"> - </span>
+                    </button>
+                    <input
+                      class="quantity__input"
+                      type="number"
+                      name="quantity"
+                      value="1"
+                      min="1"
+                      step="1"
+                      aria-label="Quantity"
+                    >
+                    <button class="quantity__button" name="plus" type="button">
+                      <span class="visually-hidden">Increase quantity</span>
+                      <span class="svg-wrapper"> + </span>
+                    </button>
+                  </quantity-input>
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
 
         <!-- Delivery Options -->
         <fieldset data-group="location" class="rolls-form-card">
@@ -778,7 +815,7 @@
             </div>
           </div>
         </fieldset>
-        <aside class="order-summary" data-order-summary>
+        <aside class="order-summary" data-order-summary data-fly-in-animation>
           <div class="order-summary__header">
             <h3 class="order-summary__title type-h1-x-small">Order Summary</h3>
             <div class="order-summary__total type-p" id="film-total-display" aria-live="polite">$0.00</div>

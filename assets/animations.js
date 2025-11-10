@@ -91,6 +91,148 @@ function percentageSeen(element) {
   return Math.round(percentage);
 }
 
+// Fly-in "receipt print" animation for elements with [data-fly-in-animation]
+function initializeFlyInAnimation(rootEl = document) {
+  try {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  } catch (e) {}
+  const elements = Array.from(rootEl.querySelectorAll('[data-fly-in-animation]'));
+  if (!elements.length) return;
+
+  function isElementVisible(el) {
+    try {
+      const style = window.getComputedStyle(el);
+      if (style.display === 'none' || style.visibility === 'hidden') return false;
+      const rect = el.getBoundingClientRect();
+      return rect.width > 0 && rect.height > 0;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function elementIsInViewport(el) {
+    try {
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      const vw = window.innerWidth || document.documentElement.clientWidth;
+      return rect.bottom > 0 && rect.right > 0 && rect.top < vh && rect.left < vw;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  elements.forEach((el) => {
+    if (el.__flyInObserved) return;
+    el.__flyInObserved = true;
+    try {
+      el.style.willChange = 'transform';
+      el.style.transformOrigin = el.style.transformOrigin || 'top center';
+    } catch (_) {}
+
+    // Prime below like a "receipt" and observe
+    try {
+      el.style.transform = 'translateY(100%)';
+    } catch (_) {}
+
+    // If already visible and in viewport, animate immediately
+    if (isElementVisible(el) && elementIsInViewport(el)) {
+      requestAnimationFrame(() => startFlyInAnimation(el));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting || el.__flyInDone) return;
+          startFlyInAnimation(el);
+          observer.unobserve(el);
+        });
+      },
+      // Expand the bottom margin so off-screen elements trigger a bit earlier
+      { rootMargin: '0px 0px 30% 0px', threshold: 0 }
+    );
+    observer.observe(el);
+
+    // If the element starts hidden (display:none), watch for visibility changes
+    if (!isElementVisible(el)) {
+      const visibilityObserver = new MutationObserver(() => {
+        if (!isElementVisible(el)) return;
+        // If it's visible and already in view, animate now; else IO will handle it
+        if (elementIsInViewport(el) && !el.__flyInDone) {
+          startFlyInAnimation(el);
+          try {
+            observer.unobserve(el);
+          } catch (_) {}
+        }
+        visibilityObserver.disconnect();
+        el.__flyInVisObs = null;
+      });
+      el.__flyInVisObs = visibilityObserver;
+      const opts = { attributes: true, attributeFilter: ['style', 'class', 'hidden'] };
+      visibilityObserver.observe(el, opts);
+      // Also observe ancestors since visibility can change via parent display/class
+      let parent = el.parentElement;
+      while (parent && parent !== document.body) {
+        visibilityObserver.observe(parent, opts);
+        parent = parent.parentElement;
+      }
+    }
+  });
+}
+
+function startFlyInAnimation(el) {
+  if (el.__flyInDone) return;
+  el.__flyInDone = true;
+  // Prefer WAAPI for percentage-based transforms; fallback to Motion if needed
+  try {
+    if (el.animate) {
+      const anim = el.animate([{ transform: 'translateY(150%)' }, { transform: 'translateY(0%)' }], {
+        duration: 2000,
+        easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+        fill: 'forwards',
+      });
+      if (anim && anim.finished && typeof anim.finished.finally === 'function') {
+        anim.finished.finally(() => {
+          try {
+            el.style.willChange = '';
+            el.style.transform = 'translateY(0%)';
+          } catch (_) {}
+        });
+      }
+      return;
+    }
+  } catch (_) {}
+
+  const motionApi = window.motion || window.Motion;
+  if (motionApi && typeof motionApi.animate === 'function') {
+    const anim = motionApi.animate(
+      el,
+      { transform: ['translateY(100%)', 'translateY(0%)'] },
+      { duration: 0.6, easing: 'ease-out' }
+    );
+    if (anim && anim.finished && typeof anim.finished.finally === 'function') {
+      anim.finished.finally(() => {
+        try {
+          el.style.transform = 'translateY(0%)';
+          el.style.willChange = '';
+        } catch (_) {}
+      });
+    } else {
+      try {
+        el.style.transform = 'translateY(0%)';
+        el.style.willChange = '';
+      } catch (_) {}
+    }
+    return;
+  }
+
+  // Final fallback: snap into place
+  try {
+    el.style.transform = 'translateY(0%)';
+    el.style.willChange = '';
+  } catch (_) {}
+}
+
 // Track modal close state to prevent immediate shake restart
 let modalJustClosed = false;
 let modalCloseCooldown = null;
@@ -427,6 +569,7 @@ if (Shopify.designMode) {
   document.addEventListener('shopify:section:load', (event) => {
     initializeScrollAnimationTrigger(event.target, true);
     initializeHoverShake(event.target);
+    initializeFlyInAnimation(event.target);
   });
   document.addEventListener('shopify:section:reorder', () => initializeScrollAnimationTrigger(document, true));
 }
@@ -580,6 +723,7 @@ if (Shopify.designMode) {
     initializeHoverShake(event.target);
     initializeFAQAccordions(event.target);
     initializeGearAccordions(event.target);
+    initializeFlyInAnimation(event.target);
   });
   document.addEventListener('shopify:section:reorder', () => initializeScrollAnimationTrigger(document, true));
 }
@@ -590,4 +734,5 @@ window.addEventListener('DOMContentLoaded', () => {
   initializeHoverShake();
   initializeFAQAccordions();
   initializeGearAccordions();
+  initializeFlyInAnimation();
 });

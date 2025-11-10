@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const osToggle = document.querySelector('[data-os-toggle]');
   const osDetails = document.querySelector('[data-os-details]');
   const orderSummary = document.querySelector('[data-order-summary]');
+  const qtyInput = form.querySelector('input[name="quantity"]');
   // Feature flag: show per-option prices in the Order Summary
   const OS_SHOW_PRICES = true;
   const basePrice = Number(document.querySelector('#base-price').dataset.base);
@@ -20,6 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const serviceRadios = form.querySelectorAll('input[name="service"]');
   const serviceBlocks = form.querySelectorAll('.service-groups-wrapper');
   let total = basePrice;
+
+  const getQuantity = () => Math.max(1, parseInt((form.querySelector('input[name="quantity"]') || {}).value || '1', 10) || 1);
 
   // Hide all service groups initially
   serviceBlocks.forEach((block) => (block.style.display = 'none'));
@@ -209,6 +212,19 @@ document.addEventListener('DOMContentLoaded', () => {
       const priceNum = Number(checked.dataset.price || 0);
       createRow(labelText, valueText, priceNum);
     });
+
+    // --- Totals area (consider quantity) ---
+    const qty = getQuantity();
+    const perRoll = Number(total || 0);
+    const grand = perRoll * qty;
+
+    if (qty > 1) {
+      createRow('Quantity', String(qty), 0);
+      createRow('Subtotal', `${qty} × ${formatMoney(perRoll)}`, grand);
+      createRow('Total', formatMoney(grand), 0);
+    } else {
+      createRow('Total', formatMoney(perRoll), 0);
+    }
   };
 
   // Toggle behavior
@@ -230,7 +246,9 @@ document.addEventListener('DOMContentLoaded', () => {
     form.querySelectorAll('input[type="radio"]:checked').forEach((input) => {
       total += Number(input.dataset.price || 0);
     });
-    if (totalDisplay) totalDisplay.textContent = formatMoney(total);
+    const qty = getQuantity();
+    const displayTotal = qty > 1 ? total * qty : total;
+    if (totalDisplay) totalDisplay.textContent = formatMoney(displayTotal);
     renderSummary();
     updateOrderSummaryVisibility();
   }
@@ -382,6 +400,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (anyChecked) fs.classList.remove('rolls-form-card--error');
       }
       updateOrderSummaryVisibility();
+    } else if (e.target.matches('input[name="quantity"]')) {
+      // React to quantity changes
+      calculateTotal();
     }
   });
 
@@ -396,6 +417,20 @@ document.addEventListener('DOMContentLoaded', () => {
     else carrier = window.carrierC;
 
     return carrier.find((v) => Number(v.price) === cents);
+  }
+
+  function clearFormAndScrollTop() {
+    try {
+      form.reset();
+    } catch (_) {}
+    // Hide all service groups after reset
+    serviceBlocks.forEach((block) => (block.style.display = 'none'));
+    // Reset totals and summary
+    if (totalDisplay) totalDisplay.textContent = formatMoney(basePrice);
+    if (osList) osList.innerHTML = '';
+    applyConditions();
+    updateOrderSummaryVisibility();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // Submit
@@ -426,7 +461,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fd = new FormData();
     fd.append('id', matchedVariant.id);
-    fd.append('quantity', 1);
+    const selectedQty = Math.max(1, parseInt(qtyInput?.value || '1', 10) || 1);
+    fd.append('quantity', selectedQty);
 
     // --- Append selected options ---
     form.querySelectorAll('fieldset').forEach((fs) => {
@@ -459,6 +495,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       if (window.CartDrawerAPI && typeof window.CartDrawerAPI.addToCart === 'function') {
         await window.CartDrawerAPI.addToCart(fd, submitBtn);
+        clearFormAndScrollTop();
         resetButtonState();
         return;
       }
@@ -486,6 +523,9 @@ document.addEventListener('DOMContentLoaded', () => {
         resetButtonState();
         return;
       }
+
+      // Clear and scroll on success before rendering/redirecting
+      clearFormAndScrollTop();
 
       if (cartDrawer && typeof cartDrawer.renderContents === 'function') {
         cartDrawer.renderContents(data);
