@@ -1,0 +1,32 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "text_header": {
+      "type": "text-header",
+      "settings": {
+        "heading": "Privacy Policy",
+        "subheading": "Use this section to introduce your privacy practices."
+      }
+    },
+    "rich_text_body": {
+      "type": "rich-text",
+      "settings": {
+        "content": "<h1>Heading one</h1><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque consequat rhoncus est ullamcorper porta. <a href=\"https://google.com/\" target=\"_blank\" title=\"https://google.com/\">Here is a link</a>.</p><h2>Heading two</h2><p>Vivamus facilisis ut eros vel pharetra. Nunc eget auctor massa, quis ornare nunc. Etiam eu quam ut lorem vulputate consectetur iaculis et est.</p><h3>Heading three</h3><p>Vestibulum luctus sagittis metus, ut rhoncus sem interdum a. Maecenas id orci cursus, iaculis est sit amet, mollis neque.</p><h4>Heading four</h4><p>Quisque auctor odio purus, in tristique risus tempus vitae. Donec malesuada vehicula elit non pretium. In scelerisque dolor vel urna ultrices scelerisque.</p><h5>Heading five</h5><p>Phasellus in luctus ex. Praesent commodo fringilla quam, ut venenatis lacus. Suspendisse a porta purus.</p><h6>Heading six</h6><p>Aenean sollicitudin nisl non aliquet iaculis. Morbi volutpat leo justo, a blandit lectus semper sed.</p><ul><li>Here is a list</li><li>Here is a list</li><li>Here is a list</li></ul><p>Aenean sollicitudin nisl non aliquet iaculis. Morbi volutpat leo justo, a blandit lectus semper sed.</p><ol><li>Here is a list</li><li>Here is a list</li><li>Here is a list</li></ol>",
+        "button": "",
+        "cta": ""
+      }
+    }
+  },
+  "order": [
+    "text_header",
+    "rich_text_body"
+  ]
+}

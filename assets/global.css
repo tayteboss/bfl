@@ -71,6 +71,10 @@ main {
   }
 }
 
+main.home {
+  overflow: hidden;
+}
+
 main:has(.gear-single) { overflow: visible; }
 
 ::selection {
@@ -1467,4 +1471,51 @@ cart-items .cart__warnings .cart__login-paragraph a {
 
 .faq-card-or-divider--no-text::before {
   content: '';
+}
+
+.text-header__inner {
+  display: grid;
+	grid-template-columns: subgrid;
+	grid-column: 1 / -1;
+	gap: 64px;
+	justify-items: center;
+
+	@media (max-width: 768px) {
+		gap: 40px;
+	}
+
+	h1 {
+		grid-column: 4 / -4;
+		text-align: center;
+
+		@media (max-width: 1024px) {
+			grid-column: 3 / -3;
+		}
+
+		@media (max-width: 768px) {
+			grid-column: 1 / -1;
+		}
+	}
+
+	h2 {
+		grid-column: 3 / -3;
+		text-align: left;
+
+		@media (max-width: 1024px) {
+			grid-column: 1 / -1;
+		}
+	}
+
+	p {
+		grid-column: 4 / -4;
+		text-align: left;
+
+		@media (max-width: 1024px) {
+			grid-column: 2 / -2;
+		}
+
+		@media (max-width: 768px) {
+			grid-column: 1 / -1;
+		}
+	}
 }

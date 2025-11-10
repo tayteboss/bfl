@@ -1,0 +1,23 @@
+<section class="text-header">
+  <div class="layout-wrapper layout-grid">
+    <div class="text-header__inner">
+      {% if section.settings.heading != blank %}
+        <h1 class="type-h1-large">{{ section.settings.heading }}</h1>
+      {% endif %}
+      {% if section.settings.subheading != blank %}
+        <p class="type-p-x-large">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Text header",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "text", "id": "subheading", "label": "Subheading" }
+  ],
+  "presets": [{ "name": "Text header", "category": "Text" }]
+}
+{% endschema %}
