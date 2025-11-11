@@ -114,7 +114,7 @@
             {%- assign has_color_option = false -%}
             {%- for opt in product.options -%}
               {%- assign opt_down = opt | downcase -%}
-              {%- if opt_down == 'color' -%}
+              {%- if opt_down == 'color' or opt_down == 'colors' -%}
                 {%- assign has_color_option = true -%}
                 {%- break -%}
               {%- endif -%}
@@ -130,7 +130,7 @@
             {%- assign has_size_option = false -%}
             {%- for opt in product.options -%}
               {%- assign opt_down = opt | downcase -%}
-              {%- if opt_down == 'size' -%}
+              {%- if opt_down == 'size' or opt_down == 'sizes' -%}
                 {%- assign has_size_option = true -%}
                 {%- break -%}
               {%- endif -%}
