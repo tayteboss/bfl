@@ -42,7 +42,7 @@
           {% break %}
         {% endif %}
       {% endfor %}
-      {% unless hidden %}
+      {% unless hidden or product.template_suffix == 'news-events' %}
         {% assign has_visible_products = true %}
         {% render 'product-card', product: product %}
       {% endunless %}

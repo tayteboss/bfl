@@ -1,10 +1,32 @@
 {{ 'product-event.css' | asset_url | stylesheet_tag }}
 
-<section class="product-event" aria-label="Event Details">
+<section class="product-event" aria-label="News &amp; Events Details">
   <div class="layout-wrapper layout-grid">
     <div class="product-event__image-wrapper">
-      {% if product.featured_image %}
-        {% render 'image', class: 'product-event__image', image: product.featured_image, alt: product.featured_image.alt | default: product.title %}
+      {% assign media_count = product.media.size | plus: 0 %}
+      {% if media_count > 1 %}
+        <div class="swiper product-images-swiper">
+          <div class="swiper-wrapper">
+            {% for media in product.media %}
+              <div class="swiper-slide product-images-wrapper__slide">
+                <div class="product-images-wrapper__image">
+                  <img
+                    src="{{ media.src | image_url }}"
+                    alt="{{ media.alt | default: product.title }}"
+                    class="product-images-wrapper__img"
+                    width="auto"
+                    height="auto"
+                  >
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+      {% else %}
+        {% if product.featured_image %}
+          {% render 'image', class: 'product-event__image', image: product.featured_image, alt: product.featured_image.alt | default: product.title %}
+        {% endif %}
       {% endif %}
     </div>
     <div class="product-event-content">
@@ -13,7 +35,7 @@
           <h1 class="product-event-content__title type-h1-small">{{ product.title }}</h1>
         {% endif %}
         {% if product.description != blank %}
-          <div class="product-event-content__description type-p">
+          <div class="product-event-content__description rich-text">
             {{ product.description }}
           </div>
         {% endif %}
@@ -83,3 +105,21 @@
     </div>
   </div>
 </section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const productImagesSwiper = document.querySelector('.product-images-swiper');
+    if (productImagesSwiper && typeof window.Swiper === 'function') {
+      new window.Swiper(productImagesSwiper, {
+        slidesPerView: 1,
+        spaceBetween: 0,
+        loop: false,
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+          type: 'bullets',
+        },
+      });
+    }
+  });
+</script>

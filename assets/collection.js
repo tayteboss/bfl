@@ -53,3 +53,38 @@ document.addEventListener('click', function (e) {
   if (trigger.getAttribute('aria-busy') === 'true') return;
   loadMoreOnce(trigger);
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+  const sectionEl = document.querySelector('[data-collection-section]');
+  if (!sectionEl) return;
+  const handle = sectionEl.getAttribute('data-collection-handle');
+  const listEl = sectionEl.querySelector('[data-collection-list]');
+  if (!listEl) return;
+  // Only auto-top-up on the "all" collection
+  if (handle !== 'all') return;
+
+  const MIN_VISIBLE = 12;
+  let safetyCounter = 0;
+
+  function countVisibleCards() {
+    return listEl.querySelectorAll('.product-card').length;
+  }
+
+  function topUpIfNeeded() {
+    if (countVisibleCards() >= MIN_VISIBLE) return;
+    const trigger = document.querySelector('[data-collection-load-more]');
+    if (!trigger) return;
+    if (safetyCounter >= 5) return; // prevent runaway
+    safetyCounter += 1;
+    loadMoreOnce(trigger).then((hasMore) => {
+      // Defer to allow DOM to update
+      requestAnimationFrame(() => {
+        if (countVisibleCards() < MIN_VISIBLE && hasMore) {
+          topUpIfNeeded();
+        }
+      });
+    });
+  }
+
+  topUpIfNeeded();
+});

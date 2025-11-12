@@ -114,7 +114,7 @@
             {%- assign has_color_option = false -%}
             {%- for opt in product.options -%}
               {%- assign opt_down = opt | downcase -%}
-              {%- if opt_down == 'color' or opt_down == 'colors' -%}
+              {%- if opt_down == 'color' -%}
                 {%- assign has_color_option = true -%}
                 {%- break -%}
               {%- endif -%}
@@ -130,7 +130,7 @@
             {%- assign has_size_option = false -%}
             {%- for opt in product.options -%}
               {%- assign opt_down = opt | downcase -%}
-              {%- if opt_down == 'size' or opt_down == 'sizes' -%}
+              {%- if opt_down == 'size' -%}
                 {%- assign has_size_option = true -%}
                 {%- break -%}
               {%- endif -%}
@@ -235,12 +235,12 @@
         {%- assign related_limit = section.settings.related_limit | default: 4 -%}
 
         {%- assign base_collection = null -%}
-        {%- if collection and collection.handle != 'events' -%}
+        {%- if collection and collection.handle != 'news-events' -%}
           {%- assign base_collection = collection -%}
         {%- endif -%}
         {%- if base_collection == null -%}
           {%- for coll in product.collections -%}
-            {%- if coll.handle != 'events' -%}
+            {%- if coll.handle != 'news-events' -%}
               {%- assign base_collection = coll -%}
               {%- break -%}
             {%- endif -%}
@@ -257,7 +257,7 @@
               <h2 class="similar-products__title type-h2-medium">{{ related_title }}</h2>
               <div class="similar-products__list layout-grid">
                 {%- for item in base_collection.products -%}
-                  {%- if item.id != product.id -%}
+                  {%- if item.id != product.id and item.template_suffix != 'news-events' -%}
                     {% render 'product-card', product: item %}
                     {%- assign similar_rendered = similar_rendered | plus: 1 -%}
                     {%- if similar_rendered >= related_limit -%}

@@ -12,6 +12,7 @@
   aria-labelledby="main-collection-heading"
   data-collection-section
   data-section-id="{{ section.id }}"
+  data-collection-handle="{{ collection.handle }}"
   data-location-selector
 >
   <div class="layout-wrapper">
@@ -41,7 +42,10 @@
             {% break %}
           {% endif %}
         {% endfor %}
-        {% unless product.collections contains collections.events or hidden %}
+        {% unless product.template_suffix == 'news-events'
+          or product.collections contains collections['news-events']
+          or hidden
+        %}
           {% render 'product-card', product: product %}
           {% assign any_products = true %}
         {% endunless %}

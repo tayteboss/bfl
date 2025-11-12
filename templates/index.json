@@ -17,52 +17,10 @@
           "settings": {
             "collection": "film"
           }
-        },
-        "collection_cxrxp8": {
-          "type": "collection",
-          "settings": {
-            "collection": "disposable-cameras"
-          }
-        },
-        "collection_GPPWN7": {
-          "type": "collection",
-          "settings": {
-            "collection": "batteries"
-          }
-        },
-        "collection_D6R9FJ": {
-          "type": "collection",
-          "settings": {
-            "collection": "polaroid"
-          }
-        },
-        "collection_MRDebf": {
-          "type": "collection",
-          "settings": {
-            "collection": "tape"
-          }
-        },
-        "collection_cXc8M4": {
-          "type": "collection",
-          "settings": {
-            "collection": "lenses"
-          }
-        },
-        "collection_iCEf98": {
-          "type": "collection",
-          "settings": {
-            "collection": "merch"
-          }
         }
       },
       "block_order": [
-        "collection_EAV7rA",
-        "collection_cxrxp8",
-        "collection_GPPWN7",
-        "collection_D6R9FJ",
-        "collection_MRDebf",
-        "collection_cXc8M4",
-        "collection_iCEf98"
+        "collection_EAV7rA"
       ],
       "name": "Featured Collection",
       "settings": {

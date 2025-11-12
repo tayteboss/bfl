@@ -1,9 +1,16 @@
 {% comment %}
-  Render unique tags from products in the 'events' collection as filter buttons.
+  Render unique tags from products in the 'news-events' collection as filter buttons.
   When a tag is clicked, only products with that tag are shown.
 {% endcomment %}
 
-{% assign tag_list = collection.all_tags %}
+{% if tags_array %}
+  {% assign tag_list = tags_array %}
+{% elsif tags %}
+  {% assign tag_list = tags | split: '||' %}
+{% else %}
+  {% assign tag_list = collection.tags %}
+{% endif %}
+{% assign tag_list = tag_list | uniq %}
 
 <div class="collection-filters" id="event-tags-filter">
   <div data-hover-shake>
@@ -14,20 +21,22 @@
     {% endif %}
   </div>
   {% for tag in tag_list %}
-    <div data-hover-shake>
-      {% if current_tags and current_tags contains tag %}
-        {{
-          tag
-          | link_to_remove_tag: tag
-          | replace: '<a', '<a class="filter-button type-p event-tag-filter" aria-pressed="true"'
-        }}
-      {% else %}
-        {{
-          tag
-          | link_to_tag: tag
-          | replace: '<a', '<a class="filter-button type-p event-tag-filter" aria-pressed="false"'
-        }}
-      {% endif %}
-    </div>
+    {% if tag != blank %}
+      <div data-hover-shake>
+        {% if current_tags and current_tags contains tag %}
+          {{
+            tag
+            | link_to_remove_tag: tag
+            | replace: '<a', '<a class="filter-button type-p event-tag-filter" aria-pressed="true"'
+          }}
+        {% else %}
+          {{
+            tag
+            | link_to_tag: tag
+            | replace: '<a', '<a class="filter-button type-p event-tag-filter" aria-pressed="false"'
+          }}
+        {% endif %}
+      </div>
+    {% endif %}
   {% endfor %}
 </div>

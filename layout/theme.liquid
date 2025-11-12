@@ -92,13 +92,18 @@
     <a class="header__logo" href="{{ routes.root_url }}">Bellows Film Lab</a>
     {% sections 'header-group' %}
 
-    <main id="main-content" role="main" tabindex="-1" class="page-{{ request.page_type | handle }} template-{{ template.name | handle }}{% if template.name == 'index' %} home{% endif %}{% if template.suffix != blank %} template-{{ template.name | handle }}-{{ template.suffix | handle }}{% endif %}{% if page %} page-{{ page.handle }}{% endif %}{% if product %} product-{{ product.handle }}{% endif %}{% if collection %} collection-{{ collection.handle }}{% endif %}{% if blog %} blog-{{ blog.handle }}{% endif %}{% if article %} article-{{ article.handle }}{% endif %}">
+    <main
+      id="main-content"
+      role="main"
+      tabindex="-1"
+      class="page-{{ request.page_type | handle }} template-{{ template.name | handle }}{% if template.name == 'index' %} home{% endif %}{% if template.suffix != blank %} template-{{ template.name | handle }}-{{ template.suffix | handle }}{% endif %}{% if page %} page-{{ page.handle }}{% endif %}{% if product %} product-{{ product.handle }}{% endif %}{% if collection %} collection-{{ collection.handle }}{% endif %}{% if blog %} blog-{{ blog.handle }}{% endif %}{% if article %} article-{{ article.handle }}{% endif %}"
+    >
       {{ content_for_layout }}
     </main>
 
     {% sections 'footer-group' %}
 
-    {%- render 'store-selector-modal' -%}
+    {% comment %} {%- render 'store-selector-modal' -%} {% endcomment %}
     {%- render 'cart-drawer' -%}
 
     <ul hidden>

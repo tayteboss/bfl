@@ -8,7 +8,7 @@
 <a
   href="{{ product.url }}"
   class="event-card"
-  data-event-product-tags="{{ product.tags | join: ',' }}"
+  data-news-events-product-tags="{{ product.tags | join: ',' }}"
   aria-labelledby="event-title-{{ product.id }}"
   role="article"
   data-in-view
@@ -18,14 +18,16 @@
       <h4 id="event-title-{{ product.id }}" class="event-card__heading type-h2">{{ product.title }}</h4>
     {% endif %}
     {% if product.metafields.custom.when_event %}
-      <p class="event-card__date type-h2" aria-label="Event date">{{ product.metafields.custom.when_event }}</p>
+      <p class="event-card__date type-h2" aria-label="News &amp; Events date">
+        {{ product.metafields.custom.when_event }}
+      </p>
     {% endif %}
   </div>
   <div class="event-card__image-wrapper">
     {% if product.tags.size > 0 %}
-      <div class="event-card__category-badges" role="group" aria-label="Event categories">
+      <div class="event-card__category-badges" role="group" aria-label="News &amp; Events categories">
         {% for tag in product.tags %}
-          <div class="event-card__category-badge badge-button" role="text" aria-label="Event category">
+          <div class="event-card__category-badge badge-button" role="text" aria-label="News &amp; Events category">
             {{ tag }}
           </div>
         {% endfor %}
@@ -46,18 +48,18 @@
   </div>
   <div class="event-card__content">
     {% if product.description %}
-      <p class="event-card__description type-p-large" aria-label="Event description">
-        {{ product.description | truncatewords: 40 }}
-      </p>
+      <div class="event-card__description type-p-large" aria-label="News &amp; Events description">
+        {{ product.description | truncatewords: 20 }}
+      </div>
     {% endif %}
     {% if product.metafields.custom.where_event %}
-      <div class="event-card__content-card" role="group" aria-label="Event location">
+      <div class="event-card__content-card" role="group" aria-label="News &amp; Events location">
         <p class="type-p-large">Where</p>
         <p class="type-p-large">{{ product.metafields.custom.where_event }}</p>
       </div>
     {% endif %}
     {% if product.metafields.custom.when_event %}
-      <div class="event-card__content-card" role="group" aria-label="Event timing">
+      <div class="event-card__content-card" role="group" aria-label="News &amp; Events timing">
         <p class="type-p-large">When</p>
         <p class="type-p-large">{{ product.metafields.custom.when_event }}</p>
       </div>
@@ -65,9 +67,9 @@
     <div class="event-card__mobile-button">
       <button
         class="primary-button primary-button--small primary-button--black"
-        aria-label="View Event"
+        aria-label="View News &amp; Events"
       >
-        View Event
+        View
       </button>
     </div>
   </div>

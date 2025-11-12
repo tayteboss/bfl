@@ -10,10 +10,11 @@
 {
   "sections": {
     "main": {
-      "type": "events-collection",
+      "type": "news-events-collection",
       "settings": {
       }
     }
   },
   "order": ["main"]
 }
+
