@@ -1,0 +1,26 @@
+.template-search__header {
+	margin-bottom: 3rem;
+}
+
+.template-search__search {
+	margin: 0 auto 3.5rem;
+	max-width: 74.1rem;
+}
+
+.template-search__search .search {
+	margin-top: 3rem;
+}
+
+.template-search--empty {
+	padding-bottom: 18rem;
+}
+
+@media screen and (min-width: 750px) {
+	.template-search__header {
+		margin-bottom: 5rem;
+	}
+}
+
+.search__button .icon {
+	height: 1.8rem;
+}

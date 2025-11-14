@@ -1,69 +1,4 @@
-.store-selector-modal {
-  position: fixed;
-  z-index: 10000;
-  bottom: 1.5rem;
-  left: 50%;
-  transform: translateX(-50%) translateY(100%);
-  background: var(--color-green);
-  border-radius: 1.5rem;
-  width: 30rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-
-  transition: all var(--transition-speed-default) var(--transition-ease);
-
-  @media (max-width: 550px) {
-    width: calc(100% - 1.5rem);
-  }
-}
-
-.store-selector-modal--visible {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(-50%) translateY(0);
-}
-
-.store-selector-modal__inner {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-}
-
-.store-selector-modal__inner {
-  display: grid;
-  gap: 1rem;
-  padding: 2rem;
-}
-
-.store-selector-modal__title,
-.store-selector-modal__description {
-  text-align: center;
-}
-
-.store-selector-modal__buttons {
-  padding-top: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.25rem;
-}
-
-.store-selector-modal__close {
-  padding-top: 1rem;
-  text-align: center;
-}
-
-.store-selector-modal__close button {
-  text-decoration: underline;
-}
-
-.store-selector-floating {
+.store-search-floating {
   position: fixed;
   bottom: 1.5rem;
   left: 50%;
@@ -84,51 +19,59 @@
   }
 }
 
-.store-selector-floating--visible {
+.store-search-floating--visible {
   pointer-events: auto;
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
 
-.store-selector-floating__button-wrapper {
-	position: relative;
-	z-index: 2;
-}
-
-.store-selector-floating__menu {
-  width: 30rem;
+.store-search-floating__wrapper {
+  background: var(--color-highlight);
+  width: 300px;
+  padding: 0 16px;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
+  border-radius: 50px;
+  height: 45px;
+}
+
+.store-search-floating__submit, .store-search-floating__input {
+  font-family: var(--font-diatype-rounded-bold);
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 1;
+  padding: 0;
+}
+
+.store-search-floating__submit {
+  opacity: 0.25;
+  transition: all var(--transition-speed-default) var(--transition-ease);
+}
+
+.store-search-floating__input {
+  padding-left: 10px;
+  opacity: 0.25;
+  transition: all var(--transition-speed-default) var(--transition-ease);
+}
+
+.store-search-floating__icon {
+  height: 23px;
+  width: 23px;
+  min-height: 23px;
+  min-width: 23px;
+  background: var(--color-black);
+  border-radius: 50%;
+  display: flex;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.25rem;
-  pointer-events: none;
-	z-index: 1;
+  align-items: center;
 }
 
-.store-selector-floating__menu--open {
-  pointer-events: auto;
-}
-
-.store-selector-floating__menu--open .primary-button {
-  background: var(--color-green);
-  color: var(--color-black);
-}
-
-/* Staggered reveal for floating menu options */
-.store-selector-floating__menu > div > button {
-  opacity: 0;
-  transition: opacity 10ms ease;
-  transition-delay: 0ms; /* Reset delay when closing */
-}
-
-.store-selector-floating__menu--open > div > button {
+.store-search-floating__form:focus-within
+  .store-search-floating__submit {
   opacity: 1;
 }
-
-/* Only apply stagger delays when opening */
-.store-selector-floating__menu--open > div:nth-child(4) > button { transition-delay: 0ms; }
-.store-selector-floating__menu--open > div:nth-child(3) > button { transition-delay: 50ms; }
-.store-selector-floating__menu--open > div:nth-child(2) > button { transition-delay: 100ms; }
-.store-selector-floating__menu--open > div:nth-child(1) > button { transition-delay: 150ms; }
+.store-search-floating__form:focus-within
+  .store-search-floating__input {
+  opacity: 1;
+}
