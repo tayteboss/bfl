@@ -14,6 +14,7 @@
   data-section-id="{{ section.id }}"
   data-collection-handle="{{ collection.handle }}"
   data-location-selector
+  data-search-selector
 >
   <div class="layout-wrapper">
     <section class="main-collection__header">
@@ -32,6 +33,7 @@
       role="region"
       aria-label="Featured products"
       data-collection-list
+      data-search-selector
     >
       {% assign any_products = false %}
       {% for product in collection.products %}

@@ -243,6 +243,7 @@
 
 .service-table tbody td {
   border-color:  rgba(0, 0, 0, 0.15) !important;
+
 }
 
 .service-table th,
@@ -281,6 +282,7 @@
     font-size: 0.8125rem; /* 13px */
     line-height: 1.4; /* 140% */
     letter-spacing: 0;
+    text-align: left;
   }
 }
 
@@ -304,12 +306,6 @@
   @media (max-width: 480px) {
     display: block;
   }
-}
-
-.service-card__table-caption {
-  text-align: center;
-  width: 100%;
-  opacity: 0.5;
 }
 
 /* Horizontal scroll for tables on small screens */
@@ -366,4 +362,15 @@
 
 .service-card__table-wrapper.show-right-gradient::after {
   opacity: 1;
+}
+
+.service-card__key {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+
+  @media (max-width: 768px) {
+    justify-content: flex-start;
+  }
 }

@@ -1,0 +1,207 @@
+{% comment %}
+  Global Store Selector modal. Shows on first session for home/collection/shop pages.
+  Stores selection in sessionStorage as 'preferred_store_location'.
+  Publishes 'store:selected' via pubsub for downstream listeners.
+{% endcomment %}
+
+{{ 'store-search-modal.css' | asset_url | stylesheet_tag }}
+
+<div id="StoreSearchFloating" class="store-selector-floating">
+  <form
+    id="StoreSearchForm"
+    class="store-search-floating__form"
+    action="{{ routes.search_url }}"
+    method="get"
+    role="search"
+    aria-label="Search products"
+  >
+    <div class="store-search-floating__controls">
+      <input
+        type="search"
+        id="StoreSearchInput"
+        name="q"
+        class="store-search-floating__input"
+        placeholder="Search products… WIP"
+        autocapitalize="off"
+        autocomplete="off"
+        autocorrect="off"
+        spellcheck="false"
+        aria-label="Search products"
+      >
+      <button
+        type="submit"
+        class="store-search-floating__submit primary-button primary-button--store-selector"
+        aria-label="Search"
+        data-hover-shake
+      >
+        Search WIP
+      </button>
+      <input type="hidden" name="type" value="product">
+    </div>
+  </form>
+  <!-- Optional: place to mount suggestions if desired later -->
+  <div class="store-selector-floating__menu"></div>
+</div>
+
+<script>
+  (function () {
+    var FLOAT_ID = 'StoreSearchFloating';
+    var SELECTOR = '[data-search-selector], [data-location-selector]';
+    var DEBUG_PREFIX = '[StoreSearchFloating]';
+    var HIDE_DELAY_MS = 400;
+    var THRESHOLD = 0.05;
+    var hideTimeoutId = null;
+
+    function ensureFloatingUi() {
+      var node = document.getElementById(FLOAT_ID);
+      if (!node) return null;
+      return node;
+    }
+
+    function setFloatingVisible(visible) {
+      var node = document.getElementById(FLOAT_ID);
+      if (!node) return;
+      node.classList.toggle('store-selector-floating--visible', !!visible);
+      try {
+        console.log(DEBUG_PREFIX, 'setFloatingVisible', { visible: !!visible, node: node });
+      } catch (e) {}
+    }
+
+    function setupLocationObserver() {
+      // Tear down any previous observer before creating a new one
+      try {
+        if (window.__storeSearchObserver && typeof window.__storeSearchObserver.disconnect === 'function') {
+          window.__storeSearchObserver.disconnect();
+        }
+      } catch (e) {}
+
+      var targets = document.querySelectorAll(SELECTOR);
+      try {
+        console.log(DEBUG_PREFIX, 'setupLocationObserver', {
+          path: window.location.pathname,
+          selector: SELECTOR,
+          targetCount: targets.length,
+        });
+      } catch (e) {}
+      if (!targets.length) return;
+
+      ensureFloatingUi();
+
+      var inView = new Set();
+      window.__storeSearchInViewCount = 0;
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            try {
+              console.log(DEBUG_PREFIX, 'intersection', {
+                isIntersecting: entry.isIntersecting,
+                intersectionRatio: entry.intersectionRatio,
+                thresholdUsed: THRESHOLD,
+                el: entry.target,
+                rect: entry.boundingClientRect,
+              });
+            } catch (e) {}
+            if (entry.isIntersecting) {
+              inView.add(entry.target);
+            } else {
+              inView.delete(entry.target);
+            }
+          });
+          window.__storeSearchInViewCount = inView.size;
+          try {
+            console.log(DEBUG_PREFIX, 'inView size', { size: inView.size });
+          } catch (e) {}
+          if (inView.size > 0) {
+            if (hideTimeoutId) {
+              clearTimeout(hideTimeoutId);
+              hideTimeoutId = null;
+              try {
+                console.log(DEBUG_PREFIX, 'hide canceled');
+              } catch (e) {}
+            }
+            setFloatingVisible(true);
+          } else {
+            if (hideTimeoutId) clearTimeout(hideTimeoutId);
+            hideTimeoutId = setTimeout(function () {
+              try {
+                console.log(DEBUG_PREFIX, 'hide after delay', { delayMs: HIDE_DELAY_MS });
+              } catch (e) {}
+              setFloatingVisible(false);
+              hideTimeoutId = null;
+            }, HIDE_DELAY_MS);
+          }
+        },
+        { root: null, rootMargin: '0px', threshold: THRESHOLD }
+      );
+
+      targets.forEach(function (t) {
+        try {
+          var rect = t.getBoundingClientRect();
+          console.log(DEBUG_PREFIX, 'observing', { el: t, rect: rect });
+        } catch (e) {}
+        observer.observe(t);
+      });
+
+      // Expose for debugging if needed
+      window.__storeSearchObserver = observer;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      // Initialize floating search visibility when product areas are in view
+      setupLocationObserver();
+
+      // If nothing matched initially, watch for future DOM changes (pagination/sections)
+      if (!document.querySelector(SELECTOR)) {
+        try {
+          if (window.__storeSearchMo && typeof window.__storeSearchMo.disconnect === 'function') {
+            window.__storeSearchMo.disconnect();
+          }
+          var mo = new MutationObserver(function () {
+            try {
+              console.log(DEBUG_PREFIX, 'mutation observed; re-checking for targets');
+            } catch (e) {}
+            if (document.querySelector(SELECTOR)) {
+              try {
+                console.log(DEBUG_PREFIX, 'targets found after mutation; re-init observer');
+              } catch (e) {}
+              setupLocationObserver();
+              try {
+                mo.disconnect();
+              } catch (e) {}
+            }
+          });
+          mo.observe(document.documentElement || document.body, { childList: true, subtree: true });
+          window.__storeSearchMo = mo;
+        } catch (e) {}
+      }
+
+      // Re-evaluate when Shopify dynamically loads sections
+      document.addEventListener('shopify:section:load', function () {
+        try {
+          console.log(DEBUG_PREFIX, 'shopify:section:load');
+        } catch (e) {}
+        setupLocationObserver();
+      });
+      document.addEventListener('shopify:section:unload', function () {
+        try {
+          console.log(DEBUG_PREFIX, 'shopify:section:unload');
+        } catch (e) {}
+        setupLocationObserver();
+      });
+
+      // Guard-submit: prevent empty submits
+      var form = document.getElementById('StoreSearchForm');
+      var input = document.getElementById('StoreSearchInput');
+      if (form && input) {
+        form.addEventListener('submit', function (e) {
+          if (!input.value || !input.value.trim()) {
+            e.preventDefault();
+            try {
+              console.log(DEBUG_PREFIX, 'blocked empty submit');
+            } catch (e) {}
+          }
+        });
+      }
+    });
+  })();
+</script>

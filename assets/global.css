@@ -565,6 +565,21 @@ a {
   z-index: 150;
 }
 
+.product-badge--table {
+  position: relative;
+  top: unset;
+  left: unset;
+  margin-left: 0.5rem;
+  border: none;
+}
+
+.product-badge--table-key {
+  position: relative;
+  top: unset;
+  left: unset;
+  border: none;
+}
+
 .visually-hidden {
   position: absolute !important;
   overflow: hidden;
@@ -1108,8 +1123,6 @@ cart-items .cart__warnings .cart__login-paragraph a {
 	transform: translate(-50%, -50%);
 	max-height: 60%;
 	width: 60%;
-  border-radius: 1rem;
-  overflow: hidden;
 
 	transition: all var(--transition-speed-default) var(--transition-ease);
 }

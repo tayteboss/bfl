@@ -91,9 +91,20 @@
           <div class="product-content__description-wrapper rich-text type-p">
             {{ product.description }}
           </div>
+
           {% render 'product-film-features' %}
+
           <div class="product-form">
-            <p class="variant-options__legend type-p">Options:</p>
+            {%- assign has_selectable_options = false -%}
+            {%- for option in product.options_with_values -%}
+              {%- if option.values.size > 1 -%}
+                {%- assign has_selectable_options = true -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if has_selectable_options -%}
+              <p class="variant-options__legend type-p">Options:</p>
+            {%- endif -%}
             {%- assign has_exposure_option = false -%}
             {%- for opt in product.options -%}
               {%- assign opt_down = opt | downcase -%}

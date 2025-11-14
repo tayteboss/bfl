@@ -21,7 +21,27 @@
         const tr = document.createElement('tr');
         row.forEach((cell) => {
           const td = document.createElement('td');
-          td.textContent = String(cell);
+          // Support object cells with { value, badge: { color, text } }
+          if (cell && typeof cell === 'object') {
+            const cellValue = 'value' in cell ? cell.value : '';
+            if (cellValue != null && cellValue !== undefined) {
+              td.appendChild(document.createTextNode(String(cellValue)));
+            }
+            const badge = cell.badge;
+            if (badge && (badge.text != null || badge.color != null)) {
+              const badgeEl = document.createElement('span');
+              badgeEl.className = 'product-badge product-badge--table';
+              if (badge.text != null) {
+                badgeEl.textContent = String(badge.text);
+              }
+              if (badge.color) {
+                badgeEl.style.backgroundColor = String(badge.color);
+              }
+              td.appendChild(badgeEl);
+            }
+          } else {
+            td.textContent = String(cell);
+          }
           tr.appendChild(td);
         });
         tbody.appendChild(tr);
@@ -68,6 +88,24 @@
         figcaption.className = 'service-card__table-caption type-p-small';
         figcaption.textContent = String(tableDef.caption);
         figure.appendChild(figcaption);
+      }
+      // Footer badge key under caption
+      if (Array.isArray(tableDef.footerBadgeKey) && tableDef.footerBadgeKey.length > 0) {
+        const keyWrapper = document.createElement('div');
+        keyWrapper.className = 'service-card__key';
+        tableDef.footerBadgeKey.forEach((item) => {
+          if (!item) return;
+          const badgeEl = document.createElement('span');
+          badgeEl.className = 'service-card__key-badge product-badge product-badge--table-key';
+          if (item.text != null) {
+            badgeEl.textContent = String(item.text);
+          }
+          if (item.color) {
+            badgeEl.style.backgroundColor = String(item.color);
+          }
+          keyWrapper.appendChild(badgeEl);
+        });
+        figure.appendChild(keyWrapper);
       }
 
       scroller.appendChild(figure);

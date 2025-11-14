@@ -178,6 +178,20 @@
   gap: 16px;
 }
 
+.product-form__input .select-wrapper {
+  display: flex;
+  align-items: center;
+  max-width: 300px;
+  background: var(--color-grey-light);
+  padding: 12px 18px;
+  border-radius: 16px;
+
+  @media (max-width: 480px) {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
 .product-form__bottom {
   display: flex;
   align-items: stretch;
@@ -560,4 +574,20 @@
 
 .tape-digitization-images-wrapper__image img {
   object-fit: contain;
+}
+
+.form__label {
+  font-size: 12px;
+  line-height: 1.3125rem;
+  font-weight: 400;
+  color: var(--color-black);
+  opacity: 0.5;
+  margin-bottom: 8px;
+  font-family: var(--font-gt-standard-mono-regular);
+}
+
+.other-variant-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }

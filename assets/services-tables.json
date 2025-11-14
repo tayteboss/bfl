@@ -1,16 +1,29 @@
 {
   "tables": [
-    {
-      "id": "film-development",
-      "caption": "*Times quoted for the Miami lab; other locations may differ.",
-      "headings": ["Format / Process", "Dev-Only", "Dev + Med-Res JPG", "Dev + Hi-Res JPG", "Turn-Around*"],
-      "rows": [
-        ["35mm C-41", "$10", "$18", "$23", "3 days"],
-        ["120 C-41", "$11", "$20", "$25", "3 days"],
-        ["B&W (any format)", "$12", "$22", "$27", "3 days"],
-        ["E-6 / 3CN-2", "$15", "$26", "$31", "5 days"]
-      ]
-    },
+    // {
+    //   "id": "film-development",
+    //   "caption": "*Times quoted for the Miami lab; other locations may differ.",
+    //   "footerBadgeKey": [{ "color": "var(--color-green)", "text": "Chicago" }],
+    //   "headings": ["Format / Process", "Dev-Only", "Dev + Med-Res JPG", "Dev + Hi-Res JPG", "Turn-Around*"],
+    //   "rows": [
+    //     ["Colour (C-41)", "$10", "$18", "$23", "3 days"],
+    //     [
+    //       "Black & White",
+    //       {
+    //         "value": "$11",
+    //         "badge": {
+    //           "color": "var(--color-green)",
+    //           "text": "+$2"
+    //         }
+    //       },
+    //       "$20",
+    //       "$25",
+    //       "3 days"
+    //     ],
+    //     ["Color Positive", "$12", "$22", "$27", "3 days"],
+    //     ["CINE (ECN-2)", "$15", "$26", "$31", "5 days"]
+    //   ]
+    // },
     {
       "id": "scanning",
       "caption": "",

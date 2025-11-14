@@ -85,7 +85,7 @@
                   <legend class="type-p tape-digitization-contact-form__legend">Resolution</legend>
                   {%- for option in product.options_with_values offset: 1 limit: 1 -%}
                     {%- liquid
-                      assign selected_value = 'Standard Definition'
+                      assign selected_value = option.values | first
                     -%}
                     <div class="form-field form-field--digitization form-field--wrap">
                       <fieldset class="field__group" aria-label="Resolution">
@@ -127,6 +127,7 @@
                           id="DeliveryWeTransfer--{{ section.id }}"
                           type="radio"
                           name="properties[Delivery method]"
+                          form="{{ product_form_id }}"
                           value="WeTransfer"
                           checked
                           required
@@ -141,6 +142,7 @@
                           id="DeliveryDropbox--{{ section.id }}"
                           type="radio"
                           name="properties[Delivery method]"
+                          form="{{ product_form_id }}"
                           value="Dropbox"
                           required
                         >
@@ -151,77 +153,6 @@
                       </label>
                     </div>
                   </fieldset>
-                </div>
-              </div>
-            </div>
-
-            <div class="contact-form__fields">
-              <div class="contact-form__fields-inner">
-                <legend class="type-p tape-digitization-contact-form__legend">Contact information</legend>
-                <div class="form-field form-field--digitization">
-                  <label class="type-p" for="ContactFullName-{{ section.id }}">Full Name</label>
-                  <input
-                    id="ContactFullName-{{ section.id }}"
-                    class="input-selector"
-                    type="text"
-                    name="properties[Full Name]"
-                    form="{{ product_form_id }}"
-                    autocomplete="name"
-                    required
-                  >
-                </div>
-                <div class="form-field form-field--digitization">
-                  <label class="type-p" for="ContactEmail-{{ section.id }}">Email</label>
-                  <input
-                    id="ContactEmail-{{ section.id }}"
-                    class="input-selector"
-                    type="email"
-                    name="properties[Email]"
-                    form="{{ product_form_id }}"
-                    autocomplete="email"
-                    required
-                  >
-                </div>
-                <div class="form-field form-field--digitization">
-                  <label class="type-p" for="ContactPhone-{{ section.id }}">Phone</label>
-                  <input
-                    id="ContactPhone-{{ section.id }}"
-                    class="input-selector"
-                    type="tel"
-                    name="properties[Phone]"
-                    form="{{ product_form_id }}"
-                    autocomplete="tel"
-                  >
-                </div>
-              </div>
-            </div>
-
-            <div class="contact-form__fields">
-              <div class="contact-form__fields-inner">
-                <legend class="type-p tape-digitization-contact-form__legend">Hire Dates</legend>
-                <div class="form-field form-field--digitization form-field--wrap">
-                  <div class="field__group">
-                    <div class="form-field">
-                      <label class="type-p" for="PickupDate-{{ section.id }}">Pick up</label>
-                      <input
-                        id="PickupDate-{{ section.id }}"
-                        class="input-selector"
-                        type="date"
-                        name="properties[Pick up date]"
-                        form="{{ product_form_id }}"
-                      >
-                    </div>
-                    <div class="form-field">
-                      <label class="type-p" for="ReturnDate-{{ section.id }}">Return</label>
-                      <input
-                        id="ReturnDate-{{ section.id }}"
-                        class="input-selector"
-                        type="date"
-                        name="properties[Return date]"
-                        form="{{ product_form_id }}"
-                      >
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>

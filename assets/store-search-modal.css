@@ -1,0 +1,134 @@
+.store-selector-modal {
+  position: fixed;
+  z-index: 10000;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(100%);
+  background: var(--color-green);
+  border-radius: 1.5rem;
+  width: 30rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+
+  @media (max-width: 550px) {
+    width: calc(100% - 1.5rem);
+  }
+}
+
+.store-selector-modal--visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.store-selector-modal__inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.store-selector-modal__inner {
+  display: grid;
+  gap: 1rem;
+  padding: 2rem;
+}
+
+.store-selector-modal__title,
+.store-selector-modal__description {
+  text-align: center;
+}
+
+.store-selector-modal__buttons {
+  padding-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.store-selector-modal__close {
+  padding-top: 1rem;
+  text-align: center;
+}
+
+.store-selector-modal__close button {
+  text-decoration: underline;
+}
+
+.store-selector-floating {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(25px);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  pointer-events: none;
+  opacity: 0;
+
+  transition: all 300ms var(--transition-ease);
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.store-selector-floating--visible {
+  pointer-events: auto;
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.store-selector-floating__button-wrapper {
+	position: relative;
+	z-index: 2;
+}
+
+.store-selector-floating__menu {
+  width: 30rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  pointer-events: none;
+	z-index: 1;
+}
+
+.store-selector-floating__menu--open {
+  pointer-events: auto;
+}
+
+.store-selector-floating__menu--open .primary-button {
+  background: var(--color-green);
+  color: var(--color-black);
+}
+
+/* Staggered reveal for floating menu options */
+.store-selector-floating__menu > div > button {
+  opacity: 0;
+  transition: opacity 10ms ease;
+  transition-delay: 0ms; /* Reset delay when closing */
+}
+
+.store-selector-floating__menu--open > div > button {
+  opacity: 1;
+}
+
+/* Only apply stagger delays when opening */
+.store-selector-floating__menu--open > div:nth-child(4) > button { transition-delay: 0ms; }
+.store-selector-floating__menu--open > div:nth-child(3) > button { transition-delay: 50ms; }
+.store-selector-floating__menu--open > div:nth-child(2) > button { transition-delay: 100ms; }
+.store-selector-floating__menu--open > div:nth-child(1) > button { transition-delay: 150ms; }

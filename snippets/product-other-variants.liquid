@@ -1,6 +1,7 @@
 {%- assign has_other_options = false -%}
 {%- for option in product.options_with_values -%}
-  {%- if option.name != 'Exposures' -%}
+  {%- if option.name == 'Exposures' -%}{%- continue -%}{%- endif -%}
+  {%- if option.values.size > 1 -%}
     {%- assign has_other_options = true -%}
     {%- break -%}
   {%- endif -%}
@@ -9,26 +10,39 @@
 {%- if has_other_options -%}
   <div class="other-variant-options" data-section-id="{{ section_id }}">
     {%- for option in product.options_with_values -%}
-      {%- if option.name == 'Exposures' -%}{%- continue -%}{%- endif -%}
+      {%- if option.name == 'Exposures' or option.values.size <= 1 -%}{%- continue -%}{%- endif -%}
       <div class="product-form__input">
-        <label class="form__label" for="Option-{{ section_id }}-{{ forloop.index0 }}">{{ option.name }}</label>
-        <div class="select">
+        {% comment %} <label class="form__label" for="Option-{{ section_id }}-{{ forloop.index0 }}">{{ option.name }}</label> {% endcomment %}
+        <div class="select-wrapper">
           <select
             id="Option-{{ section_id }}-{{ forloop.index0 }}"
             class="select__select"
             name="options[{{ option.name | escape }}]"
             form="{{ product_form_id }}"
+            aria-label="{{ option.name }}"
           >
+            <option
+              value=""
+              disabled
+              {% if option.selected_value == blank %}
+                selected
+              {% endif -%}
+              hidden
+            >
+              {{ option.name }}
+            </option>
             {%- for value in option.values -%}
               <option
                 value="{{ value | escape }}"
-                {% if value == option.selected_value %}selected{% endif %}
+                {% if value == option.selected_value %}
+                  selected
+                {% endif %}
               >
                 {{ value }}
               </option>
             {%- endfor -%}
           </select>
-          <span class="svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+          <span class="select-caret" aria-hidden="true">▼</span>
         </div>
       </div>
     {%- endfor -%}
@@ -62,7 +76,7 @@
         }
         // Otherwise look for our select
         const sel = root.querySelector(`select[name="options[${CSS.escape(name)}]"]`);
-        if (sel) return sel.value;
+        if (sel) return sel.value === '' ? null : sel.value;
         return null;
       }
 
@@ -90,5 +104,3 @@
     })();
   </script>
 {%- endif -%}
-
-
