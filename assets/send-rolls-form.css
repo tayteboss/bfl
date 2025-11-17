@@ -252,6 +252,12 @@
 .rolls-form-card-content__drop-off-map {
   position: relative;
   z-index: 2;
+  padding-top: 24px;
+}
+
+.rolls-form-card-content__drop-off-map .drop-off {
+  border-radius: 16px;
+  overflow: hidden;
 }
 
 .rolls-form-card-content-options {

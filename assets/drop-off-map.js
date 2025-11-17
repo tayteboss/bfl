@@ -337,6 +337,56 @@
       }
     }
 
+    // Register this map so UI (like accordions) can restore a sensible zoom when revealed
+    try {
+      window.BellowsDropOffMap = window.BellowsDropOffMap || {};
+      var store = (window.BellowsDropOffMap._entries = window.BellowsDropOffMap._entries || []);
+      store.push({
+        map: map,
+        resetView: function () {
+          try {
+            if (markers.length > 0) {
+              var bounds = clusterGroup ? clusterGroup.getBounds() : L.featureGroup(markers).getBounds();
+              if (bounds && bounds.isValid && bounds.isValid()) {
+                map.fitBounds(bounds.pad(0.2));
+                if (typeof window !== 'undefined' && window.innerWidth < 900) {
+                  var minMobileZoom = 3;
+                  var currentZoom = map.getZoom();
+                  if (typeof currentZoom === 'number' && currentZoom < minMobileZoom) {
+                    var center = bounds.getCenter();
+                    map.setView(center, minMobileZoom);
+                  }
+                }
+                return;
+              }
+            }
+            // Fallback: default continental view
+            map.setView([39.5, -98.35], initialZoom);
+          } catch (_e) {}
+        },
+      });
+
+      window.BellowsDropOffMap.invalidateAll = function () {
+        try {
+          (window.BellowsDropOffMap._entries || []).forEach(function (entry) {
+            if (entry.map && typeof entry.map.invalidateSize === 'function') {
+              entry.map.invalidateSize();
+            }
+          });
+        } catch (_e) {}
+      };
+
+      window.BellowsDropOffMap.resetAll = function () {
+        try {
+          (window.BellowsDropOffMap._entries || []).forEach(function (entry) {
+            if (typeof entry.resetView === 'function') {
+              entry.resetView();
+            }
+          });
+        } catch (_e) {}
+      };
+    } catch (_e) {}
+
     if (clusterGroup) {
       map.addLayer(clusterGroup);
       // Ensure cluster click zooms to bounds (with padding) until target max zoom, then spiderfy

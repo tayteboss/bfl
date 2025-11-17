@@ -26,6 +26,15 @@ cart-drawer-items.is-empty {
 	position: relative;
 
 	transition: all var(--transition-speed-default) var(--transition-ease);
+
+	@media (max-width: 768px) {
+		width: 38px;
+		height: 38px;
+		position: fixed;
+		top: 16px;
+		right: 16px;
+		z-index: 10;
+	}
 }
 
 .drawer__close::before, 
@@ -90,10 +99,6 @@ cart-drawer.active {
 	gap: 12px;
 }
 
-.drawer__inner {
-	padding: 32px;
-}
-
 .drawer__header {
 	display: flex;
 	align-items: center;
@@ -119,6 +124,8 @@ cart-drawer.active {
 	backdrop-filter: blur(6px);
 	-webkit-backdrop-filter: blur(6px);
 	opacity: 0;
+	cursor: pointer;
+	
 	transition: opacity 0.3s ease;
 }
 
@@ -126,27 +133,30 @@ cart-drawer.active .cart-drawer__overlay {
 	opacity: 1;
 }
 
-.drawer__inner {
+.drawer__outer {
 	position: absolute;
 	top: 50%;
 	left: 50%;
+	transform: translate(-50%, -50%);
+	opacity: 0;
+	transition: transform 0.28s ease, opacity 0.2s ease;
+	z-index: 1;
+}
+
+.drawer__inner {
 	width: min(92vw, 52rem);
 	max-height: min(92vh, 48rem);
 	height: auto;
 	background: white;
 	border-radius: var(--bfl-modal-radius, 20px);
 	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-	transform: translate(-50%, -50%) scale(0.98);
-	opacity: 0;
-	transition: transform 0.28s ease, opacity 0.2s ease;
 	overflow: auto;
 	display: flex;
 	flex-direction: column;
-	z-index: 1;
+	padding: 32px;
 }
 
-cart-drawer.active .drawer__inner {
-	transform: translate(-50%, -50%) scale(1);
+cart-drawer.active .drawer__outer {
 	opacity: 1;
 }
 
@@ -185,7 +195,26 @@ cart-drawer .cart__ctas {
 	align-items: center;
 	display: flex;
 	gap: 24px;
-	padding-top: 40px;
+	padding-top: 12px;
+
+	@media (max-width: 768px) {
+		display: none;
+	}
+}
+
+cart-drawer .cart__ctas--mobile {
+	display: none;
+
+	@media (max-width: 768px) {
+		display: flex;
+		position: fixed;
+		bottom: 16px;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 10;
+		width: calc(100% - 32px);
+	}
+
 }
 
 cart-drawer .cart__checkout-button {
@@ -213,4 +242,10 @@ cart-drawer .cart-card__footer {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+}
+
+.cart-drawer__footer {
+	@media (max-width: 768px) {
+		margin-bottom: 80px;
+	}
 }

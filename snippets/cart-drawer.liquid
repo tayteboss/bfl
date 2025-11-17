@@ -17,173 +17,191 @@
   <div id="CartDrawer" class="cart-drawer">
     <div id="CartDrawer-Overlay" class="cart-drawer__overlay"></div>
     <div
-      class="drawer__inner gradient color-{{ settings.cart_color_scheme }}"
+      class="drawer__outer"
       role="dialog"
       aria-modal="true"
       aria-label="{{ 'sections.cart.title' | t }}"
       tabindex="-1"
     >
-      <div class="drawer__header">
-        <h2 class="drawer__heading type-h1-small">{{ 'sections.cart.title' | t }}</h2>
-        <button
-          class="drawer__close"
-          type="button"
-          onclick="this.closest('cart-drawer').close()"
-          aria-label="{{ 'accessibility.close' | t }}"
-        >
-          <span class="svg-wrapper">
-            {{- 'icon-close.svg' | inline_asset_content -}}
-          </span>
-        </button>
-      </div>
-      {%- if cart == empty -%}
-        <div class="drawer__inner-empty">
-          <div class="cart-drawer__warnings center{% if settings.cart_drawer_collection != blank %} cart-drawer__warnings--has-collection{% endif %}">
-            <div class="cart-drawer__empty-content">
-              <h2 class="cart__empty-text">{{ 'sections.cart.empty' | t }}</h2>
-              <a
-                href="{{ routes.all_products_collection_url | default: '/' }}"
-                class="secondary-button"
-              >
-                Continue Shopping
-              </a>
-            </div>
-          </div>
-        </div>
-      {%- endif -%}
-      <cart-drawer-items
-        {% if cart == empty %}
-          class=" is-empty"
-        {% endif %}
-      >
-        <form
-          action="{{ routes.cart_url }}"
-          id="CartDrawer-Form"
-          class="cart__contents cart-drawer__form"
-          method="post"
-        >
-          <div id="CartDrawer-CartItems" class="drawer__contents js-contents">
-            {%- if cart != empty -%}
-              <div class="drawer__cart-items-wrapper">
-                <div class="cart-items-list" role="list" style="display:flex; flex-direction:column; gap:16px;">
-                  {%- for item in cart.items -%}
-                    {% render 'product-cart-card', item: item, index: item.index | plus: 1, context: 'drawer' %}
-                  {%- endfor -%}
-                </div>
-              </div>
-            {%- endif -%}
-            <p id="CartDrawer-LiveRegionText" class="visually-hidden" role="status"></p>
-            <p id="CartDrawer-LineItemStatus" class="visually-hidden" aria-hidden="true" role="status">
-              {{ 'accessibility.loading' | t }}
-            </p>
-          </div>
-          <div id="CartDrawer-CartErrors" role="alert"></div>
-        </form>
-      </cart-drawer-items>
-      {%- if cart != empty -%}
-        <div class="drawer__footer">
-          {%- if settings.show_cart_note -%}
-            <details id="Details-CartDrawer">
-              <summary>
-                <span class="summary__title">
-                  {{ 'sections.cart.note' | t }}
-                  {{- 'icon-caret.svg' | inline_asset_content -}}
-                </span>
-              </summary>
-              <cart-note class="cart__note field">
-                <label class="visually-hidden" for="CartDrawer-Note">{{ 'sections.cart.note' | t }}</label>
-                <textarea
-                  id="CartDrawer-Note"
-                  class="text-area text-area--resize-vertical field__input"
-                  name="note"
-                  placeholder="{{ 'sections.cart.note' | t }}"
-                >{{ cart.note }}</textarea>
-              </cart-note>
-            </details>
+      <div class="drawer__inner gradient color-{{ settings.cart_color_scheme }}">
+        <div class="drawer__header">
+          {%- if cart == empty -%}
+            <h2 class="drawer__heading type-h1-small">Cart empty</h2>
+          {%- else -%}
+            <h2 class="drawer__heading type-h1-small">{{ 'sections.cart.title' | t }}</h2>
           {%- endif -%}
-
-          <!-- Start blocks -->
-          <!-- Subtotals -->
-
-          <div class="cart-drawer__footer" {{ block.shopify_attributes }}>
-            <div>
-              {%- if cart.cart_level_discount_applications.size > 0 -%}
-                <ul class="discounts list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">
-                  {%- for discount in cart.cart_level_discount_applications -%}
-                    <li class="discounts__discount discounts__discount--end">
-                      {{- 'icon-discount.svg' | inline_asset_content -}}
-                      {{ discount.title | escape }}
-                      (-{{ discount.total_allocated_amount | money }})
-                    </li>
-                  {%- endfor -%}
-                </ul>
-              {%- endif -%}
-            </div>
-
-            <div class="totals" role="status">
-              <h2 class="totals__total type-p">{{ 'sections.cart.estimated_total' | t }}</h2>
-              <p class="totals__total-value type-p">{{ cart.total_price | money_with_currency }}</p>
-            </div>
-
-            <small class="tax-note type-p-small">
-              {%- if cart.duties_included and cart.taxes_included -%}
-                {%- if shop.shipping_policy.body == blank -%}
-                  {{ 'sections.cart.duties_and_taxes_included_shipping_at_checkout_without_policy' | t }}
-                {%- else -%}
-                  {{
-                    'sections.cart.duties_and_taxes_included_shipping_at_checkout_with_policy_html'
-                    | t: link: shop.shipping_policy.url
-                  }}
-                {%- endif -%}
-              {%- elsif cart.duties_included == false and cart.taxes_included -%}
-                {%- if shop.shipping_policy.body == blank -%}
-                  {{ 'sections.cart.taxes_included_shipping_at_checkout_without_policy' | t }}
-                {%- else -%}
-                  {{
-                    'sections.cart.taxes_included_shipping_at_checkout_with_policy_html'
-                    | t: link: shop.shipping_policy.url
-                  }}
-                {%- endif -%}
-              {%- elsif cart.duties_included and cart.taxes_included == false -%}
-                {%- if shop.shipping_policy.body == blank -%}
-                  {{ 'sections.cart.duties_included_taxes_at_checkout_shipping_at_checkout_without_policy' | t }}
-                {%- else -%}
-                  {{
-                    'sections.cart.duties_included_taxes_at_checkout_shipping_at_checkout_with_policy_html'
-                    | t: link: shop.shipping_policy.url
-                  }}
-                {%- endif -%}
-              {%- elsif cart.duties_included == false and cart.taxes_included == false -%}
-                {%- if shop.shipping_policy.body == blank -%}
-                  {{ 'sections.cart.taxes_at_checkout_shipping_at_checkout_without_policy' | t }}
-                {%- else -%}
-                  {{
-                    'sections.cart.taxes_at_checkout_shipping_at_checkout_with_policy_html'
-                    | t: link: shop.shipping_policy.url
-                  }}
-                {%- endif -%}
-              {%- endif -%}
-            </small>
-          </div>
-
-          <!-- CTAs -->
-
-          <div class="cart__ctas" {{ block.shopify_attributes }}>
-            <button
-              type="submit"
-              id="CartDrawer-Checkout"
-              class="cart__checkout-button primary-button primary-button--black"
-              name="checkout"
-              form="CartDrawer-Form"
-              {% if cart == empty %}
-                disabled
-              {% endif %}
-            >
-              Proceed to Checkout 🔒
-            </button>
-          </div>
+          <button
+            class="drawer__close"
+            type="button"
+            onclick="this.closest('cart-drawer').close()"
+            aria-label="{{ 'accessibility.close' | t }}"
+          >
+            <span class="svg-wrapper">
+              {{- 'icon-close.svg' | inline_asset_content -}}
+            </span>
+          </button>
         </div>
-      {%- endif -%}
+        {%- if cart == empty -%}
+          <div class="drawer__inner-empty">
+            <div class="cart-drawer__warnings center{% if settings.cart_drawer_collection != blank %} cart-drawer__warnings--has-collection{% endif %}">
+              <div class="cart-drawer__empty-content">
+                <a
+                  href="{{ routes.all_products_collection_url | default: '/' }}"
+                  class="secondary-button"
+                >
+                  Continue Shopping
+                </a>
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+        <cart-drawer-items
+          {% if cart == empty %}
+            class=" is-empty"
+          {% endif %}
+        >
+          <form
+            action="{{ routes.cart_url }}"
+            id="CartDrawer-Form"
+            class="cart__contents cart-drawer__form"
+            method="post"
+          >
+            <div id="CartDrawer-CartItems" class="drawer__contents js-contents">
+              {%- if cart != empty -%}
+                <div class="drawer__cart-items-wrapper">
+                  <div class="cart-items-list" role="list" style="display:flex; flex-direction:column; gap:16px;">
+                    {%- for item in cart.items -%}
+                      {% render 'product-cart-card', item: item, index: item.index | plus: 1, context: 'drawer' %}
+                    {%- endfor -%}
+                  </div>
+                </div>
+              {%- endif -%}
+              <p id="CartDrawer-LiveRegionText" class="visually-hidden" role="status"></p>
+              <p id="CartDrawer-LineItemStatus" class="visually-hidden" aria-hidden="true" role="status">
+                {{ 'accessibility.loading' | t }}
+              </p>
+            </div>
+            <div id="CartDrawer-CartErrors" role="alert"></div>
+          </form>
+        </cart-drawer-items>
+        {%- if cart != empty -%}
+          <div class="drawer__footer">
+            {%- if settings.show_cart_note -%}
+              <details id="Details-CartDrawer">
+                <summary>
+                  <span class="summary__title">
+                    {{ 'sections.cart.note' | t }}
+                    {{- 'icon-caret.svg' | inline_asset_content -}}
+                  </span>
+                </summary>
+                <cart-note class="cart__note field">
+                  <label class="visually-hidden" for="CartDrawer-Note">{{ 'sections.cart.note' | t }}</label>
+                  <textarea
+                    id="CartDrawer-Note"
+                    class="text-area text-area--resize-vertical field__input"
+                    name="note"
+                    placeholder="{{ 'sections.cart.note' | t }}"
+                  >{{ cart.note }}</textarea>
+                </cart-note>
+              </details>
+            {%- endif -%}
+
+            <!-- Start blocks -->
+            <!-- Subtotals -->
+
+            <div class="cart-drawer__footer" {{ block.shopify_attributes }}>
+              <div>
+                {%- if cart.cart_level_discount_applications.size > 0 -%}
+                  <ul class="discounts list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">
+                    {%- for discount in cart.cart_level_discount_applications -%}
+                      <li class="discounts__discount discounts__discount--end">
+                        {{- 'icon-discount.svg' | inline_asset_content -}}
+                        {{ discount.title | escape }}
+                        (-{{ discount.total_allocated_amount | money }})
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </div>
+
+              <div class="totals" role="status">
+                <h2 class="totals__total type-p">{{ 'sections.cart.estimated_total' | t }}</h2>
+                <p class="totals__total-value type-p">{{ cart.total_price | money_with_currency }}</p>
+              </div>
+
+              <small class="tax-note type-p-small">
+                {%- if cart.duties_included and cart.taxes_included -%}
+                  {%- if shop.shipping_policy.body == blank -%}
+                    {{ 'sections.cart.duties_and_taxes_included_shipping_at_checkout_without_policy' | t }}
+                  {%- else -%}
+                    {{
+                      'sections.cart.duties_and_taxes_included_shipping_at_checkout_with_policy_html'
+                      | t: link: shop.shipping_policy.url
+                    }}
+                  {%- endif -%}
+                {%- elsif cart.duties_included == false and cart.taxes_included -%}
+                  {%- if shop.shipping_policy.body == blank -%}
+                    {{ 'sections.cart.taxes_included_shipping_at_checkout_without_policy' | t }}
+                  {%- else -%}
+                    {{
+                      'sections.cart.taxes_included_shipping_at_checkout_with_policy_html'
+                      | t: link: shop.shipping_policy.url
+                    }}
+                  {%- endif -%}
+                {%- elsif cart.duties_included and cart.taxes_included == false -%}
+                  {%- if shop.shipping_policy.body == blank -%}
+                    {{ 'sections.cart.duties_included_taxes_at_checkout_shipping_at_checkout_without_policy' | t }}
+                  {%- else -%}
+                    {{
+                      'sections.cart.duties_included_taxes_at_checkout_shipping_at_checkout_with_policy_html'
+                      | t: link: shop.shipping_policy.url
+                    }}
+                  {%- endif -%}
+                {%- elsif cart.duties_included == false and cart.taxes_included == false -%}
+                  {%- if shop.shipping_policy.body == blank -%}
+                    {{ 'sections.cart.taxes_at_checkout_shipping_at_checkout_without_policy' | t }}
+                  {%- else -%}
+                    {{
+                      'sections.cart.taxes_at_checkout_shipping_at_checkout_with_policy_html'
+                      | t: link: shop.shipping_policy.url
+                    }}
+                  {%- endif -%}
+                {%- endif -%}
+              </small>
+            </div>
+
+            <!-- CTAs Mobile -->
+            <div class="cart__ctas cart__ctas--mobile" {{ block.shopify_attributes }}>
+              <button
+                type="submit"
+                id="CartDrawer-Checkout"
+                class="cart__checkout-button primary-button primary-button--black"
+                name="checkout"
+                form="CartDrawer-Form"
+                {% if cart == empty %}
+                  disabled
+                {% endif %}
+              >
+                Proceed to Checkout 🔒
+              </button>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+      <!-- CTAs Desktop -->
+      {%- unless cart == empty -%}
+        <div class="cart__ctas" {{ block.shopify_attributes }}>
+          <button
+            type="submit"
+            id="CartDrawer-Checkout"
+            class="cart__checkout-button primary-button primary-button--black"
+            name="checkout"
+            form="CartDrawer-Form"
+          >
+            Proceed to Checkout 🔒
+          </button>
+        </div>
+      {%- endunless -%}
     </div>
   </div>
 </cart-drawer>

@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const osDetails = document.querySelector('[data-os-details]');
   const orderSummary = document.querySelector('[data-order-summary]');
   const qtyInput = form.querySelector('input[name="quantity"]');
+  const qtyMinusBtn = form.querySelector('.quantity-btn--minus');
+  const qtyPlusBtn = form.querySelector('.quantity-btn--plus');
   // Feature flag: show per-option prices in the Order Summary
   const OS_SHOW_PRICES = true;
   const basePrice = Number(document.querySelector('#base-price').dataset.base);
@@ -22,7 +24,33 @@ document.addEventListener('DOMContentLoaded', () => {
   const serviceBlocks = form.querySelectorAll('.service-groups-wrapper');
   let total = basePrice;
 
-  const getQuantity = () => Math.max(1, parseInt((form.querySelector('input[name="quantity"]') || {}).value || '1', 10) || 1);
+  const getQuantity = () =>
+    Math.max(1, parseInt((form.querySelector('input[name="quantity"]') || {}).value || '1', 10) || 1);
+
+  // Wire up quantity +/- buttons for this form (not handled by global <quantity-input> component)
+  const syncQuantity = (delta) => {
+    if (!qtyInput) return;
+    const current = Math.max(1, parseInt(qtyInput.value || '1', 10) || 1);
+    const next = Math.max(1, current + delta);
+    if (next === current) return;
+    qtyInput.value = String(next);
+    // Trigger change so totals & order summary update
+    qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
+  };
+
+  if (qtyMinusBtn) {
+    qtyMinusBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+      syncQuantity(-1);
+    });
+  }
+
+  if (qtyPlusBtn) {
+    qtyPlusBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+      syncQuantity(1);
+    });
+  }
 
   // Hide all service groups initially
   serviceBlocks.forEach((block) => (block.style.display = 'none'));

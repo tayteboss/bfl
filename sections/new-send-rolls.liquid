@@ -698,125 +698,152 @@
             </div>
           </div>
 
-          <div class="rolls-form-card-content rolls-form-card-content--drop-off">
-            <div class="rolls-form-card-content__drop-off-map">
-              <div class="drop-off">
-                {% render 'drop-off-map', use_small_map: true %}
-                <script id="dropOffLocations" type="application/json">
-                  [
-                    {% for block in section.blocks %}
-                    {
-                      "id": {{ block.settings.id | json }},
-                      "name": {{ block.settings.name | json }},
-                      "address": {{ block.settings.address | json }},
-                      "lat": {{ block.settings.lat | json }},
-                      "lng": {{ block.settings.lng | json }},
-                      "phone": {{ block.settings.phone | json }},
-                      "website": {{ block.settings.website | json }},
-                      "googleMapsUrl": {{ block.settings.google_maps_url | json }},
-                      "thumbnail": {% if block.settings.thumbnail %}{{ block.settings.thumbnail | image_url: width: 800 | json }}{% else %}null{% endif %}
-                    }{% unless forloop.last %},{% endunless %}
-                    {% endfor %}
-                  ]
-                </script>
-              </div>
-            </div>
+          {% assign delivery_content_uid = 'delivery-info' %}
+          <div class="rolls-form-card-content">
+            <h3 class="rolls-form-card-content__heading type-p">Delivery details</h3>
 
-            <div class="rolls-form-card-content rolls-form-card-content--mail-in rich-text">
-              <div class="rolls-form-card-content__column-one">
-                <div class="rich-text">
-                  <p>
-                    <strong><u>Mail in:</u></strong>
-                  </p>
-                  <p>
-                    Upon order completion, you’ll be guided through your next steps. To ship to the lab, include your
-                    order number with your film in a securely packed box or bubble mailer. Use ample material and tape
-                    to ensure your film arrives safely.
-                  </p>
+            <button
+              type="button"
+              class="rolls-form-card-content-trigger-btn"
+              aria-expanded="false"
+              aria-controls="rfc-content-{{ delivery_content_uid }}"
+              id="rfc-btn-{{ delivery_content_uid }}"
+              data-faq-trigger
+            >
+              <div class="rolls-form-card-content-trigger" data-content-trigger></div>
+            </button>
 
-                  <p>📬 Mail your film to us:</p>
-                  <ul
-                    role="list"
-                    class="mail-in-locations-list"
-                    data-locations-list-mail-in
-                  ></ul>
-                  <script>
-                    (function () {
-                      // Prevent duplicates: Always clear the list before populating it
-                      const locationsList = document.querySelector('[data-locations-list-mail-in]');
-                      if (!locationsList) return;
+            <div
+              class="rolls-form-card-content-outer"
+              id="rfc-content-{{ delivery_content_uid }}"
+              role="region"
+              aria-labelledby="rfc-btn-{{ delivery_content_uid }}"
+              hidden
+              data-faq-content
+            >
+              <div class="rolls-form-card-content-inner faq-card__inner">
+                <div class="rolls-form-card-content rolls-form-card-content--drop-off">
+                  <div class="rolls-form-card-content__drop-off-map">
+                    <div class="drop-off">
+                      {% render 'drop-off-map', use_small_map: true %}
+                      <script id="dropOffLocations" type="application/json">
+                        [
+                          {% for block in section.blocks %}
+                          {
+                            "id": {{ block.settings.id | json }},
+                            "name": {{ block.settings.name | json }},
+                            "address": {{ block.settings.address | json }},
+                            "lat": {{ block.settings.lat | json }},
+                            "lng": {{ block.settings.lng | json }},
+                            "phone": {{ block.settings.phone | json }},
+                            "website": {{ block.settings.website | json }},
+                            "googleMapsUrl": {{ block.settings.google_maps_url | json }},
+                            "thumbnail": {% if block.settings.thumbnail %}{{ block.settings.thumbnail | image_url: width: 800 | json }}{% else %}null{% endif %}
+                          }{% unless forloop.last %},{% endunless %}
+                          {% endfor %}
+                        ]
+                      </script>
+                    </div>
+                  </div>
 
-                      // Remove previous list items if present
-                      locationsList.innerHTML = '';
+                  <div class="rolls-form-card-content rolls-form-card-content--mail-in rich-text">
+                    <div class="rolls-form-card-content__column-one">
+                      <div class="rich-text">
+                        <p>
+                          <strong><u>Mail in:</u></strong>
+                        </p>
+                        <p>
+                          Upon order completion, you’ll be guided through your next steps. To ship to the lab, include
+                          your order number with your film in a securely packed box or bubble mailer. Use ample material
+                          and tape to ensure your film arrives safely.
+                        </p>
 
-                      const jsonUrl =
-                        window.Shopify && window.Shopify.assetUrl
-                          ? window.Shopify.assetUrl('locations.json')
-                          : '{{ "locations.json" | asset_url }}';
+                        <p>📬 Mail your film to us:</p>
+                        <ul
+                          role="list"
+                          class="mail-in-locations-list"
+                          data-locations-list-mail-in
+                        ></ul>
+                        <script>
+                          (function () {
+                            // Prevent duplicates: Always clear the list before populating it
+                            const locationsList = document.querySelector('[data-locations-list-mail-in]');
+                            if (!locationsList) return;
 
-                      fetch(jsonUrl, { credentials: 'same-origin' })
-                        .then((r) => (r.ok ? r.json() : null))
-                        .then((locations) => {
-                          if (!locations || !Array.isArray(locations)) return;
+                            // Remove previous list items if present
+                            locationsList.innerHTML = '';
 
-                          locations.forEach((location) => {
-                            const li = document.createElement('li');
-                            li.className = 'mail-in-locations-list__item';
-                            li.style.marginBottom = '1.25em';
+                            const jsonUrl =
+                              window.Shopify && window.Shopify.assetUrl
+                                ? window.Shopify.assetUrl('locations.json')
+                                : '{{ "locations.json" | asset_url }}';
 
-                            li.innerHTML = `
-                              <div class="mail-in-location">
-                                <div class="mail-in-location__title type-p">${location.name}</div>
-                                <div class="mail-in-location__address">
-                                  <a
-                                    href="${location.addressUrl}"
-                                    target="_blank"
-                                    rel="noopener"
-                                    class="type-p-small"
-                                    style="text-decoration:underline;"
-                                  >${location.address}</a>
-                                </div>
-                                <div class="mail-in-location__phone">
-                                  <a
-                                    href="tel:${location.phoneFormatted}"
-                                    aria-label="${location.ariaLabel}"
-                                    class="type-p-small"
-                                    style="color:inherit; text-decoration:underline;"
-                                  >${location.phone}</a>
-                                </div>
-                              </div>
-                            `;
+                            fetch(jsonUrl, { credentials: 'same-origin' })
+                              .then((r) => (r.ok ? r.json() : null))
+                              .then((locations) => {
+                                if (!locations || !Array.isArray(locations)) return;
 
-                            locationsList.appendChild(li);
-                          });
-                        })
-                        .catch(() => {});
-                    })();
-                  </script>
+                                locations.forEach((location) => {
+                                  const li = document.createElement('li');
+                                  li.className = 'mail-in-locations-list__item';
+                                  li.style.marginBottom = '1.25em';
 
-                  <p>📦 Pack your order with:</p>
-                  <ul>
-                    <li>Your film rolls</li>
-                    <li>Your printed order slip</li>
-                  </ul>
-                </div>
-                <div class="faq-card-or-divider type-p"></div>
-                <div class="rich-text">
-                  <p>
-                    <strong><u>Drop-off:</u></strong>
-                  </p>
-                  <p>
-                    Upon order completion you'll be guided through your next steps. To drop off, include your order
-                    number with your film in a securely sealed bag.
-                  </p>
+                                  li.innerHTML = `
+                                    <div class="mail-in-location">
+                                      <div class="mail-in-location__title type-p">${location.name}</div>
+                                      <div class="mail-in-location__address">
+                                        <a
+                                          href="${location.addressUrl}"
+                                          target="_blank"
+                                          rel="noopener"
+                                          class="type-p-small"
+                                          style="text-decoration:underline;"
+                                        >${location.address}</a>
+                                      </div>
+                                      <div class="mail-in-location__phone">
+                                        <a
+                                          href="tel:${location.phoneFormatted}"
+                                          aria-label="${location.ariaLabel}"
+                                          class="type-p-small"
+                                          style="color:inherit; text-decoration:underline;"
+                                        >${location.phone}</a>
+                                      </div>
+                                    </div>
+                                  `;
 
-                  <p>📍 Drop off your film at: Any Bellows drop-off location</p>
+                                  locationsList.appendChild(li);
+                                });
+                              })
+                              .catch(() => {});
+                          })();
+                        </script>
 
-                  <p>📦 What to bring:</p>
-                  <ul>
-                    <li>Your film rolls</li>
-                    <li>Your printed order slip</li>
-                  </ul>
+                        <p>📦 Pack your order with:</p>
+                        <ul>
+                          <li>Your film rolls</li>
+                          <li>Your printed order slip</li>
+                        </ul>
+                      </div>
+                      <div class="faq-card-or-divider type-p"></div>
+                      <div class="rich-text">
+                        <p>
+                          <strong><u>Drop-off:</u></strong>
+                        </p>
+                        <p>
+                          Upon order completion you'll be guided through your next steps. To drop off, include your
+                          order number with your film in a securely sealed bag.
+                        </p>
+
+                        <p>📍 Drop off your film at: Any Bellows drop-off location</p>
+
+                        <p>📦 What to bring:</p>
+                        <ul>
+                          <li>Your film rolls</li>
+                          <li>Your printed order slip</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -858,7 +885,6 @@
 ></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" defer></script>
 <script defer src="{{ 'drop-off-map.js' | asset_url }}"></script>
-
 <script src="{{ 'film-service.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}

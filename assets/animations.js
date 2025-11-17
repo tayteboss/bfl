@@ -602,7 +602,20 @@ function initializeFAQAccordions(rootEl = document) {
     const fadeDone = inner
       ? animate(inner, { opacity: [0, 1] }, { duration: 0.2, easing: 'ease-out', delay: 0.06 }).finished
       : Promise.resolve();
-    return Promise.all([heightDone, fadeDone]);
+
+    // After the accordion has fully opened, make sure any Leaflet maps inside are sized and zoomed correctly
+    return Promise.all([heightDone, fadeDone]).then(() => {
+      try {
+        if (window.BellowsDropOffMap) {
+          if (typeof window.BellowsDropOffMap.invalidateAll === 'function') {
+            window.BellowsDropOffMap.invalidateAll();
+          }
+          if (typeof window.BellowsDropOffMap.resetAll === 'function') {
+            window.BellowsDropOffMap.resetAll();
+          }
+        }
+      } catch (_) {}
+    });
   }
 
   function close(btn, content) {

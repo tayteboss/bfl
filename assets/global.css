@@ -1068,14 +1068,18 @@ cart-items .cart__warnings .cart__login-paragraph a {
   transition: all var(--transition-speed-default) var(--transition-ease);
 }
 
-.product-card__image-wrapper:hover .product-card__bg-image {
-	opacity: 1;
-	transform: scale(1);
+@media (hover: hover) and (pointer: fine) {
+  .product-card__image-wrapper:hover .product-card__bg-image {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* Hover effects for images with foreground/background setup */
-.product-card__image-wrapper:not([data-has-foreground-image="false"]):hover .product-card__product-image {
-	transform: translate(-50%, -50%) scale(1.03);
+@media (hover: hover) and (pointer: fine) {
+  .product-card__image-wrapper:not([data-has-foreground-image="false"]):hover .product-card__product-image {
+    transform: translate(-50%, -50%) scale(1.03);
+  }
 }
 
 .product-card__image-ratio {
@@ -1099,9 +1103,11 @@ cart-items .cart__warnings .cart__login-paragraph a {
 	transition: all var(--transition-speed-default) var(--transition-ease);
 }
 
-.product-card__image-wrapper:hover .product-card__image-ratio,
-.product-card__image-wrapper:hover .product-card__bg-image-inner {
-	border-radius: 1.25rem;
+@media (hover: hover) and (pointer: fine) {
+  .product-card__image-wrapper:hover .product-card__image-ratio,
+  .product-card__image-wrapper:hover .product-card__bg-image-inner {
+    border-radius: 1.25rem;
+  }
 }
 
 .product-card__bg-image {
@@ -1151,12 +1157,16 @@ cart-items .cart__warnings .cart__login-paragraph a {
 }
 
 /* Hover effects only for images without foreground/background setup */
-.product-card__image-wrapper[data-has-foreground-image="false"]:hover .product-card__product-image img {
-  transform: scale(1.05);
+@media (hover: hover) and (pointer: fine) {
+  .product-card__image-wrapper[data-has-foreground-image="false"]:hover .product-card__product-image img {
+    transform: scale(1.05);
+  }
 }
 
-.product-card__image-wrapper[data-has-foreground-image="false"]:hover .product-card__image-ratio {
-  border-radius: 1.25rem;
+@media (hover: hover) and (pointer: fine) {
+  .product-card__image-wrapper[data-has-foreground-image="false"]:hover .product-card__image-ratio {
+    border-radius: 1.25rem;
+  }
 }
 
 .product-card-content {

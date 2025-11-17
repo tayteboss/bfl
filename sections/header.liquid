@@ -5,7 +5,7 @@
     <nav class="menu-list">
       {% for link in section.settings.navigation.links %}
         <a
-          class="menu-list__item{% if link.active %} menu-list__item--active{% endif %}"
+          class="menu-list__item{% if link.active %} menu-list__item--active{% endif %} menu-animation-item"
           href="{{ link.url }}"
           data-hover-shake="left"
         >
@@ -15,32 +15,39 @@
           </span>
         </a>
       {% endfor %}
-      {% if shop.customer_accounts_enabled %}
+      <div class="menu-list__accounts menu-animation-item">
+        {% if shop.customer_accounts_enabled %}
+          <a
+            class="menu-list__item{% if routes.account_url == request.path %} menu-list__item--active{% endif %}"
+            href="{{ routes.account_url }}"
+            data-hover-shake="left"
+          >
+            <span class="menu-list__item__icon"></span>
+            <span> My Account </span>
+          </a>
+        {% endif %}
         <a
-          class="menu-list__item{% if routes.account_url == request.path %} menu-list__item--active{% endif %}"
-          href="{{ routes.account_url }}"
-          data-hover-shake="left"
-          :
+          class="menu-list__item cart-button cart-button--mobile menu-bubble"
+          href="{{ routes.cart_url }}"
+          data-cart-drawer-trigger
         >
+          {% if cart.item_count > 0 %}
+            <span class="menu-toggle__number">{{ cart.item_count }}</span>
+          {% endif %}
           <span class="menu-list__item__icon"></span>
-          <span> My Account </span>
+          <span>Bag</span>
         </a>
-      {% endif %}
-      <a
-        class="menu-list__item cart-button cart-button--mobile menu-bubble"
-        href="{{ routes.cart_url }}"
-        data-cart-drawer-trigger
-      >
-        <span class="menu-list__item__icon"></span>
-        <span>Bag</span>
-      </a>
+      </div>
+      <div class="menu-store-search-wrapper store-search-wrapper--mobile menu-animation-item">
+        {% render 'store-search-modal' %}
+      </div>
     </nav>
     <div data-hover-shake="left">
       <button class="menu-toggle menu-bubble" aria-label="Open Menu" data-text="Menu">
         <div class="menu-toggle__icon"></div>
         <span>Menu</span>
         {% if cart.item_count > 0 %}
-          <span class="menu-toggle__number">{{ cart.item_count }}</span>
+          <span class="menu-toggle__number menu-toggle__number--menu-toggle">{{ cart.item_count }}</span>
         {% endif %}
       </button>
     </div>
