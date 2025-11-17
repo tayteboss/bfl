@@ -24,17 +24,12 @@
     {% endfor %}
   "
 >
-  {% assign foreground_image = product.metafields.custom.foreground_image %}
-  {% if foreground_image %}
-    {% assign product_image = foreground_image %}
-  {% else %}
-    {% assign product_image = product.media | first %}
-  {% endif %}
-  {% assign bg_image = product.media[1] %}
+  {% assign background_image = product.metafields.custom.background_image %}
+  {% assign product_image = product.media | first %}
 
   <div
     class="product-card__image-wrapper"
-    data-has-foreground-image="{% if foreground_image %}true{% else %}false{% endif %}"
+    data-has-foreground-image="{% if background_image %}true{% else %}false{% endif %}"
   >
     {% if product.metafields.custom.product_badge %}
       <div
@@ -47,7 +42,6 @@
     {% endif %}
 
     <div class="product-card__image-ratio">
-      {% assign background_image = product.metafields.custom.background_image %}
       {% if background_image %}
         <div
           class="product-card__bg-image-inner"
@@ -70,7 +64,7 @@
           aria-label="Primary image of {{ product.title }}"
         >
           <img
-            src="{% if foreground_image %}{{ product_image | image_url }}{% else %}{{ product_image.src | image_url }}{% endif %}"
+            src="{{ product_image.src | image_url }}"
             alt=""
             class="product-card__image product-card__image--primary"
             width="auto"

@@ -22,6 +22,8 @@
       if block.settings.show_dynamic_checkout and gift_card_recipient_feature_active == false
         assign show_dynamic_checkout = true
       endif
+
+      assign variant = product.selected_or_first_available_variant
     -%}
 
     <product-form
@@ -55,12 +57,15 @@
 
         <div class="product-form__buttons">
           {%- liquid
-            assign check_against_inventory = true
-            if product.selected_or_first_available_variant.inventory_management != 'shopify' or product.selected_or_first_available_variant.inventory_policy == 'continue'
-              assign check_against_inventory = false
-            endif
-            if product.selected_or_first_available_variant.quantity_rule.min > product.selected_or_first_available_variant.inventory_quantity and check_against_inventory
-              assign quantity_rule_soldout = true
+            assign quantity_rule_soldout = false
+            if variant
+              assign check_against_inventory = true
+              if variant.inventory_management != 'shopify' or variant.inventory_policy == 'continue'
+                assign check_against_inventory = false
+              endif
+              if variant.quantity_rule.min > variant.inventory_quantity and check_against_inventory
+                assign quantity_rule_soldout = true
+              endif
             endif
           -%}
           <button

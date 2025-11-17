@@ -17,7 +17,7 @@
       <div class="layout-wrapper layout-grid">
         <div
           class="product-images-wrapper"
-          data-has-foreground-image="{% if product.metafields.custom.foreground_image %}true{% else %}false{% endif %}"
+          data-has-foreground-image="{% if product.metafields.custom.background_image %}true{% else %}false{% endif %}"
         >
           {% if product.metafields.custom.product_badge %}
             <div class="product-images-wrapper__badge badge-button">
@@ -25,28 +25,12 @@
             </div>
           {% endif %}
 
-          {% assign foreground_image = product.metafields.custom.foreground_image %}
+          {% assign background_image = product.metafields.custom.background_image %}
           {% assign media_count = product.media.size %}
-          {% if foreground_image %}
-            {% assign media_count = media_count | plus: 1 %}
-          {% endif %}
 
           {% if media_count > 1 %}
             <div class="swiper product-images-swiper">
               <div class="swiper-wrapper">
-                {% if foreground_image %}
-                  <div class="swiper-slide product-images-wrapper__slide">
-                    <div class="product-images-wrapper__image product-images-wrapper__image--foreground">
-                      <img
-                        src="{{ foreground_image | image_url }}"
-                        alt="{{ product.title }}"
-                        class="product-images-wrapper__img"
-                        width="auto"
-                        height="auto"
-                      >
-                    </div>
-                  </div>
-                {% endif %}
                 {% for media in product.media %}
                   <div class="swiper-slide product-images-wrapper__slide">
                     <div class="product-images-wrapper__image">
@@ -56,26 +40,27 @@
                         class="product-images-wrapper__img"
                         width="auto"
                         height="auto"
+                        style="{% if forloop.first and background_image %}object-fit: contain; width: 75%; height: 75%;{% else %}object-fit: cover;{% endif %}"
                       >
                     </div>
                   </div>
                 {% endfor %}
               </div>
-              <div class="swiper-pagination"></div>
             </div>
+            <div class="swiper-pagination"></div>
           {% else %}
-            {% if foreground_image %}
-              <div class="product-images-wrapper__image product-images-wrapper__image--foreground">
+            {% assign first_media = product.media | first %}
+            {% if first_media %}
+              <div class="product-images-wrapper__image">
                 <img
-                  src="{{ foreground_image | image_url }}"
-                  alt="{{ product.title }}"
+                  src="{{ first_media.src | image_url }}"
+                  alt="{{ first_media.alt | default: product.title }}"
                   class="product-images-wrapper__img"
                   width="auto"
                   height="auto"
+                  style="{% if background_image %}object-fit: contain; width: 75%; height: 75%;{% else %}object-fit: cover;{% endif %}"
                 >
               </div>
-            {% else %}
-              {% render 'image', class: 'product-images-wrapper__image', image: product.featured_image %}
             {% endif %}
           {% endif %}
         </div>
@@ -180,7 +165,7 @@
                   product: product,
                   product_form_id: product_form_id,
                   section_id: section.id,
-                  show_pickup_availability: true
+                  show_pickup_availability: false
                 -%}
               </div>
               {%- liquid
