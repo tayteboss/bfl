@@ -247,7 +247,6 @@
         function handleVariantChange() {
           updateActiveState();
           const selected = getSelectedOptions();
-          console.log('Getting variant for selected options:', selected);
           
           const matched = findVariantByOptions(selected);
           
@@ -255,8 +254,6 @@
           if (!matched || !matched.available) {
             const colorValue = selected[colorIndex];
             if (colorValue) {
-              console.log('Matched variant is unavailable or not found. Searching for available variant with color:', colorValue);
-              
               // Find any available variant with the selected color
               const availableWithColor = variants.find((v) => {
                 if (!v.available) return false;
@@ -265,9 +262,6 @@
               });
               
               if (availableWithColor) {
-                console.log('Found available variant with matching color:', availableWithColor);
-                console.log('Available variant options:', availableWithColor.options);
-                
                 // Update other option selects to match this available variant
                 let optionsUpdated = false;
                 optionNames.forEach((name, idx) => {
@@ -276,7 +270,6 @@
                     if (sel && sel.value !== availableWithColor.options[idx]) {
                       sel.value = availableWithColor.options[idx];
                       optionsUpdated = true;
-                      console.log(`Updated option ${idx} (${name}) to:`, availableWithColor.options[idx]);
                     }
                   }
                 });
@@ -284,24 +277,19 @@
                 // If we updated options, retry matching
                 if (optionsUpdated) {
                   const updatedSelected = getSelectedOptions();
-                  console.log('Retrying with updated options:', updatedSelected);
                   const retryMatched = findVariantByOptions(updatedSelected);
                   if (retryMatched && retryMatched.available) {
-                    console.log('Found available variant after updating other options:', retryMatched);
                     updateVariantUI(retryMatched);
                     return;
                   }
                 } else {
                   // Options didn't need updating, use the available variant directly
-                  console.log('Using available variant directly:', availableWithColor);
                   updateVariantUI(availableWithColor);
                   return;
                 }
               } else {
-                console.warn('No available variant found with color:', colorValue);
                 // Still no available variant - disable button
                 if (matched && !matched.available) {
-                  console.warn('Matched variant exists but is unavailable:', matched);
                   updateVariantUI(matched); // Still update UI to show it's unavailable
                   return;
                 }
@@ -310,7 +298,6 @@
             
             // No match at all - disable button
             if (!matched) {
-              console.warn('No variant matched for selected options:', selected);
               const submit = document.getElementById('ProductSubmitButton-{{ section_id }}');
               if (submit) {
                 submit.setAttribute('disabled', 'disabled');
@@ -325,12 +312,6 @@
         }
         
         function updateVariantUI(matched) {
-          console.log('Variant changed:', {
-            variantId: matched.id,
-            available: matched.available,
-            options: matched.options
-          });
-          
           // Update variant ID input
           idInput.value = matched.id;
           // Never disable the input - just disable the button if unavailable
@@ -352,12 +333,6 @@
               submit.setAttribute('disabled', 'disabled');
               submit.setAttribute('aria-disabled', 'true');
             }
-            console.log('Submit button state updated:', {
-              disabled: submit.disabled,
-              ariaDisabled: submit.getAttribute('aria-disabled'),
-              variantId: matched.id,
-              available: matched.available
-            });
           }
           
           // Ensure form is properly initialized after variant change
@@ -366,7 +341,6 @@
           if (productForm && typeof productForm.initialize === 'function') {
             // Just verify form is still initialized, don't re-init unnecessarily
             if (!productForm._initialized) {
-              console.log('Re-initializing product form after variant change');
               productForm.initialize();
             }
           }

@@ -7,7 +7,7 @@ class CartDrawer extends HTMLElement {
   connectedCallback() {
     // Set up overlay click handler
     this.setupOverlayClick();
-    
+
     // Set up header cart icon
     this.setHeaderCartIconAccessibility();
   }
@@ -109,11 +109,11 @@ class CartDrawer extends HTMLElement {
     }
     const emptyInner = this.querySelector('.drawer__inner-empty');
     if (emptyInner) emptyInner.remove();
-    
+
     if (parsedState.id) {
       this.productId = parsedState.id;
     }
-    
+
     if (parsedState.sections) {
       this.getSectionsToRender().forEach((section) => {
         if (!parsedState.sections[section.id]) {
@@ -129,7 +129,7 @@ class CartDrawer extends HTMLElement {
           console.warn(`Section element not found for ${section.id} with selector ${section.selector}`);
           return;
         }
-        
+
         try {
           const sectionHTML = this.getSectionInnerHTML(parsedState.sections[section.id], section.selector);
           if (sectionHTML) {
@@ -147,9 +147,8 @@ class CartDrawer extends HTMLElement {
     // Fetch current cart state to get accurate item_count
     if (typeof publish === 'function' && typeof PUB_SUB_EVENTS !== 'undefined' && typeof routes !== 'undefined') {
       fetch(`${routes.cart_url}.js`)
-        .then(res => res.json())
-        .then(cart => {
-          console.log('Cart drawer: fetched cart state, item_count:', cart.item_count);
+        .then((res) => res.json())
+        .then((cart) => {
           // If the cart isn't empty, ensure empty classes are removed
           if (cart && Array.isArray(cart.items) && cart.items.length > 0) {
             this.classList.remove('is-empty');
@@ -162,8 +161,8 @@ class CartDrawer extends HTMLElement {
             const hasItemsList = !!this.querySelector('.cart-items-list');
             if (!hasItemsList && typeof routes !== 'undefined') {
               fetch(`${routes.cart_url}?section_id=cart-drawer`)
-                .then(r => r.text())
-                .then(html => {
+                .then((r) => r.text())
+                .then((html) => {
                   const sections = { 'cart-drawer': html };
                   // Re-render only the drawer section
                   const sectionHTML = this.getSectionInnerHTML(sections['cart-drawer'], '#CartDrawer');
@@ -180,11 +179,11 @@ class CartDrawer extends HTMLElement {
             cartData: {
               item_count: cart.item_count,
               items: cart.items,
-              total_quantity: cart.total_quantity
-            }
+              total_quantity: cart.total_quantity,
+            },
           });
         })
-        .catch(e => {
+        .catch((e) => {
           console.error('Cart drawer: error fetching cart state:', e);
           // Fallback: try to extract from parsedState
           if (parsedState.item_count !== undefined) {
@@ -193,16 +192,16 @@ class CartDrawer extends HTMLElement {
               cartData: {
                 item_count: parsedState.item_count,
                 items: parsedState.items,
-                total_quantity: parsedState.total_quantity
-              }
+                total_quantity: parsedState.total_quantity,
+              },
             });
           } else if (Array.isArray(parsedState.items)) {
             publish(PUB_SUB_EVENTS.cartUpdate, {
               source: 'cart-drawer',
               cartData: {
                 item_count: parsedState.items.length,
-                items: parsedState.items
-              }
+                items: parsedState.items,
+              },
             });
           }
         });
@@ -218,23 +217,29 @@ class CartDrawer extends HTMLElement {
   getSectionInnerHTML(html, selector = '.shopify-section') {
     try {
       const parsed = new DOMParser().parseFromString(html, 'text/html');
-      
+
       // First try to find the element by the provided selector
       let element = parsed.querySelector(selector);
-      
+
       // If selector is '#CartDrawer', we need to look inside the .shopify-section wrapper
       if (!element && selector === '#CartDrawer') {
         const shopifySection = parsed.querySelector('.shopify-section');
         if (shopifySection) {
-          element = shopifySection.querySelector('#CartDrawer') || shopifySection.querySelector('cart-drawer') || shopifySection;
+          element =
+            shopifySection.querySelector('#CartDrawer') ||
+            shopifySection.querySelector('cart-drawer') ||
+            shopifySection;
         }
       }
-      
+
       // If still not found, try alternative selectors
       if (!element) {
-        element = parsed.querySelector('cart-drawer') || parsed.querySelector('#CartDrawer') || parsed.querySelector('.shopify-section');
+        element =
+          parsed.querySelector('cart-drawer') ||
+          parsed.querySelector('#CartDrawer') ||
+          parsed.querySelector('.shopify-section');
       }
-      
+
       // If we found an element, return its innerHTML
       if (element) {
         // If it's the cart-drawer custom element, get the inner content
@@ -248,7 +253,7 @@ class CartDrawer extends HTMLElement {
         // Otherwise return the element's innerHTML
         return element.innerHTML;
       }
-      
+
       // Fallback: return the body content
       return parsed.body ? parsed.body.innerHTML : html;
     } catch (e) {

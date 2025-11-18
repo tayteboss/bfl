@@ -51,7 +51,6 @@
   (function () {
     var FLOAT_ID = 'StoreSearchFloating';
     var SELECTOR = '[data-search-selector], [data-location-selector]';
-    var DEBUG_PREFIX = '[StoreSearchFloating]';
     var HIDE_DELAY_MS = 400;
     var THRESHOLD = 0.05;
     var hideTimeoutId = null;
@@ -66,9 +65,6 @@
       var node = document.getElementById(FLOAT_ID);
       if (!node) return;
       node.classList.toggle('store-search-floating--visible', !!visible);
-      try {
-        console.log(DEBUG_PREFIX, 'setFloatingVisible', { visible: !!visible, node: node });
-      } catch (e) {}
     }
 
     function setupLocationObserver() {
@@ -80,13 +76,6 @@
       } catch (e) {}
 
       var targets = document.querySelectorAll(SELECTOR);
-      try {
-        console.log(DEBUG_PREFIX, 'setupLocationObserver', {
-          path: window.location.pathname,
-          selector: SELECTOR,
-          targetCount: targets.length,
-        });
-      } catch (e) {}
       if (!targets.length) return;
 
       ensureFloatingUi();
@@ -96,15 +85,6 @@
       var observer = new IntersectionObserver(
         function (entries) {
           entries.forEach(function (entry) {
-            try {
-              console.log(DEBUG_PREFIX, 'intersection', {
-                isIntersecting: entry.isIntersecting,
-                intersectionRatio: entry.intersectionRatio,
-                thresholdUsed: THRESHOLD,
-                el: entry.target,
-                rect: entry.boundingClientRect,
-              });
-            } catch (e) {}
             if (entry.isIntersecting) {
               inView.add(entry.target);
             } else {
@@ -112,24 +92,15 @@
             }
           });
           window.__storeSearchInViewCount = inView.size;
-          try {
-            console.log(DEBUG_PREFIX, 'inView size', { size: inView.size });
-          } catch (e) {}
           if (inView.size > 0) {
             if (hideTimeoutId) {
               clearTimeout(hideTimeoutId);
               hideTimeoutId = null;
-              try {
-                console.log(DEBUG_PREFIX, 'hide canceled');
-              } catch (e) {}
             }
             setFloatingVisible(true);
           } else {
             if (hideTimeoutId) clearTimeout(hideTimeoutId);
             hideTimeoutId = setTimeout(function () {
-              try {
-                console.log(DEBUG_PREFIX, 'hide after delay', { delayMs: HIDE_DELAY_MS });
-              } catch (e) {}
               setFloatingVisible(false);
               hideTimeoutId = null;
             }, HIDE_DELAY_MS);
@@ -139,10 +110,6 @@
       );
 
       targets.forEach(function (t) {
-        try {
-          var rect = t.getBoundingClientRect();
-          console.log(DEBUG_PREFIX, 'observing', { el: t, rect: rect });
-        } catch (e) {}
         observer.observe(t);
       });
 
@@ -161,13 +128,7 @@
             window.__storeSearchMo.disconnect();
           }
           var mo = new MutationObserver(function () {
-            try {
-              console.log(DEBUG_PREFIX, 'mutation observed; re-checking for targets');
-            } catch (e) {}
             if (document.querySelector(SELECTOR)) {
-              try {
-                console.log(DEBUG_PREFIX, 'targets found after mutation; re-init observer');
-              } catch (e) {}
               setupLocationObserver();
               try {
                 mo.disconnect();
@@ -181,15 +142,9 @@
 
       // Re-evaluate when Shopify dynamically loads sections
       document.addEventListener('shopify:section:load', function () {
-        try {
-          console.log(DEBUG_PREFIX, 'shopify:section:load');
-        } catch (e) {}
         setupLocationObserver();
       });
       document.addEventListener('shopify:section:unload', function () {
-        try {
-          console.log(DEBUG_PREFIX, 'shopify:section:unload');
-        } catch (e) {}
         setupLocationObserver();
       });
 
@@ -200,9 +155,6 @@
         form.addEventListener('submit', function (e) {
           if (!input.value || !input.value.trim()) {
             e.preventDefault();
-            try {
-              console.log(DEBUG_PREFIX, 'blocked empty submit');
-            } catch (e) {}
           }
         });
       }

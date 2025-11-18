@@ -12,6 +12,8 @@
 {% assign carrier_a = section.settings.carrier_product_a %}
 {% assign carrier_b = section.settings.carrier_product_b %}
 {% assign carrier_c = section.settings.carrier_product_c %}
+{% assign carrier_d = section.settings.carrier_product_d %}
+{% assign carrier_e = section.settings.carrier_product_e %}
 
 {%- assign form_data = target_product.metafields.custom.film_services_json.value -%}
 
@@ -875,6 +877,8 @@
   window.carrierA = {{ carrier_a.variants | json }};
   window.carrierB = {{ carrier_b.variants | json }};
   window.carrierC = {{ carrier_c.variants | json }};
+  window.carrierD = {{ carrier_d.variants | json }};
+  window.carrierE = {{ carrier_e.variants | json }};
 </script>
 
 <script
@@ -910,6 +914,16 @@
       "type": "product",
       "id": "carrier_product_c",
       "label": "Carrier Product C (201–300)"
+    },
+    {
+      "type": "product",
+      "id": "carrier_product_d",
+      "label": "Carrier Product D (301–400)"
+    },
+    {
+      "type": "product",
+      "id": "carrier_product_e",
+      "label": "Carrier Product E (401–500)"
     }
   ],
   "presets": [

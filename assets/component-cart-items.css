@@ -38,10 +38,11 @@ cart-items .title-wrapper-with-link {
   z-index: 1;
 
   @media (max-width: 768px) {
+    position: relative;
     top: unset;
     right: unset;
-    bottom: 8px;
-    left: 0;
+    bottom: unset;
+    left: unset;
   }
 }
 

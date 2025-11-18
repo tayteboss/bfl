@@ -82,7 +82,18 @@
       {% assign all_tags = all_tags | concat: product.tags %}
     {% endfor %}
     {% assign tag_list = all_tags | uniq %}
-    {% render 'filter-group', title: 'Tags', items: tag_list, type: 'tag' %}
+    {% assign tag_counts = '' | split: '' %}
+    {% for tag in tag_list %}
+      {% assign tag_count = 0 %}
+      {% for product in collection.products %}
+        {% if product.tags contains tag %}
+          {% assign tag_count = tag_count | plus: 1 %}
+        {% endif %}
+      {% endfor %}
+      {% assign count_array = tag_count | split: '|||' %}
+      {% assign tag_counts = tag_counts | concat: count_array %}
+    {% endfor %}
+    {% render 'filter-group', title: 'Tags', items: tag_list, type: 'tag', counts: tag_counts %}
 
     {% comment %} Finally here will be brands or vendors for the current collection. {% endcomment %}
     <!-- VENDORS -->
@@ -92,7 +103,19 @@
       {% assign all_vendors = all_vendors | concat: vendor_array %}
     {% endfor %}
     {% assign vendor_list = all_vendors | uniq %}
-    {% render 'filter-group', title: 'Brands', items: vendor_list, type: 'vendor' %}
+    {% assign vendor_counts = '' | split: '' %}
+    {% for vendor in vendor_list %}
+      {% assign vendor_count = 0 %}
+      {% for product in collection.products %}
+        {% assign product_vendor_array = product.vendor | split: '|||' %}
+        {% if product_vendor_array contains vendor %}
+          {% assign vendor_count = vendor_count | plus: 1 %}
+        {% endif %}
+      {% endfor %}
+      {% assign count_array = vendor_count | split: '|||' %}
+      {% assign vendor_counts = vendor_counts | concat: count_array %}
+    {% endfor %}
+    {% render 'filter-group', title: 'Brands', items: vendor_list, type: 'vendor', counts: vendor_counts %}
 
     <div class="filters-modal__actions">
       <button id="apply-filters" type="button" class="primary-button primary-button--modal-filter rounded">

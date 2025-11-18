@@ -4,6 +4,7 @@
   - title: string (legend)
   - items: array of strings
   - type: string (data-filter-type value)
+  - counts: optional array of numbers matching items array order
 {% endcomment %}
 
 {% if items.size > 0 %}
@@ -14,6 +15,10 @@
         {% if item != blank %}
           {% unless item contains 'next-steps' %}
             {% assign item_id = item | handleize | append: '-' | append: type | append: '-' | append: forloop.index %}
+            {% assign item_count = 0 %}
+            {% if counts and counts[forloop.index0] %}
+              {% assign item_count = counts[forloop.index0] | plus: 0 %}
+            {% endif %}
             <label class="filter-group__item primary-button primary-button--modal-filter" for="{{ item_id }}">
               <input
                 type="checkbox"
@@ -23,7 +28,7 @@
                 data-filter-type="{{ type }}"
               >
               <span class="active-filter-remove">×</span>
-              {{ item }}
+              {{ item }}{% if item_count > 0 %} <span>{{ item_count }}</span>{% endif %}
             </label>
           {% endunless %}
         {% endif %}

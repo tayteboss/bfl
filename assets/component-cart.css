@@ -35,16 +35,6 @@
   padding: 0 !important;
 }
 
-.main-cart .cart-remove-button {
-  @media (max-width: 768px) {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: unset;
-    left: unset;
-  }
-}
-
 .cart__footer {
   max-width: 780px;
   margin: 0 auto;

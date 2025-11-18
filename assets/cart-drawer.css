@@ -145,7 +145,7 @@ cart-drawer.active .cart-drawer__overlay {
 
 .drawer__inner {
 	width: min(92vw, 52rem);
-	max-height: min(92vh, 48rem);
+	max-height: min(80vh, 48rem);
 	height: auto;
 	background: white;
 	border-radius: var(--bfl-modal-radius, 20px);

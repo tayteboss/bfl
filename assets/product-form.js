@@ -35,7 +35,6 @@ if (!customElements.get('product-form')) {
           // Add submit handler
           this.form.addEventListener('submit', this.onSubmitHandler.bind(this));
           this.form.dataset.submitHandlerAttached = 'true';
-          console.log('Product form: submit handler attached to form');
         }
 
         // Clear error message when quantity changes
@@ -297,10 +296,7 @@ if (!customElements.get('product-form')) {
         if (this.cart && typeof this.cart.getSectionsToRender === 'function') {
           const sections = this.cart.getSectionsToRender();
           if (sections && sections.length > 0) {
-            formData.append(
-              'sections',
-              sections.map((section) => section.id).join(',')
-            );
+            formData.append('sections', sections.map((section) => section.id).join(','));
             formData.append('sections_url', window.location.pathname);
           }
           if (typeof this.cart.setActiveElement === 'function') {
@@ -311,13 +307,13 @@ if (!customElements.get('product-form')) {
         // Universal path: use CartDrawerAPI if present
         if (window.CartDrawerAPI && typeof window.CartDrawerAPI.addToCart === 'function') {
           console.log('Product form: using CartDrawerAPI');
-          window.CartDrawerAPI
-            .addToCart(formData, this.submitButton)
+          window.CartDrawerAPI.addToCart(formData, this.submitButton)
             .then(() => {
               this.error = false;
               this.submitButton.classList.remove('loading');
               this.submitButton.removeAttribute('aria-disabled');
-              const loadingSpinner = this.submitButton.querySelector('.loading__spinner') || this.querySelector('.loading__spinner');
+              const loadingSpinner =
+                this.submitButton.querySelector('.loading__spinner') || this.querySelector('.loading__spinner');
               if (loadingSpinner) loadingSpinner.classList.add('hidden');
             })
             .catch((err) => {
@@ -326,7 +322,8 @@ if (!customElements.get('product-form')) {
               this.error = true;
               this.submitButton.classList.remove('loading');
               this.submitButton.removeAttribute('aria-disabled');
-              const loadingSpinner = this.submitButton.querySelector('.loading__spinner') || this.querySelector('.loading__spinner');
+              const loadingSpinner =
+                this.submitButton.querySelector('.loading__spinner') || this.querySelector('.loading__spinner');
               if (loadingSpinner) loadingSpinner.classList.add('hidden');
             });
           return;

@@ -27,7 +27,7 @@
       {% render 'collection-filter-button' %}
     </section>
   </div>
-  {% paginate collection.products by 12 %}
+  {% paginate collection.products by 30 %}
     <section
       class="collection-list layout-grid layout-wrapper"
       role="region"
@@ -36,7 +36,11 @@
       data-search-selector
     >
       {% assign any_products = false %}
+      {% assign visible_count = 0 %}
       {% for product in collection.products %}
+        {% if visible_count >= 24 %}
+          {% break %}
+        {% endif %}
         {% assign hidden = false %}
         {% for tag in product.tags %}
           {% if tag == 'Hidden' %}
@@ -50,6 +54,7 @@
         %}
           {% render 'product-card', product: product %}
           {% assign any_products = true %}
+          {% assign visible_count = visible_count | plus: 1 %}
         {% endunless %}
       {% endfor %}
       {% if any_products == false %}

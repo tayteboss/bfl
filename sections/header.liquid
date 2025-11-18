@@ -547,17 +547,9 @@
     // Keep header cart count in sync without page refresh
     if (typeof subscribe === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
       const setHeaderCartCount = (count) => {
-        console.log('setHeaderCartCount called with count:', count);
-        
         const desktopEl = document.querySelector('.cart-button--desktop .cart-button__number');
         const mobileEl = document.querySelector('.cart-button--mobile .cart-button__number');
         let menuEl = document.querySelector('.menu-toggle__number');
-        
-        console.log('Found elements:', {
-          desktop: !!desktopEl,
-          mobile: !!mobileEl,
-          menu: !!menuEl
-        });
         
         // Create menu-toggle__number if it doesn't exist
         if (!menuEl) {
@@ -573,7 +565,6 @@
               menuEl.className = 'menu-toggle__number';
               // Insert right after the Menu text span
               menuTextSpan.parentNode.insertBefore(menuEl, menuTextSpan.nextSibling);
-              console.log('Created menu-toggle__number element after Menu text');
             } else {
               // Fallback: find any span and insert after it, or just append
               const firstSpan = menuToggle.querySelector('span:not(.menu-toggle__number)');
@@ -581,24 +572,19 @@
                 menuEl = document.createElement('span');
                 menuEl.className = 'menu-toggle__number';
                 firstSpan.parentNode.insertBefore(menuEl, firstSpan.nextSibling);
-                console.log('Created menu-toggle__number element (fallback)');
               } else {
                 // Last resort: append to button
                 menuEl = document.createElement('span');
                 menuEl.className = 'menu-toggle__number';
                 menuToggle.appendChild(menuEl);
-                console.log('Created menu-toggle__number element (last resort)');
               }
             }
-          } else {
-            console.warn('menu-toggle element not found');
           }
         }
         
         // Update all elements
         [desktopEl, mobileEl, menuEl].forEach((el) => {
           if (!el) {
-            console.warn('Element not found for cart count update');
             return;
           }
           el.textContent = String(count);
@@ -617,60 +603,40 @@
             }
           }
         });
-        
-        console.log('Cart count updated successfully. Final count:', count);
-        console.log('Menu element:', menuEl ? 'found' : 'not found');
-        if (menuEl) {
-          console.log('Menu element text:', menuEl.textContent);
-          console.log('Menu element display:', window.getComputedStyle(menuEl).display);
-        }
       };
 
       const onCartUpdate = (event) => {
-        console.log('onCartUpdate event received:', event);
-        
         // Try multiple ways to get the count
         let count = null;
         
         if (event && event.cartData) {
-          console.log('cartData:', event.cartData);
-          
           // Try item_count first (standard Shopify cart API response)
           if (typeof event.cartData.item_count === 'number') {
             count = event.cartData.item_count;
-            console.log('Using item_count:', count);
           }
           // Try items.length as fallback
           else if (event.cartData.items && Array.isArray(event.cartData.items)) {
             count = event.cartData.items.length;
-            console.log('Using items.length:', count);
           }
           // Try total_quantity as another fallback (sum of all quantities)
           else if (typeof event.cartData.total_quantity === 'number') {
             count = event.cartData.total_quantity;
-            console.log('Using total_quantity:', count);
           }
         }
         
         if (count === null) {
-          console.warn('Could not determine cart count from event:', event);
-          console.warn('Event cartData:', event?.cartData);
           return;
         }
         
-        console.log('Updating cart count to:', count);
         setHeaderCartCount(count);
       };
 
       // Subscribe to cart updates
       const unsubscribeCartUpdate = subscribe(PUB_SUB_EVENTS.cartUpdate, onCartUpdate);
-      console.log('Subscribed to cart updates');
       
       document.addEventListener('shopify:section:unload', () => {
         if (typeof unsubscribeCartUpdate === 'function') unsubscribeCartUpdate();
       });
-    } else {
-      console.warn('Cart update subscription not available - subscribe or PUB_SUB_EVENTS not defined');
     }
 
     // Handle mobile cart button to open cart drawer

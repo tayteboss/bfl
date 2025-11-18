@@ -109,19 +109,6 @@
         </cart-remove-button>
       {% endcomment %}
 
-      <cart-remove-button
-        class="cart-remove-button type-p-small"
-        data-key="{{ item.key }}"
-      >
-        <a
-          href="#"
-          class="button button--tertiary cart-remove-button type-p-small"
-          aria-label="{{ 'sections.cart.remove_title' | t: title: item.title | escape }}"
-        >
-          remove
-        </a>
-      </cart-remove-button>
-
       {% comment %}
         {%- if item.original_price != item.final_price -%}
           <div class="cart-item__discounted-prices">
@@ -180,6 +167,19 @@
 
         <p class="product-option type-p-small">{{ item.selling_plan_allocation.selling_plan.name }}</p>
       {%- endif -%}
+
+      <cart-remove-button
+        class="cart-remove-button type-p-small"
+        data-key="{{ item.key }}"
+      >
+        <a
+          href="#"
+          class="button button--tertiary cart-remove-button type-p-small"
+          aria-label="{{ 'sections.cart.remove_title' | t: title: item.title | escape }}"
+        >
+          remove
+        </a>
+      </cart-remove-button>
 
       <ul class="discounts list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">
         {%- for discount in item.line_level_discount_allocations -%}

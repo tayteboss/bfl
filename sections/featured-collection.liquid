@@ -3,6 +3,8 @@
 <div
   class="featured-collection"
   aria-labelledby="featured-collection-heading"
+  data-collection-section
+  data-section-id="{{ section.id }}"
   data-location-selector
   data-search-selector
 >
@@ -29,32 +31,47 @@
     </section>
   </div>
 
-  <section
-    class="collection-list layout-grid layout-wrapper"
-    role="region"
-    aria-label="Featured products"
-  >
-    {% assign has_visible_products = false %}
-    {% for product in collections.frontpage.products %}
-      {% assign hidden = false %}
-      {% for tag in product.tags %}
-        {% if tag == 'Hidden' %}
-          {% assign hidden = true %}
+  {% paginate collections.frontpage.products by 30 %}
+    <section
+      class="collection-list layout-grid layout-wrapper"
+      role="region"
+      aria-label="Featured products"
+      data-collection-list
+    >
+      {% assign has_visible_products = false %}
+      {% assign visible_count = 0 %}
+      {% for product in collections.frontpage.products %}
+        {% if visible_count >= 24 %}
           {% break %}
         {% endif %}
+        {% assign hidden = false %}
+        {% for tag in product.tags %}
+          {% if tag == 'Hidden' %}
+            {% assign hidden = true %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+        {% unless hidden or product.template_suffix == 'news-events' %}
+          {% assign has_visible_products = true %}
+          {% render 'product-card', product: product %}
+          {% assign visible_count = visible_count | plus: 1 %}
+        {% endunless %}
       {% endfor %}
-      {% unless hidden or product.template_suffix == 'news-events' %}
-        {% assign has_visible_products = true %}
-        {% render 'product-card', product: product %}
-      {% endunless %}
-    {% endfor %}
 
-    {% unless has_visible_products %}
-      <div class="collection-empty-message">
-        <h2 class="collection-empty-message__title">No products found</h2>
+      {% unless has_visible_products %}
+        <div class="collection-empty-message">
+          <h2 class="collection-empty-message__title">No products found</h2>
+        </div>
+      {% endunless %}
+    </section>
+    {% if paginate.pages > 1 and paginate.next %}
+      <div class="pagination-button">
+        <div data-hover-shake>
+          <a href="{{ paginate.next.url }}" class="primary-button" data-collection-load-more>Load More</a>
+        </div>
       </div>
-    {% endunless %}
-  </section>
+    {% endif %}
+  {% endpaginate %}
 </div>
 
 {% schema %}

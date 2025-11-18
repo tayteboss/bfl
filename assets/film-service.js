@@ -434,17 +434,61 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Match variant by price
+  // Match variant by price, using actual carrier ranges (A–E) and handling missing carriers safely
   function findVariantByPrice(priceDollars) {
     const cents = Math.round(priceDollars * 100);
 
-    let carrier;
+    const carriers = [
+      { name: 'A', data: window.carrierA },
+      { name: 'B', data: window.carrierB },
+      { name: 'C', data: window.carrierC },
+      { name: 'D', data: window.carrierD },
+      { name: 'E', data: window.carrierE },
+    ].filter((c) => Array.isArray(c.data) && c.data.length);
 
-    if (priceDollars <= 100) carrier = window.carrierA;
-    else if (priceDollars <= 200) carrier = window.carrierB;
-    else carrier = window.carrierC;
+    if (!carriers.length) {
+      console.warn('No carrier products configured for film service pricing.');
+      return null;
+    }
 
-    return carrier.find((v) => Number(v.price) === cents);
+    // Infer min/max ranges for each carrier from its variants
+    const withRanges = carriers
+      .map((c) => {
+        const prices = c.data.map((v) => Number(v.price)).filter((p) => Number.isFinite(p));
+        if (!prices.length) return null;
+        return {
+          ...c,
+          min: Math.min(...prices),
+          max: Math.max(...prices),
+        };
+      })
+      .filter(Boolean)
+      .sort((a, b) => a.min - b.min);
+
+    // Choose the carrier whose range contains this price
+    const carrier = withRanges.find((c) => cents >= c.min && cents <= c.max);
+
+    if (!carrier) {
+      console.warn('No carrier product covers this price.', {
+        priceDollars,
+        cents,
+        carriers: withRanges.map(({ name, min, max }) => ({ name, min, max })),
+      });
+      return null;
+    }
+
+    const variant = carrier.data.find((v) => Number(v.price) === cents) || null;
+
+    if (!variant) {
+      console.warn('No variant found at exact price within selected carrier.', {
+        priceDollars,
+        cents,
+        carrier: carrier.name,
+        carrierRange: { min: carrier.min, max: carrier.max },
+      });
+    }
+
+    return variant;
   }
 
   function clearFormAndScrollTop() {
