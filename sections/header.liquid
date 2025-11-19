@@ -93,8 +93,8 @@
     {% else %}
     const MAX_RANGE_PX = 50;
     {% endif %}
-    const MIN_WGHT = 40;
-    const MAX_WGHT = 250;
+    const MIN_WGHT = 20;
+    const MAX_WGHT = 225;
     const SHOULD_MINIMISE_ON_LOAD = {{ should_minimise_header | json }};
     let forceInitialMinimise = SHOULD_MINIMISE_ON_LOAD;
 
@@ -142,11 +142,14 @@
     };
 
     // Toggle minimise-header based on threshold and scroll direction
+    // Remove functionality to make header visible when scrolling up.
+    // The header will only minimise when scrolling past the threshold,
+    // and will stay minimised unless the top is reached.
     const updateMinimiseHeader = (y, diff) => {
       const currentY = typeof y === 'number' ? y : window.scrollY || window.pageYOffset || 0;
       if (forceInitialMinimise) {
         const hasPassedThreshold = currentY > MAX_RANGE_PX;
-        if (hasPassedThreshold || (typeof diff === 'number' && diff < -SCROLL_DIR_THRESHOLD)) {
+        if (hasPassedThreshold) {
           forceInitialMinimise = false;
         } else {
           body.classList.add('minimise-header');
@@ -157,59 +160,9 @@
       const isPast = currentY > MAX_RANGE_PX;
       if (!isPast) {
         body.classList.remove('minimise-header');
-        // Reset any blocking once well above the fold
-        if (
-          reMinimiseBlocked &&
-          window.HeaderLogoBlink &&
-          typeof window.HeaderLogoBlink.stopReMinimiseBlink === 'function'
-        ) {
-          window.HeaderLogoBlink.stopReMinimiseBlink();
-        }
-        reMinimiseBlocked = false;
         return;
       }
-      if (typeof diff === 'number') {
-        if (diff > SCROLL_DIR_THRESHOLD) {
-          // Scrolling down: only minimise if we've scrolled enough since unminimising
-          if (reMinimiseBlocked) {
-            const traveled = currentY - unminimiseAnchorY;
-            if (traveled >= reMinimiseDistancePx) {
-              body.classList.add('minimise-header');
-              reMinimiseBlocked = false;
-              // Ensure any prior blink is stopped (defensive)
-              if (window.HeaderLogoBlink && typeof window.HeaderLogoBlink.stopReMinimiseBlink === 'function') {
-                window.HeaderLogoBlink.stopReMinimiseBlink();
-              }
-            } else {
-              body.classList.remove('minimise-header');
-            }
-          } else {
-            body.classList.add('minimise-header');
-          }
-        } else if (diff < -SCROLL_DIR_THRESHOLD) {
-          // Scrolling up: reveal header without triggering weight animation
-          body.classList.remove('minimise-header');
-          reMinimiseBlocked = true;
-          unminimiseAnchorY = currentY;
-          // No blink on upward scroll per spec
-        }
-      } else {
-        // Default state when past threshold without direction info
-        if (reMinimiseBlocked) {
-          const traveled = currentY - unminimiseAnchorY;
-          if (traveled >= reMinimiseDistancePx) {
-            body.classList.add('minimise-header');
-            reMinimiseBlocked = false;
-            if (window.HeaderLogoBlink && typeof window.HeaderLogoBlink.stopReMinimiseBlink === 'function') {
-              window.HeaderLogoBlink.stopReMinimiseBlink();
-            }
-          } else {
-            body.classList.remove('minimise-header');
-          }
-        } else {
-          body.classList.add('minimise-header');
-        }
-      }
+      body.classList.add('minimise-header');
     };
 
     function closeMenu() {

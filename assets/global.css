@@ -1670,3 +1670,7 @@ cart-items .cart__warnings .cart__login-paragraph a {
 .quantity-input-wrapper .quantity-btn:hover {
   opacity: 0.3;
 }
+
+.shopify-challenge__container {
+  padding: 50vh 0;
+}

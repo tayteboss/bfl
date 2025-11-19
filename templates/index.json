@@ -67,7 +67,7 @@
       ],
       "name": "Image Carousel",
       "settings": {
-        "autoplay": true
+        "autoplay": false
       }
     },
     "sendrollshome_aLTPmr": {
@@ -182,7 +182,7 @@
       "settings": {
         "heading": "Wall of Fame",
         "text": "Legendary frames, developed right here - updated each month.",
-        "autoplay": true
+        "autoplay": false
       }
     },
     "faq_9Lg4BU": {

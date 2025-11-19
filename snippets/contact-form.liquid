@@ -8,7 +8,7 @@
 
 <section class="contact-form-section" data-in-view>
   <div class="layout-wrapper">
-    {% form 'customer', class: 'contact-form' %}
+    {% form 'contact', id: 'ContactForm', class: 'contact-form' %}
       <input type="hidden" name="contact[tags]" value="contact-form" aria-label="Contact form">
       {%- if form.posted_successfully? -%}
         <h3
