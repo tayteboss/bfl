@@ -141,10 +141,14 @@
     // Tiles (OSM). You may replace with your preferred tile provider.
     // Pick maps here
     // https://leaflet-extras.github.io/leaflet-providers/preview/index.html
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-      maxZoom: 19,
-      attribution: '&copy; OpenStreetMap contributors',
-    }).addTo(map);
+
+    L.tileLayer(
+      'https://tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token=OrPZLEFGKw6tHQpCQswChnaAT010cKogm8iw9JcqAMysBpe0GkUunhMSVMXNSHfu',
+      {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors',
+      }
+    ).addTo(map);
 
     // Custom simple pin (yellow circle with black dot)
     var pinSize = 24;
