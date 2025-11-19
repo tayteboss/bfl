@@ -541,59 +541,6 @@
       });
     }
 
-    // Controls interactivity (desktop only ≥900px): shrink controls on map interaction, restore on search hover/focus
-    var isDesktop = typeof window !== 'undefined' && window.innerWidth >= 900;
-    var controlsEl = isDesktop ? document.querySelector('.drop-off-map__controls--desktop') : null;
-    var searchFormEl = isDesktop ? document.getElementById('locationSearchFormDesktop') : null;
-    var searchInputEl = isDesktop ? document.getElementById('locationSearchInputDesktop') : null;
-    var hasUserInteracted = false;
-    function setControlsInactive(isInactive) {
-      if (!controlsEl) return;
-      if (isInactive) {
-        controlsEl.classList.add('drop-off-map__controls--inactive');
-      } else {
-        controlsEl.classList.remove('drop-off-map__controls--inactive');
-      }
-    }
-
-    if (isDesktop && controlsEl) {
-      // Only set inactive after user interacts with the map
-      map.on('movestart', function () {
-        if (hasUserInteracted) setControlsInactive(true);
-      });
-      map.on('zoomstart', function () {
-        if (hasUserInteracted) setControlsInactive(true);
-      });
-      map.on('dragstart', function () {
-        if (hasUserInteracted) setControlsInactive(true);
-      });
-      // Direct interactions mark as user-interacted and collapse
-      mapEl.addEventListener('mousedown', function () {
-        hasUserInteracted = true;
-        setControlsInactive(true);
-      });
-      mapEl.addEventListener(
-        'wheel',
-        function () {
-          hasUserInteracted = true;
-          setControlsInactive(true);
-        },
-        { passive: true }
-      );
-    }
-
-    // Only the INPUT should restore controls (not the whole form/container)
-    if (isDesktop && searchInputEl) {
-      searchInputEl.addEventListener('mouseenter', function () {
-        setControlsInactive(false);
-      });
-      // Do not collapse on leaving the form; only after next map interaction
-      searchInputEl.addEventListener('focusin', function () {
-        setControlsInactive(false);
-      });
-      // Do not collapse on blur; only after next map interaction
-    }
-
     // Load local or remote locations then render
     var local = getLocationsFromScript();
     if (local && local.length) {

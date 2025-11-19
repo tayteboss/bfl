@@ -749,3 +749,34 @@ window.addEventListener('DOMContentLoaded', () => {
   initializeGearAccordions();
   initializeFlyInAnimation();
 });
+
+// Simple header marquee "package" – uses CSS animation but allows per-instance options
+function initializeHeaderLogoMarquee(rootEl = document) {
+  const containers = Array.from(rootEl.querySelectorAll('[data-header-marquee]'));
+  if (!containers.length) return;
+
+  const prefersReducedMotion = window.matchMedia
+    ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    : false;
+
+  containers.forEach((container) => {
+    const track = container.querySelector('.header-logo-marquee__track');
+    if (!track) return;
+
+    // Allow per-instance duration overrides via data attribute, e.g. data-marquee-duration="16s"
+    const customDuration = container.getAttribute('data-marquee-duration');
+    if (customDuration) {
+      track.style.setProperty('--header-logo-marquee-duration', customDuration);
+    }
+
+    // Respect reduced motion – stop marquee if user prefers less motion
+    if (prefersReducedMotion) {
+      track.style.animation = 'none';
+      track.style.transform = 'translateX(0)';
+    }
+  });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  initializeHeaderLogoMarquee();
+});

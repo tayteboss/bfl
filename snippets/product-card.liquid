@@ -29,7 +29,7 @@
 
   <div
     class="product-card__image-wrapper"
-    data-has-foreground-image="{% if background_image %}true{% else %}false{% endif %}"
+    data-has-foreground-image="{% if product_image and background_image %}true{% else %}false{% endif %}"
   >
     {% if product.metafields.custom.product_badge %}
       <div

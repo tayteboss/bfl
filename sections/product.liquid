@@ -125,8 +125,10 @@
 
             {%- assign has_size_option = false -%}
             {%- for opt in product.options -%}
-              {%- assign opt_down = opt | downcase -%}
-              {%- if opt_down == 'size' -%}
+              {%- assign opt_normalized = opt | downcase | strip -%}
+              {%- assign opt_tokens = opt_normalized | split: ' ' -%}
+              {%- assign opt_first = opt_tokens[0] -%}
+              {%- if opt_first == 'size' or opt_first == 'sizes' -%}
                 {%- assign has_size_option = true -%}
                 {%- break -%}
               {%- endif -%}
@@ -141,11 +143,15 @@
 
             {%- assign has_other_variant_options = false -%}
             {%- for option in product.options_with_values -%}
-              {%- assign opt_down = option.name | downcase -%}
-              {%- if opt_down != 'exposures'
-                and opt_down != 'exposure'
-                and opt_down != 'color'
-                and opt_down != 'size'
+              {%- assign opt_normalized = option.name | downcase | strip -%}
+              {%- assign opt_tokens = opt_normalized | split: ' ' -%}
+              {%- assign opt_first = opt_tokens[0] -%}
+              {%- if opt_first != 'exposures'
+                and opt_first != 'exposure'
+                and opt_first != 'color'
+                and opt_first != 'colors'
+                and opt_first != 'size'
+                and opt_first != 'sizes'
               -%}
                 {%- assign has_other_variant_options = true -%}
                 {%- break -%}

@@ -89,7 +89,17 @@
   </head>
 
   <body>
-    <a class="header__logo" href="{{ routes.root_url }}">Bellows Film Lab</a>
+    <a class="header__logo hide-on-mobile" href="{{ routes.root_url }}">Bellows Film Lab</a>
+
+    <div class="header-logo-marquee hide-on-desktop" data-header-marquee="mobile-only">
+      <div class="header-logo-marquee__track">
+        <a class="header__logo header__logo--mobile" href="{{ routes.root_url }}"
+          >Bellows Film Lab Bellows Film Lab Bellows Film Lab Bellows Film Lab Bellows Film Lab Bellows Film Lab Bellows
+          Film Lab Bellows Film Lab Bellows Film Lab Bellows Film Lab Bellows Film Lab Bellows Film Lab Bellows Film Lab
+          Bellows Film Lab Bellows Film Lab</a
+        >
+      </div>
+    </div>
     {% sections 'header-group' %}
 
     <main

@@ -1,8 +1,12 @@
 {%- assign size_option_index = null -%}
 {%- assign selected_size_value = null -%}
 {%- for option in product.options_with_values -%}
-  {%- if option.name == 'Size' -%}
+  {%- assign option_name_normalized = option.name | downcase | strip -%}
+  {%- assign option_tokens = option_name_normalized | split: ' ' -%}
+  {%- assign option_first = option_tokens[0] -%}
+  {%- if option_first == 'size' or option_first == 'sizes' -%}
     {%- assign size_option_index = forloop.index0 -%}
+    {%- break -%}
   {%- endif -%}
 {%- endfor -%}
 
@@ -24,7 +28,7 @@
     <fieldset class="variant-options">
       <div class="variant-selector__options">
         {%- for option in product.options_with_values -%}
-          {%- if option.name == 'Size' -%}
+          {%- if forloop.index0 == size_option_index -%}
             {%- for value in option.values -%}
               {%- assign available_for_value = false -%}
               {%- for v in product.variants -%}

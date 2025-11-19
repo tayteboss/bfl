@@ -1077,8 +1077,8 @@ cart-items .cart__warnings .cart__login-paragraph a {
 
 /* Hover effects for images with foreground/background setup */
 @media (hover: hover) and (pointer: fine) {
-  .product-card__image-wrapper:not([data-has-foreground-image="false"]):hover .product-card__product-image {
-    transform: translate(-50%, -50%) scale(1.03);
+  .product-card__image-wrapper[data-has-foreground-image="true"]:hover .product-card__product-image {
+    transform: translate(-50%, -50%) scale(1.05);
   }
 }
 
@@ -1103,13 +1103,6 @@ cart-items .cart__warnings .cart__login-paragraph a {
 	transition: all var(--transition-speed-default) var(--transition-ease);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .product-card__image-wrapper:hover .product-card__image-ratio,
-  .product-card__image-wrapper:hover .product-card__bg-image-inner {
-    border-radius: 1.25rem;
-  }
-}
-
 .product-card__bg-image {
   width: 100%;
   height: 100%;
@@ -1129,6 +1122,8 @@ cart-items .cart__warnings .cart__login-paragraph a {
 	transform: translate(-50%, -50%);
 	max-height: 60%;
 	width: 60%;
+  overflow: hidden;
+  border-radius: 1rem;
 
 	transition: all var(--transition-speed-default) var(--transition-ease);
 }
@@ -1154,19 +1149,6 @@ cart-items .cart__warnings .cart__login-paragraph a {
   object-fit: cover;
   width: 100%;
   height: 100%;
-}
-
-/* Hover effects only for images without foreground/background setup */
-@media (hover: hover) and (pointer: fine) {
-  .product-card__image-wrapper[data-has-foreground-image="false"]:hover .product-card__product-image img {
-    transform: scale(1.05);
-  }
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .product-card__image-wrapper[data-has-foreground-image="false"]:hover .product-card__image-ratio {
-    border-radius: 1.25rem;
-  }
 }
 
 .product-card-content {
@@ -1461,7 +1443,7 @@ cart-items .cart__warnings .cart__login-paragraph a {
   display: block;
 
   @media (max-width: 768px) {
-    display: none;
+    display: none !important;
   }
 }
 
@@ -1673,4 +1655,33 @@ cart-items .cart__warnings .cart__login-paragraph a {
 
 .shopify-challenge__container {
   padding: 50vh 0;
+}
+
+.screensaver-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 3000;
+  pointer-events: auto;
+  /* mix-blend-mode: difference; */
+}
+
+.screensaver-overlay__logo {
+  color: #d7d7d7;
+  font-family: var(--font-tiny);
+  text-transform: uppercase;
+  font-size: 16vw;
+  line-height: 0.6;
+  mix-blend-mode: difference;
+  white-space: pre;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .screensaver-overlay__logo {
+    font-size: 13.5vw;
+  }
 }
