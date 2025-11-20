@@ -110,7 +110,7 @@
         <!-- SERVICE PICKER -->
         <fieldset data-group="Service" class="rolls-form-card">
           <h3 class="rolls-form-card__heading type-h1-x-small" order-summary-heading="Service">Choose a Service</h3>
-          <div class="rolls-form-card__inner">
+          <div class="rolls-form-card__inner rolls-form-card__inner--content">
             <p class="rolls-form-card__subheading type-p">What services are you looking for?</p>
             <div class="rolls-form-card__options">
               {% for service_name in form_data %}
@@ -139,6 +139,74 @@
               {% endfor %}
             </div>
           </div>
+          <div class="rolls-form-card-content">
+            <h3 class="rolls-form-card-content__heading type-p">I’m not sure what I need?</h3>
+
+            <button
+              type="button"
+              class="rolls-form-card-content-trigger-btn"
+              aria-expanded="false"
+              aria-controls="rfc-content-{{ content_uid }}"
+              id="rfc-btn-{{ content_uid }}"
+              data-faq-trigger
+            >
+              <div class="rolls-form-card-content-trigger"></div>
+            </button>
+
+            <div
+              class="rolls-form-card-content-outer"
+              id="rfc-content-{{ content_uid }}"
+              role="region"
+              aria-labelledby="rfc-btn-{{ content_uid }}"
+              hidden
+              data-faq-content
+            >
+              <div class="rolls-form-card-content-inner faq-card__inner">
+                {% assign has_service_descriptions = false %}
+                {% for service_name in form_data %}
+                  {% assign service_key = service_name[0] %}
+                  {% assign service_object = service_name[1] %}
+                  {% if service_object.description or service_object.description_image %}
+                    {% assign has_service_descriptions = true %}
+                  {% endif %}
+                {% endfor %}
+
+                {% if has_service_descriptions %}
+                  <div class="rolls-form-card-content-options">
+                    {% for service_name in form_data %}
+                      {% assign service_key = service_name[0] %}
+                      {% assign service_object = service_name[1] %}
+                      {% if service_object.description or service_object.description_image %}
+                        <div class="rolls-form-card-content-option">
+                          {% if service_object.description_image %}
+                            <div class="rolls-form-card-content-option__image">
+                              <img
+                                src="{{ service_object.description_image }}"
+                                alt=""
+                                class="desc-image"
+                                width="50px"
+                                height="50px"
+                              >
+                            </div>
+                          {% endif %}
+                          <div class="rolls-form-card-content-option__content">
+                            <p class="rolls-form-card-content-option__label type-p-small">
+                              {{ service_key }}
+                            </p>
+                            {% if service_object.description %}
+                              <p class="rolls-form-card-content-option__description type-p-small">
+                                {{ service_object.description }}
+                              </p>
+                            {% endif %}
+                          </div>
+                        </div>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
         </fieldset>
 
         <!-- SERVICE GROUPS -->
@@ -156,10 +224,14 @@
               {% endif %}
             {% endfor %}
 
-            {% comment %} Render regular groups (non-Add Ons) {% endcomment %}
+            {% comment %} Render regular groups (non-Add Ons, non-metadata keys) {% endcomment %}
             {% for group in groups %}
               {% assign group_name = group[0] %}
-              {% unless group_name contains 'Add Ons -' or group_name == 'show_if' %}
+              {% unless group_name contains 'Add Ons -'
+                or group_name == 'show_if'
+                or group_name == 'description'
+                or group_name == 'description_image'
+              %}
                 {% assign group_data = group[1] %}
                 {% assign group_show_if = group_data.show_if | default: null %}
                 {% assign sub_title = group_data.sub_title %}
@@ -284,9 +356,9 @@
                                       </div>
                                     {% endif %}
                                     <div class="rolls-form-card-content-option__content">
-                                      <p class="rolls-form-card-content-option__label type-p-large">{{ opt.label }}</p>
+                                      <p class="rolls-form-card-content-option__label type-p-small">{{ opt.label }}</p>
                                       {% if opt.description %}
-                                        <p class="rolls-form-card-content-option__description type-p">
+                                        <p class="rolls-form-card-content-option__description type-p-small">
                                           {{ opt.description }}
                                         </p>
                                       {% endif %}
@@ -461,11 +533,11 @@
                                           </div>
                                         {% endif %}
                                         <div class="rolls-form-card-content-option__content">
-                                          <p class="rolls-form-card-content-option__label type-p-large">
+                                          <p class="rolls-form-card-content-option__label type-p-small">
                                             {{ opt.label }}
                                           </p>
                                           {% if opt.description %}
-                                            <p class="rolls-form-card-content-option__description type-p">
+                                            <p class="rolls-form-card-content-option__description type-p-small">
                                               {{ opt.description }}
                                             </p>
                                           {% endif %}
@@ -593,11 +665,11 @@
                                         </div>
                                       {% endif %}
                                       <div class="rolls-form-card-content-option__content">
-                                        <p class="rolls-form-card-content-option__label type-p-large">
+                                        <p class="rolls-form-card-content-option__label type-p-small">
                                           {{ opt.label }}
                                         </p>
                                         {% if opt.description %}
-                                          <p class="rolls-form-card-content-option__description type-p">
+                                          <p class="rolls-form-card-content-option__description type-p-small">
                                             {{ opt.description }}
                                           </p>
                                         {% endif %}
