@@ -17,10 +17,17 @@
           "settings": {
             "collection": "film"
           }
+        },
+        "collection_ibAqLT": {
+          "type": "collection",
+          "settings": {
+            "collection": "merch"
+          }
         }
       },
       "block_order": [
-        "collection_EAV7rA"
+        "collection_EAV7rA",
+        "collection_ibAqLT"
       ],
       "name": "Featured Collection",
       "settings": {
@@ -47,6 +54,13 @@
         "image_XU3RBp": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/IMG_0338.jpg",
+            "alt": "Carousel image"
+          }
+        },
+        "image_VDfMNB": {
+          "type": "image",
+          "settings": {
             "image": "shopify://shop_images/13_2.jpg",
             "alt": "Carousel image"
           }
@@ -54,7 +68,7 @@
         "image_TLMjtc": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/05aca3b0-fdc3-4fe9-b70c-a7a272638398.jpg",
+            "image": "shopify://shop_images/IMG_0354_2.jpg",
             "alt": "Carousel image"
           }
         }
@@ -63,6 +77,7 @@
         "image_xACxnj",
         "image_KHyr8t",
         "image_XU3RBp",
+        "image_VDfMNB",
         "image_TLMjtc"
       ],
       "name": "Image Carousel",
@@ -77,7 +92,7 @@
         "heading": "Bellows began as a single pro lab in Miami and, in just a few short years, has grown into a small constellation of studios—Miami, Chicago, Atlanta and Orlando—processing thousands of rolls every month.",
         "paragraph-1": "<p>The recipe hasn’t changed: fresh chemistry mixed daily, scanners tuned by hand, and a crew of film nerds who still get goose-bumps when a perfect negative hits the light table. From one-hour C-41 to exhibition-grade drum scans, Bellows exists to bridge the gap between analogue craft and a digital-first world, giving photographers a place where curiosity is met with real expertise.</p><p>At Bellows, we’re on a mission to keep film photography alive and thriving. We believe in the magic of the process- from loading film to holding the final product in your hands. Our goal is to offer exceptional film development services while cultivating a space where photographers can express their creativity, share their passion, and celebrate the art of analog.</p>",
         "paragraph-2": "",
-        "sendrollsimage": "shopify://shop_images/stamp.png",
+        "sendrollsimage": "shopify://shop_images/send-rolls.png",
         "button": "Send Us Your Rolls",
         "cta": "shopify://pages/send-us-your-rolls"
       }
@@ -233,7 +248,7 @@
         "show_view_all": true,
         "view_all_link": "shopify://pages/faqs",
         "view_all_text": "View all FAQs",
-        "photo": "shopify://shop_images/13_2.png"
+        "photo": "shopify://shop_images/IMG_0340_2.png"
       }
     },
     "drop_off_bbQxHD": {
