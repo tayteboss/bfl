@@ -143,7 +143,8 @@
     // https://leaflet-extras.github.io/leaflet-providers/preview/index.html
 
     L.tileLayer(
-      'https://tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token=OrPZLEFGKw6tHQpCQswChnaAT010cKogm8iw9JcqAMysBpe0GkUunhMSVMXNSHfu',
+      // 'https://tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token=OrPZLEFGKw6tHQpCQswChnaAT010cKogm8iw9JcqAMysBpe0GkUunhMSVMXNSHfu',
+      'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
       {
         maxZoom: 19,
         attribution: '&copy; OpenStreetMap contributors',
