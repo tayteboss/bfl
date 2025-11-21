@@ -11,8 +11,7 @@
       href="{{ url }}"
       target="_self"
       class="filter-button type-p {% if request.path contains url %} filter-button--active{% endif %}"
-      role="button"
-      aria-pressed="{% if request.path contains url %}true{% else %}false{% endif %}"
+      {% if request.path contains url %}aria-current="page"{% endif %}
       aria-label="Filter by {{ title }}"
     >
       {{- title -}}

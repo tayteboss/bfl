@@ -18,10 +18,10 @@
   data-faq-trigger
   {{ block.shopify_attributes }}
 >
-  <div class="faq-card__indicator"></div>
-  <p class="faq-card__question type-p">
+  <div class="faq-card__indicator" aria-hidden="true"></div>
+  <span class="faq-card__question type-p">
     {{ question }}
-  </p>
+  </span>
   <div
     class="faq-card__content"
     id="faq-content-{{ faq_uid }}"

@@ -36,11 +36,11 @@
       <div class="cart__items" id="main-cart-items" data-id="{{ section.id }}">
         <div class="js-contents">
           {%- if cart != empty -%}
-            <div class="cart-items-list" role="list">
+            <ul class="cart-items-list" role="list">
               {%- for item in cart.items -%}
                 {% render 'product-cart-card', item: item, index: item.index | plus: 1, context: 'page' %}
               {%- endfor -%}
-            </div>
+            </ul>
           {%- endif -%}
         </div>
       </div>

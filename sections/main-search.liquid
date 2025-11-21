@@ -22,7 +22,7 @@
 {%- endstyle -%}
 
 {% paginate search.results by 24 %}
-  <div
+  <section
     class="featured-collection section-{{ section.id }}-padding"
     aria-labelledby="featured-collection-heading"
     data-location-selector
@@ -156,6 +156,7 @@
     {%- endif -%}
   </div>
 {% endpaginate %}
+</section>
 {% if section.settings.image_shape == 'arch' %}
   {{ 'mask-arch.svg' | inline_asset_content }}
 {%- endif -%}

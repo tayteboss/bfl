@@ -72,12 +72,17 @@
 </footer>
 
 <script>
-  document.querySelector('.footer-top-button').addEventListener('click', () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
+  (function () {
+    var footerTopButton = document.querySelector('.footer-top-button');
+    if (!footerTopButton) return;
+
+    footerTopButton.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
     });
-  });
+  })();
 
   // Cursor position maps Y -> weight for footer logo (active only when footer is in view)
   (function () {

@@ -1,6 +1,6 @@
 {{ 'collection.css' | asset_url | stylesheet_tag }}
 
-<div
+<section
   class="featured-collection"
   aria-labelledby="featured-collection-heading"
   data-collection-section
@@ -59,7 +59,7 @@
       {% endfor %}
 
       {% unless has_visible_products %}
-        <div class="collection-empty-message">
+        <div class="collection-empty-message" role="status" aria-live="polite">
           <h2 class="collection-empty-message__title">No products found</h2>
         </div>
       {% endunless %}
@@ -67,12 +67,18 @@
     {% if paginate.pages > 1 and paginate.next %}
       <div class="pagination-button">
         <div data-hover-shake>
-          <a href="{{ paginate.next.url }}" class="primary-button" data-collection-load-more>Load More</a>
+          <a
+            href="{{ paginate.next.url }}"
+            class="primary-button"
+            data-collection-load-more
+            aria-label="Load more products"
+            >Load More</a
+          >
         </div>
       </div>
     {% endif %}
   {% endpaginate %}
-</div>
+</section>
 
 {% schema %}
 {

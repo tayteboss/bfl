@@ -10,7 +10,6 @@
   href="{{ product.url }}"
   target="_self"
   aria-label="{{ product.title }} by {{ product.vendor }} - {{ product.price | money }}"
-  role="article"
   data-product-id="{{ product.id }}"
   data-product-tags="{{ product.tags | join: ',' | escape }}"
   data-product-vendor="{{ product.vendor | escape }}"
@@ -34,7 +33,6 @@
     {% if product.metafields.custom.product_badge %}
       <div
         class="badge-button product-card__badge"
-        role="text"
         aria-label="Product badge: {{ product.metafields.custom.product_badge }}"
       >
         {{ product.metafields.custom.product_badge | metafield_tag }}
@@ -45,8 +43,8 @@
       {% if background_image %}
         <div
           class="product-card__bg-image-inner"
-          role="img"
-          aria-label="Background image for {{ product.title }}"
+          role="presentation"
+          aria-hidden="true"
         >
           <img
             src="{{ background_image | image_url }}"
@@ -54,18 +52,19 @@
             class="product-card__bg-image"
             width="auto"
             height="auto"
+            role="presentation"
           >
         </div>
       {% endif %}
       {% if product_image %}
         <div
           class="product-card__product-image"
-          role="img"
-          aria-label="Primary image of {{ product.title }}"
+          role="presentation"
+          aria-hidden="true"
         >
           <img
             src="{{ product_image.src | image_url }}"
-            alt=""
+            alt="{{ product.title | escape }}"
             class="product-card__image product-card__image--primary"
             width="auto"
             height="auto"
@@ -75,13 +74,14 @@
     </div>
   </div>
   <div class="product-card-content">
-    <p class="product-card-content__brand type-h4" aria-label="Brand">
-      {{ product.vendor }}
+    <p class="product-card-content__brand type-h4">
+      <span class="visually-hidden">Brand: </span>{{ product.vendor }}
     </p>
     <p class="product-card-content__title type-p">
       {{ product.title }}
     </p>
-    <div class="product-card-content__price type-p-small" aria-label="Price">
+    <div class="product-card-content__price type-p-small">
+      <span class="visually-hidden">Price: </span>
       <span aria-hidden="true">{{ cart.currency.iso_code }}</span>
       <span>{{ product.price | money }}</span>
     </div>

@@ -7,7 +7,7 @@
 
 {{ 'collection.css' | asset_url | stylesheet_tag }}
 
-<div
+<section
   class="main-collection"
   aria-labelledby="main-collection-heading"
   data-collection-section
@@ -58,10 +58,10 @@
         {% endunless %}
       {% endfor %}
       {% if any_products == false %}
-        <div class="collection-empty-message">
+        <div class="collection-empty-message" role="status" aria-live="polite">
           <p class="collection-empty-message__title type-h1-x-small">No products to show.</p>
           <div class="collection-empty-message__button-wrapper">
-            <a href="{{ routes.all_products_collection_url }}" class="primary-button primary-button--small">
+            <a href="{{ routes.all_products_collection_url }}" class="primary-button primary-button--small" aria-label="View all products">
               View All Products
             </a>
           </div>
@@ -71,12 +71,12 @@
     {% if paginate.pages > 1 and paginate.next %}
       <div class="pagination-button">
         <div data-hover-shake>
-          <a href="{{ paginate.next.url }}" class="primary-button" data-collection-load-more>Load More</a>
+          <a href="{{ paginate.next.url }}" class="primary-button" data-collection-load-more aria-label="Load more products">Load More</a>
         </div>
       </div>
     {% endif %}
   {% endpaginate %}
-</div>
+</section>
 
 <script src="{{ 'collection.js' | asset_url }}" defer></script>
 

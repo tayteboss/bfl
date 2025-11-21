@@ -10,9 +10,7 @@
     href="{{ request.path }}#{{ id }}"
     target="_self"
     class="anchor-button type-p"
-    role="button"
-    aria-pressed="{% if request.path contains url %}true{% else %}false{% endif %}"
-    aria-label="Anchor by {{ title }}"
+    aria-label="Scroll to {{ title }}"
   >
     {{- title -}}
   </a>

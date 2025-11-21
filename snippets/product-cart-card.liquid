@@ -175,13 +175,13 @@
         class="cart-remove-button type-p-small"
         data-key="{{ item.key }}"
       >
-        <a
-          href="#"
+        <button
+          type="button"
           class="button button--tertiary cart-remove-button type-p-small"
           aria-label="{{ 'sections.cart.remove_title' | t: title: item.title | escape }}"
         >
           remove
-        </a>
+        </button>
       </cart-remove-button>
 
       <ul class="discounts list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">

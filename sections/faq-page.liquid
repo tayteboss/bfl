@@ -28,7 +28,7 @@
       {% endif %}
     </div>
 
-    <div class="faq-page-list-wrapper" data-faq-list role="tablist">
+    <div class="faq-page-list-wrapper" data-faq-list>
       {% assign current_heading_id = '' %}
       {% assign current_heading = '' %}
       {% for block in section.blocks %}
@@ -78,7 +78,7 @@
 {% comment %} THIS THING IS CAUSING ISSUES!!! {% endcomment %}
 {% if section.settings.stamp_image != blank %}
   <div class="faq-page__stamp-image">
-    <img src="{{ section.settings.stamp_image | image_url }}" alt="" width="auto" height="auto">
+    <img src="{{ section.settings.stamp_image | image_url }}" alt="" role="presentation" width="auto" height="auto">
   </div>
 {% endif %}
 

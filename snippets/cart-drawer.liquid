@@ -69,11 +69,11 @@
             <div id="CartDrawer-CartItems" class="drawer__contents js-contents">
               {%- if cart != empty -%}
                 <div class="drawer__cart-items-wrapper">
-                  <div class="cart-items-list" role="list" style="display:flex; flex-direction:column; gap:16px;">
+                  <ul class="cart-items-list" role="list" style="display:flex; flex-direction:column; gap:16px;">
                     {%- for item in cart.items -%}
                       {% render 'product-cart-card', item: item, index: item.index | plus: 1, context: 'drawer' %}
                     {%- endfor -%}
-                  </div>
+                  </ul>
                 </div>
               {%- endif -%}
               <p id="CartDrawer-LiveRegionText" class="visually-hidden" role="status"></p>

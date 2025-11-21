@@ -16,8 +16,9 @@
       </h3>
     {%- else -%}
       <p class="newsletter-form__heading type-h6">Join our newsletter</p>
-      <div class="newsletter-form__fields">
+        <div class="newsletter-form__fields">
         <div class="field">
+          <label class="visually-hidden" for="NewsletterForm--{{ section.id }}">{{ 'newsletter.label' | t }}</label>
           <input
             id="NewsletterForm--{{ section.id }}"
             class="field__input"
