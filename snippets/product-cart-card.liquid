@@ -68,6 +68,9 @@
       </a>
 
       <div class="cart-item__price-wrapper">
+        {%- if item.quantity > 1 -%}
+          <span class="cart-item__quantity-note type-p-small"> Qty: {{ item.quantity }} - </span>
+        {%- endif -%}
         {%- if item.variant.available and item.unit_price_measurement -%}
           <div class="unit-price caption">
             <span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>

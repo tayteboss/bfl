@@ -199,12 +199,6 @@ html:not(.fonts-ready) .header__logo {
   }
 }
 
-.menu-toggle__number--menu-toggle {
-  @media (max-width: 768px) {
-    display: none;
-  }
-}
-
 .menu-toggle__icon {
   height: 1.3125rem;
   width: 1.3125rem;
@@ -513,4 +507,8 @@ body.hide-header .cart-button {
   @media (max-width: 768px) {
     flex-direction: row;
   }
+}
+
+.menu-open .menu-toggle__number--menu-toggle {
+  display: none;
 }

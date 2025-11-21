@@ -5,12 +5,13 @@
     "Film Format": {
       "accordion_title": "What film format do I have?",
       "accordion_sub_title": "Film comes in different shapes and sizes. Match your film to the kinds listed below when ordering.",
+      "sub_title": "Film comes in different shapes and sizes. Match your film to the kinds listed below when ordering.",
       "options": [
         {
           "label": "Disposable",
           "price": 8,
           "description": "Your classic single use cam. We recycle them!",
-          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/disposable_3c6d0608-4a4d-455e-bbb4-ef4f8400c378.png?v=1763627455"
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/disposable_b60fec53-bb66-4e78-8424-0b139bbdf6b1.png?v=1763709720"
         },
         {
           "label": "35mm",
@@ -28,25 +29,26 @@
           "label": "110",
           "price": 8,
           "description": "A smaller film size, inside of a black plastic cartridge.",
-          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/110mm.png?v=1762420433"
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/110.png?v=1763709721"
         },
         {
           "label": "4x5 (Sheet)",
           "price": 8,
           "description": "A large-format single sheet offering high resolution, precise tonal control, and wide dynamic range.",
-          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/4-5.png?v=1762505116"
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/4x5_b798d627-7ec2-4010-9e3f-5ef0461f0a31.png?v=1763709720"
         },
         {
           "label": "8x10 (Sheet)",
           "price": 12,
           "description": "Ultra-large format sheet film delivering exceptional detail, smooth tonal gradation, and maximum enlargement quality.",
-          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/8-10.png?v=1762505115"
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/8x10_369105e6-ba36-40ed-8d88-e1f6184218bc.png?v=1763709721"
         }
       ]
     },
     "Process": {
       "accordion_title": "What process should you select?",
       "accordion_sub_title": "There is a process required to develop each film type. Check your film roll or camera for the following markings to order the best option for your images.",
+      "sub_title": "There is a process required to develop each film type. Check your film roll or camera for the following markings to order the best option for your images.",
       "options": [
         {
           "label": "Color (C-41)",
@@ -84,7 +86,7 @@
             }
           },
           "description": "Reversal process that yields color-positive transparencies with high contrast and accurate color.",
-          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/positive.png?v=1762432639"
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/e-6.png?v=1763709721"
         },
         {
           "label": "CINE (ECN-2)",
@@ -104,55 +106,46 @@
             }
           },
           "description": "Motion-picture negative process using a rem-jet backing for smoother grain, wide dynamic range, and cinematic color.",
-          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/cine.png?v=1762432639"
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/ecn-2.png?v=1763709720"
         }
       ]
     },
     "Push or Pull": {
-      "accordion_title": "What is push or pull processing?",
-      "accordion_sub_title": "Adjust development time to compensate for under- or over-exposed film.",
+      "accordion_title": "Understanding Push or Pull",
+      "sub_title": "Changes in the Push/Pull setting result in darker or lighter image, changing color and contrast – just like with real film",
+      "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/push-pull-feature.png?v=1763709722",
+      "column_one_richtext": "<strong>What is Push/Pull and how it works?</strong><br><br><p>All films behave differently depending on how much light they received during exposure. Therefore, each film profile in Dehancer Film in fact consists of 3 separate profiles. Each profile is defined by its own sampling conditions:</p><ul><li>Normal exposure</li><li>Underexposed: Push/Pull = -2</li><li>Overexposed: Push/Pull = +2</li></ul><p>Changes in the Push/Pull setting result in darker or lighter image, changing color and contrast – just like with real film. Film type defines the character of changes.</p>",
       "options": [
         {
           "label": "Normal",
-          "price": 0,
-          "description": "Developed at the film’s rated ISO for standard contrast, grain, and color.",
-          "description_image": "https://cdn.shopify.com/s/files/example.jpg"
+          "price": 0
         },
         {
           "label": "Pull -1",
-          "price": 2,
-          "description": "Reduced development to compensate for overexposure, giving lower contrast and smoother tones.",
-          "description_image": "https://cdn.shopify.com/s/files/example.jpg"
+          "price": 2
         },
         {
           "label": "Pull -2",
-          "price": 4,
-          "description": "Stronger reduction in development for heavily overexposed film, producing very soft contrast and muted grain.",
-          "description_image": "https://cdn.shopify.com/s/files/example.jpg"
+          "price": 4
         },
         {
           "label": "Push +1",
-          "price": 2,
-          "description": "Extended development for slight underexposure, increasing contrast and visible grain.",
-          "description_image": "https://cdn.shopify.com/s/files/example.jpg"
+          "price": 2
         },
         {
           "label": "Push +2",
-          "price": 4,
-          "description": "Greater development increase to recover more underexposure, resulting in punchy contrast and pronounced grain.",
-          "description_image": "https://cdn.shopify.com/s/files/example.jpg"
+          "price": 4
         },
         {
           "label": "Push +3",
-          "price": 6,
-          "description": "Maximum push for severely underexposed film, yielding very high contrast, coarse grain, and deeper color shifts in color stocks.",
-          "description_image": "https://cdn.shopify.com/s/files/example.jpg"
+          "price": 6
         }
       ]
     },
     "Scanning": {
       "accordion_title": "Which scanner is right for me?",
       "accordion_sub_title": "Both scanners create beautiful results, but each has unique strengths. See below for details and visual examples so you can select the best fit for your needs.",
+      "sub_title": "Select a scanner",
       "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/feature-print-image.png?v=1762500902",
       "column_one_richtext": "<p>Noritsu HS-1800</p><ul><li><strong>Look &amp; feel:</strong> Crisp, sharp detail with a slightly more neutral/modern colour profile.</li><li><strong>Best for:</strong> When you want maximum fine detail, subtle tones, or need flexibility for editing.</li><li><strong>Great with:</strong> Colour negative film, B&amp;W film, and high-contrast scenes.</li></ul>",
       "column_two_richtext": "<p>Fuji Frontier SP-3000</p><ul><li><strong>Look &amp; feel:</strong> Smooth, rich colour with a softer, more filmic aesthetic straight out of the scan.</li><li><strong>Best for:</strong> Natural skin tones, warm highlights, and that classic Frontier “glow.”</li><li><strong>Great with:</strong> Portraits, wedding photography, and any film you want to look timeless.</li></ul>",
@@ -170,6 +163,7 @@
     "Scanning Resolution": {
       "accordion_title": "What scan size is right for me?",
       "accordion_sub_title": "Scans are high-quality digital copies of your film. Different resolutions affect how you can use your images — from quick sharing to large-format printing. Choose the option that fits your project best.",
+      "sub_title": "Scans are high-quality digital copies of your film.",
       "options": [
         {
           "label": "Medium (JPEG)",
@@ -194,6 +188,7 @@
     "Border Options": {
       "accordion_title": "What border options are available?",
       "accordion_sub_title": "Choose how you want your scans to be framed. We offer both white borders and sprocket-style borders for 35mm film.",
+      "sub_title": "Select your border style",
       "options": [
 				{
 					"label": "None",
@@ -291,12 +286,13 @@
     "Film Format": {
       "accordion_title": "What film format do I have?",
       "accordion_sub_title": "Film comes in different shapes and sizes. Match your film to the kinds listed below when ordering.",
+      "sub_title": "Film comes in different shapes and sizes. Match your film to the kinds listed below when ordering.",
       "options": [
         {
           "label": "Disposable",
           "price": 8,
           "description": "Your classic single use cam. We recycle them!",
-          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/disposable_3c6d0608-4a4d-455e-bbb4-ef4f8400c378.png?v=1763627455"
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/disposable_b60fec53-bb66-4e78-8424-0b139bbdf6b1.png?v=1763709720"
         },
         {
           "label": "35mm",
@@ -314,25 +310,26 @@
           "label": "110",
           "price": 8,
           "description": "A smaller film size, inside of a black plastic cartridge.",
-          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/110mm.png?v=1762420433"
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/110.png?v=1763709721"
         },
         {
           "label": "4x5 (Sheet)",
           "price": 8,
           "description": "A large-format single sheet offering high resolution, precise tonal control, and wide dynamic range.",
-          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/4-5.png?v=1762505116"
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/4x5_b798d627-7ec2-4010-9e3f-5ef0461f0a31.png?v=1763709720"
         },
         {
           "label": "8x10 (Sheet)",
           "price": 12,
           "description": "Ultra-large format sheet film delivering exceptional detail, smooth tonal gradation, and maximum enlargement quality.",
-          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/8-10.png?v=1762505115"
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/8x10_369105e6-ba36-40ed-8d88-e1f6184218bc.png?v=1763709721"
         }
       ]
     },
     "Process": {
       "accordion_title": "What process should you select?",
       "accordion_sub_title": "There is a process required to develop each film type. Check your film roll or camera for the following markings to order the best option for your images.",
+      "sub_title": "There is a process required to develop each film type. Check your film roll or camera for the following markings to order the best option for your images.",
       "options": [
         {
           "label": "Color (C-41)",
@@ -370,7 +367,7 @@
             }
           },
           "description": "Reversal process that yields color-positive transparencies with high contrast and accurate color.",
-          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/positive.png?v=1762432639"
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/e-6.png?v=1763709721"
         },
         {
           "label": "CINE (ECN-2)",
@@ -390,49 +387,39 @@
             }
           },
           "description": "Motion-picture negative process using a rem-jet backing for smoother grain, wide dynamic range, and cinematic color.",
-          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/cine.png?v=1762432639"
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/ecn-2.png?v=1763709720"
         }
       ]
     },
     "Push or Pull": {
-      "accordion_title": "What is push or pull processing?",
-      "accordion_sub_title": "Adjust development time to compensate for under- or over-exposed film.",
+      "accordion_title": "Understanding Push or Pull",
+      "sub_title": "Changes in the Push/Pull setting result in darker or lighter image, changing color and contrast – just like with real film",
+      "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/push-pull-feature.png?v=1763709722",
+      "column_one_richtext": "<strong>What is Push/Pull and how it works?</strong><br><br><p>All films behave differently depending on how much light they received during exposure. Therefore, each film profile in Dehancer Film in fact consists of 3 separate profiles. Each profile is defined by its own sampling conditions:</p><ul><li>Normal exposure</li><li>Underexposed: Push/Pull = -2</li><li>Overexposed: Push/Pull = +2</li></ul><p>Changes in the Push/Pull setting result in darker or lighter image, changing color and contrast – just like with real film. Film type defines the character of changes.</p>",
       "options": [
         {
           "label": "Normal",
-          "price": 0,
-          "description": "Developed at the film’s rated ISO for standard contrast, grain, and color.",
-          "description_image": "https://cdn.shopify.com/s/files/example.jpg"
+          "price": 0
         },
         {
           "label": "Pull -1",
-          "price": 2,
-          "description": "Reduced development to compensate for overexposure, giving lower contrast and smoother tones.",
-          "description_image": "https://cdn.shopify.com/s/files/example.jpg"
+          "price": 2
         },
         {
           "label": "Pull -2",
-          "price": 4,
-          "description": "Stronger reduction in development for heavily overexposed film, producing very soft contrast and muted grain.",
-          "description_image": "https://cdn.shopify.com/s/files/example.jpg"
+          "price": 4
         },
         {
           "label": "Push +1",
-          "price": 2,
-          "description": "Extended development for slight underexposure, increasing contrast and visible grain.",
-          "description_image": "https://cdn.shopify.com/s/files/example.jpg"
+          "price": 2
         },
         {
           "label": "Push +2",
-          "price": 4,
-          "description": "Greater development increase to recover more underexposure, resulting in punchy contrast and pronounced grain.",
-          "description_image": "https://cdn.shopify.com/s/files/example.jpg"
+          "price": 4
         },
         {
           "label": "Push +3",
-          "price": 6,
-          "description": "Maximum push for severely underexposed film, yielding very high contrast, coarse grain, and deeper color shifts in color stocks.",
-          "description_image": "https://cdn.shopify.com/s/files/example.jpg"
+          "price": 6
         }
       ]
     },
@@ -507,12 +494,13 @@
     "Film Format": {
       "accordion_title": "What film format do I have?",
       "accordion_sub_title": "Film comes in different shapes and sizes. Match your film to the kinds listed below when ordering.",
+      "sub_title": "Film comes in different shapes and sizes. Match your film to the kinds listed below when ordering.",
       "options": [
         {
           "label": "Disposable",
           "price": 8,
           "description": "Your classic single use cam. We recycle them!",
-          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/disposable_3c6d0608-4a4d-455e-bbb4-ef4f8400c378.png?v=1763627455"
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/disposable_b60fec53-bb66-4e78-8424-0b139bbdf6b1.png?v=1763709720"
         },
         {
           "label": "35mm",
@@ -530,25 +518,26 @@
           "label": "110",
           "price": 8,
           "description": "A smaller film size, inside of a black plastic cartridge.",
-          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/110mm.png?v=1762420433"
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/110.png?v=1763709721"
         },
         {
           "label": "4x5 (Sheet)",
           "price": 8,
           "description": "A large-format single sheet offering high resolution, precise tonal control, and wide dynamic range.",
-          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/4-5.png?v=1762505116"
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/4x5_b798d627-7ec2-4010-9e3f-5ef0461f0a31.png?v=1763709720"
         },
         {
           "label": "8x10 (Sheet)",
           "price": 12,
           "description": "Ultra-large format sheet film delivering exceptional detail, smooth tonal gradation, and maximum enlargement quality.",
-          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/8-10.png?v=1762505115"
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/8x10_369105e6-ba36-40ed-8d88-e1f6184218bc.png?v=1763709721"
         }
       ]
     },
     "Process": {
       "accordion_title": "What process should you select?",
       "accordion_sub_title": "There is a process required to develop each film type. Check your film roll or camera for the following markings to order the best option for your images.",
+      "sub_title": "There is a process required to develop each film type. Check your film roll or camera for the following markings to order the best option for your images.",
       "options": [
         {
           "label": "Color (C-41)",
@@ -586,7 +575,7 @@
             }
           },
           "description": "Reversal process that yields color-positive transparencies with high contrast and accurate color.",
-          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/positive.png?v=1762432639"
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/e-6.png?v=1763709721"
         },
         {
           "label": "CINE (ECN-2)",
@@ -606,13 +595,14 @@
             }
           },
           "description": "Motion-picture negative process using a rem-jet backing for smoother grain, wide dynamic range, and cinematic color.",
-          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/cine.png?v=1762432639"
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/ecn-2.png?v=1763709720"
         }
       ]
     },
     "Scanning": {
       "accordion_title": "Which scanner is right for me?",
       "accordion_sub_title": "Both scanners create beautiful results, but each has unique strengths. See below for details and visual examples so you can select the best fit for your needs.",
+      "sub_title": "Select a scanner",
       "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/feature-print-image.png?v=1762500902",
       "column_one_richtext": "<p>Noritsu HS-1800</p><ul><li><strong>Look &amp; feel:</strong> Crisp, sharp detail with a slightly more neutral/modern colour profile.</li><li><strong>Best for:</strong> When you want maximum fine detail, subtle tones, or need flexibility for editing.</li><li><strong>Great with:</strong> Colour negative film, B&amp;W film, and high-contrast scenes.</li></ul>",
       "column_two_richtext": "<p>Fuji Frontier SP-3000</p><ul><li><strong>Look &amp; feel:</strong> Smooth, rich colour with a softer, more filmic aesthetic straight out of the scan.</li><li><strong>Best for:</strong> Natural skin tones, warm highlights, and that classic Frontier “glow.”</li><li><strong>Great with:</strong> Portraits, wedding photography, and any film you want to look timeless.</li></ul>",
@@ -630,6 +620,7 @@
     "Scanning Resolution": {
       "accordion_title": "What scan size is right for me?",
       "accordion_sub_title": "Scans are high-quality digital copies of your film. Different resolutions affect how you can use your images — from quick sharing to large-format printing. Choose the option that fits your project best.",
+      "sub_title": "Scans are high-quality digital copies of your film.",
       "options": [
         {
           "label": "Medium (JPEG)",
@@ -654,6 +645,7 @@
     "Border Options": {
       "accordion_title": "What border options are available?",
       "accordion_sub_title": "Choose how you want your scans to be framed. We offer both white borders and sprocket-style borders for 35mm film.",
+      "sub_title": "Select your border style",
       "options": [
 				{
 					"label": "None",
@@ -756,6 +748,7 @@
 		"Film Format": {
       "accordion_title": "What film format do I have?",
       "accordion_sub_title": "Film comes in different shapes and sizes. Match your film to the kinds listed below when ordering.",
+      "sub_title": "Film comes in different shapes and sizes. Match your film to the kinds listed below when ordering.",
       "options": [
         {
           "label": "35mm",
@@ -773,7 +766,7 @@
           "label": "4x5 (Sheet)",
           "price": 10,
           "description": "A large-format single sheet offering high resolution, precise tonal control, and wide dynamic range.",
-          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/4-5.png?v=1762505116"
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/4x5_b798d627-7ec2-4010-9e3f-5ef0461f0a31.png?v=1763709720"
         }
       ]
     },

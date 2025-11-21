@@ -46,9 +46,9 @@
       <button class="menu-toggle menu-bubble" aria-label="Open Menu" data-text="Menu">
         <div class="menu-toggle__icon"></div>
         <span>Menu</span>
-        {% if cart.item_count > 0 %}
-          <span class="menu-toggle__number menu-toggle__number--menu-toggle">{{ cart.item_count }}</span>
-        {% endif %}
+        <span class="menu-toggle__number menu-toggle__number--menu-toggle">
+          {{- cart.item_count -}}
+        </span>
       </button>
     </div>
   </div>
@@ -501,8 +501,9 @@
     if (typeof subscribe === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
       const setHeaderCartCount = (count) => {
         const desktopEl = document.querySelector('.cart-button--desktop .cart-button__number');
-        const mobileEl = document.querySelector('.cart-button--mobile .cart-button__number');
-        let menuEl = document.querySelector('.menu-toggle__number');
+        const mobileEl = document.querySelector('.cart-button--mobile .menu-toggle__number');
+        const menuToggle = document.querySelector('.menu-toggle');
+        let menuEl = menuToggle ? menuToggle.querySelector('.menu-toggle__number') : null;
         
         // Create menu-toggle__number if it doesn't exist
         if (!menuEl) {
