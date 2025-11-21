@@ -333,7 +333,7 @@
       // Initialize Swiper for product images
       const productImagesSwiper = document.querySelector('.product-images-swiper');
       if (productImagesSwiper && typeof window.Swiper === 'function') {
-        new window.Swiper(productImagesSwiper, {
+        const swiperInstance = new window.Swiper(productImagesSwiper, {
           slidesPerView: 1,
           spaceBetween: 0,
           loop: false,
@@ -342,6 +342,17 @@
             clickable: true,
             type: 'bullets',
           },
+        });
+
+        // Click to advance to the next image (and loop back to the first)
+        productImagesSwiper.addEventListener('click', () => {
+          if (!swiperInstance) return;
+
+          if (swiperInstance.isEnd) {
+            swiperInstance.slideTo(0);
+          } else {
+            swiperInstance.slideNext();
+          }
         });
       }
     });
