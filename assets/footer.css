@@ -191,6 +191,10 @@ footer .layout-grid {
 
 .footer__logo {
   position: relative;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 }
 
 .footer__logo-video {

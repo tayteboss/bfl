@@ -355,6 +355,9 @@ html:not(.fonts-ready) .header__logo {
 
   @media (max-width: 768px) {
     align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
     left: 50%;
     transform: translateX(-50%);
   }

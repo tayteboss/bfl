@@ -18,6 +18,12 @@
             "collection": "film"
           }
         },
+        "collection_GMbPrN": {
+          "type": "collection",
+          "settings": {
+            "collection": "services"
+          }
+        },
         "collection_ibAqLT": {
           "type": "collection",
           "settings": {
@@ -27,6 +33,7 @@
       },
       "block_order": [
         "collection_EAV7rA",
+        "collection_GMbPrN",
         "collection_ibAqLT"
       ],
       "name": "Featured Collection",

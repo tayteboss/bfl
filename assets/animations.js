@@ -252,6 +252,12 @@ function initializeHoverShake(rootEl = document) {
     } catch (_) {}
   }
 
+  // Skip entirely on smaller screens (< 768px) for performance
+  try {
+    const isSmallScreen = window.matchMedia ? window.matchMedia('(max-width: 767px)').matches : window.innerWidth < 768;
+    if (isSmallScreen) return;
+  } catch (_) {}
+
   const motionApi = window.motion || window.Motion;
   const hasAnimate = motionApi && typeof motionApi.animate === 'function';
   if (!hasAnimate) {

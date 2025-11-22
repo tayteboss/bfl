@@ -47,9 +47,11 @@
       <button class="menu-toggle menu-bubble" aria-label="Open Menu" data-text="Menu">
         <div class="menu-toggle__icon"></div>
         <span>Menu</span>
-        <span class="menu-toggle__number menu-toggle__number--menu-toggle" aria-hidden="true">
-          {{- cart.item_count -}}
-        </span>
+        {% if cart.item_count > 0 %}
+          <span class="menu-toggle__number menu-toggle__number--menu-toggle" aria-hidden="true">
+            {{- cart.item_count -}}
+          </span>
+        {% endif %}
       </button>
     </div>
   </div>
@@ -514,19 +516,35 @@
     if (typeof subscribe === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
       const setHeaderCartCount = (count) => {
         const desktopEl = document.querySelector('.cart-button--desktop .cart-button__number');
-        const mobileEl = document.querySelector('.cart-button--mobile .menu-toggle__number');
+        let mobileEl = document.querySelector('.cart-button--mobile .menu-toggle__number');
         const menuToggle = document.querySelector('.menu-toggle');
         let menuEl = menuToggle ? menuToggle.querySelector('.menu-toggle__number') : null;
-        
+
+        // Ensure the mobile cart badge element exists (it may not be rendered when count is 0 on page load)
+        if (!mobileEl) {
+          const mobileCartButton = document.querySelector('.cart-button--mobile');
+          if (mobileCartButton) {
+            mobileEl = document.createElement('span');
+            mobileEl.className = 'menu-toggle__number';
+            // Insert before the icon so it appears in the expected position
+            const iconEl = mobileCartButton.querySelector('.menu-list__item__icon');
+            if (iconEl && iconEl.parentNode) {
+              iconEl.parentNode.insertBefore(mobileEl, iconEl);
+            } else {
+              mobileCartButton.appendChild(mobileEl);
+            }
+          }
+        }
+
         // Create menu-toggle__number if it doesn't exist
         if (!menuEl) {
           const menuToggle = document.querySelector('.menu-toggle');
           if (menuToggle) {
             // Find the "Menu" text span (the one with text content "Menu")
             const menuTextSpan = Array.from(menuToggle.querySelectorAll('span')).find(
-              span => span.textContent.trim() === 'Menu' && !span.classList.contains('menu-toggle__number')
+              (span) => span.textContent.trim() === 'Menu' && !span.classList.contains('menu-toggle__number')
             );
-            
+
             if (menuTextSpan) {
               menuEl = document.createElement('span');
               menuEl.className = 'menu-toggle__number';
@@ -548,7 +566,7 @@
             }
           }
         }
-        
+
         // Update all elements
         [desktopEl, mobileEl, menuEl].forEach((el) => {
           if (!el) {
@@ -556,8 +574,8 @@
           }
           el.textContent = String(count);
           el.classList.toggle('is-zero', count === 0);
-          
-          // Hide/show menu number based on count
+
+          // Hide/show menu number on the menu toggle button based on count
           if (el === menuEl) {
             if (count === 0) {
               el.style.display = 'none';
