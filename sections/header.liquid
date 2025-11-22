@@ -153,14 +153,12 @@
     // and will stay minimised unless the top is reached.
     const updateMinimiseHeader = (y, diff) => {
       const currentY = typeof y === 'number' ? y : window.scrollY || window.pageYOffset || 0;
-      if (forceInitialMinimise) {
-        const hasPassedThreshold = currentY > MAX_RANGE_PX;
-        if (hasPassedThreshold) {
-          forceInitialMinimise = false;
-        } else {
-          body.classList.add('minimise-header');
-          return;
-        }
+
+      // On pages flagged via should_minimise_header (product, gear rental variants, etc.),
+      // keep the header permanently minimised on all viewports so the logo never appears.
+      if (SHOULD_MINIMISE_ON_LOAD) {
+        body.classList.add('minimise-header');
+        return;
       }
 
       const isPast = currentY > MAX_RANGE_PX;
@@ -238,77 +236,80 @@
       }
     })();
 
-    // Toggle `scrolled` and `minimise-header` on header when beyond threshold and hide near page bottom
-    // Only enable scroll listeners on desktop-sized viewports for performance and to
-    // avoid hiding the header on mobile.
-    if (isDesktopViewport) {
-      if (window.ScrollUtils && typeof window.ScrollUtils.onScroll === 'function') {
-        const threshold = MAX_RANGE_PX;
-        const onScrollUpdate = (y) => {
-          const currentY = typeof y === 'number' ? y : window.scrollY || window.pageYOffset || 0;
-          const diff = currentY - lastScrollY;
-          header.classList.toggle('scrolled', currentY > threshold);
-          updateMinimiseHeader(currentY, diff);
-          updateHideHeader();
-
-          // Hide the menu toggle when scrolling down, show when scrolling up
-          if (header.classList.contains('menu-open')) {
-            header.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
-          } else {
-            if (diff > SCROLL_DIR_THRESHOLD) {
-              header.classList.add(MENU_TOGGLE_HIDDEN_CLASS);
-            } else if (diff < -SCROLL_DIR_THRESHOLD) {
-              header.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
-            }
-          }
-          lastScrollY = currentY;
-        };
-        const unsubscribe = window.ScrollUtils.onScroll(onScrollUpdate);
-
-        // Optional: clean up if this section is dynamically replaced
-        document.addEventListener('shopify:section:unload', () => {
-          if (typeof unsubscribe === 'function') unsubscribe();
-        });
-      } else {
-        const onScrollFallback = () => {
-          const currentY = window.scrollY || window.pageYOffset || 0;
-          const diff = currentY - lastScrollY;
-          header.classList.toggle('scrolled', currentY > MAX_RANGE_PX);
-          updateMinimiseHeader(currentY, diff);
-          updateHideHeader();
-
-          // Hide the menu toggle when scrolling down, show when scrolling up
-          if (header.classList.contains('menu-open')) {
-            header.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
-          } else {
-            if (diff > SCROLL_DIR_THRESHOLD) {
-              header.classList.add(MENU_TOGGLE_HIDDEN_CLASS);
-            } else if (diff < -SCROLL_DIR_THRESHOLD) {
-              header.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
-            }
-          }
-          lastScrollY = currentY;
-        };
-        window.addEventListener('scroll', onScrollFallback, { passive: true });
-        document.addEventListener('shopify:section:unload', () => {
-          window.removeEventListener('scroll', onScrollFallback);
-          document.removeEventListener('click', onDocumentClick, true);
-        });
-      }
-
-      window.addEventListener('resize', () => {
-        updateFooterHeight();
+    // Toggle `scrolled` and `minimise-header` on header when beyond threshold and hide near page bottom.
+    // Run scroll listeners on all viewports so body.minimise-header / body.hide-header
+    // stay in sync for both desktop and mobile, but only auto-hide the menu toggle on desktop.
+    if (window.ScrollUtils && typeof window.ScrollUtils.onScroll === 'function') {
+      const threshold = MAX_RANGE_PX;
+      const onScrollUpdate = (y) => {
+        const currentY = typeof y === 'number' ? y : window.scrollY || window.pageYOffset || 0;
+        const diff = currentY - lastScrollY;
+        header.classList.toggle('scrolled', currentY > threshold);
+        updateMinimiseHeader(currentY, diff);
         updateHideHeader();
-        updateReMinimiseDistance();
-      });
 
-      updateFooterHeight();
-      updateHideHeader();
-      updateMinimiseHeader();
+        // Hide the menu toggle when scrolling down, show when scrolling up (desktop only)
+        if (isDesktopViewport) {
+          if (header.classList.contains('menu-open')) {
+            header.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
+          } else {
+            if (diff > SCROLL_DIR_THRESHOLD) {
+              header.classList.add(MENU_TOGGLE_HIDDEN_CLASS);
+            } else if (diff < -SCROLL_DIR_THRESHOLD) {
+              header.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
+            }
+          }
+        }
+        lastScrollY = currentY;
+      };
+      const unsubscribe = window.ScrollUtils.onScroll(onScrollUpdate);
+
+      // Optional: clean up if this section is dynamically replaced
+      document.addEventListener('shopify:section:unload', () => {
+        if (typeof unsubscribe === 'function') unsubscribe();
+      });
+    } else {
+      const onScrollFallback = () => {
+        const currentY = window.scrollY || window.pageYOffset || 0;
+        const diff = currentY - lastScrollY;
+        header.classList.toggle('scrolled', currentY > MAX_RANGE_PX);
+        updateMinimiseHeader(currentY, diff);
+        updateHideHeader();
+
+        // Hide the menu toggle when scrolling down, show when scrolling up (desktop only)
+        if (isDesktopViewport) {
+          if (header.classList.contains('menu-open')) {
+            header.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
+          } else {
+            if (diff > SCROLL_DIR_THRESHOLD) {
+              header.classList.add(MENU_TOGGLE_HIDDEN_CLASS);
+            } else if (diff < -SCROLL_DIR_THRESHOLD) {
+              header.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
+            }
+          }
+        }
+        lastScrollY = currentY;
+      };
+      window.addEventListener('scroll', onScrollFallback, { passive: true });
+      document.addEventListener('shopify:section:unload', () => {
+        window.removeEventListener('scroll', onScrollFallback);
+        document.removeEventListener('click', onDocumentClick, true);
+      });
     }
 
-    // Step-based random weight for header logo + collapse via wdth after 500px
-    // Only run the heavy scroll/hover effects on desktop viewports.
+    window.addEventListener('resize', () => {
+      updateFooterHeight();
+      updateHideHeader();
+      updateReMinimiseDistance();
+    });
+
+    updateFooterHeight();
+    updateHideHeader();
+    updateMinimiseHeader();
+
+    // Step-based random weight for header logo + collapse via wdth after 500px.
+    // Originally this only ran on desktop; now we let it drive the shared
+    // --font-weight-header variable on all viewports so mobile matches desktop.
     if (logoEl && SHOULD_MINIMISE_ON_LOAD && isDesktopViewport) {
       const currentHeaderWeight = parseInt(
         getComputedStyle(document.documentElement).getPropertyValue('--font-weight-header'),
@@ -319,7 +320,7 @@
       }
       logoEl.style.display = 'none';
       logoEl.style.fontVariationSettings = '';
-    } else if (logoEl && isDesktopViewport) {
+    } else if (logoEl) {
       const STEP_PX = 40;
 
       let lastStep = -1;
@@ -506,10 +507,6 @@
           runInitialBlink();
         }
       });
-    } else if (logoEl && !isDesktopViewport) {
-      // Mobile: ensure logo is visible and not affected by desktop-only effects
-      logoEl.style.display = '';
-      logoEl.style.fontVariationSettings = '';
     }
 
     // Keep header cart count in sync without page refresh

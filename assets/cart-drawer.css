@@ -97,6 +97,7 @@ cart-drawer.active {
 
 .cart-items-list {
 	gap: 12px;
+	padding-inline-start: 0;
 }
 
 .drawer__header {

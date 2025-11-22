@@ -23,51 +23,6 @@ header {
   }
 }
 
-.header-logo-marquee {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  overflow: hidden;
-  mix-blend-mode: difference;
-  display: none;
-
-  @media (max-width: 768px) {
-    display: block;
-  }
-}
-
-.header-logo-marquee__track {
-  display: inline-flex;
-  align-items: flex-start;
-  white-space: nowrap;
-  will-change: transform;
-}
-
-.header-logo-marquee__track a {
-  display: inline-flex;
-  align-items: flex-start;
-  white-space: nowrap;
-  will-change: transform;
-}
-
-@media (min-width: 769px) {
-  .header-logo-marquee__track {
-    animation: none;
-    transform: translateX(0);
-  }
-}
-
-@media (max-width: 768px) {
-  .header-logo-marquee__track {
-    animation-name: header-logo-marquee-scroll;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-duration: var(--header-logo-marquee-duration, 60s);
-  }
-}
-
 .header__logo {
   color: #d7d7d7;
   position: fixed;
@@ -106,6 +61,7 @@ header {
     font-size: 16.3vw;
   }
 }
+
 @media (max-width: 768px) {
   .header__logo {
     position: static;
@@ -123,13 +79,14 @@ header {
   }
 }
 
-.minimise-header .header__logo {
+.minimise-header .header__logo.hide-on-mobile {
   transform: translateX(-50%) translateY(-125%);
+  opacity: 0;
+}
 
-  @media (max-width: 768px) {
-    transform: none;
-    opacity: 0;
-  }
+body.hide-header .header__logo.hide-on-mobile {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .menu-open .header__logo {
@@ -137,8 +94,9 @@ header {
   z-index: 10;
 }
 
-/* Hide the header logo until fonts have loaded to prevent shift */
-html:not(.fonts-ready) .header__logo {
+/* Hide only the DESKTOP header logo until fonts have loaded to prevent shift.
+ * Keep the mobile marquee logo visible even if fonts haven't finished loading. */
+html:not(.fonts-ready) .header__logo.hide-on-mobile {
   visibility: hidden;
 }
 
