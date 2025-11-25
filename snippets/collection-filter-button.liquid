@@ -7,8 +7,10 @@
       aria-haspopup="dialog"
       aria-controls="filters-modal"
       class="primary-button primary-button--small"
+      data-filters-loading="false"
     >
-      + Filters
+      <span class="filters-button__label">+ Filters</span>
+      <span class="filters-button__spinner" aria-hidden="true"></span>
     </button>
   </div>
 </div>
@@ -38,17 +40,21 @@
       {% assign new_arrivals_count = 0 %}
       {% if collections['new-arrivals'] %}
         {% assign new_arrivals_count = collections['new-arrivals'].products_count | plus: 0 %}
-        <a href="{{ collections['new-arrivals'].url }}" class="primary-button primary-button--modal-filter">
-          New Arrivals{% if new_arrivals_count > 0 %} <span>{{ new_arrivals_count }}</span>{% endif %}
-        </a>
+        {% if new_arrivals_count > 0 %}
+          <a href="{{ collections['new-arrivals'].url }}" class="primary-button primary-button--modal-filter">
+            New Arrivals <span>{{ new_arrivals_count }}</span>
+          </a>
+        {% endif %}
       {% endif %}
 
       {% assign sale_count = 0 %}
       {% if collections['sale'] %}
         {% assign sale_count = collections['sale'].products_count | plus: 0 %}
-        <a href="{{ collections['sale'].url }}" class="primary-button primary-button--modal-filter primary-button--red">
-          Sale{% if sale_count > 0 %} <span>{{ sale_count }}</span>{% endif %}
-        </a>
+        {% if sale_count > 0 %}
+          <a href="{{ collections['sale'].url }}" class="primary-button primary-button--modal-filter primary-button--red">
+            Sale <span>{{ sale_count }}</span>
+          </a>
+        {% endif %}
       {% endif %}
     {% endcapture %}
     {% render 'filter-link-group', title: 'Shop by', content_html: quick_links_html %}
@@ -74,48 +80,87 @@
     {% endcapture %}
     {% render 'filter-link-group', title: 'Collections', content_html: collections_links_html %}
 
-    {% comment %} Here will be tags for the current collection. If we are on the collection/film then there will be tags such as 35mm etc. {% endcomment %}
+    {% comment %}
+      Tags and Brands are driven by Shopify's native storefront filters so that
+      they always reflect ALL products in the collection (not just the first page).
+      Make sure the Search & Discovery app has filters enabled for:
+      - Product tags  (param_name: filter.p.tag)
+      - Product vendor / Brand (param_name: filter.p.vendor)
+    {% endcomment %}
 
-    <!-- TAGS -->
-    {% assign all_tags = '' | split: '' %}
-    {% for product in collection.products %}
-      {% assign all_tags = all_tags | concat: product.tags %}
+    {% assign tag_filter = null %}
+    {% assign vendor_filter = null %}
+    {% for filter in collection.filters %}
+      {% if filter.type == 'list' and filter.param_name == 'filter.p.tag' %}
+        {% assign tag_filter = filter %}
+      {% elsif filter.type == 'list' and filter.param_name == 'filter.p.vendor' %}
+        {% assign vendor_filter = filter %}
+      {% endif %}
     {% endfor %}
-    {% assign tag_list = all_tags | uniq %}
-    {% assign tag_counts = '' | split: '' %}
-    {% for tag in tag_list %}
-      {% assign tag_count = 0 %}
-      {% for product in collection.products %}
-        {% if product.tags contains tag %}
-          {% assign tag_count = tag_count | plus: 1 %}
-        {% endif %}
-      {% endfor %}
-      {% assign count_array = tag_count | split: '|||' %}
-      {% assign tag_counts = tag_counts | concat: count_array %}
-    {% endfor %}
-    {% render 'filter-group', title: 'Tags', items: tag_list, type: 'tag', counts: tag_counts %}
 
-    {% comment %} Finally here will be brands or vendors for the current collection. {% endcomment %}
-    <!-- VENDORS -->
-    {% assign all_vendors = '' | split: '' %}
-    {% for product in collection.products %}
-      {% assign vendor_array = product.vendor | split: '|||' %}
-      {% assign all_vendors = all_vendors | concat: vendor_array %}
-    {% endfor %}
-    {% assign vendor_list = all_vendors | uniq %}
-    {% assign vendor_counts = '' | split: '' %}
-    {% for vendor in vendor_list %}
-      {% assign vendor_count = 0 %}
-      {% for product in collection.products %}
-        {% assign product_vendor_array = product.vendor | split: '|||' %}
-        {% if product_vendor_array contains vendor %}
-          {% assign vendor_count = vendor_count | plus: 1 %}
-        {% endif %}
-      {% endfor %}
-      {% assign count_array = vendor_count | split: '|||' %}
-      {% assign vendor_counts = vendor_counts | concat: count_array %}
-    {% endfor %}
-    {% render 'filter-group', title: 'Brands', items: vendor_list, type: 'vendor', counts: vendor_counts %}
+    {% if tag_filter %}
+      <fieldset class="filter-group">
+        <legend class="filter-group__title type-button-large">Tags</legend>
+        <div class="filter-group__items">
+          {% for value in tag_filter.values %}
+            {% if value.count > 0 %}
+              {% assign input_id = 'tag-' | append: forloop.index %}
+              <label
+                class="filter-group__item primary-button primary-button--modal-filter"
+                for="{{ input_id }}"
+              >
+                <input
+                  type="checkbox"
+                  id="{{ input_id }}"
+                  class="filter-option"
+                  data-filter-type="tag"
+                  data-param-name="{{ tag_filter.param_name }}"
+                  value="{{ value.value | escape }}"
+                  {% if value.active %}
+                    checked
+                  {% endif %}
+                >
+                <span class="active-filter-remove">×</span>
+                {{ value.label }}
+                <span>{{ value.count }}</span>
+              </label>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </fieldset>
+    {% endif %}
+
+    {% if vendor_filter %}
+      <fieldset class="filter-group">
+        <legend class="filter-group__title type-button-large">Brands</legend>
+        <div class="filter-group__items">
+          {% for value in vendor_filter.values %}
+            {% if value.count > 0 %}
+              {% assign input_id = 'vendor-' | append: forloop.index %}
+              <label
+                class="filter-group__item primary-button primary-button--modal-filter"
+                for="{{ input_id }}"
+              >
+                <input
+                  type="checkbox"
+                  id="{{ input_id }}"
+                  class="filter-option"
+                  data-filter-type="vendor"
+                  data-param-name="{{ vendor_filter.param_name }}"
+                  value="{{ value.value | escape }}"
+                  {% if value.active %}
+                    checked
+                  {% endif %}
+                >
+                <span class="active-filter-remove">×</span>
+                {{ value.label }}
+                <span>{{ value.count }}</span>
+              </label>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </fieldset>
+    {% endif %}
 
     <div class="filters-modal__actions">
       <button id="apply-filters" type="button" class="primary-button primary-button--modal-filter rounded">
@@ -141,16 +186,40 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
+    const filtersWrapper = document.getElementById('active-filters');
+    if (!filtersWrapper) return;
+
     const openBtn = document.getElementById('open-filters');
     const closeBtn = document.getElementById('close-filters');
     const applyBtn = document.getElementById('apply-filters');
     const clearBtn = document.getElementById('clear-filters');
     const modal = document.getElementById('filters-modal');
-    const filtersWrapper = document.getElementById('active-filters');
     const filterTrigger = filtersWrapper.querySelector('.filter-trigger');
-    let filterOptions = document.querySelectorAll('.filter-option');
+    const tagsContainer = document.getElementById('filter-tags-container');
+    const vendorsContainer = document.getElementById('filter-vendors-container');
+    const collectionSection = filtersWrapper.closest('[data-collection-section]');
+    const sectionId = collectionSection ? collectionSection.getAttribute('data-section-id') : null;
+    const listEl = collectionSection ? collectionSection.querySelector('[data-collection-list]') : null;
 
+    let filterOptions = document.querySelectorAll('.filter-option');
     let activeFilters = [];
+    let filtersBuilt = false;
+
+    // Snapshot initial list + pagination so we can restore it when filters are cleared
+    const initialListHTML = listEl ? listEl.innerHTML : '';
+    let initialPaginationHTML = '';
+    if (collectionSection) {
+      const pagination = collectionSection.querySelector('.pagination-button');
+      if (pagination) {
+        initialPaginationHTML = pagination.outerHTML;
+      }
+    }
+
+    // Filter data caches
+    const allProducts = []; // { html, tags, vendors, collections }
+    const tagMap = new Map();
+    const vendorMap = new Map();
+    let filterDataPromise = null;
 
     // Update filter options when modal opens (in case of dynamic content)
     function refreshFilterOptions() {
@@ -174,31 +243,291 @@
       document.body.appendChild(modal);
     }
 
+    // Collect product data from a section element (live DOM or fetched HTML)
+    function collectProductsFromSection(sectionEl) {
+      if (!sectionEl) return;
+      const cards = sectionEl.querySelectorAll('.product-card[data-product-tags], .product-card[data-product-vendor]');
+      cards.forEach((card) => {
+        const tags = (card.dataset.productTags || '')
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean);
+        const vendors = (card.dataset.productVendor || '')
+          .split('|||')
+          .map((s) => s.trim())
+          .filter(Boolean);
+        const collections = (card.dataset.productCollections || '')
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean);
+
+        allProducts.push({
+          html: card.outerHTML,
+          tags,
+          vendors,
+          collections,
+        });
+      });
+    }
+
+    function buildMapsFromProducts() {
+      tagMap.clear();
+      vendorMap.clear();
+
+      allProducts.forEach((p) => {
+        p.tags.forEach((tag) => {
+          if (!tag || tag.toLowerCase() === 'hidden') return;
+          tagMap.set(tag, (tagMap.get(tag) || 0) + 1);
+        });
+        p.vendors.forEach((vendor) => {
+          if (!vendor) return;
+          vendorMap.set(vendor, (vendorMap.get(vendor) || 0) + 1);
+        });
+      });
+    }
+
+    // Load all product data for this collection (without altering the visible grid)
+    function loadFilterData() {
+      if (filterDataPromise) return filterDataPromise;
+      if (!collectionSection || !listEl) {
+        filterDataPromise = Promise.resolve();
+        return filterDataPromise;
+      }
+
+      // Start with products already rendered on the page
+      collectProductsFromSection(collectionSection);
+
+      const scope = collectionSection;
+      const loadMoreLink = scope.querySelector('[data-collection-load-more]');
+      let nextUrl = loadMoreLink ? loadMoreLink.getAttribute('href') : null;
+
+      function loop() {
+        if (!nextUrl) return Promise.resolve();
+
+        const urlObj = new URL(nextUrl, window.location.origin);
+        if (sectionId) {
+          urlObj.searchParams.set('section_id', sectionId);
+        }
+
+        return fetch(urlObj.toString())
+          .then((r) => r.text())
+          .then((html) => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const nextSection = doc.querySelector(
+              sectionId ? `[data-collection-section][data-section-id="${sectionId}"]` : '[data-collection-section]'
+            );
+            if (!nextSection) {
+              nextUrl = null;
+              return;
+            }
+
+            collectProductsFromSection(nextSection);
+            const nextBtn = nextSection.querySelector('[data-collection-load-more]');
+            nextUrl = nextBtn ? nextBtn.getAttribute('href') : null;
+
+            if (nextUrl) {
+              return loop();
+            }
+          })
+          .catch(() => {
+            nextUrl = null;
+          });
+      }
+
+      filterDataPromise = loop().then(() => {
+        buildMapsFromProducts();
+      });
+
+      return filterDataPromise;
+    }
+
+    function createFieldset(title, type, entries, container) {
+      if (!container || !entries.length) return;
+
+      const fieldset = document.createElement('fieldset');
+      fieldset.className = 'filter-group';
+
+      const legend = document.createElement('legend');
+      legend.className = 'filter-group__title type-button-large';
+      legend.textContent = title;
+      fieldset.appendChild(legend);
+
+      const itemsWrapper = document.createElement('div');
+      itemsWrapper.className = 'filter-group__items';
+      fieldset.appendChild(itemsWrapper);
+
+      entries.forEach(([value, count], index) => {
+        if (!value) return;
+        const id =
+          value
+            .toString()
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-') +
+          '-' +
+          type +
+          '-' +
+          (index + 1);
+
+        const label = document.createElement('label');
+        label.className = 'filter-group__item primary-button primary-button--modal-filter';
+        label.setAttribute('for', id);
+
+        const input = document.createElement('input');
+        input.type = 'checkbox';
+        input.id = id;
+        input.value = value;
+        input.className = 'filter-option';
+        input.dataset.filterType = type;
+
+        const removeSpan = document.createElement('span');
+        removeSpan.className = 'active-filter-remove';
+        removeSpan.textContent = '×';
+
+        label.appendChild(input);
+        label.appendChild(removeSpan);
+        label.appendChild(document.createTextNode(' ' + value));
+
+        if (count > 0) {
+          const countSpan = document.createElement('span');
+          countSpan.textContent = String(count);
+          label.appendChild(document.createTextNode(' '));
+          label.appendChild(countSpan);
+        }
+
+        itemsWrapper.appendChild(label);
+      });
+
+      container.appendChild(fieldset);
+    }
+
+    function buildFiltersFromProducts() {
+      if (!tagsContainer || !vendorsContainer) return;
+
+      // Clear existing containers
+      tagsContainer.innerHTML = '';
+      vendorsContainer.innerHTML = '';
+
+      const sortedTags = Array.from(tagMap.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+      const sortedVendors = Array.from(vendorMap.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+
+      createFieldset('Tags', 'tag', sortedTags, tagsContainer);
+      createFieldset('Brands', 'vendor', sortedVendors, vendorsContainer);
+
+      // Refresh options now that we've created them
+      refreshFilterOptions();
+      updateActiveStates();
+
+      filtersBuilt = true;
+    }
+
+    function matchesProductFilters(product) {
+      if (!activeFilters.length) return true;
+
+      const filtersByType = {};
+      activeFilters.forEach((f) => {
+        if (!filtersByType[f.type]) {
+          filtersByType[f.type] = [];
+        }
+        filtersByType[f.type].push(f.value);
+      });
+
+      return Object.entries(filtersByType).every(([type, values]) => {
+        if (type === 'tag') {
+          return values.some((val) => product.tags.includes(val));
+        }
+        if (type === 'vendor') {
+          return values.some((val) => product.vendors.includes(val));
+        }
+        if (type === 'collection') {
+          return values.some((val) => product.collections.includes(val));
+        }
+        return true;
+      });
+    }
+
+    function resetToInitialGrid() {
+      if (!listEl || !collectionSection) return;
+
+      // Restore initial products
+      listEl.innerHTML = initialListHTML;
+
+      // Remove any existing pagination and restore the original one
+      const existingPag = collectionSection.querySelector('.pagination-button');
+      if (existingPag) existingPag.remove();
+      if (initialPaginationHTML) {
+        listEl.insertAdjacentHTML('afterend', initialPaginationHTML);
+      }
+    }
+
+    function renderFilteredProducts() {
+      if (!listEl || !collectionSection) return;
+
+      if (!activeFilters.length) {
+        resetToInitialGrid();
+        return;
+      }
+
+      const matching = allProducts.filter((p) => matchesProductFilters(p));
+      listEl.innerHTML = matching.map((p) => p.html).join('');
+
+      // When showing filtered results, remove pagination (we're showing all matches)
+      const existingPag = collectionSection.querySelector('.pagination-button');
+      if (existingPag) existingPag.remove();
+    }
+
+    // Public wrapper used by clear/apply logic
+    function filterProducts() {
+      renderFilteredProducts();
+    }
+
     // Modal toggle
     function openModal() {
-      refreshFilterOptions();
-      // Sync checkboxes with currently active filters
-      filterOptions.forEach((opt) => {
-        const isActive = activeFilters.some((f) => f.type === opt.dataset.filterType && f.value === opt.value);
-        opt.checked = isActive;
-      });
-      updateActiveStates();
-      modal.classList.add('is-open');
-      modal.setAttribute('aria-hidden', 'false');
-      document.body.classList.add('is-modal-open');
+      if (!modal) return;
+
+      // Set loading state on button
+      if (openBtn) {
+        openBtn.dataset.filtersLoading = 'true';
+        openBtn.setAttribute('aria-busy', 'true');
+      }
+
+      const ensureFiltersReady = filtersBuilt ? Promise.resolve() : loadFilterData().then(buildFiltersFromProducts);
+
+      ensureFiltersReady
+        .then(() => {
+          refreshFilterOptions();
+          // Sync checkboxes with currently active filters
+          filterOptions.forEach((opt) => {
+            const isActive = activeFilters.some((f) => f.type === opt.dataset.filterType && f.value === opt.value);
+            opt.checked = isActive;
+          });
+          updateActiveStates();
+          modal.classList.add('is-open');
+          modal.setAttribute('aria-hidden', 'false');
+          document.body.classList.add('is-modal-open');
+        })
+        .finally(() => {
+          if (openBtn) {
+            openBtn.dataset.filtersLoading = 'false';
+            openBtn.removeAttribute('aria-busy');
+          }
+        });
     }
 
     function closeModal() {
+      if (!modal) return;
       modal.classList.remove('is-open');
       modal.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('is-modal-open');
     }
 
-    openBtn.addEventListener('click', openModal);
-    closeBtn.addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) closeModal();
-    });
+    if (openBtn) openBtn.addEventListener('click', openModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+    }
 
     // Update active state when checkboxes change
     document.addEventListener('change', (e) => {
@@ -208,28 +537,44 @@
     });
 
     // Clear all filters
-    clearBtn.addEventListener('click', () => {
-      activeFilters = [];
-      filterOptions.forEach((opt) => {
-        opt.checked = false;
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        activeFilters = [];
+        filterOptions.forEach((opt) => {
+          opt.checked = false;
+        });
+        updateActiveStates();
+        renderActiveFilters();
+        filterProducts();
       });
-      updateActiveStates();
-      renderActiveFilters();
-      filterProducts();
-    });
+    }
 
     // Apply filters
-    applyBtn.addEventListener('click', () => {
-      activeFilters = [];
-      filterOptions.forEach((opt) => {
-        if (opt.checked) {
-          activeFilters.push({ type: opt.dataset.filterType, value: opt.value });
+    if (applyBtn) {
+      applyBtn.addEventListener('click', () => {
+        activeFilters = [];
+        filterOptions.forEach((opt) => {
+          if (opt.checked) {
+            activeFilters.push({ type: opt.dataset.filterType, value: opt.value });
+          }
+        });
+
+        // If no filters are active, just reset view
+        if (activeFilters.length === 0) {
+          renderActiveFilters();
+          closeModal();
+          filterProducts();
+          return;
         }
+
+        // Ensure we have full product data before filtering
+        loadFilterData().then(() => {
+          renderActiveFilters();
+          closeModal();
+          filterProducts();
+        });
       });
-      renderActiveFilters();
-      closeModal();
-      filterProducts();
-    });
+    }
 
     // Render filter chips
     function renderActiveFilters() {
@@ -260,62 +605,11 @@
       });
     }
 
-    // Dynamic filtering
-    function filterProducts() {
-      const products = document.querySelectorAll(
-        '.product-card[data-product-tags], .product-card[data-product-vendor]'
-      );
-
-      const filterHandlers = {
-        tag: (prod, value) => {
-          const tags = (prod.dataset.productTags || '').split(',').map((s) => s.trim());
-          return tags.includes(value);
-        },
-        vendor: (prod, value) => {
-          const vendor = prod.dataset.productVendor || '';
-          // Handle vendor string that might have ||| separator
-          const vendorParts = vendor.split('|||').map((s) => s.trim());
-          return vendorParts.includes(value) || vendor === value;
-        },
-        collection: (prod, value) =>
-          (prod.dataset.productCollections || '')
-            .split(',')
-            .map((s) => s.trim())
-            .includes(value),
-
-        // Extendable:
-        // price: (prod, value) => parseFloat(prod.dataset.productPrice) <= parseFloat(value),
-        // color: (prod, value) => (prod.dataset.productColors || '').split(',').includes(value),
-      };
-
-      products.forEach((prod) => {
-        if (activeFilters.length === 0) {
-          prod.style.display = '';
-          return;
-        }
-
-        // Group filters by type
-        const filtersByType = {};
-        activeFilters.forEach((f) => {
-          if (!filtersByType[f.type]) {
-            filtersByType[f.type] = [];
-          }
-          filtersByType[f.type].push(f.value);
-        });
-
-        // Product must match ALL filter types (AND logic)
-        // But can match ANY value within each type (OR logic)
-        let matchesAll = true;
-        for (const [type, values] of Object.entries(filtersByType)) {
-          const matchesThisType = values.some((val) => filterHandlers[type]?.(prod, val));
-          if (!matchesThisType) {
-            matchesAll = false;
-            break;
-          }
-        }
-
-        prod.style.display = matchesAll ? '' : 'none';
-      });
-    }
+    // Warm up filter data and UI in the background so the first modal open feels instant
+    loadFilterData().then(() => {
+      if (!filtersBuilt) {
+        buildFiltersFromProducts();
+      }
+    });
   });
 </script>

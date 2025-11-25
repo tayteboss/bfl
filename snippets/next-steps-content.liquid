@@ -1,8 +1,11 @@
 {%- comment -%}
   Next-steps content on order status (thank-you) page.
-  Shows sections when purchased products include specific tags:
+
+  Shows product-specific sections when purchased products include tags:
   - next-steps:tape-digitization
   - next-steps:send-us-rolls
+
+  The default card (data-default) always appears as a fallback.
 {%- endcomment -%}
 
 {%- assign items = checkout.line_items -%}
@@ -12,30 +15,67 @@
 
 {%- assign has_tape = false -%}
 {%- assign has_rolls = false -%}
+{%- assign tape_item = blank -%}
+{%- assign rolls_item = blank -%}
 
 {%- for li in items -%}
   {%- if li.product and li.product.tags contains 'next-steps:tape-digitization' -%}
     {%- assign has_tape = true -%}
+    {%- if tape_item == blank -%}
+      {%- assign tape_item = li -%}
+    {%- endif -%}
   {%- endif -%}
+
   {%- if li.product and li.product.tags contains 'next-steps:send-us-rolls' -%}
     {%- assign has_rolls = true -%}
+    {%- if rolls_item == blank -%}
+      {%- assign rolls_item = li -%}
+    {%- endif -%}
   {%- endif -%}
 {%- endfor -%}
 
-{%- if has_tape or has_rolls -%}
-  <div id="next-steps" class="NextSteps" role="region" aria-label="What comes next">
-    {%- if has_tape -%}
-      <section id="next-steps-tape" class="NextSteps-section is-tape" aria-labelledby="next-steps-tape-heading">
-        <h2 id="next-steps-tape-heading">What comes next: Tape Digitization</h2>
-        {%- comment -%} Content to be filled later {%- endcomment -%}
-      </section>
-    {%- endif -%}
+<section class="next-steps">
+  <div class="layout-wrapper layout-grid">
+    <div class="next-steps__inner" data-fly-in-animation>
+      <div class="next-steps-header">
+        <h1 class="type-h2-medium next-steps-header__title">Order confirmed</h1>
+        <h2 class="type-h2-medium next-steps-header__subtitle">What comes next</h2>
+      </div>
 
-    {%- if has_rolls -%}
-      <section id="next-steps-rolls" class="NextSteps-section is-rolls" aria-labelledby="next-steps-rolls-heading">
-        <h2 id="next-steps-rolls-heading">What comes next: Send Us Rolls</h2>
-        {%- comment -%} Content to be filled later {%- endcomment -%}
-      </section>
-    {%- endif -%}
+      {%- if has_tape or has_rolls -%}
+        <div class="next-steps-card" role="region" {% if has_rolls %}data-send-rolls{% endif %}>
+          <div class="next-steps-card-heading">
+            <p class="type-p-large">
+              We’ve got your order. Here’s what happens next. You’ll send us your items and once they arrive, we’ll get to
+              work — processing everything and sending your finished files straight to your inbox.
+            </p>
+          </div>
+          <div class="next-steps-card-content-list" data-faq-list>
+            {%- if has_rolls -%}
+              {% render 'next-steps-rolls-product-info', line_item: rolls_item %}
+              {% render 'next-steps-rolls-accordion-1', isOpen: true %}
+              {% render 'next-steps-rolls-accordion-2' %}
+              {% render 'next-steps-rolls-accordion-3' %}
+            {%- endif -%}
+
+            {%- if has_tape -%}
+              {% render 'next-steps-tape-product-info', line_item: tape_item %}
+              {% render 'next-steps-tape-accordion-1', isOpen: true %}
+              {% render 'next-steps-tape-accordion-2' %}
+              {% render 'next-steps-tape-accordion-3' %}
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+      <div class="next-steps-card" role="region" data-default>
+        <div class="next-steps-card-heading">
+          <p class="type-p-large">
+            We’ve received your order and are getting everything ready. We’ll email you with updates and a download link
+            as soon as your files are ready.
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
-{%- endif -%}
+</section>

@@ -1,30 +1,72 @@
+{%- comment -%}
+  Rolls product summary (used on thank-you page).
+  Expects an optional `line_item` param when rendered from `next-steps-content`.
+{%- endcomment -%}
+
+{%- assign ns_line_item = line_item | default: nil -%}
+
 <div class="next-steps-product-info">
   <div class="next-steps-product-info-content-price">
-    <p class="next-steps-product-info-content-price__label type-p-small">$XXX USD</p>
+    <p class="next-steps-product-info-content-price__label type-p-small">
+      {%- if ns_line_item and ns_line_item.final_line_price -%}
+        {{ ns_line_item.final_line_price | money }}
+      {%- elsif ns_line_item and ns_line_item.line_price -%}
+        {{ ns_line_item.line_price | money }}
+      {%- else -%}
+        $XXX USD
+      {%- endif -%}
+    </p>
   </div>
   <div class="next-steps-product-info-content">
     <div class="next-steps-product-info-image">
-      <div class="next-steps-product-info-image__content">Development + Scanning</div>
+      <div class="next-steps-product-info-image__content">
+        {%- if ns_line_item -%}
+          {{ ns_line_item.title }}
+        {%- else -%}
+          Development + Scanning
+        {%- endif -%}
+      </div>
       <div class="next-steps-product-info-image__content next-steps-product-info-image__content--overlay">
-        Development + Scanning
+        {%- if ns_line_item -%}
+          {{ ns_line_item.title }}
+        {%- else -%}
+          Development + Scanning
+        {%- endif -%}
       </div>
       <img
         src="https://cdn.shopify.com/s/files/1/0776/3129/1647/files/clouds.jpg?v=1760608440"
         class="next-steps-product-info-image__image"
-        alt="Development + Scanning"
+        alt="{% if ns_line_item %}{{ ns_line_item.title | escape }}{% else %}Development + Scanning{% endif %}"
         width="100%"
         height="100%"
       >
     </div>
     <div class="next-steps-product-info-content__inner">
       <div class="next-steps-product-info-content__title-wrapper">
-        <p class="next-steps-product-info-content__title type-button-large">Process here</p>
-        <p class="next-steps-product-info-content__subtitle type-button-large">Location here</p>
+        <p class="next-steps-product-info-content__title type-button-large">
+          {%- if ns_line_item -%}
+            {{ ns_line_item.product.title | default: ns_line_item.title }}
+          {%- else -%}
+            Process here
+          {%- endif -%}
+        </p>
+        <p class="next-steps-product-info-content__subtitle type-button-large">
+          {%- comment -%}
+            You can populate this from metafields or properties later.
+          {%- endcomment -%}
+          Location here
+        </p>
       </div>
       <div class="next-steps-product-info-content__features-list">
         <div class="next-steps-product-info-content__feature">
           <p class="next-steps-product-info-content__feature-label type-p-small">Number of rolls:</p>
-          <p class="next-steps-product-info-content__feature-value type-p-small">XXX</p>
+          <p class="next-steps-product-info-content__feature-value type-p-small">
+            {%- if ns_line_item -%}
+              {{ ns_line_item.quantity }}
+            {%- else -%}
+              XXX
+            {%- endif -%}
+          </p>
         </div>
         <div class="next-steps-product-info-content__feature">
           <p class="next-steps-product-info-content__feature-label type-p-small">Scanner:</p>

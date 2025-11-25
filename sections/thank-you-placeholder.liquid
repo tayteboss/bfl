@@ -1,6 +1,10 @@
 {% comment %}
   Thank You placeholder section to simulate the order status page.
   Assign the 'page.thank-you' template to any Page to preview and style.
+
+  Note: The live logic for Shopify Plus checkout thank-you / order status
+  now lives in `snippets/next-steps-content.liquid`, which is rendered
+  from `layout/checkout.liquid`. This section is only for design preview.
 {% endcomment %}
 
 {{ 'next-steps.css' | asset_url | stylesheet_tag }}
@@ -14,13 +18,12 @@
         <h2 class="type-h2-medium next-steps-header__subtitle">What comes next</h2>
       </div>
 
-      <div class="next-steps-card" role="region">
+      <div class="next-steps-card" role="region" data-send-rolls>
         <div class="next-steps-card-heading">
           <p class="type-p-large">
             We’ve got your order. Here’s what happens next. You’ll send us your rolls and once they arrive, we’ll get to
             work — developing, scanning, printing and once ready we will send your files straight to your inbox.
           </p>
-          <div class="points-badge">+ XXX Bellow Points</div>
         </div>
         <div class="next-steps-card-content-list" data-faq-list>
           {% if section.settings.show_rolls %}
@@ -35,6 +38,7 @@
           {% endif %}
         </div>
       </div>
+      <div class="next-steps-card" role="region" data-default></div>
     </div>
   </div>
 </section>

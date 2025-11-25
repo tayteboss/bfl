@@ -13,13 +13,13 @@
       "type": "text-header",
       "settings": {
         "heading": "Shipping and Delivery",
-        "subheading": "Use this section to introduce your shipping and delivery information."
+        "subheading": ""
       }
     },
     "rich_text_body": {
       "type": "rich-text",
       "settings": {
-        "content": "<h1>Heading one</h1><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque consequat rhoncus est ullamcorper porta. <a href=\"https://google.com/\" target=\"_blank\" title=\"https://google.com/\">Here is a link</a>.</p><h2>Heading two</h2><p>Vivamus facilisis ut eros vel pharetra. Nunc eget auctor massa, quis ornare nunc. Etiam eu quam ut lorem vulputate consectetur iaculis et est.</p><h3>Heading three</h3><p>Vestibulum luctus sagittis metus, ut rhoncus sem interdum a. Maecenas id orci cursus, iaculis est sit amet, mollis neque.</p><h4>Heading four</h4><p>Quisque auctor odio purus, in tristique risus tempus vitae. Donec malesuada vehicula elit non pretium. In scelerisque dolor vel urna ultrices scelerisque.</p><h5>Heading five</h5><p>Phasellus in luctus ex. Praesent commodo fringilla quam, ut venenatis lacus. Suspendisse a porta purus.</p><h6>Heading six</h6><p>Aenean sollicitudin nisl non aliquet iaculis. Morbi volutpat leo justo, a blandit lectus semper sed.</p><ul><li>Here is a list</li><li>Here is a list</li><li>Here is a list</li></ul><p>Aenean sollicitudin nisl non aliquet iaculis. Morbi volutpat leo justo, a blandit lectus semper sed.</p><ol><li>Here is a list</li><li>Here is a list</li><li>Here is a list</li></ol>",
+        "content": "<p><strong>Last Updated: 11/26/25</strong></p><p>At <em><strong>Bellows</strong></em>, we work hard to make sure your cameras, film, prints, and processed negatives reach you safely and on time. This Shipping Policy explains how we handle orders, processing times, and delivery procedures.</p><h2><strong>1. Order Processing Times</strong></h2><p><br/>Orders for <strong>cameras, film, and accessories</strong> typically ship within <strong>1–3 business days</strong>.<br/><br/>Film <strong>sent to us for development</strong> is processed and scanned based on current lab turnaround times (which vary depending on workload, season, and service type).<br/><br/>Once processing is complete, negatives and prints are shipped back within <strong>1–2 business days</strong>.<br/><em>Business days exclude holidays.</em></p><h2><strong>2. Shipping Methods & Rates</strong></h2><p>We offer several shipping options at checkout, including:<br/>Standard Ground, Expedited,<br/>Overnight (where available)<br/></p><p>Shipping costs are calculated based on:<br/>Package weight, destination, selected service</p><h2><strong>3. Tracking</strong></h2><p>All shipments include tracking.<br/><br/>You will receive a tracking number automatically once your order is packed and ready for the carrier.</p><h2><strong>4. Shipping Film to Us</strong></h2><p>Customers are responsible for:</p><p>Shipping costs when sending film to the lab -</p><p><br/>Packaging film securely to prevent damage<br/>Selecting a reliable carrier service. (We recommend Fedex) <br/>We recommend using a padded mailer or box and including your order information inside the package.</p><p>We are <strong>not responsible for film lost or damaged in transit</strong> before it arrives at our facility.</p><h2><strong>5. International Shipping</strong></h2><p>International shipping is available to select countries.<br/><br/>Customers outside the U.S. are responsible for:<br/>Iport duties,<br/>Taxes,<br/>Customs fees</p><p>These charges are not included in shipping costs and are billed by your local customs agency.</p><h2><strong>6. Lost, Stolen, or Damaged Packages</strong></h2><p>Once a package is scanned in by the carrier, responsibility transfers to the shipping provider.</p><p>For missing or damaged packages:<br/>Contact the carrier first to file a claim<br/>Then notify us so we can assist where possible<br/>We are <strong>not responsible for packages stolen after delivery</strong>.</p><h2><strong>7. Shipping of Developed Negatives</strong></h2><p>Developed negatives are returned using the shipping method selected during checkout.</p><p>If you choose not to have negatives returned:<br/>They will be safely stored for a limited time<br/>After the retention period, they may be recycled or disposed of<br/>Long-term archival storage is not guaranteed unless otherwise stated<br/></p><h1><strong>📦 SHIPPING QUESTIONS?</strong></h1><p>Contact us anytime at <strong>contact@bellowsfilmlab.com</strong></p>",
         "button": "Testing button",
         "cta": "https://google.com/"
       }
@@ -27,9 +27,9 @@
     "image_simple": {
       "type": "image-simple",
       "settings": {
-        "image": "shopify://shop_images/film-image-in-colour-of-a-city-skyline-muted-colours.png",
+        "image": "shopify://shop_images/000011110034.jpg",
         "alt": "",
-        "caption": "Caption"
+        "caption": ""
       }
     }
   },

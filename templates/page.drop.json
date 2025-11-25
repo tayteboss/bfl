@@ -7,11 +7,24 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
+{
   "sections": {
     "main": {
       "type": "drop-off",
       "blocks": {
+        "location_G4CVT6": {
+          "type": "location",
+          "settings": {
+            "id": "Bellows-Film-Lab-Atlanta",
+            "name": "Bellows Film Lab Atlanta",
+            "address": "1140 Euclid Ave NE, Atlanta, GA 30307",
+            "lat": "33.76 N",
+            "lng": "−84.35 W",
+            "phone": "4049074191",
+            "website": "https://www.bellowsfilmlab.com",
+            "google_maps_url": "https://share.google/IU94jIanPTIoi6Vvu"
+          }
+        },
         "location_TxFwkb": {
           "type": "location",
           "name": "Bellows Film Lab Chicago",
@@ -134,6 +147,7 @@
         }
       },
       "block_order": [
+        "location_G4CVT6",
         "location_TxFwkb",
         "location_nRxVet",
         "location_tMbyPU",

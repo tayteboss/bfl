@@ -134,7 +134,7 @@
         "anchor_id": "camera-rental",
         "heading": "Camera Rental",
         "badge": "",
-        "paragraph": "Test-drive the classics before you commit. Every body is CLA’d, shot-tested, and leaves with fresh batteries—and a free dev-and-scan voucher to sweeten the weekend. From point-and-shoot Contax T2s to a Hasselblad 500 CM kit, the shelf rotates weekly. Try the classics before you own them.",
+        "paragraph": "Test-drive the classics before you commit. Every body is CLA’d, shot-tested, and leaves with fresh batteries—and a free dev-and-scan voucher to sweeten the weekend. From point-and-shoot Contax T3s to a Hasselblad 503CM kit, the shelf rotates weekly. Try the classics before you own them.",
         "notes": "",
         "table-caption": "",
         "button": "Browse Rental Gear",
@@ -145,13 +145,13 @@
       "type": "service",
       "name": "Type of Service",
       "settings": {
-        "anchor_id": "tape-digitising",
-        "heading": "Tape Digitising",
+        "anchor_id": "tape-digitizing",
+        "heading": "Tape Digitizing",
         "badge": "",
         "paragraph": "Mini DV, VHS-C, Hi8—if it’s magnetic, we can rescue it. Footage is captured at 10-bit 4:2:2 ProRes, de-interlaced with motion-adaptive hardware, and delivered as an edit-ready MP4 or on a USB-C SSD. Time-base errors are stabilised, audio normalised, and tapes are returned (or recycled) alongside your negatives.",
         "notes": "<p>Notes:</p><ul><li>$30 per hour of footage, bulk breaks at 5+ tapes.</li><li>Optional colour pass to balance old camcorder white-balance swings.</li></ul>",
         "table-caption": "",
-        "button": "Digitise My Tapes",
+        "button": "Digitize My Tapes",
         "cta": "shopify://products/tape-digitization"
       }
     },

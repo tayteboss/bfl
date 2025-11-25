@@ -46,6 +46,12 @@ function loadMoreOnce(trigger) {
     });
 }
 
+// Expose helper globally so other scripts (like the collection filter modal)
+// can reliably load additional pages before applying client-side filters.
+if (typeof window !== 'undefined') {
+  window.loadMoreOnce = loadMoreOnce;
+}
+
 document.addEventListener('click', function (e) {
   const trigger = e.target.closest('[data-collection-load-more]');
   if (!trigger) return;

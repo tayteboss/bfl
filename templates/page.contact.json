@@ -9,6 +9,15 @@
  */
 {
   "sections": {
+    "image_simple_37pzfw": {
+      "type": "image-simple",
+      "name": "Image (simple)",
+      "settings": {
+        "image": "shopify://shop_images/000011110007.jpg",
+        "alt": "",
+        "caption": ""
+      }
+    },
     "main": {
       "type": "contact",
       "blocks": {
@@ -42,6 +51,7 @@
     }
   },
   "order": [
-    "main"
+    "main",
+    "image_simple_37pzfw"
   ]
 }
