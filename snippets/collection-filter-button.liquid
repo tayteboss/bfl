@@ -1,39 +1,89 @@
+{% comment %}
+  Reusable collection filters trigger + modal
+
+  - Uses Search & Discovery `collection.filters` when a `collection` object is in scope
+  - Always shows quick links (All, New Arrivals, Sale) and a list of all collections
+  - Designed to be rendered from multiple sections; JS targets via data attributes
+{% endcomment %}
+
 <!-- Filter Trigger -->
 <div class="filters-wrapper" id="active-filters">
   <div class="filter-trigger" data-hover-shake="small">
     <button
-      id="open-filters"
       type="button"
-      aria-haspopup="dialog"
-      aria-controls="filters-modal"
       class="primary-button primary-button--small"
+      data-filters-open
+      aria-haspopup="dialog"
+      aria-controls="filters-modal-{{ section.id }}"
       data-filters-loading="false"
     >
       <span class="filters-button__label">+ Filters</span>
       <span class="filters-button__spinner" aria-hidden="true"></span>
     </button>
   </div>
+  {% comment %}
+    Active filters summary outside the modal
+    Shows currently active filters as removable pills next to the trigger.
+  {% endcomment %}
+  {% if collection and collection.filters != empty %}
+    <div class="filters-active-list">
+      {% for filter in collection.filters %}
+        {% case filter.type %}
+          {% when 'boolean', 'list' %}
+            {% for value in filter.values %}
+              {% if value.active %}
+                <a
+                  href="{{ value.url_to_remove }}"
+                  class="filter-group__item primary-button primary-button--small is-active"
+                >
+                  <span class="active-filter-remove">×</span>
+                  {{ value.label }}
+                </a>
+              {% endif %}
+            {% endfor %}
+          {% when 'price_range' %}
+            {% assign min = filter.min_value.value %}
+            {% assign max = filter.max_value.value %}
+            {% if min != null or max != null %}
+              <a
+                href="{{ filter.url_to_remove }}"
+                class="filter-group__item primary-button primary-button--modal-filter is-active"
+              >
+                <span class="active-filter-remove">×</span>
+                {{ min | default: 0 | money }} - {{ max | default: filter.range_max | money }}
+              </a>
+            {% endif %}
+        {% endcase %}
+      {% endfor %}
+    </div>
+  {% endif %}
 </div>
 
-<!-- Modal -->
+{% comment %}
+  Modal
+{% endcomment %}
 <div
-  id="filters-modal"
+  id="filters-modal-{{ section.id }}"
   class="filters-modal"
   role="dialog"
   aria-modal="true"
-  aria-labelledby="filters-modal-title"
   aria-hidden="true"
+  aria-labelledby="filters-modal-title-{{ section.id }}"
+  data-filters-modal
 >
   <div class="filters-modal__dialog" role="document">
-    {% comment %} <h3 class="filters-modal-title type-button-large">Filters</h3> {% endcomment %}
-
-    {% comment %} Here there will be 3 buttons, All - New arrivals and Sale {% endcomment %}
+    {% comment %}
+      Quick links: All, New Arrivals, Sale
+    {% endcomment %}
     {% capture quick_links_html %}
       {% assign all_products_count = 0 %}
       {% if collections['all'] %}
         {% assign all_products_count = collections['all'].products_count | plus: 0 %}
       {% endif %}
-      <a href="{{ routes.all_products_collection_url }}" class="primary-button primary-button--modal-filter">
+      <a
+        href="{{ routes.all_products_collection_url }}"
+        class="primary-button primary-button--modal-filter"
+      >
         All{% if all_products_count > 0 %} <span>{{ all_products_count }}</span>{% endif %}
       </a>
 
@@ -41,7 +91,10 @@
       {% if collections['new-arrivals'] %}
         {% assign new_arrivals_count = collections['new-arrivals'].products_count | plus: 0 %}
         {% if new_arrivals_count > 0 %}
-          <a href="{{ collections['new-arrivals'].url }}" class="primary-button primary-button--modal-filter">
+          <a
+            href="{{ collections['new-arrivals'].url }}"
+            class="primary-button primary-button--modal-filter"
+          >
             New Arrivals <span>{{ new_arrivals_count }}</span>
           </a>
         {% endif %}
@@ -51,7 +104,10 @@
       {% if collections['sale'] %}
         {% assign sale_count = collections['sale'].products_count | plus: 0 %}
         {% if sale_count > 0 %}
-          <a href="{{ collections['sale'].url }}" class="primary-button primary-button--modal-filter primary-button--red">
+          <a
+            href="{{ collections['sale'].url }}"
+            class="primary-button primary-button--modal-filter primary-button--red"
+          >
             Sale <span>{{ sale_count }}</span>
           </a>
         {% endif %}
@@ -59,557 +115,142 @@
     {% endcapture %}
     {% render 'filter-link-group', title: 'Shop by', content_html: quick_links_html %}
 
-    {% comment %} Here will be the list of collections which are buttons that immediately send the user to /collection/chosen-collection-name {% endcomment %}
+    {% comment %}
+      All collections list
+    {% endcomment %}
     {% capture collections_links_html %}
-      {% for coll in collections %}
-        {%
-          if coll.handle != 'news-events' and 
-          coll.handle != 'all' and 
-          coll.handle != 'new-arrivals' and 
-          coll.handle != 'sale' and 
-          coll.handle != 'frontpage'
-        %}
-          {% assign coll_count = coll.products_count | plus: 0 %}
-          {% if coll_count > 0 %}
-            <a data-attribute-name="{{ coll.handle }}" href="{{ coll.url }}" class="primary-button primary-button--modal-filter">
-              {{ coll.title }} <span>{{ coll_count }}</span>
-            </a>
-          {% endif %}
+      {% for collection_item in collections %}
+        {% if collection_item.handle != 'news-events' and collection_item.title != 'Home page' %}
+          <a
+            href="{{ collection_item.url }}"
+            class="primary-button primary-button--modal-filter"
+          >
+            {{ collection_item.title }}
+            {% if collection_item.products_count and collection_item.products_count > 0 %}
+              <span>{{ collection_item.products_count }}</span>
+            {% endif %}
+          </a>
         {% endif %}
       {% endfor %}
     {% endcapture %}
-    {% render 'filter-link-group', title: 'Collections', content_html: collections_links_html %}
+    {% unless collections_links_html == blank %}
+      {% render 'filter-link-group', title: 'Collections', content_html: collections_links_html %}
+    {% endunless %}
 
     {% comment %}
-      Tags and Brands are driven by Shopify's native storefront filters so that
-      they always reflect ALL products in the collection (not just the first page).
-      Make sure the Search & Discovery app has filters enabled for:
-      - Product tags  (param_name: filter.p.tag)
-      - Product vendor / Brand (param_name: filter.p.vendor)
+      Search & Discovery filters for current collection
+      Only render when a `collection` context with filters is available.
+      All filters are grouped under a single \"Filters\" heading.
     {% endcomment %}
-
-    {% assign tag_filter = null %}
-    {% assign vendor_filter = null %}
-    {% for filter in collection.filters %}
-      {% if filter.type == 'list' and filter.param_name == 'filter.p.tag' %}
-        {% assign tag_filter = filter %}
-      {% elsif filter.type == 'list' and filter.param_name == 'filter.p.vendor' %}
-        {% assign vendor_filter = filter %}
-      {% endif %}
-    {% endfor %}
-
-    {% if tag_filter %}
-      <fieldset class="filter-group">
-        <legend class="filter-group__title type-button-large">Tags</legend>
-        <div class="filter-group__items">
-          {% for value in tag_filter.values %}
-            {% if value.count > 0 %}
-              {% assign input_id = 'tag-' | append: forloop.index %}
-              <label
-                class="filter-group__item primary-button primary-button--modal-filter"
-                for="{{ input_id }}"
-              >
-                <input
-                  type="checkbox"
-                  id="{{ input_id }}"
-                  class="filter-option"
-                  data-filter-type="tag"
-                  data-param-name="{{ tag_filter.param_name }}"
-                  value="{{ value.value | escape }}"
-                  {% if value.active %}
-                    checked
-                  {% endif %}
-                >
-                <span class="active-filter-remove">×</span>
-                {{ value.label }}
-                <span>{{ value.count }}</span>
-              </label>
-            {% endif %}
-          {% endfor %}
-        </div>
-      </fieldset>
-    {% endif %}
-
-    {% if vendor_filter %}
-      <fieldset class="filter-group">
-        <legend class="filter-group__title type-button-large">Brands</legend>
-        <div class="filter-group__items">
-          {% for value in vendor_filter.values %}
-            {% if value.count > 0 %}
-              {% assign input_id = 'vendor-' | append: forloop.index %}
-              <label
-                class="filter-group__item primary-button primary-button--modal-filter"
-                for="{{ input_id }}"
-              >
-                <input
-                  type="checkbox"
-                  id="{{ input_id }}"
-                  class="filter-option"
-                  data-filter-type="vendor"
-                  data-param-name="{{ vendor_filter.param_name }}"
-                  value="{{ value.value | escape }}"
-                  {% if value.active %}
-                    checked
-                  {% endif %}
-                >
-                <span class="active-filter-remove">×</span>
-                {{ value.label }}
-                <span>{{ value.count }}</span>
-              </label>
-            {% endif %}
-          {% endfor %}
-        </div>
-      </fieldset>
-    {% endif %}
-
-    <div class="filters-modal__actions">
-      <button id="apply-filters" type="button" class="primary-button primary-button--modal-filter rounded">
-        Apply
-      </button>
-      <button
-        id="clear-filters"
-        type="button"
-        class="primary-button primary-button--modal-filter primary-button--outline-white"
+    {% if collection and collection.filters != empty %}
+      <form
+        id="CollectionFiltersForm-{{ section.id }}"
+        method="get"
+        class="filters-modal__form"
+        data-filters-form
       >
-        Clear
-      </button>
-      <button
-        id="close-filters"
-        type="button"
-        class="primary-button primary-button--modal-filter primary-button--outline-white"
-      >
-        Close
-      </button>
-    </div>
+        {% assign filters_group_html = '' %}
+        {% for filter in collection.filters %}
+          {% liquid
+            assign default_presentation = 'text'
+            assign presentation = filter.presentation | default: default_presentation
+          %}
+          {% capture filter_content_html %}
+            {% case filter.type %}
+              {% when 'boolean', 'list' %}
+                {% liquid
+                  assign sorted_values = filter.values
+                  if filter.operator == 'AND'
+                    assign active_filter_values = filter.values | where: 'active', true
+                    assign inactive_filter_values = filter.values | where: 'active', false
+                    assign sorted_values = active_filter_values | concat: inactive_filter_values
+                  endif
+                %}
+                {% for value in sorted_values %}
+                  {% liquid
+                    assign input_id = 'Filter-' | append: filter.param_name | escape | append: '-' | append: forloop.index
+                    assign is_disabled = false
+                    if value.count == 0 and value.active == false
+                      assign is_disabled = true
+                    endif
+                  %}
+                  <label
+                    class="filter-group__item primary-button primary-button--modal-filter{% if is_disabled %} filter-group__item--disabled{% endif %}{% if value.active %} filter-group__item--active{% endif %}"
+                    for="{{ input_id }}"
+                  >
+                    <input
+                      type="checkbox"
+                      id="{{ input_id }}"
+                      class="filter-option"
+                      name="{{ value.param_name }}"
+                      value="{{ value.value | escape }}"
+                      {% if value.active %}
+                        checked
+                      {% endif %}
+                      {% if is_disabled %}
+                        disabled
+                      {% endif %}
+                    >
+                    <span class="active-filter-remove">×</span>
+                    {{ value.label }}
+                    <span>{{ value.count }}</span>
+                  </label>
+                {% endfor %}
+              {% when 'price_range' %}
+                <div class="filters-price-group">
+                  <price-range class="facets__price">
+                    {% render 'price-facet', filter: filter, id_prefix: 'Filter-' %}
+                  </price-range>
+                </div>
+            {% endcase %}
+          {% endcapture %}
+
+          {% unless filter_content_html == blank %}
+            {% capture filters_group_html %}
+              {{ filters_group_html }}
+              {{ filter_content_html }}
+            {% endcapture %}
+          {% endunless %}
+        {% endfor %}
+
+        {% unless filters_group_html == blank %}
+          {% render 'filter-link-group', title: 'Filters', content_html: filters_group_html %}
+        {% endunless %}
+
+        {% assign clear_url = collection.url | default: routes.all_products_collection_url %}
+        <div class="filters-modal__actions">
+          <button
+            type="submit"
+            class="primary-button primary-button--modal-filter rounded"
+          >
+            Apply
+          </button>
+          <a
+            href="{{ clear_url }}"
+            class="primary-button primary-button--modal-filter primary-button--outline-white"
+            data-clear-filters
+          >
+            Clear
+          </a>
+          <button
+            type="button"
+            class="primary-button primary-button--modal-filter primary-button--outline-white"
+            data-filters-close
+          >
+            Close
+          </button>
+        </div>
+      </form>
+    {% else %}
+      <div class="filters-modal__actions">
+        <button
+          type="button"
+          class="primary-button primary-button--modal-filter primary-button--outline-white"
+          data-filters-close
+        >
+          Close
+        </button>
+      </div>
+    {% endif %}
   </div>
 </div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const filtersWrapper = document.getElementById('active-filters');
-    if (!filtersWrapper) return;
-
-    const openBtn = document.getElementById('open-filters');
-    const closeBtn = document.getElementById('close-filters');
-    const applyBtn = document.getElementById('apply-filters');
-    const clearBtn = document.getElementById('clear-filters');
-    const modal = document.getElementById('filters-modal');
-    const filterTrigger = filtersWrapper.querySelector('.filter-trigger');
-    const tagsContainer = document.getElementById('filter-tags-container');
-    const vendorsContainer = document.getElementById('filter-vendors-container');
-    const collectionSection = filtersWrapper.closest('[data-collection-section]');
-    const sectionId = collectionSection ? collectionSection.getAttribute('data-section-id') : null;
-    const listEl = collectionSection ? collectionSection.querySelector('[data-collection-list]') : null;
-
-    let filterOptions = document.querySelectorAll('.filter-option');
-    let activeFilters = [];
-    let filtersBuilt = false;
-
-    // Snapshot initial list + pagination so we can restore it when filters are cleared
-    const initialListHTML = listEl ? listEl.innerHTML : '';
-    let initialPaginationHTML = '';
-    if (collectionSection) {
-      const pagination = collectionSection.querySelector('.pagination-button');
-      if (pagination) {
-        initialPaginationHTML = pagination.outerHTML;
-      }
-    }
-
-    // Filter data caches
-    const allProducts = []; // { html, tags, vendors, collections }
-    const tagMap = new Map();
-    const vendorMap = new Map();
-    let filterDataPromise = null;
-
-    // Update filter options when modal opens (in case of dynamic content)
-    function refreshFilterOptions() {
-      filterOptions = document.querySelectorAll('.filter-option');
-    }
-
-    // Update active state styling
-    function updateActiveStates() {
-      filterOptions.forEach((opt) => {
-        const label = opt.closest('label.filter-group__item');
-        if (opt.checked) {
-          label?.classList.add('is-active');
-        } else {
-          label?.classList.remove('is-active');
-        }
-      });
-    }
-
-    // Move modal to end of body to avoid stacking context issues
-    if (modal && modal.parentNode !== document.body) {
-      document.body.appendChild(modal);
-    }
-
-    // Collect product data from a section element (live DOM or fetched HTML)
-    function collectProductsFromSection(sectionEl) {
-      if (!sectionEl) return;
-      const cards = sectionEl.querySelectorAll('.product-card[data-product-tags], .product-card[data-product-vendor]');
-      cards.forEach((card) => {
-        const tags = (card.dataset.productTags || '')
-          .split(',')
-          .map((s) => s.trim())
-          .filter(Boolean);
-        const vendors = (card.dataset.productVendor || '')
-          .split('|||')
-          .map((s) => s.trim())
-          .filter(Boolean);
-        const collections = (card.dataset.productCollections || '')
-          .split(',')
-          .map((s) => s.trim())
-          .filter(Boolean);
-
-        allProducts.push({
-          html: card.outerHTML,
-          tags,
-          vendors,
-          collections,
-        });
-      });
-    }
-
-    function buildMapsFromProducts() {
-      tagMap.clear();
-      vendorMap.clear();
-
-      allProducts.forEach((p) => {
-        p.tags.forEach((tag) => {
-          if (!tag || tag.toLowerCase() === 'hidden') return;
-          tagMap.set(tag, (tagMap.get(tag) || 0) + 1);
-        });
-        p.vendors.forEach((vendor) => {
-          if (!vendor) return;
-          vendorMap.set(vendor, (vendorMap.get(vendor) || 0) + 1);
-        });
-      });
-    }
-
-    // Load all product data for this collection (without altering the visible grid)
-    function loadFilterData() {
-      if (filterDataPromise) return filterDataPromise;
-      if (!collectionSection || !listEl) {
-        filterDataPromise = Promise.resolve();
-        return filterDataPromise;
-      }
-
-      // Start with products already rendered on the page
-      collectProductsFromSection(collectionSection);
-
-      const scope = collectionSection;
-      const loadMoreLink = scope.querySelector('[data-collection-load-more]');
-      let nextUrl = loadMoreLink ? loadMoreLink.getAttribute('href') : null;
-
-      function loop() {
-        if (!nextUrl) return Promise.resolve();
-
-        const urlObj = new URL(nextUrl, window.location.origin);
-        if (sectionId) {
-          urlObj.searchParams.set('section_id', sectionId);
-        }
-
-        return fetch(urlObj.toString())
-          .then((r) => r.text())
-          .then((html) => {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            const nextSection = doc.querySelector(
-              sectionId ? `[data-collection-section][data-section-id="${sectionId}"]` : '[data-collection-section]'
-            );
-            if (!nextSection) {
-              nextUrl = null;
-              return;
-            }
-
-            collectProductsFromSection(nextSection);
-            const nextBtn = nextSection.querySelector('[data-collection-load-more]');
-            nextUrl = nextBtn ? nextBtn.getAttribute('href') : null;
-
-            if (nextUrl) {
-              return loop();
-            }
-          })
-          .catch(() => {
-            nextUrl = null;
-          });
-      }
-
-      filterDataPromise = loop().then(() => {
-        buildMapsFromProducts();
-      });
-
-      return filterDataPromise;
-    }
-
-    function createFieldset(title, type, entries, container) {
-      if (!container || !entries.length) return;
-
-      const fieldset = document.createElement('fieldset');
-      fieldset.className = 'filter-group';
-
-      const legend = document.createElement('legend');
-      legend.className = 'filter-group__title type-button-large';
-      legend.textContent = title;
-      fieldset.appendChild(legend);
-
-      const itemsWrapper = document.createElement('div');
-      itemsWrapper.className = 'filter-group__items';
-      fieldset.appendChild(itemsWrapper);
-
-      entries.forEach(([value, count], index) => {
-        if (!value) return;
-        const id =
-          value
-            .toString()
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, '-') +
-          '-' +
-          type +
-          '-' +
-          (index + 1);
-
-        const label = document.createElement('label');
-        label.className = 'filter-group__item primary-button primary-button--modal-filter';
-        label.setAttribute('for', id);
-
-        const input = document.createElement('input');
-        input.type = 'checkbox';
-        input.id = id;
-        input.value = value;
-        input.className = 'filter-option';
-        input.dataset.filterType = type;
-
-        const removeSpan = document.createElement('span');
-        removeSpan.className = 'active-filter-remove';
-        removeSpan.textContent = '×';
-
-        label.appendChild(input);
-        label.appendChild(removeSpan);
-        label.appendChild(document.createTextNode(' ' + value));
-
-        if (count > 0) {
-          const countSpan = document.createElement('span');
-          countSpan.textContent = String(count);
-          label.appendChild(document.createTextNode(' '));
-          label.appendChild(countSpan);
-        }
-
-        itemsWrapper.appendChild(label);
-      });
-
-      container.appendChild(fieldset);
-    }
-
-    function buildFiltersFromProducts() {
-      if (!tagsContainer || !vendorsContainer) return;
-
-      // Clear existing containers
-      tagsContainer.innerHTML = '';
-      vendorsContainer.innerHTML = '';
-
-      const sortedTags = Array.from(tagMap.entries()).sort((a, b) => a[0].localeCompare(b[0]));
-      const sortedVendors = Array.from(vendorMap.entries()).sort((a, b) => a[0].localeCompare(b[0]));
-
-      createFieldset('Tags', 'tag', sortedTags, tagsContainer);
-      createFieldset('Brands', 'vendor', sortedVendors, vendorsContainer);
-
-      // Refresh options now that we've created them
-      refreshFilterOptions();
-      updateActiveStates();
-
-      filtersBuilt = true;
-    }
-
-    function matchesProductFilters(product) {
-      if (!activeFilters.length) return true;
-
-      const filtersByType = {};
-      activeFilters.forEach((f) => {
-        if (!filtersByType[f.type]) {
-          filtersByType[f.type] = [];
-        }
-        filtersByType[f.type].push(f.value);
-      });
-
-      return Object.entries(filtersByType).every(([type, values]) => {
-        if (type === 'tag') {
-          return values.some((val) => product.tags.includes(val));
-        }
-        if (type === 'vendor') {
-          return values.some((val) => product.vendors.includes(val));
-        }
-        if (type === 'collection') {
-          return values.some((val) => product.collections.includes(val));
-        }
-        return true;
-      });
-    }
-
-    function resetToInitialGrid() {
-      if (!listEl || !collectionSection) return;
-
-      // Restore initial products
-      listEl.innerHTML = initialListHTML;
-
-      // Remove any existing pagination and restore the original one
-      const existingPag = collectionSection.querySelector('.pagination-button');
-      if (existingPag) existingPag.remove();
-      if (initialPaginationHTML) {
-        listEl.insertAdjacentHTML('afterend', initialPaginationHTML);
-      }
-    }
-
-    function renderFilteredProducts() {
-      if (!listEl || !collectionSection) return;
-
-      if (!activeFilters.length) {
-        resetToInitialGrid();
-        return;
-      }
-
-      const matching = allProducts.filter((p) => matchesProductFilters(p));
-      listEl.innerHTML = matching.map((p) => p.html).join('');
-
-      // When showing filtered results, remove pagination (we're showing all matches)
-      const existingPag = collectionSection.querySelector('.pagination-button');
-      if (existingPag) existingPag.remove();
-    }
-
-    // Public wrapper used by clear/apply logic
-    function filterProducts() {
-      renderFilteredProducts();
-    }
-
-    // Modal toggle
-    function openModal() {
-      if (!modal) return;
-
-      // Set loading state on button
-      if (openBtn) {
-        openBtn.dataset.filtersLoading = 'true';
-        openBtn.setAttribute('aria-busy', 'true');
-      }
-
-      const ensureFiltersReady = filtersBuilt ? Promise.resolve() : loadFilterData().then(buildFiltersFromProducts);
-
-      ensureFiltersReady
-        .then(() => {
-          refreshFilterOptions();
-          // Sync checkboxes with currently active filters
-          filterOptions.forEach((opt) => {
-            const isActive = activeFilters.some((f) => f.type === opt.dataset.filterType && f.value === opt.value);
-            opt.checked = isActive;
-          });
-          updateActiveStates();
-          modal.classList.add('is-open');
-          modal.setAttribute('aria-hidden', 'false');
-          document.body.classList.add('is-modal-open');
-        })
-        .finally(() => {
-          if (openBtn) {
-            openBtn.dataset.filtersLoading = 'false';
-            openBtn.removeAttribute('aria-busy');
-          }
-        });
-    }
-
-    function closeModal() {
-      if (!modal) return;
-      modal.classList.remove('is-open');
-      modal.setAttribute('aria-hidden', 'true');
-      document.body.classList.remove('is-modal-open');
-    }
-
-    if (openBtn) openBtn.addEventListener('click', openModal);
-    if (closeBtn) closeBtn.addEventListener('click', closeModal);
-    if (modal) {
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal();
-      });
-    }
-
-    // Update active state when checkboxes change
-    document.addEventListener('change', (e) => {
-      if (e.target.classList.contains('filter-option')) {
-        updateActiveStates();
-      }
-    });
-
-    // Clear all filters
-    if (clearBtn) {
-      clearBtn.addEventListener('click', () => {
-        activeFilters = [];
-        filterOptions.forEach((opt) => {
-          opt.checked = false;
-        });
-        updateActiveStates();
-        renderActiveFilters();
-        filterProducts();
-      });
-    }
-
-    // Apply filters
-    if (applyBtn) {
-      applyBtn.addEventListener('click', () => {
-        activeFilters = [];
-        filterOptions.forEach((opt) => {
-          if (opt.checked) {
-            activeFilters.push({ type: opt.dataset.filterType, value: opt.value });
-          }
-        });
-
-        // If no filters are active, just reset view
-        if (activeFilters.length === 0) {
-          renderActiveFilters();
-          closeModal();
-          filterProducts();
-          return;
-        }
-
-        // Ensure we have full product data before filtering
-        loadFilterData().then(() => {
-          renderActiveFilters();
-          closeModal();
-          filterProducts();
-        });
-      });
-    }
-
-    // Render filter chips
-    function renderActiveFilters() {
-      // Remove existing active filter buttons (but keep filter-trigger)
-      const existingFilters = filtersWrapper.querySelectorAll('.primary-button--active-filter');
-      existingFilters.forEach((el) => el.remove());
-
-      // Add active filter buttons
-      activeFilters.forEach((f) => {
-        const filterButton = document.createElement('button');
-        filterButton.type = 'button';
-        filterButton.className = 'primary-button primary-button--small primary-button--active-filter';
-        filterButton.innerHTML = '<span class="active-filter-remove">×</span> ' + f.value;
-        filterButton.setAttribute('aria-label', 'Remove filter ' + f.value);
-        filterButton.addEventListener('click', () => {
-          activeFilters = activeFilters.filter((x) => !(x.type === f.type && x.value === f.value));
-          filterOptions.forEach((opt) => {
-            if (opt.dataset.filterType === f.type && opt.value === f.value) {
-              opt.checked = false;
-            }
-          });
-          updateActiveStates();
-          renderActiveFilters();
-          filterProducts();
-        });
-        // Insert after filter-trigger
-        filterTrigger.insertAdjacentElement('afterend', filterButton);
-      });
-    }
-
-    // Warm up filter data and UI in the background so the first modal open feels instant
-    loadFilterData().then(() => {
-      if (!filtersBuilt) {
-        buildFiltersFromProducts();
-      }
-    });
-  });
-</script>

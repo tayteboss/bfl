@@ -10,7 +10,6 @@
 <div
   class="all-collection"
   aria-labelledby="all-collection-heading"
-  data-location-selector
   data-search-selector
 >
   <div class="layout-wrapper">
@@ -26,13 +25,13 @@
         role="navigation"
         aria-label="Collection filters"
       >
-        {% for collection in collections %}
-          {% render 'filter-button', title: collection.title, id: collection.id, url: collection.url %}
-        {% endfor %}
+        {% render 'collection-filter-button' %}
       </div>
     </section>
   </div>
 </div>
+
+<script src="{{ 'collection.js' | asset_url }}" defer></script>
 
 {% schema %}
 {

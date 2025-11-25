@@ -6,7 +6,7 @@
 
 {{ 'store-search-modal.css' | asset_url | stylesheet_tag }}
 
-<div id="StoreSearchFloating" class="store-search-floating">
+<div id="StoreSearchFloating" class="store-search-floating {{ class }}">
   <form
     id="StoreSearchForm"
     class="store-search-floating__form"
@@ -49,80 +49,140 @@
 
 <script>
   (function () {
-    var FLOAT_ID = 'StoreSearchFloating';
-    var SELECTOR = '[data-search-selector], [data-location-selector]';
-    var HIDE_DELAY_MS = 400;
-    var THRESHOLD = 0.05;
+    var FLOAT_ID = '.store-search-floating--desktop';
+    var SELECTOR = '[data-search-selector]';
+    var HIDE_DELAY_MS = 0;
     var hideTimeoutId = null;
+    var targets = [];
 
     function ensureFloatingUi() {
-      var node = document.getElementById(FLOAT_ID);
+      var node = document.querySelector(FLOAT_ID);
       if (!node) return null;
+
       return node;
     }
 
+    function hasTargets() {
+      console.log('hasTargets');
+
+      try {
+        var found = !!document.querySelector(SELECTOR);
+
+        console.log('[store-search] hasTargets =', found, 'selector =', SELECTOR);
+        return found;
+      } catch (e) {
+        console.error('[store-search] hasTargets error', e);
+        return false;
+      }
+    }
+
+    function collectTargets() {
+      try {
+        targets = Array.prototype.slice.call(document.querySelectorAll(SELECTOR));
+        console.log('[store-search] collectTargets ->', targets.length, 'matches for', SELECTOR);
+      } catch (e) {
+        console.error('[store-search] collectTargets error', e);
+        targets = [];
+      }
+    }
+
     function setFloatingVisible(visible) {
-      var node = document.getElementById(FLOAT_ID);
+      var node = document.querySelector(FLOAT_ID);
+      console.log('node', node);
       if (!node) return;
       node.classList.toggle('store-search-floating--visible', !!visible);
+      console.log('[store-search] setFloatingVisible ->', !!visible);
+    }
+
+    function anyTargetInView() {
+      if (!targets || !targets.length) return false;
+      var viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+      var anyVisible = false;
+      for (var i = 0; i < targets.length; i++) {
+        var t = targets[i];
+        if (!t || typeof t.getBoundingClientRect !== 'function') continue;
+        var rect = t.getBoundingClientRect();
+        // Simple overlap check: element intersects viewport vertically
+        if (rect.bottom > 0 && rect.top < viewportHeight) {
+          anyVisible = true;
+          break;
+        }
+      }
+      console.log('[store-search] anyTargetInView ->', anyVisible, 'viewportHeight =', viewportHeight);
+      return anyVisible;
+    }
+
+    function updateVisibilityFromScroll(source) {
+      // Always refresh targets in case sections were added later (AJAX, theme editor, etc.)
+      collectTargets();
+      if (!targets.length) {
+        setFloatingVisible(false);
+        console.log('[store-search] updateVisibilityFromScroll (', source, ') -> no targets, hiding');
+        return;
+      }
+
+      var visible = anyTargetInView();
+      if (visible) {
+        if (hideTimeoutId) {
+          clearTimeout(hideTimeoutId);
+          hideTimeoutId = null;
+        }
+        setFloatingVisible(true);
+      } else {
+        if (hideTimeoutId) clearTimeout(hideTimeoutId);
+        hideTimeoutId = setTimeout(function () {
+          setFloatingVisible(false);
+          hideTimeoutId = null;
+        }, HIDE_DELAY_MS);
+      }
+      console.log('[store-search] updateVisibilityFromScroll (', source, ') -> visible =', visible);
+    }
+
+    function setupScrollTracking() {
+      collectTargets();
+      ensureFloatingUi();
+
+      // Initial computation
+      updateVisibilityFromScroll('init');
+
+      // Extra delayed checks in case sections mount after initial load
+      setTimeout(function () {
+        updateVisibilityFromScroll('timeout-500');
+      }, 500);
+      setTimeout(function () {
+        updateVisibilityFromScroll('timeout-1500');
+      }, 1500);
+
+      var ticking = false;
+      function onScrollOrResize(evt) {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(function () {
+          updateVisibilityFromScroll(evt && evt.type);
+          ticking = false;
+        });
+      }
+
+      window.addEventListener('scroll', onScrollOrResize, { passive: true });
+      window.addEventListener('resize', onScrollOrResize);
+      // Expose for logging
+      window.__storeSearchUpdate = function () {
+        updateVisibilityFromScroll('manual');
+      };
+      window.__storeSearchCollect = collectTargets;
     }
 
     function setupLocationObserver() {
-      // Tear down any previous observer before creating a new one
-      try {
-        if (window.__storeSearchObserver && typeof window.__storeSearchObserver.disconnect === 'function') {
-          window.__storeSearchObserver.disconnect();
-        }
-      } catch (e) {}
-
-      var targets = document.querySelectorAll(SELECTOR);
-      if (!targets.length) return;
-
-      ensureFloatingUi();
-
-      var inView = new Set();
-      window.__storeSearchInViewCount = 0;
-      var observer = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-              inView.add(entry.target);
-            } else {
-              inView.delete(entry.target);
-            }
-          });
-          window.__storeSearchInViewCount = inView.size;
-          if (inView.size > 0) {
-            if (hideTimeoutId) {
-              clearTimeout(hideTimeoutId);
-              hideTimeoutId = null;
-            }
-            setFloatingVisible(true);
-          } else {
-            if (hideTimeoutId) clearTimeout(hideTimeoutId);
-            hideTimeoutId = setTimeout(function () {
-              setFloatingVisible(false);
-              hideTimeoutId = null;
-            }, HIDE_DELAY_MS);
-          }
-        },
-        { root: null, rootMargin: '0px', threshold: THRESHOLD }
-      );
-
-      targets.forEach(function (t) {
-        observer.observe(t);
-      });
-
-      // Expose for debugging if needed
-      window.__storeSearchObserver = observer;
+      // Backwards-compatible entry point – now uses scroll-based tracking
+      setupScrollTracking();
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
+    function init() {
       // Initialize floating search visibility when product areas are in view
       setupLocationObserver();
 
       // If nothing matched initially, watch for future DOM changes (pagination/sections)
-      if (!document.querySelector(SELECTOR)) {
+      if (!hasTargets()) {
         try {
           if (window.__storeSearchMo && typeof window.__storeSearchMo.disconnect === 'function') {
             window.__storeSearchMo.disconnect();
@@ -158,6 +218,12 @@
           }
         });
       }
-    });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
   })();
 </script>

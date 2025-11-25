@@ -1,97 +1,198 @@
-function loadMoreOnce(trigger) {
-  if (!trigger) return Promise.resolve(false);
-  const sectionEl = document.querySelector('[data-collection-section]');
-  if (!sectionEl) return Promise.resolve(false);
-  const sectionId = sectionEl.getAttribute('data-section-id');
-  const listEl = sectionEl.querySelector('[data-collection-list]');
-  const buttonWrapper = trigger.closest('.pagination-button');
-  if (!sectionId || !listEl) return Promise.resolve(false);
+// Collection filters modal behavior
+// Handles opening/closing the filters modal and a simple loading state on submit.
 
-  const url = new URL(trigger.getAttribute('href'), window.location.origin);
-  url.searchParams.set('section_id', sectionId);
+(function () {
+  if (typeof document === 'undefined') return;
 
-  trigger.setAttribute('aria-busy', 'true');
-  if (buttonWrapper) buttonWrapper.classList.add('is-loading');
+  function initCollectionFilters() {
+    const triggers = document.querySelectorAll('[data-filters-open]');
+    if (!triggers.length) return;
 
-  return fetch(url.toString())
-    .then((r) => r.text())
-    .then((html) => {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-      const nextSection = doc.querySelector(`[data-collection-section][data-section-id="${sectionId}"]`);
-      if (!nextSection) return false;
-      const nextList = nextSection.querySelector('[data-collection-list]');
-      const nextButton = nextSection.querySelector('[data-collection-load-more]');
+    triggers.forEach((trigger) => {
+      const controlsId = trigger.getAttribute('aria-controls');
+      if (!controlsId) return;
 
-      if (nextList) {
-        listEl.insertAdjacentHTML('beforeend', nextList.innerHTML);
-        const emptyMsg = listEl.querySelector('.collection-empty-message');
-        if (emptyMsg) emptyMsg.remove();
+      const modal = document.getElementById(controlsId);
+      if (!modal) return;
+
+      // Move modal to the body so it sits above header / other sections in the stacking context
+      if (!modal.dataset.portalized) {
+        document.body.appendChild(modal);
+        modal.dataset.portalized = 'true';
       }
 
-      if (nextButton) {
-        trigger.setAttribute('href', nextButton.getAttribute('href'));
-        trigger.removeAttribute('aria-busy');
-        if (buttonWrapper) buttonWrapper.classList.remove('is-loading');
-        return true;
-      } else {
-        if (buttonWrapper) buttonWrapper.remove();
-        return false;
+      const dialog = modal.querySelector('.filters-modal__dialog');
+      const closeButtons = modal.querySelectorAll('[data-filters-close]');
+      const form = modal.querySelector('[data-filters-form]');
+
+      function openModal() {
+        modal.setAttribute('aria-hidden', 'false');
+        modal.classList.add('filters-modal--open');
+        document.body.classList.add('filters-modal-open');
+
+        // Move focus into the dialog for accessibility
+        const focusTarget =
+          modal.querySelector('[data-filters-form]') ||
+          modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (focusTarget && typeof focusTarget.focus === 'function') {
+          focusTarget.focus();
+        }
       }
-    })
-    .catch(() => {
-      trigger.removeAttribute('aria-busy');
-      if (buttonWrapper) buttonWrapper.classList.remove('is-loading');
-      return false;
+
+      function closeModal() {
+        modal.setAttribute('aria-hidden', 'true');
+        modal.classList.remove('filters-modal--open');
+        document.body.classList.remove('filters-modal-open');
+        trigger.focus();
+      }
+
+      // Open on trigger click
+      trigger.addEventListener('click', (event) => {
+        event.preventDefault();
+        openModal();
+      });
+
+      // Close on dedicated close buttons
+      closeButtons.forEach((btn) => {
+        btn.addEventListener('click', (event) => {
+          event.preventDefault();
+          closeModal();
+        });
+      });
+
+      // Close when clicking outside the dialog
+      modal.addEventListener('click', (event) => {
+        if (!dialog) return;
+        if (!dialog.contains(event.target)) {
+          closeModal();
+        }
+      });
+
+      // Close on Escape key when modal is open
+      modal.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' || event.key === 'Esc') {
+          if (modal.getAttribute('aria-hidden') === 'false') {
+            event.stopPropagation();
+            closeModal();
+          }
+        }
+      });
+
+      // Loading state on form submit – uses data-filters-loading attribute
+      if (form) {
+        form.addEventListener('submit', () => {
+          trigger.setAttribute('data-filters-loading', 'true');
+        });
+
+        // Initialize filter button active states and clear (×) behavior
+        const filterItems = form.querySelectorAll('.filter-group__item');
+        filterItems.forEach((item) => {
+          const input = item.querySelector('input.filter-option');
+          if (!input) return;
+
+          // Initial sync from checked state
+          if (input.checked) {
+            item.classList.add('is-active');
+          }
+
+          // Toggle visual active state when checkbox changes
+          input.addEventListener('change', () => {
+            if (input.checked) {
+              item.classList.add('is-active');
+            } else {
+              item.classList.remove('is-active');
+            }
+          });
+
+          // Allow clicking the × to clear without submitting
+          const remove = item.querySelector('.active-filter-remove');
+          if (remove) {
+            remove.addEventListener('click', (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              input.checked = false;
+              item.classList.remove('is-active');
+            });
+          }
+        });
+      }
     });
-}
+  }
 
-// Expose helper globally so other scripts (like the collection filter modal)
-// can reliably load additional pages before applying client-side filters.
-if (typeof window !== 'undefined') {
-  window.loadMoreOnce = loadMoreOnce;
-}
+  function initCollectionLoadMore() {
+    const loadMoreLinks = document.querySelectorAll('[data-collection-load-more]');
+    if (!loadMoreLinks.length) return;
 
-document.addEventListener('click', function (e) {
-  const trigger = e.target.closest('[data-collection-load-more]');
-  if (!trigger) return;
-  e.preventDefault();
-  if (trigger.getAttribute('aria-busy') === 'true') return;
-  loadMoreOnce(trigger);
-});
+    loadMoreLinks.forEach((link) => {
+      link.addEventListener('click', async (event) => {
+        event.preventDefault();
 
-// Auto-top-up disabled - pagination now handles exactly 12 products per page
-// document.addEventListener('DOMContentLoaded', function () {
-//   const sectionEl = document.querySelector('[data-collection-section]');
-//   if (!sectionEl) return;
-//   const handle = sectionEl.getAttribute('data-collection-handle');
-//   const listEl = sectionEl.querySelector('[data-collection-list]');
-//   if (!listEl) return;
-//   // Only auto-top-up on the "all" collection
-//   if (handle !== 'all') return;
+        const button = event.currentTarget;
+        if (!button || button.dataset.loading === 'true') return;
 
-//   const MIN_VISIBLE = 12;
-//   let safetyCounter = 0;
+        const url = button.href;
+        if (!url) return;
 
-//   function countVisibleCards() {
-//     return listEl.querySelectorAll('.product-card').length;
-//   }
+        button.dataset.loading = 'true';
 
-//   function topUpIfNeeded() {
-//     if (countVisibleCards() >= MIN_VISIBLE) return;
-//     const trigger = document.querySelector('[data-collection-load-more]');
-//     if (!trigger) return;
-//     if (safetyCounter >= 5) return; // prevent runaway
-//     safetyCounter += 1;
-//     loadMoreOnce(trigger).then((hasMore) => {
-//       // Defer to allow DOM to update
-//       requestAnimationFrame(() => {
-//         if (countVisibleCards() < MIN_VISIBLE && hasMore) {
-//           topUpIfNeeded();
-//         }
-//       });
-//     });
-//   }
+        try {
+          const response = await fetch(url, {
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest',
+            },
+          });
 
-//   topUpIfNeeded();
-// });
+          if (!response.ok) {
+            throw new Error('Failed to load more products');
+          }
+
+          const html = await response.text();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+
+          const currentSection = button.closest('[data-collection-section]') || document;
+          const sectionId = currentSection.getAttribute('data-section-id');
+
+          let newRoot = doc;
+          if (sectionId) {
+            const matchedSection = doc.querySelector(`[data-collection-section][data-section-id="${sectionId}"]`);
+            if (matchedSection) {
+              newRoot = matchedSection;
+            }
+          }
+
+          const currentList = currentSection.querySelector('[data-collection-list]');
+          const newList = newRoot.querySelector('[data-collection-list]');
+
+          if (currentList && newList) {
+            Array.from(newList.children).forEach((child) => {
+              currentList.appendChild(child);
+            });
+          }
+
+          const newLoadMore = newRoot.querySelector('[data-collection-load-more]');
+          const paginationWrapper = button.closest('.pagination-button') || button.parentElement;
+
+          if (newLoadMore && paginationWrapper) {
+            button.href = newLoadMore.href;
+            button.dataset.loading = 'false';
+          } else if (paginationWrapper) {
+            paginationWrapper.remove();
+          }
+        } catch (error) {
+          console.error('Error loading more products', error);
+          // Fallback to normal navigation if AJAX fails
+          window.location.href = url;
+        }
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCollectionFilters);
+    document.addEventListener('DOMContentLoaded', initCollectionLoadMore);
+  } else {
+    initCollectionFilters();
+    initCollectionLoadMore();
+  }
+})();

@@ -90,7 +90,7 @@
   z-index: 10000;
 }
 
-.filters-modal.is-open {
+body.filters-modal-open .filters-modal {
   opacity: 1;
   visibility: visible;
 }
@@ -103,7 +103,6 @@
   gap: 2rem;
   max-width: 520px;
   width: 100%;
-  opacity: 0;
 }
 
 .filters-modal-title {
@@ -225,4 +224,8 @@ body.is-modal-open {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
+}
+
+.filters-active-list {
+  
 }
