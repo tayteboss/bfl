@@ -961,6 +961,12 @@
 
 <!-- VARIANT DATA -->
 <script>
+  // Primary pricing variants: use the main film service product variants as a single grid of prices.
+  // This lets us map the computed total directly to one variant on a single product (no more carriers required).
+  window.sendRollsVariants = {{ target_product.variants | json }};
+
+  // Legacy carrier data is still exposed for backwards compatibility or migration,
+  // but the new JS prefers `window.sendRollsVariants` when present.
   window.carrierA = {{ carrier_a.variants | json }};
   window.carrierB = {{ carrier_b.variants | json }};
   window.carrierC = {{ carrier_c.variants | json }};

@@ -152,11 +152,11 @@
       "column_two_richtext": "<p>Fuji Frontier SP-3000</p><ul><li><strong>Look &amp; feel:</strong> Smooth, rich colour with a softer, more filmic aesthetic straight out of the scan.</li><li><strong>Best for:</strong> Natural skin tones, warm highlights, and that classic Frontier “glow.”</li><li><strong>Great with:</strong> Portraits, wedding photography, and any film you want to look timeless.</li></ul>",
       "options": [
         {
-          "label": "Fuji Frontier",
+          "label": "Noritsu",
           "price": 0
         },
         {
-          "label": "Noritsu",
+          "label": "Fuji Frontier",
           "price": 0
         }
       ]
@@ -612,11 +612,11 @@
       "column_two_richtext": "<p>Fuji Frontier SP-3000</p><ul><li><strong>Look &amp; feel:</strong> Smooth, rich colour with a softer, more filmic aesthetic straight out of the scan.</li><li><strong>Best for:</strong> Natural skin tones, warm highlights, and that classic Frontier “glow.”</li><li><strong>Great with:</strong> Portraits, wedding photography, and any film you want to look timeless.</li></ul>",
       "options": [
         {
-          "label": "Fuji Frontier",
+          "label": "Noritsu",
           "price": 0
         },
         {
-          "label": "Noritsu",
+          "label": "Fuji Frontier",
           "price": 0
         }
       ]

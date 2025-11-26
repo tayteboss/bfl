@@ -457,10 +457,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Match variant by price, using actual carrier ranges (A–E) and handling missing carriers safely
+  // Match variant by price.
+  // Prefer a single Send Rolls product variant grid (window.sendRollsVariants),
+  // and fall back to the legacy multi-carrier approach for backwards compatibility.
   function findVariantByPrice(priceDollars) {
     const cents = Math.round(priceDollars * 100);
 
+    // --- New: single-product pricing grid ---
+    if (Array.isArray(window.sendRollsVariants) && window.sendRollsVariants.length) {
+      const variant = window.sendRollsVariants.find((v) => Number(v.price) === cents) || null;
+
+      if (!variant) {
+        console.warn('No variant found at exact price on sendRollsVariants.', {
+          priceDollars,
+          cents,
+        });
+      }
+
+      return variant;
+    }
+
+    // --- Legacy: multi-carrier pricing (A–E) ---
     const carriers = [
       { name: 'A', data: window.carrierA },
       { name: 'B', data: window.carrierB },
