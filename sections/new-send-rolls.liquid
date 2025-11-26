@@ -272,6 +272,9 @@
                               data-price="{{ opt.price | default: 0 }}"
                               data-show-if="{{ opt.show_if | json | escape }}"
                               data-price-overrides="{{ opt.price_overrides | json | escape }}"
+                              {% if opt.default %}
+                                checked="checked" data-default-option="true"
+                              {% endif %}
                             >
                             <div class="bubble-option__inner">
                               <div class="bubble-option__icon"></div>
@@ -442,6 +445,9 @@
                                   data-price="{{ options[0].price | default: 0 }}"
                                   data-show-if="{{ options[0].show_if | json | escape }}"
                                   data-price-overrides="{{ options[0].price_overrides | json | escape }}"
+                                  {% if options[0].default %}
+                                    checked="checked" data-default-option="true"
+                                  {% endif %}
                                 >
                                 <div class="bubble-option__inner">
                                   <div class="bubble-option__icon"></div>
@@ -468,6 +474,9 @@
                                   data-price="{{ options[1].price | default: 0 }}"
                                   data-show-if="{{ options[1].show_if | json | escape }}"
                                   data-price-overrides="{{ options[1].price_overrides | json | escape }}"
+                                  {% if options[1].default %}
+                                    checked="checked" data-default-option="true"
+                                  {% endif %}
                                 >
                                 <div class="bubble-option__inner">
                                   <div class="bubble-option__icon"></div>
@@ -600,6 +609,9 @@
                               data-price="{{ opt.price | default: 0 }}"
                               data-show-if="{{ opt.show_if | json | escape }}"
                               data-price-overrides="{{ opt.price_overrides | json | escape }}"
+                              {% if opt.default %}
+                                checked="checked" data-default-option="true"
+                              {% endif %}
                             >
                             <div class="bubble-option__inner">
                               <div class="bubble-option__icon"></div>

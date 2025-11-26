@@ -72,6 +72,24 @@ document.addEventListener('DOMContentLoaded', () => {
       return isVisible(carrier);
     });
 
+  // Auto-select any option marked as data-default-option="true" when a fieldset becomes active
+  const applyDefaultsInContainer = (container) => {
+    if (!container) return;
+    const fieldsets = container.querySelectorAll('fieldset.rolls-form-card');
+    fieldsets.forEach((fs) => {
+      if (!isVisible(fs)) return;
+      const visibleRadios = getVisibleRadiosInFieldset(fs);
+      if (!visibleRadios.length) return;
+      const anyChecked = visibleRadios.some((r) => r.checked);
+      if (anyChecked) return;
+      const defaultRadio = visibleRadios.find((r) => r.dataset.defaultOption === 'true');
+      if (!defaultRadio) return;
+      defaultRadio.checked = true;
+      // Fire change so pricing / conditions update
+      defaultRadio.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+  };
+
   const clearErrorsOnHidden = () => {
     form.querySelectorAll('fieldset.rolls-form-card').forEach((fs) => {
       if (!isVisible(fs)) fs.classList.remove('rolls-form-card--error');
@@ -155,6 +173,11 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         }
       });
+
+      // Apply JSON-configured defaults for the now-active service block
+      if (activeBlock) {
+        applyDefaultsInContainer(activeBlock);
+      }
 
       applyConditions();
     });

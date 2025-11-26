@@ -112,21 +112,22 @@
     },
     "Push or Pull": {
       "accordion_title": "Understanding Push or Pull",
-      "sub_title": "Changes in the Push/Pull setting result in darker or lighter image, changing color and contrast – just like with real film",
+      "sub_title": "Pushing/Pulling film changes the development time to make photos brighter or darker. We recommend selecting ‘Normal’.",
       "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/push-pull-feature.png?v=1763709722",
       "column_one_richtext": "<strong>What is Push/Pull and how it works?</strong><br><br><p>All films behave differently depending on how much light they received during exposure. Therefore, each film profile in Dehancer Film in fact consists of 3 separate profiles. Each profile is defined by its own sampling conditions:</p><ul><li>Normal exposure</li><li>Underexposed: Push/Pull = -2</li><li>Overexposed: Push/Pull = +2</li></ul><p>Changes in the Push/Pull setting result in darker or lighter image, changing color and contrast – just like with real film. Film type defines the character of changes.</p>",
       "options": [
         {
-          "label": "Normal",
-          "price": 0
+          "label": "Pull -2",
+          "price": 4
         },
         {
           "label": "Pull -1",
           "price": 2
         },
         {
-          "label": "Pull -2",
-          "price": 4
+          "label": "Normal",
+          "price": 0,
+          "default": true
         },
         {
           "label": "Push +1",
@@ -146,7 +147,7 @@
       "accordion_title": "Which scanner is right for me?",
       "accordion_sub_title": "Both scanners create beautiful results, but each has unique strengths. See below for details and visual examples so you can select the best fit for your needs.",
       "sub_title": "Select a scanner",
-      "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/feature-print-image.png?v=1762500902",
+      "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/scanner-compare.jpg?v=1764138703",
       "column_one_richtext": "<p>Noritsu HS-1800</p><ul><li><strong>Look &amp; feel:</strong> Crisp, sharp detail with a slightly more neutral/modern colour profile.</li><li><strong>Best for:</strong> When you want maximum fine detail, subtle tones, or need flexibility for editing.</li><li><strong>Great with:</strong> Colour negative film, B&amp;W film, and high-contrast scenes.</li></ul>",
       "column_two_richtext": "<p>Fuji Frontier SP-3000</p><ul><li><strong>Look &amp; feel:</strong> Smooth, rich colour with a softer, more filmic aesthetic straight out of the scan.</li><li><strong>Best for:</strong> Natural skin tones, warm highlights, and that classic Frontier “glow.”</li><li><strong>Great with:</strong> Portraits, wedding photography, and any film you want to look timeless.</li></ul>",
       "options": [
@@ -215,6 +216,19 @@
         }
       ]
     },
+    "Add Ons - Do you want your negatives shipped back to you?": {
+      "options": [
+        {
+          "label": "Yes",
+          "price": 12
+        },
+        {
+          "label": "No",
+          "price": 0,
+          "default": true
+        }
+      ]
+    },
     "Add Ons - Contact Sheet": {
       "options": [
         {
@@ -223,7 +237,8 @@
         },
         {
           "label": "No",
-          "price": 0
+          "price": 0,
+          "default": true
         }
       ]
     },
@@ -235,7 +250,8 @@
         },
         {
           "label": "No",
-          "price": 0
+          "price": 0,
+          "default": true
         }
       ]
     },
@@ -263,19 +279,6 @@
           "price": 35,
           "description": "High resolution contact sheet, best for archiving and zooming.",
           "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/high-res.png?v=1763627397"
-        }
-      ]
-    },
-		"Negatives": {
-      "sub_title": "Do you want your negatives shipped back to you?",
-      "options": [
-        {
-          "label": "Yes",
-          "price": 12
-        },
-        {
-          "label": "No",
-          "price": 0
         }
       ]
     }
@@ -393,21 +396,22 @@
     },
     "Push or Pull": {
       "accordion_title": "Understanding Push or Pull",
-      "sub_title": "Changes in the Push/Pull setting result in darker or lighter image, changing color and contrast – just like with real film",
+      "sub_title": "Pushing/Pulling film changes the development time to make photos brighter or darker. We recommend selecting ‘Normal’.",
       "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/push-pull-feature.png?v=1763709722",
       "column_one_richtext": "<strong>What is Push/Pull and how it works?</strong><br><br><p>All films behave differently depending on how much light they received during exposure. Therefore, each film profile in Dehancer Film in fact consists of 3 separate profiles. Each profile is defined by its own sampling conditions:</p><ul><li>Normal exposure</li><li>Underexposed: Push/Pull = -2</li><li>Overexposed: Push/Pull = +2</li></ul><p>Changes in the Push/Pull setting result in darker or lighter image, changing color and contrast – just like with real film. Film type defines the character of changes.</p>",
       "options": [
         {
-          "label": "Normal",
-          "price": 0
+          "label": "Pull -2",
+          "price": 4
         },
         {
           "label": "Pull -1",
           "price": 2
         },
         {
-          "label": "Pull -2",
-          "price": 4
+          "label": "Normal",
+          "price": 0,
+          "default": true
         },
         {
           "label": "Push +1",
@@ -603,7 +607,7 @@
       "accordion_title": "Which scanner is right for me?",
       "accordion_sub_title": "Both scanners create beautiful results, but each has unique strengths. See below for details and visual examples so you can select the best fit for your needs.",
       "sub_title": "Select a scanner",
-      "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/feature-print-image.png?v=1762500902",
+      "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/scanner-compare.jpg?v=1764138703",
       "column_one_richtext": "<p>Noritsu HS-1800</p><ul><li><strong>Look &amp; feel:</strong> Crisp, sharp detail with a slightly more neutral/modern colour profile.</li><li><strong>Best for:</strong> When you want maximum fine detail, subtle tones, or need flexibility for editing.</li><li><strong>Great with:</strong> Colour negative film, B&amp;W film, and high-contrast scenes.</li></ul>",
       "column_two_richtext": "<p>Fuji Frontier SP-3000</p><ul><li><strong>Look &amp; feel:</strong> Smooth, rich colour with a softer, more filmic aesthetic straight out of the scan.</li><li><strong>Best for:</strong> Natural skin tones, warm highlights, and that classic Frontier “glow.”</li><li><strong>Great with:</strong> Portraits, wedding photography, and any film you want to look timeless.</li></ul>",
       "options": [
