@@ -53,6 +53,11 @@
         {
           "label": "Color (C-41)",
           "price": 0,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          },
           "description": "A process that results in a color negative. (Sometimes labeled as CN-16).",
           "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/c41.png?v=1762432639"
         },
@@ -114,7 +119,7 @@
       "accordion_title": "Understanding Push or Pull",
       "sub_title": "Pushing/Pulling film changes the development time to make photos brighter or darker. We recommend selecting ‘Normal’.",
       "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/push-pull-feature.png?v=1763709722",
-      "column_one_richtext": "<strong>What is Push/Pull and how it works?</strong><br><br><p>All films behave differently depending on how much light they received during exposure. Therefore, each film profile in Dehancer Film in fact consists of 3 separate profiles. Each profile is defined by its own sampling conditions:</p><ul><li>Normal exposure</li><li>Underexposed: Push/Pull = -2</li><li>Overexposed: Push/Pull = +2</li></ul><p>Changes in the Push/Pull setting result in darker or lighter image, changing color and contrast – just like with real film. Film type defines the character of changes.</p>",
+      "column_one_richtext": "<strong>What is Push/Pull and how it works?</strong><br><br><p>All films behave differently depending on how much light they received during exposure. Therefore, each film profile in Dehancer Film in fact consists of 3 separate profiles. Each profile is defined by its own sampling conditions:</p><ul><li>Normal exposure</li><li>Underexposed: Push/Pull = -2</li><li>Overexposed: Push/Pull = +2</li></ul><p>Changes in the Push/Pull setting result in darker or lighter image, changing color and contrast – just like with real film. Film type defines the character of changes.</p><p>For expired film, we recommend Push +1 for each decade of expiration.</p>",
       "options": [
         {
           "label": "Pull -2",
@@ -193,7 +198,8 @@
       "options": [
 				{
 					"label": "None",
-					"price": 0
+					"price": 0,
+          "default": true
 				},
         {
           "label": "White Border",
@@ -337,6 +343,11 @@
         {
           "label": "Color (C-41)",
           "price": 0,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          },
           "description": "A process that results in a color negative. (Sometimes labeled as CN-16).",
           "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/c41.png?v=1762432639"
         },
@@ -398,7 +409,7 @@
       "accordion_title": "Understanding Push or Pull",
       "sub_title": "Pushing/Pulling film changes the development time to make photos brighter or darker. We recommend selecting ‘Normal’.",
       "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/push-pull-feature.png?v=1763709722",
-      "column_one_richtext": "<strong>What is Push/Pull and how it works?</strong><br><br><p>All films behave differently depending on how much light they received during exposure. Therefore, each film profile in Dehancer Film in fact consists of 3 separate profiles. Each profile is defined by its own sampling conditions:</p><ul><li>Normal exposure</li><li>Underexposed: Push/Pull = -2</li><li>Overexposed: Push/Pull = +2</li></ul><p>Changes in the Push/Pull setting result in darker or lighter image, changing color and contrast – just like with real film. Film type defines the character of changes.</p>",
+      "column_one_richtext": "<strong>What is Push/Pull and how it works?</strong><br><br><p>All films behave differently depending on how much light they received during exposure. Therefore, each film profile in Dehancer Film in fact consists of 3 separate profiles. Each profile is defined by its own sampling conditions:</p><ul><li>Normal exposure</li><li>Underexposed: Push/Pull = -2</li><li>Overexposed: Push/Pull = +2</li></ul><p>Changes in the Push/Pull setting result in darker or lighter image, changing color and contrast – just like with real film. Film type defines the character of changes.</p><p>For expired film, we recommend Push +1 for each decade of expiration.</p>",
       "options": [
         {
           "label": "Pull -2",
@@ -546,6 +557,11 @@
         {
           "label": "Color (C-41)",
           "price": 0,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          },
           "description": "A process that results in a color negative. (Sometimes labeled as CN-16).",
           "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/c41.png?v=1762432639"
         },
@@ -653,7 +669,8 @@
       "options": [
 				{
 					"label": "None",
-					"price": 0
+					"price": 0,
+          "default": true
 				},
         {
           "label": "White Border",

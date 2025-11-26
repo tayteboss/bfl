@@ -45,7 +45,7 @@
 
       <div class="rolls-form-cards-wrapper" data-faq-list>
         <!-- LOCATION PICKER -->
-        <fieldset data-group="location" class="rolls-form-card">
+        <fieldset data-group="Location" class="rolls-form-card">
           <h3 class="rolls-form-card__heading type-h1-x-small" order-summary-heading="Location">Choose a Location</h3>
           <div class="rolls-form-card__inner">
             <p class="rolls-form-card__subheading type-p">Pick your preferred location.</p>
@@ -271,9 +271,10 @@
                               value="{{ opt.label | escape }}"
                               data-price="{{ opt.price | default: 0 }}"
                               data-show-if="{{ opt.show_if | json | escape }}"
+                              data-default-if="{{ opt.default_if | json | escape }}"
                               data-price-overrides="{{ opt.price_overrides | json | escape }}"
                               {% if opt.default %}
-                                checked="checked" data-default-option="true"
+                                checked="checked" data-default-option="true" data-default-static="true"
                               {% endif %}
                             >
                             <div class="bubble-option__inner">
@@ -444,9 +445,10 @@
                                   value="{{ options[0].label | escape }}"
                                   data-price="{{ options[0].price | default: 0 }}"
                                   data-show-if="{{ options[0].show_if | json | escape }}"
+                                  data-default-if="{{ options[0].default_if | json | escape }}"
                                   data-price-overrides="{{ options[0].price_overrides | json | escape }}"
                                   {% if options[0].default %}
-                                    checked="checked" data-default-option="true"
+                                    checked="checked" data-default-option="true" data-default-static="true"
                                   {% endif %}
                                 >
                                 <div class="bubble-option__inner">
@@ -473,9 +475,10 @@
                                   value="{{ options[1].label | escape }}"
                                   data-price="{{ options[1].price | default: 0 }}"
                                   data-show-if="{{ options[1].show_if | json | escape }}"
+                                  data-default-if="{{ options[1].default_if | json | escape }}"
                                   data-price-overrides="{{ options[1].price_overrides | json | escape }}"
                                   {% if options[1].default %}
-                                    checked="checked" data-default-option="true"
+                                    checked="checked" data-default-option="true" data-default-static="true"
                                   {% endif %}
                                 >
                                 <div class="bubble-option__inner">
@@ -608,9 +611,10 @@
                               value="{{ opt.label | escape }}"
                               data-price="{{ opt.price | default: 0 }}"
                               data-show-if="{{ opt.show_if | json | escape }}"
+                              data-default-if="{{ opt.default_if | json | escape }}"
                               data-price-overrides="{{ opt.price_overrides | json | escape }}"
                               {% if opt.default %}
-                                checked="checked" data-default-option="true"
+                                checked="checked" data-default-option="true" data-default-static="true"
                               {% endif %}
                             >
                             <div class="bubble-option__inner">
@@ -745,15 +749,15 @@
         </fieldset>
 
         <!-- Delivery Options -->
-        <fieldset data-group="location" class="rolls-form-card">
+        <fieldset data-group="Delivery" class="rolls-form-card">
           <h3 class="rolls-form-card__heading type-h1-x-small" order-summary-heading="Delivery">Delivery</h3>
           <div class="rolls-form-card__inner rolls-form-card__inner--content">
             <p class="rolls-form-card__subheading type-p">Pick how you'd like to send your film.</p>
             <div class="rolls-form-card__options rolls-form-card__options--addon">
               <div class="rolls-form-card__addon-option">
-                <label class="bubble-option" for="LocationMailIn">
+                <label class="bubble-option" for="DeliveryMailIn">
                   <input
-                    id="LocationMailIn"
+                    id="DeliveryMailIn"
                     type="radio"
                     name="delivery"
                     value="Mail In"
@@ -770,9 +774,9 @@
               <p class="rolls-form-card__addon-heading type-p">Delivery Method</p>
 
               <div class="rolls-form-card__addon-option">
-                <label class="bubble-option" for="LocationDropOff">
+                <label class="bubble-option" for="DeliveryDropOff">
                   <input
-                    id="LocationDropOff"
+                    id="DeliveryDropOff"
                     type="radio"
                     name="delivery"
                     value="Drop Off"
@@ -961,12 +965,6 @@
 
 <!-- VARIANT DATA -->
 <script>
-  // Primary pricing variants: use the main film service product variants as a single grid of prices.
-  // This lets us map the computed total directly to one variant on a single product (no more carriers required).
-  window.sendRollsVariants = {{ target_product.variants | json }};
-
-  // Legacy carrier data is still exposed for backwards compatibility or migration,
-  // but the new JS prefers `window.sendRollsVariants` when present.
   window.carrierA = {{ carrier_a.variants | json }};
   window.carrierB = {{ carrier_b.variants | json }};
   window.carrierC = {{ carrier_c.variants | json }};

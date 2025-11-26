@@ -346,9 +346,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const showIfRaw = radio.dataset.showIf;
       const priceOverridesRaw = radio.dataset.priceOverrides;
+      const defaultIfRaw = radio.dataset.defaultIf;
 
       const showIf = parseJSON(showIfRaw);
       const priceOverrides = parseJSON(priceOverridesRaw);
+      const defaultIf = parseJSON(defaultIfRaw);
 
       // --- Visibility
       let shouldShow = true;
@@ -382,6 +384,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
       radio.dataset.price = newPrice;
+
+      // --- Conditional defaults (default_if in JSON) ---
+      // Preserve any static defaults coming from Liquid (`opt.default`)
+      const isStaticDefault = radio.dataset.defaultStatic === 'true';
+      let matchesDefaultIf = false;
+
+      if (defaultIf) {
+        // Require ALL default_if groups to match, same logic as show_if
+        matchesDefaultIf = Object.entries(defaultIf).every(([k, allowed]) => {
+          const sel = getSelectedValue(k, selected);
+          if (!Array.isArray(allowed) || !allowed.length) return true;
+          const allowedNorm = allowed.map(normVal);
+          return sel ? allowedNorm.includes(normVal(sel)) : false;
+        });
+      }
+
+      if (matchesDefaultIf) {
+        radio.dataset.defaultOption = 'true';
+      } else if (!isStaticDefault) {
+        // Clear conditional default flag when conditions no longer match
+        delete radio.dataset.defaultOption;
+      }
 
       // Update visible price text
       const priceEl = label.querySelector('.opt-price');
@@ -437,6 +461,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Clear any lingering error states on hidden sections
     clearErrorsOnHidden();
 
+    // Apply defaults (including conditional defaults) to any visible fieldsets
+    applyDefaultsInContainer(form);
+
     calculateTotal();
   }
 
@@ -457,27 +484,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Match variant by price.
-  // Prefer a single Send Rolls product variant grid (window.sendRollsVariants),
-  // and fall back to the legacy multi-carrier approach for backwards compatibility.
+  // Match variant by price, using actual carrier ranges (A–E) and handling missing carriers safely
   function findVariantByPrice(priceDollars) {
     const cents = Math.round(priceDollars * 100);
 
-    // --- New: single-product pricing grid ---
-    if (Array.isArray(window.sendRollsVariants) && window.sendRollsVariants.length) {
-      const variant = window.sendRollsVariants.find((v) => Number(v.price) === cents) || null;
-
-      if (!variant) {
-        console.warn('No variant found at exact price on sendRollsVariants.', {
-          priceDollars,
-          cents,
-        });
-      }
-
-      return variant;
-    }
-
-    // --- Legacy: multi-carrier pricing (A–E) ---
     const carriers = [
       { name: 'A', data: window.carrierA },
       { name: 'B', data: window.carrierB },
