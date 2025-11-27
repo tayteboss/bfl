@@ -246,17 +246,11 @@
       "options": [
         {
           "label": "Yes",
-          "price": 12,
-          "default_if": {
-            "film_format": [
-              "Disposable"
-            ]
-          }
+          "price": 12
         },
         {
           "label": "No",
-          "price": 0,
-          "default": true
+          "price": 0
         }
       ]
     },
@@ -482,17 +476,11 @@
       "options": [
         {
           "label": "Yes",
-          "price": 12,
-          "default_if": {
-            "film_format": [
-              "Disposable"
-            ]
-          }
+          "price": 12
         },
         {
           "label": "No",
-          "price": 0,
-          "default": true
+          "price": 0
         }
       ]
     },
@@ -768,17 +756,11 @@
       "options": [
         {
           "label": "Yes",
-          "price": 12,
-          "default_if": {
-            "film_format": [
-              "Disposable"
-            ]
-          }
+          "price": 12
         },
         {
           "label": "No",
-          "price": 0,
-          "default": true
+          "price": 0
         }
       ]
     },
@@ -907,17 +889,11 @@
       "options": [
         {
           "label": "Yes",
-          "price": 12,
-          "default_if": {
-            "film_format": [
-              "Disposable"
-            ]
-          }
+          "price": 12
         },
         {
           "label": "No",
-          "price": 0,
-          "default": true
+          "price": 0
         }
       ]
     },

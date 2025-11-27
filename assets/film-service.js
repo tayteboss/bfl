@@ -200,12 +200,38 @@ document.addEventListener('DOMContentLoaded', () => {
         fs.classList.remove('rolls-form-card--error');
         return;
       }
-      const anyChecked = visibleRadios.some((r) => r.checked);
-      if (!anyChecked) {
-        fs.classList.add('rolls-form-card--error');
-        errors.push(fs);
+      const groupNameAttr = fs.getAttribute('data-group') || fs.dataset.group || '';
+
+      // Special case: the aggregated "Add Ons" card contains multiple logical radio groups.
+      // We require *each visible radio group by name* within this fieldset to have a selection.
+      if (groupNameAttr.trim().toLowerCase() === 'add ons') {
+        const groupsByName = new Map();
+        visibleRadios.forEach((r) => {
+          const name = r.name || '__anon__';
+          if (!groupsByName.has(name)) groupsByName.set(name, []);
+          groupsByName.get(name).push(r);
+        });
+
+        const hasMissingGroupSelection = Array.from(groupsByName.values()).some((groupRadios) => {
+          if (!groupRadios.length) return false;
+          return !groupRadios.some((r) => r.checked);
+        });
+
+        if (hasMissingGroupSelection) {
+          fs.classList.add('rolls-form-card--error');
+          errors.push(fs);
+        } else {
+          fs.classList.remove('rolls-form-card--error');
+        }
       } else {
-        fs.classList.remove('rolls-form-card--error');
+        // Default behavior: at least one visible radio in this fieldset must be selected
+        const anyChecked = visibleRadios.some((r) => r.checked);
+        if (!anyChecked) {
+          fs.classList.add('rolls-form-card--error');
+          errors.push(fs);
+        } else {
+          fs.classList.remove('rolls-form-card--error');
+        }
       }
     });
     return { errors };
