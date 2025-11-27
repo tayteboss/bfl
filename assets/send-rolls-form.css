@@ -539,3 +539,22 @@
 .order-summary__details {
   margin-bottom: 24px;
 }
+
+.rolls-form-card .dropoff-map-popup {
+  padding: 0.8rem;
+  right: 0.5rem;
+  bottom: 0.5rem;
+}
+
+.rolls-form-card .dropoff-popup__title {
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+
+.rolls-form-card .dropoff-popup__address {
+  opacity: 0.75;
+}
+
+.rolls-form-card .dropoff-popup__media {
+  display: none;
+}

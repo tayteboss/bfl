@@ -755,6 +755,24 @@
             <p class="rolls-form-card__subheading type-p">Pick how you'd like to send your film.</p>
             <div class="rolls-form-card__options rolls-form-card__options--addon">
               <div class="rolls-form-card__addon-option">
+                <label class="bubble-option" for="DeliveryDropOff">
+                  <input
+                    id="DeliveryDropOff"
+                    type="radio"
+                    name="delivery"
+                    value="Drop Off"
+                    data-price="0"
+                  >
+                  <div class="bubble-option__inner">
+                    <div class="bubble-option__icon"></div>
+                    <div class="bubble-option__label">Drop Off <span class="opt-price">($0)</span></div>
+                  </div>
+                </label>
+              </div>
+
+              <p class="rolls-form-card__addon-heading type-p">Delivery Method</p>
+
+              <div class="rolls-form-card__addon-option">
                 <label class="bubble-option" for="DeliveryMailIn">
                   <input
                     id="DeliveryMailIn"
@@ -770,24 +788,6 @@
                   </div>
                 </label>
               </div>
-
-              <p class="rolls-form-card__addon-heading type-p">Delivery Method</p>
-
-              <div class="rolls-form-card__addon-option">
-                <label class="bubble-option" for="DeliveryDropOff">
-                  <input
-                    id="DeliveryDropOff"
-                    type="radio"
-                    name="delivery"
-                    value="Drop Off"
-                    data-price="0"
-                  >
-                  <div class="bubble-option__inner">
-                    <div class="bubble-option__icon"></div>
-                    <div class="bubble-option__label">Drop Off <span class="opt-price">($0)</span></div>
-                  </div>
-                </label>
-              </div>
             </div>
           </div>
 
@@ -798,7 +798,7 @@
             <button
               type="button"
               class="rolls-form-card-content-trigger-btn"
-              aria-expanded="false"
+              aria-expanded="true"
               aria-controls="rfc-content-{{ delivery_content_uid }}"
               id="rfc-btn-{{ delivery_content_uid }}"
               data-faq-trigger
@@ -811,7 +811,6 @@
               id="rfc-content-{{ delivery_content_uid }}"
               role="region"
               aria-labelledby="rfc-btn-{{ delivery_content_uid }}"
-              hidden
               data-faq-content
             >
               <div class="rolls-form-card-content-inner faq-card__inner">
@@ -841,7 +840,25 @@
 
                   <div class="rolls-form-card-content rolls-form-card-content--mail-in rich-text">
                     <div class="rolls-form-card-content__column-one">
-                      <div class="rich-text">
+                      <div class="rich-text" data-delivery-info="drop-off">
+                        <p>
+                          <strong><u>Drop-off:</u></strong>
+                        </p>
+                        <p>
+                          Upon order completion you'll be guided through your next steps. To drop off, include your
+                          order number with your film in a securely sealed bag.
+                        </p>
+
+                        <p>📍 Drop off your film at: Any Bellows drop-off location.</p>
+
+                        <p>📦 What to bring:</p>
+                        <ul>
+                          <li>Your film rolls</li>
+                          <li>Written order number</li>
+                        </ul>
+                      </div>
+                      <div class="faq-card-or-divider type-p" data-delivery-divider></div>
+                      <div class="rich-text" data-delivery-info="mail-in">
                         <p>
                           <strong><u>Mail in:</u></strong>
                         </p>
@@ -859,12 +876,8 @@
                         ></ul>
                         <script>
                           (function () {
-                            // Prevent duplicates: Always clear the list before populating it
                             const locationsList = document.querySelector('[data-locations-list-mail-in]');
                             if (!locationsList) return;
-
-                            // Remove previous list items if present
-                            locationsList.innerHTML = '';
 
                             const jsonUrl =
                               window.Shopify && window.Shopify.assetUrl
@@ -876,60 +889,75 @@
                               .then((locations) => {
                                 if (!locations || !Array.isArray(locations)) return;
 
-                                locations.forEach((location) => {
-                                  const li = document.createElement('li');
-                                  li.className = 'mail-in-locations-list__item';
-                                  li.style.marginBottom = '1.25em';
+                                const allLocations = locations;
 
-                                  li.innerHTML = `
-                                    <div class="mail-in-location">
-                                      <div class="mail-in-location__title type-p">${location.name}</div>
-                                      <div class="mail-in-location__address">
-                                        <a
-                                          href="${location.addressUrl}"
-                                          target="_blank"
-                                          rel="noopener"
-                                          class="type-p-small"
-                                          style="text-decoration:underline;"
-                                        >${location.address}</a>
-                                      </div>
-                                      <div class="mail-in-location__phone">
-                                        <a
-                                          href="tel:${location.phoneFormatted}"
-                                          aria-label="${location.ariaLabel}"
-                                          class="type-p-small"
-                                          style="color:inherit; text-decoration:underline;"
-                                        >${location.phone}</a>
-                                      </div>
-                                    </div>
-                                  `;
+                                const renderForSelection = () => {
+                                  const listEl = document.querySelector('[data-locations-list-mail-in]');
+                                  if (!listEl) return;
+                                  listEl.innerHTML = '';
 
-                                  locationsList.appendChild(li);
+                                  const selectedRadio = document.querySelector('input[name="location"]:checked');
+                                  const selectedName = selectedRadio ? selectedRadio.value : null;
+
+                                  let toRender;
+                                  if (!selectedName) {
+                                    // No location selected: show all locations
+                                    toRender = allLocations;
+                                  } else {
+                                    // Match by name, allowing for slight label differences (e.g. "Miami" vs "Miami (HQ)")
+                                    const needle = selectedName.toLowerCase();
+                                    toRender = allLocations.filter((loc) =>
+                                      String(loc.name || '')
+                                        .toLowerCase()
+                                        .includes(needle)
+                                    );
+                                  }
+
+                                  toRender.forEach((location) => {
+                                    const li = document.createElement('li');
+                                    li.className = 'mail-in-locations-list__item';
+                                    li.style.marginBottom = '1.25em';
+
+                                    li.innerHTML = `
+                                      <div class="mail-in-location">
+                                        <div class="mail-in-location__title type-p">${location.name}</div>
+                                        <div class="mail-in-location__address">
+                                          <a
+                                            href="${location.addressUrl}"
+                                            target="_blank"
+                                            rel="noopener"
+                                            class="type-p-small"
+                                            style="text-decoration:underline;"
+                                          >${location.address}</a>
+                                        </div>
+                                        <div class="mail-in-location__phone">
+                                          <a
+                                            href="tel:${location.phoneFormatted}"
+                                            aria-label="${location.ariaLabel}"
+                                            class="type-p-small"
+                                            style="color:inherit; text-decoration:underline;"
+                                          >${location.phone}</a>
+                                        </div>
+                                      </div>
+                                    `;
+
+                                    listEl.appendChild(li);
+                                  });
+                                };
+
+                                // Update on location change
+                                document.querySelectorAll('input[name="location"]').forEach((radio) => {
+                                  radio.addEventListener('change', renderForSelection);
                                 });
+
+                                // Initial render (in case a location is preselected)
+                                renderForSelection();
                               })
                               .catch(() => {});
                           })();
                         </script>
 
                         <p>📦 Pack your order with:</p>
-                        <ul>
-                          <li>Your film rolls</li>
-                          <li>Your printed order slip</li>
-                        </ul>
-                      </div>
-                      <div class="faq-card-or-divider type-p"></div>
-                      <div class="rich-text">
-                        <p>
-                          <strong><u>Drop-off:</u></strong>
-                        </p>
-                        <p>
-                          Upon order completion you'll be guided through your next steps. To drop off, include your
-                          order number with your film in a securely sealed bag.
-                        </p>
-
-                        <p>📍 Drop off your film at: Any Bellows drop-off location</p>
-
-                        <p>📦 What to bring:</p>
                         <ul>
                           <li>Your film rolls</li>
                           <li>Your printed order slip</li>

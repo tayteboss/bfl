@@ -260,7 +260,7 @@
       }
     }
 
-    var selectionTargetZoom = typeof window !== 'undefined' && window.innerWidth < 900 ? 12 : 13;
+    var selectionTargetZoom = typeof window !== 'undefined' && window.innerWidth < 900 ? 13 : 14;
 
     function adjustMapView(loc, options) {
       if (!loc) return;
@@ -520,6 +520,52 @@
     setupSearch('locationSearchFormDesktop', 'locationSearchInputDesktop');
     setupSearch('locationSearchFormMobile', 'locationSearchInputMobile');
 
+    // --- Sync Send Rolls "Location" radios to map (only on Send Rolls form page) ---
+    function setupSendRollsLocationSync() {
+      try {
+        var sendRollsForm = document.getElementById('film-service-form');
+        if (!sendRollsForm) return;
+
+        var locationRadios = sendRollsForm.querySelectorAll('input[name="location"]');
+        if (!locationRadios.length) return;
+
+        var handleLocationChange = function () {
+          var selected = sendRollsForm.querySelector('input[name="location"]:checked');
+          if (!selected) return;
+          var city = (selected.value || '').trim();
+          if (!city) return;
+
+          // Use geocoding + nearest drop-off to focus map around the selected city
+          geocode(city)
+            .then(function (results) {
+              if (!Array.isArray(results) || !results.length) return;
+              var r = results[0];
+              var target = { lat: parseFloat(r.lat), lng: parseFloat(r.lon) };
+              if (!isFinite(target.lat) || !isFinite(target.lng)) return;
+              var nearest = findNearest(target);
+              if (!nearest || !nearest.loc) return;
+              focusLocation(nearest.loc, {
+                zoom: true,
+                targetZoom: selectionTargetZoom,
+                onlyIncrease: true,
+              });
+            })
+            .catch(function () {
+              // fail silently; map remains in its previous state
+            });
+        };
+
+        locationRadios.forEach(function (radio) {
+          radio.addEventListener('change', handleLocationChange);
+        });
+
+        // If a location is already selected (e.g., via defaults), focus once
+        handleLocationChange();
+      } catch (_e) {}
+    }
+    setupSearch('locationSearchFormDesktop', 'locationSearchInputDesktop');
+    setupSearch('locationSearchFormMobile', 'locationSearchInputMobile');
+
     // Geolocation
     var useMyLocationBtn = document.getElementById('useMyLocationBtn');
     if (useMyLocationBtn && 'geolocation' in navigator) {
@@ -547,11 +593,13 @@
     if (local && local.length) {
       LOCATIONS = local;
       renderLocations();
+      setupSendRollsLocationSync();
     } else {
       fetchRemoteLocations().then(function (remote) {
         if (Array.isArray(remote) && remote.length) {
           LOCATIONS = remote;
           renderLocations();
+          setupSendRollsLocationSync();
         }
       });
     }

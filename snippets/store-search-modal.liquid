@@ -52,6 +52,7 @@
     var FLOAT_ID = '.store-search-floating--desktop';
     var SELECTOR = '[data-search-selector]';
     var HIDE_DELAY_MS = 0;
+    var SCROLL_THROTTLE_MS = 100;
     var hideTimeoutId = null;
     var targets = [];
 
@@ -63,15 +64,9 @@
     }
 
     function hasTargets() {
-      console.log('hasTargets');
-
       try {
-        var found = !!document.querySelector(SELECTOR);
-
-        console.log('[store-search] hasTargets =', found, 'selector =', SELECTOR);
-        return found;
+        return !!document.querySelector(SELECTOR);
       } catch (e) {
-        console.error('[store-search] hasTargets error', e);
         return false;
       }
     }
@@ -79,19 +74,15 @@
     function collectTargets() {
       try {
         targets = Array.prototype.slice.call(document.querySelectorAll(SELECTOR));
-        console.log('[store-search] collectTargets ->', targets.length, 'matches for', SELECTOR);
       } catch (e) {
-        console.error('[store-search] collectTargets error', e);
         targets = [];
       }
     }
 
     function setFloatingVisible(visible) {
       var node = document.querySelector(FLOAT_ID);
-      console.log('node', node);
       if (!node) return;
       node.classList.toggle('store-search-floating--visible', !!visible);
-      console.log('[store-search] setFloatingVisible ->', !!visible);
     }
 
     function anyTargetInView() {
@@ -108,7 +99,6 @@
           break;
         }
       }
-      console.log('[store-search] anyTargetInView ->', anyVisible, 'viewportHeight =', viewportHeight);
       return anyVisible;
     }
 
@@ -117,7 +107,6 @@
       collectTargets();
       if (!targets.length) {
         setFloatingVisible(false);
-        console.log('[store-search] updateVisibilityFromScroll (', source, ') -> no targets, hiding');
         return;
       }
 
@@ -135,7 +124,6 @@
           hideTimeoutId = null;
         }, HIDE_DELAY_MS);
       }
-      console.log('[store-search] updateVisibilityFromScroll (', source, ') -> visible =', visible);
     }
 
     function setupScrollTracking() {
@@ -154,7 +142,15 @@
       }, 1500);
 
       var ticking = false;
+      var lastScrollUpdate = 0;
       function onScrollOrResize(evt) {
+        var now = Date.now();
+        // Simple time-based throttle so we don't recompute visibility too often
+        if (now - lastScrollUpdate < SCROLL_THROTTLE_MS) {
+          return;
+        }
+        lastScrollUpdate = now;
+
         if (ticking) return;
         ticking = true;
         window.requestAnimationFrame(function () {

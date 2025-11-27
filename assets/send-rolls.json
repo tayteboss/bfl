@@ -132,7 +132,12 @@
         {
           "label": "Normal",
           "price": 0,
-          "default": true
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
         },
         {
           "label": "Push +1",
@@ -162,7 +167,12 @@
         },
         {
           "label": "Fuji Frontier",
-          "price": 0
+          "price": 0,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
         }
       ]
     },
@@ -175,7 +185,12 @@
           "label": "Medium (JPEG)",
           "price": 9,
           "description": "Great for most uses. Delivers print-ready images suitable for sharing online and small to medium-size prints.",
-          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/low-res.png?v=1763627397"
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/low-res.png?v=1763627397",
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
         },
         {
           "label": "High (JPEG)",
@@ -199,7 +214,12 @@
 				{
 					"label": "None",
 					"price": 0,
-          "default": true
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
 				},
         {
           "label": "White Border",
@@ -226,7 +246,12 @@
       "options": [
         {
           "label": "Yes",
-          "price": 12
+          "price": 12,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
         },
         {
           "label": "No",
@@ -244,7 +269,12 @@
         {
           "label": "No",
           "price": 0,
-          "default": true
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
         }
       ]
     },
@@ -257,7 +287,12 @@
         {
           "label": "No",
           "price": 0,
-          "default": true
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
         }
       ]
     },
@@ -422,7 +457,12 @@
         {
           "label": "Normal",
           "price": 0,
-          "default": true
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
         },
         {
           "label": "Push +1",
@@ -438,6 +478,24 @@
         }
       ]
     },
+    "Add Ons - Do you want your negatives shipped back to you?": {
+      "options": [
+        {
+          "label": "Yes",
+          "price": 12,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
+        },
+        {
+          "label": "No",
+          "price": 0,
+          "default": true
+        }
+      ]
+    },
     "Add Ons - Contact Sheet": {
       "options": [
         {
@@ -446,7 +504,13 @@
         },
         {
           "label": "No",
-          "price": 0
+          "price": 0,
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
         }
       ]
     },
@@ -458,7 +522,13 @@
         },
         {
           "label": "No",
-          "price": 0
+          "price": 0,
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
         }
       ]
     },
@@ -486,19 +556,6 @@
           "price": 35,
           "description": "High resolution contact sheet, best for archiving and zooming.",
           "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/high-res.png?v=1763627397"
-        }
-      ]
-    },
-		"Negatives": {
-      "sub_title": "Do you want your negatives shipped back to you?",
-      "options": [
-        {
-          "label": "Yes",
-          "price": 12
-        },
-        {
-          "label": "No",
-          "price": 0
         }
       ]
     }
@@ -633,7 +690,12 @@
         },
         {
           "label": "Fuji Frontier",
-          "price": 0
+          "price": 0,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
         }
       ]
     },
@@ -646,7 +708,12 @@
           "label": "Medium (JPEG)",
           "price": 9,
           "description": "Great for most uses. Delivers print-ready images suitable for sharing online and small to medium-size prints.",
-          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/low-res.png?v=1763627397"
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/low-res.png?v=1763627397",
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
         },
         {
           "label": "High (JPEG)",
@@ -670,7 +737,12 @@
 				{
 					"label": "None",
 					"price": 0,
-          "default": true
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
 				},
         {
           "label": "White Border",
@@ -684,12 +756,29 @@
           "show_if": {
             "film_format": [
               "35mm",
-              "110",
-              "Disposable"
+              "110"
             ]
           },
           "description": "Full bleed (no white border) for maximum frame coverage.",
           "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/edge-to-edge.png?v=1763627397"
+        }
+      ]
+    },
+    "Add Ons - Do you want your negatives shipped back to you?": {
+      "options": [
+        {
+          "label": "Yes",
+          "price": 12,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
+        },
+        {
+          "label": "No",
+          "price": 0,
+          "default": true
         }
       ]
     },
@@ -701,7 +790,13 @@
         },
         {
           "label": "No",
-          "price": 0
+          "price": 0,
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
         }
       ]
     },
@@ -713,7 +808,13 @@
         },
         {
           "label": "No",
-          "price": 0
+          "price": 0,
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
         }
       ]
     },
@@ -741,19 +842,6 @@
           "price": 35,
           "description": "High resolution contact sheet, best for archiving and zooming.",
           "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/high-res.png?v=1763627397"
-        }
-      ]
-    },
-		"Negatives": {
-      "sub_title": "Do you want your negatives shipped back to you?",
-      "options": [
-        {
-          "label": "Yes",
-          "price": 12
-        },
-        {
-          "label": "No",
-          "price": 0
         }
       ]
     }
@@ -815,6 +903,24 @@
 				}
 			]
 		},
+    "Add Ons - Do you want your negatives shipped back to you?": {
+      "options": [
+        {
+          "label": "Yes",
+          "price": 12,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
+        },
+        {
+          "label": "No",
+          "price": 0,
+          "default": true
+        }
+      ]
+    },
 		"Add Ons - Contact Sheet": {
       "options": [
         {
@@ -823,7 +929,13 @@
         },
         {
           "label": "No",
-          "price": 0
+          "price": 0,
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
         }
       ]
     },
@@ -835,7 +947,13 @@
         },
         {
           "label": "No",
-          "price": 0
+          "price": 0,
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
         }
       ]
     },
@@ -863,21 +981,6 @@
           "price": 35,
           "description": "High resolution contact sheet, best for archiving and zooming.",
           "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/high-res.png?v=1763627397"
-        }
-      ]
-    },
-		"Negatives": {
-      "sub_title": "Do you want your negatives shipped back to you?",
-      "options": [
-        {
-          "label": "Yes",
-          "price": 12,
-          "description": "Your negatives will be shipped back to you in a protective envelope."
-        },
-        {
-          "label": "No",
-          "price": 0,
-          "description": "Your negatives won't be shipped back to you."
         }
       ]
     }

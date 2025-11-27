@@ -72,7 +72,91 @@ document.addEventListener('DOMContentLoaded', () => {
       return isVisible(carrier);
     });
 
-  // Auto-select any option marked as data-default-option="true" when a fieldset becomes active
+  // --- Delivery info visibility (Mail In vs Drop Off copy) ---
+  const mailInInfo = form.querySelector('[data-delivery-info="mail-in"]');
+  const dropOffInfo = form.querySelector('[data-delivery-info="drop-off"]');
+  const deliveryMap = form.querySelector('.rolls-form-card-content__drop-off-map');
+  const deliveryDivider = form.querySelector('[data-delivery-divider]');
+
+  const refreshDropOffMap = (opts) => {
+    const options = opts || {};
+    try {
+      if (window.BellowsDropOffMap) {
+        if (typeof window.BellowsDropOffMap.invalidateAll === 'function') {
+          window.BellowsDropOffMap.invalidateAll();
+        }
+        // Allow callers to skip resetting the view so we don't blow away a user-focused zoom
+        if (!options.skipReset && typeof window.BellowsDropOffMap.resetAll === 'function') {
+          window.BellowsDropOffMap.resetAll();
+        }
+      }
+    } catch (_e) {}
+  };
+
+  const updateDeliveryInfoVisibility = () => {
+    if (!mailInInfo || !dropOffInfo) return;
+    const selected = form.querySelector('input[name="delivery"]:checked');
+
+    if (!selected) {
+      // No delivery selected yet: show both text blocks and the map, show divider
+      mailInInfo.style.display = '';
+      dropOffInfo.style.display = '';
+      if (deliveryMap) deliveryMap.style.display = '';
+      if (deliveryDivider) deliveryDivider.style.display = '';
+      refreshDropOffMap();
+      return;
+    }
+
+    const val = (selected.value || '').toString().trim().toLowerCase();
+
+    if (val === 'mail in' || val === 'mail-in') {
+      // Mail In only
+      mailInInfo.style.display = '';
+      dropOffInfo.style.display = 'none';
+      if (deliveryMap) deliveryMap.style.display = 'none';
+      if (deliveryDivider) deliveryDivider.style.display = 'none';
+    } else if (val === 'drop off' || val === 'drop-off') {
+      // Drop Off only + map
+      mailInInfo.style.display = 'none';
+      dropOffInfo.style.display = '';
+      if (deliveryMap) deliveryMap.style.display = '';
+      if (deliveryDivider) deliveryDivider.style.display = 'none';
+      // Only invalidate size so we keep any zoom/location chosen by the user (e.g. via city selection)
+      refreshDropOffMap({ skipReset: true });
+    } else {
+      // Fallback: both visible and map visible
+      mailInInfo.style.display = '';
+      dropOffInfo.style.display = '';
+      if (deliveryMap) deliveryMap.style.display = '';
+      if (deliveryDivider) deliveryDivider.style.display = '';
+      refreshDropOffMap();
+    }
+  };
+
+  const scrollToFieldset = (fs, offset = 100) => {
+    if (!fs) return;
+    const rect = fs.getBoundingClientRect();
+    const targetTop = Math.max(0, rect.top + window.scrollY - offset);
+    window.scrollTo({ top: targetTop, behavior: 'smooth' });
+  };
+
+  const scrollToNextVisibleFieldset = (currentFs, offset = 100) => {
+    if (!currentFs) return;
+    const fieldsets = Array.from(form.querySelectorAll('fieldset.rolls-form-card'));
+    const idx = fieldsets.indexOf(currentFs);
+    if (idx === -1) return;
+    for (let i = idx + 1; i < fieldsets.length; i += 1) {
+      const candidate = fieldsets[i];
+      if (isVisible(candidate)) {
+        scrollToFieldset(candidate, offset);
+        break;
+      }
+    }
+  };
+
+  // Auto-select any option marked as data-default-option="true" when a fieldset becomes active,
+  // but do it per radio "name" so multiple logical groups inside one fieldset (e.g. Add Ons)
+  // each get their own default.
   const applyDefaultsInContainer = (container) => {
     if (!container) return;
     const fieldsets = container.querySelectorAll('fieldset.rolls-form-card');
@@ -80,13 +164,25 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!isVisible(fs)) return;
       const visibleRadios = getVisibleRadiosInFieldset(fs);
       if (!visibleRadios.length) return;
-      const anyChecked = visibleRadios.some((r) => r.checked);
-      if (anyChecked) return;
-      const defaultRadio = visibleRadios.find((r) => r.dataset.defaultOption === 'true');
-      if (!defaultRadio) return;
-      defaultRadio.checked = true;
-      // Fire change so pricing / conditions update
-      defaultRadio.dispatchEvent(new Event('change', { bubbles: true }));
+
+      // Group by radio name so each logical group can get its own default
+      const groupsByName = new Map();
+      visibleRadios.forEach((r) => {
+        const name = r.name || '__anon__';
+        if (!groupsByName.has(name)) groupsByName.set(name, []);
+        groupsByName.get(name).push(r);
+      });
+
+      groupsByName.forEach((groupRadios) => {
+        if (!groupRadios.length) return;
+        const anyChecked = groupRadios.some((r) => r.checked);
+        if (anyChecked) return;
+        const defaultRadio = groupRadios.find((r) => r.dataset.defaultOption === 'true');
+        if (!defaultRadio) return;
+        defaultRadio.checked = true;
+        // Fire change so pricing / conditions update
+        defaultRadio.dispatchEvent(new Event('change', { bubbles: true }));
+      });
     });
   };
 
@@ -364,7 +460,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
 
-      // Hide/show option; uncheck if it becomes hidden
+      // Hide/show option based on show_if; exclusive default_if logic is applied later
       label.style.display = shouldShow ? '' : 'none';
       if (!shouldShow && radio.checked) radio.checked = false;
 
@@ -402,14 +498,67 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (matchesDefaultIf) {
         radio.dataset.defaultOption = 'true';
-      } else if (!isStaticDefault) {
+        radio.dataset.defaultIfActive = 'true';
+      } else {
+        // Clear flag that this option is being forced by default_if
+        delete radio.dataset.defaultIfActive;
         // Clear conditional default flag when conditions no longer match
-        delete radio.dataset.defaultOption;
+        if (!isStaticDefault) {
+          delete radio.dataset.defaultOption;
+        }
       }
 
       // Update visible price text
       const priceEl = label.querySelector('.opt-price');
       if (priceEl) priceEl.textContent = newPrice > 0 ? `$${newPrice}` : 'Free';
+    });
+
+    // --- default_if vs default priority per radio group (by name) ---
+    // If any option in a group has an active default_if, that option wins over static defaults
+    // and becomes the sole checked option in that group (others are unselected but still visible).
+    const groupsByName = new Map();
+    form.querySelectorAll('input[type="radio"]').forEach((r) => {
+      if (!r.name) return;
+      if (!groupsByName.has(r.name)) groupsByName.set(r.name, []);
+      groupsByName.get(r.name).push(r);
+    });
+
+    groupsByName.forEach((radios) => {
+      if (!radios.length) return;
+
+      const activeDefaults = radios.filter((r) => r.dataset.defaultIfActive === 'true');
+      const primary = activeDefaults[0];
+
+      if (primary) {
+        // default_if wins: this option is the only selectable choice in the group
+        radios.forEach((r) => {
+          const label = r.closest('label');
+          if (r === primary) {
+            if (label) {
+              // Do not force display state here; let show_if control visibility.
+              // We only guarantee the primary is enabled and checked.
+              label.style.removeProperty('display');
+            }
+            r.disabled = false;
+            r.checked = true;
+          } else {
+            if (label) label.style.display = 'none';
+            r.checked = false;
+            r.disabled = true;
+            r.dataset.lockedByDefaultIf = 'true';
+          }
+        });
+      } else {
+        // No active default_if: restore radios previously locked by default_if
+        radios.forEach((r) => {
+          if (r.dataset.lockedByDefaultIf === 'true') {
+            const label = r.closest('label');
+            if (label) label.style.removeProperty('display');
+            r.disabled = false;
+            delete r.dataset.lockedByDefaultIf;
+          }
+        });
+      }
     });
 
     // --- Handle section-level show-if (for Add Ons sections) ---
@@ -471,12 +620,41 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('change', (e) => {
     if (e.target.matches('input[type="radio"]')) {
       applyConditions();
+
       const fs = e.target.closest('fieldset.rolls-form-card');
       if (fs) {
         const visibleRadios = getVisibleRadiosInFieldset(fs);
         const anyChecked = visibleRadios.some((r) => r.checked);
         if (anyChecked) fs.classList.remove('rolls-form-card--error');
       }
+
+      let handledScroll = false;
+
+      // If Disposable is selected in any Film Format group, scroll to Delivery
+      const changedRadio = e.target;
+      if (changedRadio.checked) {
+        const groupKey = normKey(changedRadio.name);
+        const valueNorm = normVal(changedRadio.value);
+        if (groupKey === 'film-format' && valueNorm === 'disposable') {
+          const quantityFs = form.querySelector('fieldset[data-group="Quantity"]');
+          if (quantityFs) {
+            scrollToFieldset(quantityFs, 100);
+            handledScroll = true;
+          }
+        }
+      }
+
+      // Update delivery info (Mail In vs Drop Off copy) when delivery changes
+      if (e.target.name === 'delivery') {
+        updateDeliveryInfoVisibility();
+      }
+
+      // Auto-scroll to the next visible section for real user interactions,
+      // except when we've already handled a special-case scroll (e.g. Disposable).
+      if (!handledScroll && e.isTrusted) {
+        scrollToNextVisibleFieldset(fs, 100);
+      }
+
       updateOrderSummaryVisibility();
     } else if (e.target.matches('input[name="quantity"]')) {
       // React to quantity changes
@@ -667,5 +845,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Init
   applyConditions();
+  updateDeliveryInfoVisibility();
   updateOrderSummaryVisibility();
 });
