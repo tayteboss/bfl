@@ -662,7 +662,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const groupKey = normKey(changedRadio.name);
         const valueNorm = normVal(changedRadio.value);
         if (groupKey === 'film-format' && valueNorm === 'disposable') {
-          const quantityFs = form.querySelector('fieldset[data-group="Quantity"]');
+          const quantityFs = form.querySelector('fieldset[data-group="Add Ons"]');
           if (quantityFs) {
             scrollToFieldset(quantityFs, 100);
             handledScroll = true;
