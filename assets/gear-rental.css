@@ -52,6 +52,9 @@
 	padding: 32px;
 	margin: 0 auto;
 	width: 950px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 
 	@media (max-width: 1024px) {
 		width: 100%;
@@ -64,7 +67,7 @@
 
 .gear-list__title {
 	text-align: center;
-	margin-bottom: 40px;
+	margin-bottom: 16px;
 	font-size: 1.25rem;
   font-family: var(--font-diatype-rounded-bold);
   line-height: 1;
@@ -73,6 +76,11 @@
     font-size: 1rem;
 		margin-bottom: 24px;
   }
+}
+
+.gear-list__subtitle {
+	text-align: center;
+	margin: 0 auto 40px;
 }
 
 .gear-list__inner {
@@ -408,7 +416,13 @@
 
 .gear-single-contact-form__heading {
 	text-align: center;
-	margin-bottom: 40px;
+	margin-bottom: 16px;
+}
+
+.gear-single-contact-form__subtitle {
+	text-align: center;
+	margin: 0 auto 24px;
+	width: 280px;
 }
 
 .contact-form__fields .form-field {
@@ -433,4 +447,10 @@
 	.pagination-button .primary-button {
 		width: 100%;
 	}
+}
+
+.gear-single-contact-form__error {
+	text-align: center;
+	padding: 8px 0;
+	color: var(--color-red);
 }

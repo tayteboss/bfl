@@ -17,7 +17,8 @@
     </div>
 
     <section class="gear-list" aria-labelledby="gear-list-title">
-      <h3 id="gear-list-title" class="gear-list__title type-p-large">Our selection 📷</h3>
+      <h3 id="gear-list-title" class="gear-list__title type-p-large">Our selection</h3>
+      <p class="gear-list__subtitle type-p-large badge-button">Currently only available in Miami</p>
       <div class="gear-list__inner" data-gear-list>
         {% assign all_rentals = shop.metaobjects.gear_rental.values %}
         {% assign rentals_count = all_rentals.size %}

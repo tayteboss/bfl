@@ -160,6 +160,9 @@
               </small>
             {%- else -%}
               <h2 class="gear-single-contact-form__heading type-h1-x-small">Rental Application</h2>
+              <div class="gear-single-contact-form__subtitle type-p-large badge-button">
+                Currently only available in Miami
+              </div>
               <div class="contact-form__fields">
                 <div class="contact-form__fields-inner">
                   <legend class="type-p gear-single-contact-form__legend">Contact details</legend>
@@ -209,7 +212,7 @@
                 </div>
 
                 <div class="contact-form__fields-inner">
-                  <legend class="type-p gear-single-contact-form__legend">Hire dates</legend>
+                  <legend class="type-p gear-single-contact-form__legend">Hire dates (minimum 2 days)</legend>
                   <div class="form-field">
                     <div id="GearRentalHireDates--{{ section.id }}" class="input-daterange">
                       <input
@@ -232,6 +235,15 @@
                       >
                     </div>
                   </div>
+                  <p
+                    id="GearRentalHireDatesError--{{ section.id }}"
+                    class="gear-single-contact-form__error type-p"
+                    role="alert"
+                    aria-live="polite"
+                    hidden
+                  >
+                    Please select a rental period of at least 2 days.
+                  </p>
                 </div>
 
                 <div class="contact-form__fields-inner">
@@ -301,6 +313,73 @@
         minDate: new Date(),
         format: 'mm-dd-yyyy',
       });
+      rangeContainer.addEventListener('changeDate', validateHireDates);
+    }
+
+    var hireStartInput = document.getElementById('GearRentalHireStart--{{ section.id }}');
+    var hireEndInput = document.getElementById('GearRentalHireEnd--{{ section.id }}');
+    var errorEl = document.getElementById('GearRentalHireDatesError--{{ section.id }}');
+    var form = document.querySelector('.gear-single__contact-form form');
+
+    function parseDate(value) {
+      if (!value) return null;
+      var parts = value.split('-');
+      if (parts.length !== 3) return null;
+
+      var month = parseInt(parts[0], 10) - 1;
+      var day = parseInt(parts[1], 10);
+      var year = parseInt(parts[2], 10);
+
+      if (isNaN(month) || isNaN(day) || isNaN(year)) return null;
+
+      return new Date(year, month, day);
+    }
+
+    function validateHireDates() {
+      if (!hireStartInput || !hireEndInput || !errorEl) {
+        return true;
+      }
+
+      var startDate = parseDate(hireStartInput.value);
+      var endDate = parseDate(hireEndInput.value);
+
+      if (!startDate || !endDate) {
+        errorEl.hidden = false;
+        errorEl.textContent = 'Please select both pickup and return dates (minimum 2 days).';
+        return false;
+      }
+
+      var diffTime = endDate.getTime() - startDate.getTime();
+      var diffDays = diffTime / (1000 * 60 * 60 * 24);
+
+      // Allow exactly 2 days (i.e. two selected dates) – only block if the range is shorter than that
+      if (diffDays < 1) {
+        errorEl.hidden = false;
+        errorEl.textContent = 'Please select a rental period of at least 2 days.';
+        return false;
+      }
+
+      errorEl.hidden = true;
+      return true;
+    }
+
+    if (form) {
+      form.addEventListener('submit', function (event) {
+        if (!validateHireDates()) {
+          event.preventDefault();
+          if (hireStartInput) {
+            hireStartInput.focus();
+          }
+        }
+      });
+    }
+
+    if (hireStartInput) {
+      hireStartInput.addEventListener('change', validateHireDates);
+    }
+
+    if (hireEndInput) {
+      hireEndInput.addEventListener('change', validateHireDates);
     }
 
     // No need to assemble full name; a single Full Name input is used
