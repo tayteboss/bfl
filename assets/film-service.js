@@ -24,6 +24,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const serviceBlocks = form.querySelectorAll('.service-groups-wrapper');
   let total = basePrice;
 
+  const errorEl = form.querySelector('[data-film-service-error]');
+
+  const setErrorMessage = (msg) => {
+    if (!errorEl) return;
+    const message = msg || '';
+    errorEl.textContent = message;
+    errorEl.style.display = message ? '' : 'none';
+  };
+
   const getQuantity = () =>
     Math.max(1, parseInt((form.querySelector('input[name="quantity"]') || {}).value || '1', 10) || 1);
 
@@ -422,6 +431,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const qty = getQuantity();
     const displayTotal = qty > 1 ? total * qty : total;
     if (totalDisplay) totalDisplay.textContent = formatMoney(displayTotal);
+    // Clear any previous high-price error when recalculating
+    setErrorMessage('');
     renderSummary();
     updateOrderSummaryVisibility();
   }
@@ -688,57 +699,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Match variant by price, using actual carrier ranges (A–E) and handling missing carriers safely
+  // Match variant by price on the main form product only (single product with up to 2048 variants)
   function findVariantByPrice(priceDollars) {
     const cents = Math.round(priceDollars * 100);
 
-    const carriers = [
-      { name: 'A', data: window.carrierA },
-      { name: 'B', data: window.carrierB },
-      { name: 'C', data: window.carrierC },
-      { name: 'D', data: window.carrierD },
-      { name: 'E', data: window.carrierE },
-    ].filter((c) => Array.isArray(c.data) && c.data.length);
+    const variants = Array.isArray(window.filmServiceVariants) ? window.filmServiceVariants : [];
 
-    if (!carriers.length) {
-      console.warn('No carrier products configured for film service pricing.');
+    if (!variants.length) {
+      console.warn('No variants configured on main film service product for dynamic pricing.');
       return null;
     }
 
-    // Infer min/max ranges for each carrier from its variants
-    const withRanges = carriers
-      .map((c) => {
-        const prices = c.data.map((v) => Number(v.price)).filter((p) => Number.isFinite(p));
-        if (!prices.length) return null;
-        return {
-          ...c,
-          min: Math.min(...prices),
-          max: Math.max(...prices),
-        };
-      })
-      .filter(Boolean)
-      .sort((a, b) => a.min - b.min);
-
-    // Choose the carrier whose range contains this price
-    const carrier = withRanges.find((c) => cents >= c.min && cents <= c.max);
-
-    if (!carrier) {
-      console.warn('No carrier product covers this price.', {
-        priceDollars,
-        cents,
-        carriers: withRanges.map(({ name, min, max }) => ({ name, min, max })),
-      });
-      return null;
-    }
-
-    const variant = carrier.data.find((v) => Number(v.price) === cents) || null;
+    const variant = variants.find((v) => Number(v.price) === cents) || null;
 
     if (!variant) {
-      console.warn('No variant found at exact price within selected carrier.', {
+      console.warn('No variant found at exact price on main film service product.', {
         priceDollars,
         cents,
-        carrier: carrier.name,
-        carrierRange: { min: carrier.min, max: carrier.max },
       });
     }
 
@@ -777,9 +754,28 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    // Guard against totals that exceed our variant coverage / business limit
+    const variants = Array.isArray(window.filmServiceVariants) ? window.filmServiceVariants : [];
+    const maxVariantCents = variants.reduce((max, v) => Math.max(max, Number(v.price || 0) || 0), 0);
+    const maxVariantDollars = maxVariantCents / 100;
+    const HARD_LIMIT_DOLLARS = 2000;
+
+    if (total > maxVariantDollars || total > HARD_LIMIT_DOLLARS) {
+      setErrorMessage('Please contact us for single orders over $2000.');
+      const target = errorEl || form;
+      if (target && typeof target.scrollIntoView === 'function') {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      return;
+    }
+
     const matchedVariant = findVariantByPrice(total);
     if (!matchedVariant) {
-      alert(`No variant found for $${total.toFixed(2)} — please check variant setup.`);
+      setErrorMessage('Something went wrong calculating your total. Please contact us so we can help with your order.');
+      const target = errorEl || form;
+      if (target && typeof target.scrollIntoView === 'function') {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
       return;
     }
 
@@ -843,9 +839,16 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (!response.ok || data?.status === 'error') {
-        const message = data?.description || data?.message || 'Error adding to cart';
+        const message =
+          data?.description ||
+          data?.message ||
+          'We couldn’t add this film service to your bag. Please try again, or contact us if it keeps happening.';
         console.error('Film service add to cart error:', data);
-        alert(message);
+        setErrorMessage(message);
+        const target = errorEl || form;
+        if (target && typeof target.scrollIntoView === 'function') {
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
         resetButtonState();
         return;
       }
@@ -864,7 +867,12 @@ document.addEventListener('DOMContentLoaded', () => {
       resetButtonState();
     } catch (err) {
       console.error(err);
-      alert('Error adding to cart');
+      // Fallback UI error for unexpected issues during add-to-cart
+      setErrorMessage('Please contact us for single orders over $2000 or if this error keeps happening.');
+      const target = errorEl || form;
+      if (target && typeof target.scrollIntoView === 'function') {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
       resetButtonState();
     }
   });

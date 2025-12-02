@@ -12,28 +12,29 @@
     "main": {
       "type": "drop-off",
       "blocks": {
-        "location_QPQewT": {
+        "location_VYX89q": {
           "type": "location",
+          "name": "Bellows Film Lab Orlando",
           "settings": {
-            "id": "",
-            "name": "Layla & Ringo's",
-            "address": "914 N Wells St, Chicago, IL 60610",
-            "lat": "41.8995° N",
-            "lng": "-87.6346° W",
-            "phone": "(312) 763-3703",
-            "website": "https://www.layla-ringos.com/",
-            "google_maps_url": "",
-            "thumbnail": "shopify://shop_images/54549DJs-MainDining.jpg"
+            "id": "bellows-film-lab-orlando",
+            "name": "Bellows Film Lab Orlando",
+            "address": "2426 E Robinson St, Orlando, FL 32803",
+            "lat": "28.5458673",
+            "lng": "-81.35156",
+            "phone": "+1 407-704-1100",
+            "website": "",
+            "google_maps_url": "https://www.google.com/maps/place/Bellows+Film+Lab+Orlando/@28.545853,-81.353263,17z/data=!3m1!4b1!4m6!3m5!1s0x88e77bdcc220c33d:0xa9d17f8696e2026f!8m2!3d28.545853!4d-81.3506827!16s%2Fg%2F11y8zmw3ss?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D"
           }
         },
         "location_G4CVT6": {
           "type": "location",
+          "name": "Bellows Film Lab Atlanta",
           "settings": {
             "id": "Bellows-Film-Lab-Atlanta",
             "name": "Bellows Film Lab Atlanta",
             "address": "1140 Euclid Ave NE, Atlanta, GA 30307",
-            "lat": "33.76 N",
-            "lng": "−84.35 W",
+            "lat": "33.755811",
+            "lng": "-84.359871",
             "phone": "4049074191",
             "website": "https://www.bellowsfilmlab.com",
             "google_maps_url": "https://share.google/IU94jIanPTIoi6Vvu"
@@ -45,7 +46,7 @@
           "settings": {
             "id": "bellows-film-lab-chicago",
             "name": "Bellows Film Lab Chicago",
-            "address": "1359 N Milwaukee Avenue",
+            "address": "1359 N Milwaukee Ave, Chicago, IL 60622",
             "lat": "41.9067107",
             "lng": "-87.6712412",
             "phone": "+1 773-904-7434",
@@ -67,6 +68,21 @@
             "website": "https://www.bellowsfilmlab.com/",
             "google_maps_url": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x88d9b6b1d8772e43:0x39645be5459ca515?sa=X&ved=1t:8290&ictx=111",
             "thumbnail": "shopify://shop_images/bello-miami.png"
+          }
+        },
+        "location_QPQewT": {
+          "type": "location",
+          "name": "Layla & Ringo's",
+          "settings": {
+            "id": "layla-ringo",
+            "name": "Layla & Ringo's",
+            "address": "914 N Wells St, Chicago, IL 60610",
+            "lat": "41.8995242",
+            "lng": "-87.6345586",
+            "phone": "(312) 763-3703",
+            "website": "https://www.layla-ringos.com/",
+            "google_maps_url": "https://www.google.com/maps/place/Layla+%26+Ringo's/@41.899479,-87.6372263,17z/data=!3m1!4b1!4m6!3m5!1s0x880fd35d1284226b:0x7055229d5f0f9a9c!8m2!3d41.899479!4d-87.634646!16s%2Fg%2F11m5fvdbjf?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D",
+            "thumbnail": "shopify://shop_images/54549DJs-MainDining.jpg"
           }
         },
         "location_tMbyPU": {
@@ -161,10 +177,11 @@
         }
       },
       "block_order": [
-        "location_QPQewT",
+        "location_VYX89q",
         "location_G4CVT6",
         "location_TxFwkb",
         "location_nRxVet",
+        "location_QPQewT",
         "location_tMbyPU",
         "location_czJ3wQ",
         "location_4BAqwh",

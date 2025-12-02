@@ -558,3 +558,16 @@
 .rolls-form-card .dropoff-popup__media {
   display: none;
 }
+
+.send-rolls-form-error {
+  text-align: center;
+  max-width: 80%;
+  margin: 0 auto;
+  padding-top: 16px;
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}

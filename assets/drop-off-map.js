@@ -532,11 +532,19 @@
         var handleLocationChange = function () {
           var selected = sendRollsForm.querySelector('input[name="location"]:checked');
           if (!selected) return;
-          var city = (selected.value || '').trim();
-          if (!city) return;
 
-          // Use geocoding + nearest drop-off to focus map around the selected city
-          geocode(city)
+          // Prefer a precise map search query (e.g., full address) when provided on the radio:
+          // <input data-map-search="1359 N Milwaukee Ave, Chicago, IL 60622" ...>
+          // Fallback to the plain city/value if no map-search is present.
+          var query = (
+            (selected.dataset && selected.dataset.mapSearch)
+              ? selected.dataset.mapSearch
+              : selected.value || ''
+          ).trim();
+          if (!query) return;
+
+          // Use geocoding + nearest drop-off to focus map around the selected city / address
+          geocode(query)
             .then(function (results) {
               if (!Array.isArray(results) || !results.length) return;
               var r = results[0];

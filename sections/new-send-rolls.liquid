@@ -9,12 +9,6 @@
   {% break %}
 {%- endif -%}
 
-{% assign carrier_a = section.settings.carrier_product_a %}
-{% assign carrier_b = section.settings.carrier_product_b %}
-{% assign carrier_c = section.settings.carrier_product_c %}
-{% assign carrier_d = section.settings.carrier_product_d %}
-{% assign carrier_e = section.settings.carrier_product_e %}
-
 {%- assign form_data = target_product.metafields.custom.film_services_json.value -%}
 
 {{ 'send-rolls-form.css' | asset_url | stylesheet_tag }}
@@ -58,6 +52,7 @@
                   value="Miami"
                   data-price="0"
                   required
+                  data-map-search="2051 NW 2nd Ave, Miami, FL 33127"
                 >
                 <div class="bubble-option__inner">
                   <div class="bubble-option__icon"></div>
@@ -71,6 +66,7 @@
                   name="location"
                   value="Chicago"
                   data-price="2"
+                  data-map-search="1359 N Milwaukee Ave, Chicago, IL 60622"
                 >
                 <div class="bubble-option__inner">
                   <div class="bubble-option__icon"></div>
@@ -84,6 +80,7 @@
                   name="location"
                   value="Orlando"
                   data-price="0"
+                  data-map-search="2426 E Robinson St, Orlando, FL 32803"
                 >
                 <div class="bubble-option__inner">
                   <div class="bubble-option__icon"></div>
@@ -97,6 +94,7 @@
                   name="location"
                   value="Atlanta"
                   data-price="0"
+                  data-map-search="1140 Euclid Ave NE, Atlanta, GA 30307"
                 >
                 <div class="bubble-option__inner">
                   <div class="bubble-option__icon"></div>
@@ -985,19 +983,23 @@
           <div class="send-rolls-form-submit">
             <button type="submit" class="primary-button primary-button--black">Add to Bag</button>
           </div>
+
+          <div
+            class="send-rolls-form-error type-p-small"
+            data-film-service-error
+            role="alert"
+            aria-live="polite"
+            style="display:none;"
+          ></div>
         </aside>
       </div>
     </form>
   </div>
 </div>
 
-<!-- VARIANT DATA -->
+<!-- VARIANT DATA: use the main form product's variants for pricing -->
 <script>
-  window.carrierA = {{ carrier_a.variants | json }};
-  window.carrierB = {{ carrier_b.variants | json }};
-  window.carrierC = {{ carrier_c.variants | json }};
-  window.carrierD = {{ carrier_d.variants | json }};
-  window.carrierE = {{ carrier_e.variants | json }};
+  window.filmServiceVariants = {{ target_product.variants | json }};
 </script>
 
 <script
@@ -1018,31 +1020,6 @@
       "type": "product",
       "id": "main_form_product",
       "label": "Main Film Service Product (metafields + UI)"
-    },
-    {
-      "type": "product",
-      "id": "carrier_product_a",
-      "label": "Carrier Product A (0–100)"
-    },
-    {
-      "type": "product",
-      "id": "carrier_product_b",
-      "label": "Carrier Product B (101–200)"
-    },
-    {
-      "type": "product",
-      "id": "carrier_product_c",
-      "label": "Carrier Product C (201–300)"
-    },
-    {
-      "type": "product",
-      "id": "carrier_product_d",
-      "label": "Carrier Product D (301–400)"
-    },
-    {
-      "type": "product",
-      "id": "carrier_product_e",
-      "label": "Carrier Product E (401–500)"
     }
   ],
   "presets": [

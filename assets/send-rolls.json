@@ -163,14 +163,33 @@
       "options": [
         {
           "label": "Noritsu",
-          "price": 0
+          "price": 0,
+          "show_if": {
+            "film_format": [
+              "35mm",
+              "120",
+              "4x5 (Sheet)",
+              "8x10 (Sheet)"
+            ]
+          }
         },
         {
           "label": "Fuji Frontier",
           "price": 0,
+          "show_if": {
+            "film_format": [
+              "Disposable",
+              "35mm",
+              "110",
+              "120",
+              "4x5 (Sheet)",
+              "8x10 (Sheet)"
+            ]
+          },
           "default_if": {
             "film_format": [
-              "Disposable"
+              "Disposable",
+              "110"
             ]
           }
         }
@@ -674,14 +693,33 @@
       "options": [
         {
           "label": "Noritsu",
-          "price": 0
+          "price": 0,
+          "show_if": {
+            "film_format": [
+              "35mm",
+              "120",
+              "4x5 (Sheet)",
+              "8x10 (Sheet)"
+            ]
+          }
         },
         {
           "label": "Fuji Frontier",
           "price": 0,
+          "show_if": {
+            "film_format": [
+              "Disposable",
+              "35mm",
+              "110",
+              "120",
+              "4x5 (Sheet)",
+              "8x10 (Sheet)"
+            ]
+          },
           "default_if": {
             "film_format": [
-              "Disposable"
+              "Disposable",
+              "110"
             ]
           }
         }
@@ -842,20 +880,9 @@
       "sub_title": "Film comes in different shapes and sizes. Match your film to the kinds listed below when ordering.",
       "options": [
         {
-          "label": "35mm",
-          "price": 10,
-          "description": "The most common roll film, in a metal canister.",
-          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/35mm_f57dd403-597f-4215-a38a-850c09394c15.png?v=1763627397"
-        },
-        {
-          "label": "120",
-          "price": 10,
-          "description": "Medium format film, known for taller size and paper backing.",
-          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/120.png?v=1763627397"
-        },
-        {
           "label": "4x5 (Sheet)",
           "price": 10,
+          "default": true,
           "description": "A large-format single sheet offering high resolution, precise tonal control, and wide dynamic range.",
           "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/4x5_b798d627-7ec2-4010-9e3f-5ef0461f0a31.png?v=1763709720"
         }
@@ -873,13 +900,13 @@
 				},
 				{
 					"label": "High",
-					"price": 60,
+					"price": 70,
 					"description": "High-detail scan at the upper optical limit (200mb) — ideal for large prints or archival-quality work.",
 					"description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/mid-res.png?v=1763627397"
 				},
 				{
 					"label": "Archival",
-					"price": 95,
+					"price": 90,
 					"description": "Maximum resolution + bit depth (600mb) with 3F raw-style scan — perfect for preservation or re-editable scans.",
 					"description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/high-res.png?v=1763627397"
 				}
