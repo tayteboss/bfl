@@ -1,14 +1,14 @@
 [
   {
-    "name": "Miami (HQ)",
+    "name": "Bellows Film Lab Miami",
     "address": "2051 NW 2nd Ave, Miami, FL 33127",
     "addressUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x88d9b6b1d8772e43:0x39645be5459ca515?sa=X&ved=1t:8290&ictx=111",
     "phone": "+1 305-456-4006",
     "phoneFormatted": "+13054564006",
-    "ariaLabel": "Call our Miami headquarters"
+    "ariaLabel": "Call our Miami headquarters location"
   },
   {
-    "name": "Chicago",
+    "name": "Bellows Film Lab Chicago",
     "address": "1359 N Milwaukee Ave, Chicago, IL 60622",
     "addressUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x880fd3b66f626319:0xfa76adf078f918fd?sa=X&ved=1t:8290&ictx=111",
     "phone": "+1 773-904-7434",
@@ -16,15 +16,15 @@
     "ariaLabel": "Call our Chicago location"
   },
   {
-    "name": "Atlanta Lab",
+    "name": "Bellows Film Lab Atlanta",
     "address": "1140 Euclid Ave NE, Atlanta, GA 30307",
     "addressUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x88f50715fee5009f:0xff23412235d11cc2?sa=X&ved=1t:8290&ictx=111",
     "phone": "+1 404-907-4191",
     "phoneFormatted": "+14049074191",
-    "ariaLabel": "Call our Atlanta lab"
+    "ariaLabel": "Call our Atlanta location"
   },
   {
-    "name": "Orlando",
+    "name": "Bellows Film Lab Orlando",
     "address": "2426 E Robinson St, Orlando, FL 32803",
     "addressUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x88e77bdcc220c33d:0xa9d17f8696e2026f?sa=X&ved=1t:8290&ictx=111",
     "phone": "+1 407-704-1100",

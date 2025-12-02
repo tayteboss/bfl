@@ -17,29 +17,28 @@
         "related_limit": 4
       }
     },
+    "1764548065b1dfb937": {
+      "type": "apps",
+      "settings": {}
+    },
     "1764197612c6b3ecbb": {
       "type": "apps",
-      "blocks": {
-        "tepo_product_options_product_app_block_rq6GxP": {
-          "type": "shopify://apps/tepo-product-options/blocks/product-app-block/906ef57c-14e4-45d8-8b53-3ba7349d56a6",
-          "settings": {
-            "product": "{{product}}"
-          }
-        }
-      },
-      "block_order": [
-        "tepo_product_options_product_app_block_rq6GxP"
-      ],
       "settings": {}
     },
     "176419755102717f55": {
+      "type": "apps",
+      "settings": {}
+    },
+    "176454740959d38883": {
       "type": "apps",
       "settings": {}
     }
   },
   "order": [
     "main",
+    "1764548065b1dfb937",
     "1764197612c6b3ecbb",
-    "176419755102717f55"
+    "176419755102717f55",
+    "176454740959d38883"
   ]
 }

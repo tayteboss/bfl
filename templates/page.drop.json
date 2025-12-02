@@ -12,6 +12,20 @@
     "main": {
       "type": "drop-off",
       "blocks": {
+        "location_QPQewT": {
+          "type": "location",
+          "settings": {
+            "id": "",
+            "name": "Layla & Ringo's",
+            "address": "914 N Wells St, Chicago, IL 60610",
+            "lat": "41.8995° N",
+            "lng": "-87.6346° W",
+            "phone": "(312) 763-3703",
+            "website": "https://www.layla-ringos.com/",
+            "google_maps_url": "",
+            "thumbnail": "shopify://shop_images/54549DJs-MainDining.jpg"
+          }
+        },
         "location_G4CVT6": {
           "type": "location",
           "settings": {
@@ -31,7 +45,7 @@
           "settings": {
             "id": "bellows-film-lab-chicago",
             "name": "Bellows Film Lab Chicago",
-            "address": "1702 N Damen Ave, Chicago IL, 60647",
+            "address": "1359 N Milwaukee Avenue",
             "lat": "41.9067107",
             "lng": "-87.6712412",
             "phone": "+1 773-904-7434",
@@ -147,6 +161,7 @@
         }
       },
       "block_order": [
+        "location_QPQewT",
         "location_G4CVT6",
         "location_TxFwkb",
         "location_nRxVet",
