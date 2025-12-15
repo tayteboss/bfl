@@ -157,19 +157,18 @@
       "accordion_title": "Which scanner is right for me?",
       "accordion_sub_title": "Both scanners create beautiful results, but each has unique strengths. See below for details and visual examples so you can select the best fit for your needs.",
       "sub_title": "Select a scanner",
-      "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/scanner-compare.jpg?v=1764138703",
       "column_one_richtext": "<p>Noritsu HS-1800</p><ul><li><strong>Look &amp; feel:</strong> Crisp, sharp detail with a slightly more neutral/modern colour profile.</li><li><strong>Best for:</strong> When you want maximum fine detail, subtle tones, or need flexibility for editing.</li><li><strong>Great with:</strong> Colour negative film, B&amp;W film, and high-contrast scenes.</li></ul>",
       "column_two_richtext": "<p>Fuji Frontier SP-3000</p><ul><li><strong>Look &amp; feel:</strong> Smooth, rich colour with a softer, more filmic aesthetic straight out of the scan.</li><li><strong>Best for:</strong> Natural skin tones, warm highlights, and that classic Frontier “glow.”</li><li><strong>Great with:</strong> Portraits, wedding photography, and any film you want to look timeless.</li></ul>",
+      "column_three_richtext": "<p>Epson 12000XL (4x5 Sheet and 8x10 Sheet only)</p> <ul> <li><strong>Look &amp; feel:</strong> Ultra-clean, high-fidelity scans with accurate, neutral colour and exceptional detail across shadows and highlights thanks to 48-bit colour depth, high optical resolution, and a wide Dmax.</li> <li><strong>Best for:</strong> Large-format originals, fine art, archival material and mixed media where colour accuracy, tonal range and high resolution are critical.</li> <li><strong>Great with:</strong> Artwork reproduction, museum/archival scanning, graphic-arts prepress, and any project that needs precise, museum-quality digitisation of prints, transparencies or documents.</li> </ul>",
       "options": [
         {
           "label": "Noritsu",
           "price": 0,
           "show_if": {
             "film_format": [
+              "Disposable",
               "35mm",
-              "120",
-              "4x5 (Sheet)",
-              "8x10 (Sheet)"
+              "120"
             ]
           }
         },
@@ -181,15 +180,22 @@
               "Disposable",
               "35mm",
               "110",
-              "120",
-              "4x5 (Sheet)",
-              "8x10 (Sheet)"
+              "120"
             ]
           },
           "default_if": {
             "film_format": [
-              "Disposable",
-              "110"
+              "Disposable"
+            ]
+          }
+        },
+        {
+          "label": "Epson 12000XL",
+          "price": 0,
+          "show_if": {
+            "film_format": [
+              "4x5 (Sheet)",
+              "8x10 (Sheet)"
             ]
           }
         }
@@ -203,6 +209,11 @@
         {
           "label": "Medium (JPEG)",
           "price": 9,
+          "price_overrides": {
+            "scanner": {
+              "Epson 12000XL": 10
+            }
+          },
           "description": "Great for most uses. Delivers print-ready images suitable for sharing online and small to medium-size prints.",
           "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/low-res.png?v=1763627397",
           "default_if": {
@@ -214,12 +225,22 @@
         {
           "label": "High (JPEG)",
           "price": 13,
+          "price_overrides": {
+            "scanner": {
+              "Epson 12000XL": 15
+            }
+          },
           "description": "Higher resolution files with more detail, ideal for larger prints or additional cropping.",
           "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/mid-res.png?v=1763627397"
         },
         {
           "label": "High (TIFF)",
           "price": 13,
+          "price_overrides": {
+            "scanner": {
+              "Epson 12000XL": 15
+            }
+          },
           "description": "Maximum available resolution for critical work, archiving, or professional needs.",
           "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/high-res.png?v=1763627397"
         }
@@ -687,19 +708,18 @@
       "accordion_title": "Which scanner is right for me?",
       "accordion_sub_title": "Both scanners create beautiful results, but each has unique strengths. See below for details and visual examples so you can select the best fit for your needs.",
       "sub_title": "Select a scanner",
-      "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/scanner-compare.jpg?v=1764138703",
       "column_one_richtext": "<p>Noritsu HS-1800</p><ul><li><strong>Look &amp; feel:</strong> Crisp, sharp detail with a slightly more neutral/modern colour profile.</li><li><strong>Best for:</strong> When you want maximum fine detail, subtle tones, or need flexibility for editing.</li><li><strong>Great with:</strong> Colour negative film, B&amp;W film, and high-contrast scenes.</li></ul>",
       "column_two_richtext": "<p>Fuji Frontier SP-3000</p><ul><li><strong>Look &amp; feel:</strong> Smooth, rich colour with a softer, more filmic aesthetic straight out of the scan.</li><li><strong>Best for:</strong> Natural skin tones, warm highlights, and that classic Frontier “glow.”</li><li><strong>Great with:</strong> Portraits, wedding photography, and any film you want to look timeless.</li></ul>",
+      "column_three_richtext": "<p>Epson 12000XL</p> <ul> <li><strong>Look &amp; feel:</strong> Ultra-clean, high-fidelity scans with accurate, neutral colour and exceptional detail across shadows and highlights thanks to 48-bit colour depth, high optical resolution, and a wide Dmax.</li> <li><strong>Best for:</strong> Large-format originals, fine art, archival material and mixed media where colour accuracy, tonal range and high resolution are critical.</li> <li><strong>Great with:</strong> Artwork reproduction, museum/archival scanning, graphic-arts prepress, and any project that needs precise, museum-quality digitisation of prints, transparencies or documents.</li> </ul>",
       "options": [
         {
           "label": "Noritsu",
           "price": 0,
           "show_if": {
             "film_format": [
+              "Disposable",
               "35mm",
-              "120",
-              "4x5 (Sheet)",
-              "8x10 (Sheet)"
+              "120"
             ]
           }
         },
@@ -711,15 +731,22 @@
               "Disposable",
               "35mm",
               "110",
-              "120",
-              "4x5 (Sheet)",
-              "8x10 (Sheet)"
+              "120"
             ]
           },
           "default_if": {
             "film_format": [
-              "Disposable",
-              "110"
+              "Disposable"
+            ]
+          }
+        },
+        {
+          "label": "Epson 12000XL",
+          "price": 0,
+          "show_if": {
+            "film_format": [
+              "4x5 (Sheet)",
+              "8x10 (Sheet)"
             ]
           }
         }
@@ -733,6 +760,11 @@
         {
           "label": "Medium (JPEG)",
           "price": 9,
+          "price_overrides": {
+            "scanner": {
+              "Epson 12000XL": 10
+            }
+          },
           "description": "Great for most uses. Delivers print-ready images suitable for sharing online and small to medium-size prints.",
           "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/low-res.png?v=1763627397",
           "default_if": {
@@ -744,12 +776,22 @@
         {
           "label": "High (JPEG)",
           "price": 13,
+          "price_overrides": {
+            "scanner": {
+              "Epson 12000XL": 15
+            }
+          },
           "description": "Higher resolution files with more detail, ideal for larger prints or additional cropping.",
           "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/mid-res.png?v=1763627397"
         },
         {
           "label": "High (TIFF)",
           "price": 13,
+          "price_overrides": {
+            "scanner": {
+              "Epson 12000XL": 15
+            }
+          },
           "description": "Maximum available resolution for critical work, archiving, or professional needs.",
           "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/high-res.png?v=1763627397"
         }
@@ -880,6 +922,18 @@
       "sub_title": "Film comes in different shapes and sizes. Match your film to the kinds listed below when ordering.",
       "options": [
         {
+          "label": "35mm",
+          "price": 8,
+          "description": "The most common roll film, in a metal canister.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/35mm_f57dd403-597f-4215-a38a-850c09394c15.png?v=1763627397"
+        },
+        {
+          "label": "120",
+          "price": 9,
+          "description": "Medium format film, known for taller size and paper backing.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/120.png?v=1763627397"
+        },
+        {
           "label": "4x5 (Sheet)",
           "price": 10,
           "default": true,
@@ -905,7 +959,7 @@
 					"description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/mid-res.png?v=1763627397"
 				},
 				{
-					"label": "Archival",
+					"label": "Ultra High",
 					"price": 90,
 					"description": "Maximum resolution + bit depth (600mb) with 3F raw-style scan — perfect for preservation or re-editable scans.",
 					"description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/high-res.png?v=1763627397"

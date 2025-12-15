@@ -3,11 +3,26 @@
 <section
   class="wall-of-fame"
   aria-label="Wall of Fame Image Gallery"
+  data-wall-of-fame
+  data-section-id="{{ section.id }}"
 >
   <div class="layout-wrapper">
     <div class="wall-of-fame__header-wrapper" data-in-view>
-      <h2 class="type-h1-large" id="wall-of-fame-title">{{ section.settings.heading }}</h2>
-      <p class="type-p-large" id="wall-of-fame-description">{{ section.settings.text }}</p>
+      <h2 class="type-h1-large" id="wall-of-fame-title-{{ section.id }}">{{ section.settings.heading }}</h2>
+      <p class="type-p-large" id="wall-of-fame-description-{{ section.id }}">{{ section.settings.text }}</p>
+
+      <div class="form-field">
+        <div class="wall-of-fame__month-filter select-wrapper" data-wall-of-fame-month-filter hidden>
+          <label class="visually-hidden" for="wall-of-fame-month-{{ section.id }}">Select month</label>
+          <select
+            id="wall-of-fame-month-{{ section.id }}"
+            class="wall-of-fame__month-select field__input"
+            name="wall-of-fame-month"
+            aria-label="Select month"
+            data-wall-of-fame-month-select
+          ></select>
+        </div>
+      </div>
     </div>
   </div>
   <div class="image-carousel__inner" data-in-view>
@@ -15,100 +30,343 @@
       class="swiper js-wall-of-fame-carousel image-carousel"
       style="--swiper-wrapper-transition-timing-function: linear;"
       aria-roledescription="carousel"
-      aria-labelledby="wall-of-fame-title wall-of-fame-description"
+      aria-labelledby="wall-of-fame-title-{{ section.id }} wall-of-fame-description-{{ section.id }}"
     >
       <div
         class="swiper-wrapper"
         aria-live="polite"
         aria-atomic="false"
-      >
-        {% for block in section.blocks %}
-          <div
-            class="swiper-slide image-carousel-item"
-            {{ block.shopify_attributes }}
-            role="group"
-            aria-roledescription="slide"
-            aria-label="Slide {{ forloop.index }} of {{ section.blocks.size }}"
-          >
-            {% if block.settings.image != blank %}
-              <div class="image-carousel__image-ratio">
-                <div class="image-carousel__image-inner">
-                  <img
-                    src="{{ block.settings.image | image_url }}"
-                    alt="{{ block.settings.alt | escape | default: 'Carousel image ' | append: forloop.index }}"
-                    loading="lazy"
-                    width="800"
-                    height="528"
-                    decoding="async"
-                  >
-                  {% if block.settings.cta != blank %}
-                    <div class="wall-of-fame__ig-button">
-                      <div data-hover-shake="small">
-                        <a
-                          href="{{ block.settings.cta }}"
-                          target="_blank"
-                          class="wall-of-fame__ig-button type-p"
-                          rel="noopener noreferrer"
-                          aria-label="{{ block.settings.button }} (opens in new tab)"
-                        >
-                          {{- block.settings.button -}}
-                        </a>
-                      </div>
-                    </div>
-                  {% endif %}
-                </div>
-              </div>
-            {% endif %}
-          </div>
-        {% endfor %}
-      </div>
+        data-wall-of-fame-wrapper
+      ></div>
     </div>
+  </div>
+
+  <div data-wall-of-fame-templates hidden>
+    {% for block in section.blocks %}
+      {% if block.settings.image == blank %}
+        {% continue %}
+      {% endif %}
+
+      {% assign month_str = block.settings.month | append: '' %}
+      {% assign year_str = block.settings.year | append: '' %}
+
+      {% if month_str == blank or year_str == blank %}
+        {% continue %}
+      {% endif %}
+
+      {% assign month_padded = month_str %}
+      {% if month_padded.size == 1 %}
+        {% assign month_padded = '0' | append: month_padded %}
+      {% endif %}
+
+      {% capture month_name %}
+        {% case month_str %}
+          {% when '1' %}January
+          {% when '2' %}February
+          {% when '3' %}March
+          {% when '4' %}April
+          {% when '5' %}May
+          {% when '6' %}June
+          {% when '7' %}July
+          {% when '8' %}August
+          {% when '9' %}September
+          {% when '10' %}October
+          {% when '11' %}November
+          {% when '12' %}December
+          {% else %}{{ month_str }}
+        {% endcase %}
+      {% endcapture %}
+      {% assign month_name = month_name | strip %}
+
+      {% assign month_key = year_str | append: '-' | append: month_padded %}
+      {% assign month_label = month_name | append: ' ' | append: year_str %}
+      {% assign sort_key = year_str | append: month_padded %}
+
+      <template
+        data-wall-of-fame-item-template
+        data-month-key="{{ month_key }}"
+        data-month-label="{{ month_label | escape }}"
+        data-sort-key="{{ sort_key }}"
+      >
+        <div
+          class="swiper-slide image-carousel-item"
+          {{ block.shopify_attributes }}
+          role="group"
+          aria-roledescription="slide"
+        >
+          <div class="image-carousel__image-ratio">
+            <div class="image-carousel__image-inner">
+              <img
+                src="{{ block.settings.image | image_url: width: 800 }}"
+                alt="{{ block.settings.alt | escape | default: 'Carousel image' }}"
+                loading="lazy"
+                width="800"
+                height="528"
+                decoding="async"
+              >
+              {% if block.settings.cta != blank %}
+                <div class="wall-of-fame__ig-button">
+                  <div data-hover-shake="small">
+                    <a
+                      href="{{ block.settings.cta }}"
+                      target="_blank"
+                      class="wall-of-fame__ig-button type-p"
+                      rel="noopener noreferrer"
+                      aria-label="{{ block.settings.button }} (opens in new tab)"
+                    >
+                      {{- block.settings.button -}}
+                    </a>
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </template>
+    {% endfor %}
   </div>
 </section>
 
 <script>
-  function initWallOfFameCarousel() {
-    var carousels = document.querySelectorAll('.js-wall-of-fame-carousel');
-    if (!carousels || carousels.length === 0) return;
+  function initWallOfFameCarousels(context) {
+    var sectionId = {{ section.id | json }};
+    var scope = context && context.querySelectorAll ? context : document;
+    var root = scope.querySelector('[data-wall-of-fame][data-section-id="' + sectionId + '"]');
+    if (!root) return;
 
-    var autoplayEnabled = {{ section.settings.autoplay | json }};
+    if (root.__wallOfFameInitialized) return;
+    root.__wallOfFameInitialized = true;
 
-    carousels.forEach(function (carouselEl) {
-      if (typeof window.Swiper !== 'function') return;
+      var carouselEl = root.querySelector('.js-wall-of-fame-carousel');
+      var wrapperEl = root.querySelector('[data-wall-of-fame-wrapper]');
+      var selectEl = root.querySelector('[data-wall-of-fame-month-select]');
+      var filterWrapEl = root.querySelector('[data-wall-of-fame-month-filter]');
+      if (!carouselEl || !wrapperEl || !selectEl || !filterWrapEl) return;
 
-      var options = {
-        slidesPerView: 'auto',
-        breakpoints: {
-          0: {
-            spaceBetween: 8,
-          },
-          768: {
-            spaceBetween: 16,
-          },
-        },
-        loop: false,
-        freeMode: true,
-        grabCursor: true,
-      };
+      var swiperInstance = null;
 
-      if (autoplayEnabled) {
-        options.loop = false;
-        options.freeMode = true;
-        options.allowTouchMove = true;
-        options.autoplay = { disableOnInteraction: true };
-        options.speed = 10000; // continuous ticker speed
+      var templateEls = Array.prototype.slice.call(
+        root.querySelectorAll('[data-wall-of-fame-item-template]')
+      );
+      if (!templateEls || templateEls.length === 0) return;
+
+      var groupsByKey = new Map();
+      templateEls.forEach(function (tpl) {
+        var key = tpl.getAttribute('data-month-key');
+        var label = tpl.getAttribute('data-month-label') || key || '';
+        var sortKey = parseInt(tpl.getAttribute('data-sort-key') || '0', 10);
+        if (!key) return;
+
+        if (!groupsByKey.has(key)) {
+          groupsByKey.set(key, {
+            monthKey: key,
+            monthLabel: label,
+            sortKey: sortKey,
+            templates: [],
+          });
+        }
+        groupsByKey.get(key).templates.push(tpl);
+      });
+
+      var groups = Array.from(groupsByKey.values()).sort(function (a, b) {
+        return (b.sortKey || 0) - (a.sortKey || 0); // newest first
+      });
+      if (groups.length === 0) return;
+
+      // Populate dropdown with only months that have items
+      selectEl.innerHTML = '';
+      groups.forEach(function (group) {
+        var opt = document.createElement('option');
+        opt.value = group.monthKey;
+        opt.textContent = group.monthLabel;
+        selectEl.appendChild(opt);
+      });
+
+      // Default selection: current month if it exists, otherwise newest.
+      var now = new Date();
+      var currentMonthKey = String(now.getFullYear()) + '-' + String(now.getMonth() + 1).padStart(2, '0');
+      var defaultKey = groupsByKey.has(currentMonthKey) ? currentMonthKey : groups[0].monthKey;
+      selectEl.value = defaultKey;
+
+      // Show the filter UI; disable it if there are no alternative months.
+      filterWrapEl.hidden = false;
+      if (groups.length <= 1) {
+        selectEl.disabled = true;
       }
 
-      new window.Swiper(carouselEl, options);
-    });
+      function getSwiperOptions() {
+        var options = {
+          slidesPerView: 'auto',
+          breakpoints: {
+            0: { spaceBetween: 8 },
+            768: { spaceBetween: 16 },
+          },
+          loop: false,
+          freeMode: true,
+          grabCursor: true,
+          // Force-disable autoplay for Wall of Fame (prevents any ticker-like motion)
+          autoplay: false,
+        };
+
+        options.allowTouchMove = true;
+
+        return options;
+      }
+
+      function destroySwiper() {
+        // If the theme already initialized Swiper on this element, destroy that instance too.
+        var existing = carouselEl && carouselEl.swiper;
+        if (existing && existing.autoplay && typeof existing.autoplay.stop === 'function') {
+          existing.autoplay.stop();
+        }
+        if (existing && typeof existing.destroy === 'function') {
+          existing.destroy(true, true);
+        }
+        if (swiperInstance && swiperInstance !== existing && typeof swiperInstance.destroy === 'function') {
+          if (swiperInstance.autoplay && typeof swiperInstance.autoplay.stop === 'function') {
+            swiperInstance.autoplay.stop();
+          }
+          swiperInstance.destroy(true, true);
+        }
+        swiperInstance = null;
+      }
+
+      function initOrUpdateSwiper() {
+        if (typeof window.Swiper !== 'function') return;
+
+        destroySwiper();
+        var opts = getSwiperOptions();
+        opts.observer = true;
+        opts.observeParents = true;
+        opts.watchOverflow = true;
+        opts.updateOnWindowResize = true;
+
+        swiperInstance = new window.Swiper(carouselEl, opts);
+
+        requestAnimationFrame(function () {
+          if (!swiperInstance) return;
+          if (typeof swiperInstance.update === 'function') swiperInstance.update();
+          if (typeof swiperInstance.slideTo === 'function') swiperInstance.slideTo(0, 0);
+          // Autoplay is intentionally disabled for this section; ensure it stays stopped.
+          if (swiperInstance.autoplay && typeof swiperInstance.autoplay.stop === 'function') {
+            swiperInstance.autoplay.stop();
+          }
+        });
+      }
+
+      function renderMonth(monthKey) {
+        var group = groupsByKey.get(monthKey);
+        if (!group) return;
+
+        // Clear slides (this also removes old <img> so only selected month loads).
+        wrapperEl.innerHTML = '';
+
+        var frag = document.createDocumentFragment();
+        group.templates.forEach(function (tpl) {
+          if (!tpl || !tpl.content || !tpl.content.firstElementChild) return;
+          var slide = tpl.content.firstElementChild.cloneNode(true);
+          frag.appendChild(slide);
+        });
+
+        wrapperEl.appendChild(frag);
+
+        // Update slide ARIA counts for the filtered set.
+        var slides = wrapperEl.querySelectorAll('.swiper-slide');
+        slides.forEach(function (slide, idx) {
+          slide.setAttribute('aria-label', 'Slide ' + (idx + 1) + ' of ' + slides.length);
+        });
+
+        initOrUpdateSwiper();
+
+        // If Swiper isn't loaded yet (defer), retry shortly.
+        if (typeof window.Swiper !== 'function') {
+          var attempts = 0;
+          (function retry() {
+            attempts += 1;
+            if (typeof window.Swiper === 'function') {
+              initOrUpdateSwiper();
+              return;
+            }
+            if (attempts >= 60) return; // ~3s max
+            setTimeout(retry, 50);
+          })();
+        }
+      }
+
+      // Initial render
+      renderMonth(defaultKey);
+
+      selectEl.addEventListener('change', function (e) {
+        var key = e && e.target ? e.target.value : null;
+        if (!key) return;
+        renderMonth(key);
+      });
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initWallOfFameCarousel);
+    document.addEventListener('DOMContentLoaded', function () {
+      initWallOfFameCarousels(document);
+    });
   } else {
-    initWallOfFameCarousel();
+    initWallOfFameCarousels(document);
+  }
+
+  if (window.Shopify && Shopify.designMode) {
+    document.addEventListener('shopify:section:load', function (event) {
+      initWallOfFameCarousels(event && event.target ? event.target : document);
+    });
   }
 </script>
+
+<noscript>
+  <section class="wall-of-fame" aria-label="Wall of Fame Image Gallery">
+    <div class="layout-wrapper">
+      <div class="wall-of-fame__header-wrapper">
+        <h2 class="type-h1-large">{{ section.settings.heading }}</h2>
+        <p class="type-p-large">{{ section.settings.text }}</p>
+      </div>
+    </div>
+    <div class="image-carousel__inner">
+      <div class="image-carousel">
+        <div class="image-carousel__inner">
+          {% for block in section.blocks %}
+            {% if block.settings.image != blank %}
+              <div class="image-carousel-item" {{ block.shopify_attributes }}>
+                <div class="image-carousel__image-ratio">
+                  <div class="image-carousel__image-inner">
+                    <img
+                      src="{{ block.settings.image | image_url: width: 800 }}"
+                      alt="{{ block.settings.alt | escape | default: 'Carousel image ' | append: forloop.index }}"
+                      loading="lazy"
+                      width="800"
+                      height="528"
+                      decoding="async"
+                    >
+                    {% if block.settings.cta != blank %}
+                      <div class="wall-of-fame__ig-button">
+                        <div data-hover-shake="small">
+                          <a
+                            href="{{ block.settings.cta }}"
+                            target="_blank"
+                            class="wall-of-fame__ig-button type-p"
+                            rel="noopener noreferrer"
+                            aria-label="{{ block.settings.button }} (opens in new tab)"
+                          >
+                            {{- block.settings.button -}}
+                          </a>
+                        </div>
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+</noscript>
 
 {% schema %}
 {
@@ -125,12 +383,6 @@
       "id": "text",
       "label": "Blurb",
       "default": "Legendary frames, developed right here - updated each month."
-    },
-    {
-      "type": "checkbox",
-      "id": "autoplay",
-      "label": "Autoplay",
-      "default": true
     }
   ],
   "blocks": [
@@ -138,6 +390,35 @@
       "type": "image",
       "name": "Carousel Image",
       "settings": [
+        {
+          "type": "select",
+          "id": "month",
+          "label": "Month",
+          "options": [
+            { "value": "1", "label": "January" },
+            { "value": "2", "label": "February" },
+            { "value": "3", "label": "March" },
+            { "value": "4", "label": "April" },
+            { "value": "5", "label": "May" },
+            { "value": "6", "label": "June" },
+            { "value": "7", "label": "July" },
+            { "value": "8", "label": "August" },
+            { "value": "9", "label": "September" },
+            { "value": "10", "label": "October" },
+            { "value": "11", "label": "November" },
+            { "value": "12", "label": "December" }
+          ],
+          "default": "1"
+        },
+        {
+          "type": "range",
+          "id": "year",
+          "label": "Year",
+          "min": 2000,
+          "max": 2100,
+          "step": 1,
+          "default": 2026
+        },
         {
           "type": "image_picker",
           "id": "image",

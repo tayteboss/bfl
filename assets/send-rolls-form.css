@@ -413,6 +413,11 @@
   padding-top: 24px;
 }
 
+.rolls-form-card-content__columns--three {
+  flex-direction: column;
+  gap: 16px;
+}
+
 .rolls-form-card-content--mail-in {
   padding: 24px 24px 0 24px;
 }

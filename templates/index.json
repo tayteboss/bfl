@@ -110,6 +110,8 @@
         "image_jUptyX": {
           "type": "image",
           "settings": {
+            "month": "12",
+            "year": 2025,
             "image": "shopify://shop_images/carina_grippo.jpg",
             "alt": "Carousel image",
             "button": "@carina_grippo",
@@ -119,6 +121,8 @@
         "image_8qhKbJ": {
           "type": "image",
           "settings": {
+            "month": "12",
+            "year": 2025,
             "image": "shopify://shop_images/maddwilburn_madd.photog.jpg",
             "alt": "Carousel image",
             "button": "@madd.photog",
@@ -128,6 +132,8 @@
         "image_NYezea": {
           "type": "image",
           "settings": {
+            "month": "12",
+            "year": 2025,
             "image": "shopify://shop_images/raulkreitz.jpg",
             "alt": "Carousel image",
             "button": "@raulkreitz",
@@ -137,6 +143,8 @@
         "image_TPE8Lp": {
           "type": "image",
           "settings": {
+            "month": "12",
+            "year": 2025,
             "image": "shopify://shop_images/lyndseyphotoandfilm.jpg",
             "alt": "Carousel image",
             "button": "@lyndseyphotoandfilm",
@@ -146,6 +154,8 @@
         "image_J6GRBJ": {
           "type": "image",
           "settings": {
+            "month": "11",
+            "year": 2025,
             "image": "shopify://shop_images/sydneepedmonds.jpg",
             "alt": "Carousel image",
             "button": "@sydneepedmonds",
@@ -155,6 +165,8 @@
         "image_MaY3Rk": {
           "type": "image",
           "settings": {
+            "month": "11",
+            "year": 2025,
             "image": "shopify://shop_images/merivingian.jpg",
             "alt": "Carousel image",
             "button": "@merivingian",
@@ -164,6 +176,8 @@
         "image_3EFe73": {
           "type": "image",
           "settings": {
+            "month": "11",
+            "year": 2025,
             "image": "shopify://shop_images/cmajorbellow.jpg",
             "alt": "Carousel image",
             "button": "@cmajorbellow",
@@ -173,6 +187,8 @@
         "image_Ce3zUh": {
           "type": "image",
           "settings": {
+            "month": "11",
+            "year": 2025,
             "image": "shopify://shop_images/aguilarbee.jpg",
             "alt": "Carousel image",
             "button": "@aguilarbee",
@@ -182,6 +198,8 @@
         "image_dfzfcc": {
           "type": "image",
           "settings": {
+            "month": "11",
+            "year": 2025,
             "image": "shopify://shop_images/1_22.am.jpg",
             "alt": "Carousel image",
             "button": "@1_22.am",

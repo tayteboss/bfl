@@ -240,6 +240,7 @@
                 {% assign feature_image = group_data.feature_image %}
                 {% assign column_one_richtext = group_data.column_one_richtext %}
                 {% assign column_two_richtext = group_data.column_two_richtext %}
+                {% assign column_three_richtext = group_data.column_three_richtext %}
 
                 <fieldset
                   data-group="{{ group_name | escape }}"
@@ -373,7 +374,7 @@
                             </div>
                           {% endif %}
 
-                          {% if feature_image or column_one_richtext or column_two_richtext %}
+                          {% if feature_image or column_one_richtext %}
                             {% if feature_image %}
                               <div class="rolls-form-card-content__feature-image">
                                 <img
@@ -386,8 +387,8 @@
                                 >
                               </div>
                             {% endif %}
-                            {% if column_one_richtext or column_two_richtext %}
-                              <div class="rolls-form-card-content__columns rich-text">
+                            {% if column_one_richtext or column_two_richtext or column_three_richtext %}
+                              <div class="rolls-form-card-content__columns rich-text{% if column_one_richtext and column_two_richtext and column_three_richtext %} rolls-form-card-content__columns--three{% endif %}">
                                 {% if column_one_richtext %}
                                   <div class="rolls-form-card-content__column-one">
                                     {{ column_one_richtext }}
@@ -396,6 +397,11 @@
                                 {% if column_two_richtext %}
                                   <div class="rolls-form-card-content__column-two">
                                     {{ column_two_richtext }}
+                                  </div>
+                                {% endif %}
+                                {% if column_three_richtext %}
+                                  <div class="rolls-form-card-content__column-three">
+                                    {{ column_three_richtext }}
                                   </div>
                                 {% endif %}
                               </div>

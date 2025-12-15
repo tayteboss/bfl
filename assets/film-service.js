@@ -78,6 +78,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const getVisibleRadiosInFieldset = (fs) =>
     Array.from(fs.querySelectorAll('input[type="radio"]')).filter((r) => {
       const carrier = r.closest('label') || r;
+      // Exclude unavailable options (faded out) from validation
+      if (carrier && carrier.classList.contains('is-unavailable')) return false;
       return isVisible(carrier);
     });
 
@@ -497,9 +499,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
 
-      // Hide/show option based on show_if; exclusive default_if logic is applied later
-      label.style.display = shouldShow ? '' : 'none';
-      if (!shouldShow && radio.checked) radio.checked = false;
+      // Fade out unavailable options instead of hiding them completely
+      if (shouldShow) {
+        label.classList.remove('is-unavailable');
+      } else {
+        label.classList.add('is-unavailable');
+        if (radio.checked) radio.checked = false;
+      }
 
       // --- Dynamic price override
       let newPrice = Number(radio.dataset.basePrice || radio.dataset.price || 0);
@@ -571,18 +577,20 @@ document.addEventListener('DOMContentLoaded', () => {
         radios.forEach((r) => {
           const label = r.closest('label');
           if (r === primary) {
-            if (label) {
-              // Do not force display state here; let show_if control visibility.
-              // We only guarantee the primary is enabled and checked.
-              label.style.removeProperty('display');
-            }
+            // Don't override visibility here - let show_if control it
+            // We only guarantee the primary is enabled and checked if it's visible
             r.disabled = false;
             r.checked = true;
+            // Remove unavailable class if it was previously locked
+            if (label) label.classList.remove('is-unavailable');
           } else {
-            if (label) label.style.display = 'none';
+            // Don't override visibility here - let show_if control it
+            // Only uncheck and disable non-primary options, and mark as unavailable
             r.checked = false;
             r.disabled = true;
             r.dataset.lockedByDefaultIf = 'true';
+            // Mark as unavailable so it's visually faded
+            if (label) label.classList.add('is-unavailable');
           }
         });
       } else {
@@ -590,11 +598,60 @@ document.addEventListener('DOMContentLoaded', () => {
         radios.forEach((r) => {
           if (r.dataset.lockedByDefaultIf === 'true') {
             const label = r.closest('label');
-            if (label) label.style.removeProperty('display');
             r.disabled = false;
             delete r.dataset.lockedByDefaultIf;
+            // Don't remove unavailable class here - let show_if logic control it
+            // The show_if re-evaluation below will set the correct state
           }
         });
+      }
+    });
+
+    // Re-evaluate show_if visibility for all radios after default_if logic
+    // This ensures visibility is correct even after default_if may have changed selections
+    form.querySelectorAll('input[type="radio"]').forEach((radio) => {
+      const label = radio.closest('label');
+      if (!label) return;
+
+      // Skip radios that are currently locked by default_if (they should stay unavailable)
+      if (radio.dataset.lockedByDefaultIf === 'true') {
+        return;
+      }
+
+      const parseJSON = (raw) => {
+        if (!raw || raw === 'null' || raw === '{}' || raw === 'undefined') return null;
+        try {
+          const decoded = raw
+            .replace(/&quot;/g, '"')
+            .replace(/&#39;/g, "'")
+            .replace(/&amp;/g, '&');
+          return JSON.parse(decoded);
+        } catch (err) {
+          console.warn('Invalid JSON in data attribute:', raw);
+          return null;
+        }
+      };
+
+      const showIfRaw = radio.dataset.showIf;
+      const showIf = parseJSON(showIfRaw);
+      let shouldShow = true;
+
+      if (showIf) {
+        // Require ALL show-if groups to match
+        shouldShow = Object.entries(showIf).every(([k, allowed]) => {
+          const sel = getSelectedValue(k, selected);
+          if (!Array.isArray(allowed) || !allowed.length) return true;
+          const allowedNorm = allowed.map(normVal);
+          return sel ? allowedNorm.includes(normVal(sel)) : false;
+        });
+      }
+
+      // Fade out unavailable options instead of hiding them completely
+      if (shouldShow) {
+        label.classList.remove('is-unavailable');
+      } else {
+        label.classList.add('is-unavailable');
+        if (radio.checked) radio.checked = false;
       }
     });
 
@@ -633,11 +690,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
 
-      // Hide/show entire section
-      section.style.display = shouldShow ? '' : 'none';
-
-      // Uncheck all radios in section if it becomes hidden
-      if (!shouldShow) {
+      // Hide entire fieldsets/sections completely when unavailable (only fade individual options)
+      if (shouldShow) {
+        section.style.display = '';
+        section.classList.remove('is-unavailable');
+      } else {
+        section.style.display = 'none';
+        section.classList.remove('is-unavailable');
+        // Uncheck all radios in section if it becomes hidden
         section.querySelectorAll('input[type="radio"]:checked').forEach((radio) => {
           radio.checked = false;
         });

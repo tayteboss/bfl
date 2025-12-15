@@ -1412,6 +1412,17 @@ cart-items .cart__warnings .cart__login-paragraph a {
   }
 }
 
+.bubble-option.is-unavailable {
+  opacity: 0.25;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.bubble-option.is-unavailable input[type="radio"] {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
 
 .simple-form__message,
 .contact-form__message,

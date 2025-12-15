@@ -82,16 +82,16 @@ if (!customElements.get('product-form')) {
             (e) => {
               // Don't prevent default - let form submit work normally
               // This is just a backup to ensure submission happens
-              console.log('Product form: button clicked', {
-                disabled: this.submitButton.disabled,
-                variantId: this.variantIdInput?.value,
-              });
+              // console.log('Product form: button clicked', {
+              //   disabled: this.submitButton.disabled,
+              //   variantId: this.variantIdInput?.value,
+              // });
 
               // If button is disabled, prevent submission
               if (this.submitButton.disabled || this.submitButton.getAttribute('aria-disabled') === 'true') {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('Product form: submission prevented - button is disabled');
+                // console.log('Product form: submission prevented - button is disabled');
                 return false;
               }
 
@@ -99,18 +99,18 @@ if (!customElements.get('product-form')) {
               if (!this.variantIdInput || !this.variantIdInput.value) {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('Product form: submission prevented - no variant ID');
+                // console.log('Product form: submission prevented - no variant ID');
                 return false;
               }
             },
             true
           ); // Use capture phase to catch early
           this.submitButton.dataset.clickHandlerAttached = 'true';
-          console.log('Product form: click handler attached to button');
+          // console.log('Product form: click handler attached to button');
         }
 
         this._initialized = true;
-        console.log('Product form: initialized successfully');
+        // console.log('Product form: initialized successfully');
         return true;
       }
 
@@ -143,54 +143,54 @@ if (!customElements.get('product-form')) {
 
         // Safety checks
         if (!this.form) {
-          console.error('Product form: form not initialized');
+          // console.error('Product form: form not initialized');
           return;
         }
 
         if (!this.submitButton) {
-          console.error('Product form: submit button not found');
+          // console.error('Product form: submit button not found');
           return;
         }
 
         // Check if button is disabled (both attribute and property)
         if (this.submitButton.getAttribute('aria-disabled') === 'true' || this.submitButton.disabled) {
-          console.log('Product form: button is disabled', {
-            ariaDisabled: this.submitButton.getAttribute('aria-disabled'),
-            disabled: this.submitButton.disabled,
-          });
+          // console.log('Product form: button is disabled', {
+          //   ariaDisabled: this.submitButton.getAttribute('aria-disabled'),
+          //   disabled: this.submitButton.disabled,
+          // });
           return;
         }
 
         // Re-get variant input to ensure we have the latest value
         const variantInput = this.variantIdInput;
         if (!variantInput) {
-          console.error('Product form: variant input not found');
+          // console.error('Product form: variant input not found');
           return;
         }
 
-        console.log('Product form: variant input state', {
-          value: variantInput.value,
-          disabled: variantInput.disabled,
-          hasValue: !!variantInput.value,
-        });
+        // console.log('Product form: variant input state', {
+        //   value: variantInput.value,
+        //   disabled: variantInput.disabled,
+        //   hasValue: !!variantInput.value,
+        // });
 
         if (variantInput.disabled) {
-          console.error('Product form: variant input is disabled');
+          // console.error('Product form: variant input is disabled');
           return;
         }
 
         // Check for required utilities
         if (typeof fetchConfig !== 'function') {
-          console.error('Product form: fetchConfig is not defined');
+          // console.error('Product form: fetchConfig is not defined');
           return;
         }
 
         if (typeof routes === 'undefined' || !routes.cart_add_url) {
-          console.error('Product form: routes.cart_add_url is not defined');
+          // console.error('Product form: routes.cart_add_url is not defined');
           return;
         }
 
-        console.log('Product form: proceeding with cart add');
+        // console.log('Product form: proceeding with cart add');
         this.handleErrorMessage();
 
         // Set loading state
@@ -204,7 +204,7 @@ if (!customElements.get('product-form')) {
 
         const config = fetchConfig('javascript');
         if (!config) {
-          console.error('Product form: fetchConfig returned null/undefined');
+          // console.error('Product form: fetchConfig returned null/undefined');
           // Reset button state
           this.submitButton.classList.remove('loading');
           this.submitButton.removeAttribute('aria-disabled');
@@ -219,11 +219,11 @@ if (!customElements.get('product-form')) {
 
         // Get variant ID directly from input (more reliable than FormData)
         const variantId = this.variantIdInput.value;
-        console.log('Product form: variant ID from input:', variantId);
+        // console.log('Product form: variant ID from input:', variantId);
 
         if (!variantId || variantId === '') {
-          console.error('Product form: variant ID is missing or empty');
-          console.error('Variant input:', this.variantIdInput);
+          // console.error('Product form: variant ID is missing or empty');
+          // console.error('Variant input:', this.variantIdInput);
           this.handleErrorMessage('Please select a product option');
           // Reset button state
           this.submitButton.classList.remove('loading');
@@ -242,11 +242,11 @@ if (!customElements.get('product-form')) {
           const requestedQuantity = parseInt(quantityInput.value) || 1;
           const maxQuantity = quantityInput.max ? parseInt(quantityInput.max) : null;
 
-          console.log('Product form: quantity check', {
-            requested: requestedQuantity,
-            max: maxQuantity,
-            maxAttribute: quantityInput.max,
-          });
+          // console.log('Product form: quantity check', {
+          //   requested: requestedQuantity,
+          //   max: maxQuantity,
+          //   maxAttribute: quantityInput.max,
+          // });
 
           // Check if quantity exceeds max (inventory limit)
           if (maxQuantity !== null && requestedQuantity > maxQuantity) {
@@ -290,7 +290,7 @@ if (!customElements.get('product-form')) {
         // Ensure variant ID is in form data
         if (!formData.get('id') || formData.get('id') !== variantId) {
           formData.set('id', variantId);
-          console.log('Product form: set variant ID in formData:', variantId);
+          // console.log('Product form: set variant ID in formData:', variantId);
         }
 
         if (this.cart && typeof this.cart.getSectionsToRender === 'function') {
@@ -306,7 +306,7 @@ if (!customElements.get('product-form')) {
 
         // Universal path: use CartDrawerAPI if present
         if (window.CartDrawerAPI && typeof window.CartDrawerAPI.addToCart === 'function') {
-          console.log('Product form: using CartDrawerAPI');
+          // console.log('Product form: using CartDrawerAPI');
           window.CartDrawerAPI.addToCart(formData, this.submitButton)
             .then(() => {
               this.error = false;
@@ -331,7 +331,7 @@ if (!customElements.get('product-form')) {
 
         config.body = formData;
 
-        console.log('Product form: sending request to:', routes.cart_add_url);
+        // console.log('Product form: sending request to:', routes.cart_add_url);
         fetch(`${routes.cart_add_url}`, config)
           .then(async (response) => {
             // For 422 errors, try to parse the error response
@@ -339,9 +339,9 @@ if (!customElements.get('product-form')) {
               let errorData = null;
               try {
                 errorData = await response.json();
-                console.log('Product form: error response data:', errorData);
+                // console.log('Product form: error response data:', errorData);
               } catch (e) {
-                console.error('Product form: failed to parse error response:', e);
+                // console.error('Product form: failed to parse error response:', e);
               }
 
               // If we have error data, return it so we can handle it below
@@ -401,7 +401,7 @@ if (!customElements.get('product-form')) {
                 }
               }
 
-              console.log('Product form: displaying error message:', errorMessage);
+              // console.log('Product form: displaying error message:', errorMessage);
               this.handleErrorMessage(errorMessage);
 
               // Reset button state
@@ -436,15 +436,15 @@ if (!customElements.get('product-form')) {
 
             if (!this.error) {
               // Log response for debugging
-              console.log('Cart add response:', response);
+              // console.log('Cart add response:', response);
 
               // Shopify cart add API doesn't return item_count in the response
               // We need to fetch the current cart state to get the accurate count
               fetch(`${routes.cart_url}.js`)
                 .then((res) => res.json())
                 .then((cart) => {
-                  console.log('Cart state fetched after add:', cart);
-                  console.log('Cart item_count:', cart.item_count);
+                  // console.log('Cart state fetched after add:', cart);
+                  // console.log('Cart item_count:', cart.item_count);
 
                   // Publish cart update with accurate cart data
                   publish(PUB_SUB_EVENTS.cartUpdate, {
@@ -534,7 +534,7 @@ if (!customElements.get('product-form')) {
 
       handleErrorMessage(errorMessage = false) {
         if (this.hideErrors) {
-          console.log('Product form: error messages are hidden');
+          // console.log('Product form: error messages are hidden');
           return;
         }
 
@@ -556,7 +556,7 @@ if (!customElements.get('product-form')) {
           return;
         }
 
-        console.log('Product form: handleErrorMessage called', {
+        // console.log('Product form: handleErrorMessage called', {
           errorMessage: errorMessage,
           wrapperExists: !!this.errorMessageWrapper,
           messageElementExists: !!this.errorMessage,
@@ -569,7 +569,7 @@ if (!customElements.get('product-form')) {
           this.errorMessage.textContent = errorMessage;
           // Also set display style to ensure visibility
           this.errorMessageWrapper.style.display = '';
-          console.log('Product form: error message displayed:', errorMessage);
+          // console.log('Product form: error message displayed:', errorMessage);
         } else {
           this.errorMessageWrapper.setAttribute('hidden', '');
           this.errorMessage.textContent = '';

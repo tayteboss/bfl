@@ -537,9 +537,7 @@
           // <input data-map-search="1359 N Milwaukee Ave, Chicago, IL 60622" ...>
           // Fallback to the plain city/value if no map-search is present.
           var query = (
-            (selected.dataset && selected.dataset.mapSearch)
-              ? selected.dataset.mapSearch
-              : selected.value || ''
+            selected.dataset && selected.dataset.mapSearch ? selected.dataset.mapSearch : selected.value || ''
           ).trim();
           if (!query) return;
 
