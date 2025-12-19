@@ -16,7 +16,7 @@
 
 <div class="customer order section-{{ section.id }}-padding">
   <div>
-    <h1 class="customer__title">{{ 'customer.account.title' | t }}</h1>
+    <h1 class="customer__title">{{ 'customer.account.title' | t }} test</h1>
     <a href="{{ routes.account_url }}">{{ 'customer.account.return' | t }}</a>
   </div>
 
@@ -99,6 +99,46 @@
         {%- assign cancelled_at = order.cancelled_at | time_tag: format: 'date_at_time' -%}
         <p>{{ 'customer.order.cancelled_html' | t: date: cancelled_at }}</p>
         <p>{{ 'customer.order.cancelled_reason' | t: reason: order.cancel_reason_label }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.enable_download_link -%}
+        {%- assign download_metafield_namespace = section.settings.download_metafield_namespace
+          | default: 'downloads'
+        -%}
+        {%- assign download_metafield_key = section.settings.download_metafield_key | default: 'wetransfer_link' -%}
+        {%- assign download_metafield = order.metafields[download_metafield_namespace][download_metafield_key] -%}
+
+        {%- assign should_show_download_link = true -%}
+        {%- if section.settings.download_only_when_fulfilled and order.fulfillment_status != 'fulfilled' -%}
+          {%- assign should_show_download_link = false -%}
+        {%- endif -%}
+
+        {%- if should_show_download_link and section.settings.download_product != blank -%}
+          {%- assign matches_download_product = false -%}
+          {%- for line_item in order.line_items -%}
+            {%- if line_item.product and line_item.product.id == section.settings.download_product.id -%}
+              {%- assign matches_download_product = true -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- unless matches_download_product -%}
+            {%- assign should_show_download_link = false -%}
+          {%- endunless -%}
+        {%- endif -%}
+
+        {%- if should_show_download_link and download_metafield != blank -%}
+          {%- assign download_url = download_metafield.value | default: download_metafield -%}
+          <div class="order-download">
+            {%- if section.settings.download_heading != blank -%}
+              <h3 class="order-download__heading">{{ section.settings.download_heading | escape }}</h3>
+            {%- endif -%}
+            <p class="order-download__body">
+              <a class="order-download__link" href="{{ download_url | escape }}" target="_blank" rel="noopener">
+                {{ section.settings.download_link_text | escape }}
+              </a>
+            </p>
+          </div>
+        {%- endif -%}
       {%- endif -%}
 
       <table role="table" class="order-details">
@@ -413,6 +453,52 @@
 {
   "name": "t:sections.main-order.name",
   "settings": [
+    {
+      "type": "header",
+      "content": "Order download link"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_download_link",
+      "label": "Enable download link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "download_heading",
+      "label": "Heading",
+      "default": "Your scans"
+    },
+    {
+      "type": "text",
+      "id": "download_link_text",
+      "label": "Link text",
+      "default": "Open WeTransfer link"
+    },
+    {
+      "type": "text",
+      "id": "download_metafield_namespace",
+      "label": "Order metafield namespace",
+      "default": "custom"
+    },
+    {
+      "type": "text",
+      "id": "download_metafield_key",
+      "label": "Order metafield key",
+      "default": "film_download_link"
+    },
+    {
+      "type": "checkbox",
+      "id": "download_only_when_fulfilled",
+      "label": "Only show when fulfilled",
+      "default": true
+    },
+    {
+      "type": "product",
+      "id": "download_product",
+      "label": "Only show for orders containing this product",
+      "info": "Optional. Pick your “Send Rolls” product so only those orders show the link."
+    },
     {
       "type": "header",
       "content": "t:sections.all.padding.section_padding_heading"

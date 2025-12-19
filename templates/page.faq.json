@@ -84,14 +84,14 @@
           "type": "faq_item",
           "settings": {
             "question": "Do You Develop Special Film?",
-            "answer": "<p>We Develop every size for every chemistry. (Chemistries include: C-41, E6, ECN-2, B&W, 110, APS; Formats include: 35mm, 120mm, 220mm, 4x5 sheets, 5X7 sheets, 8X10 sheets</p>"
+            "answer": "<p>We Develop every size for every chemistry. (Chemistries include: C-41, E6, ECN-2, B&W; Formats include: 110, 126, APS, 35mm, 120, 220, 4x5 sheets, 5X7 sheets, 8X10 sheets</p>"
           }
         },
         "faq_item_a9mjaA": {
           "type": "faq_item",
           "settings": {
             "question": "Scans are Digital but what if I want printed copies?",
-            "answer": "<p>Want prints of your photos?<br/><br/>We can print anything you got developed or scanned with us, or any digital photos you send our way. You can send us the files through WeTransfer or, if we recently sent you scans, send us the file names of those you want printed.<br/><br/>Always let us know the size and if you want multiples of any image.<br/><br/>We'll send a payment link and let you know as soon as everything is ready to pick up!<br/><br/>Our standard sizes of 3x5 up to 8x12 are printed inhouse and on Fujifilm lustre finish photo paper. Let us know if you need any special sizing and we will help you as best as we can.</p>"
+            "answer": "<p>Want prints of your photos?<br/><br/>We can print anything you got developed or scanned with us, or any digital photos you send our way. You can send us the files through WeTransfer or, if we recently sent you scans, send us the file names of those you want printed.<br/><br/>Always let us know the size and if you want multiples of any image.<br/><br/>We'll send a payment link and let you know as soon as everything is ready to pick up!<br/><br/>Our standard sizes of 4x6 up to 8x10 are printed inhouse and on Fujifilm lustre finish photo paper. Let us know if you need any special sizing and we will help you as best as we can.</p>"
           }
         },
         "faq_item_akVdQi": {
@@ -146,21 +146,21 @@
           "type": "faq_item",
           "settings": {
             "question": "Do you have a return policy for cameras?",
-            "answer": "<p>We know how important it is to make sure your camera truly feels like it's yours. Once your item is delivered, you have <strong>7 days</strong> to return it for a full refund.</p>"
+            "answer": "<p>We know how important it is to make sure your camera truly feels like it's yours. Once your item is delivered, you have <strong>14 days</strong> to return it for a full refund.</p>"
           }
         },
         "faq_item_X36yVD": {
           "type": "faq_item",
           "settings": {
             "question": "Can I return film?",
-            "answer": "<p>We can't accept film back because of it's sensitivity.</p>"
+            "answer": "<p>We do not accept returns on film. If you have any questions about the film you are looking to purchase, please feel free to reach out to any of our locations! </p>"
           }
         },
         "faq_item_QkKLCm": {
           "type": "faq_item",
           "settings": {
             "question": "What if my camera or accessory is defective?",
-            "answer": "<p>Everything we sell online is tested in the store. If something isn't working, you can contact us and we'd love to help! You have 14 days from delivery to let us know about your item.</p>"
+            "answer": "<p>Everything we sell online is tested in the store. If something isn't working, you can contact us and we'd love to help! You have <strong>14 days </strong>from delivery to let us know about your item.</p>"
           }
         }
       },
@@ -190,8 +190,7 @@
       ],
       "settings": {
         "need_help_heading": "NEED HELP?",
-        "need_help_message": "<p>CALL US ON <a href=\"tel:+13054564006\">+1 (305) 456 4006</a> OR EMAIL <a href=\"mailto:lab@bellowsfilm.com\">LAB@BELLOWSFILM.COM</a> — A REAL HUMAN WILL REPLY WITHIN ONE BUSINESS DAY.</p>",
-        "stamp_image": "shopify://shop_images/892a9235931663cca2285a8a94364fea3c60a794.png"
+        "need_help_message": "<p>CALL US ON <a href=\"tel:+13054564006\">+1 (305) 456 4006</a> OR EMAIL <strong>contact@bellowsfilmlab.com</strong> — A REAL HUMAN WILL REPLY WITHIN ONE BUSINESS DAY.</p>"
       }
     }
   },

@@ -9,6 +9,18 @@
  */
 {
   "sections": {
+    "home_hero_byMjq6": {
+      "type": "home-hero",
+      "name": "Home hero",
+      "settings": {
+        "video": "shopify://files/videos/coldbrewchemist.mp4",
+        "heading": "Heading here",
+        "subheading": "Sub heading here",
+        "description": "<p>Here is where you can put a description</p>",
+        "link_text": "Link text",
+        "link_url": "shopify://products/amber-t200"
+      }
+    },
     "featured_collection_wHifxE": {
       "type": "featured-collection",
       "blocks": {
@@ -44,17 +56,17 @@
     "imagecarousel_7H8JL3": {
       "type": "imagecarousel",
       "blocks": {
-        "image_xACxnj": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/6_1665896639_jpg.webp",
-            "alt": "Carousel image"
-          }
-        },
         "image_KHyr8t": {
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/56c39f85-af6e-471b-8e03-7b00a1ce3a0e.jpg",
+            "alt": "Carousel image"
+          }
+        },
+        "image_xACxnj": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/6_1665896639_jpg.webp",
             "alt": "Carousel image"
           }
         },
@@ -81,8 +93,8 @@
         }
       },
       "block_order": [
-        "image_xACxnj",
         "image_KHyr8t",
+        "image_xACxnj",
         "image_XU3RBp",
         "image_VDfMNB",
         "image_TLMjtc"
@@ -282,6 +294,7 @@
     }
   },
   "order": [
+    "home_hero_byMjq6",
     "featured_collection_wHifxE",
     "imagecarousel_7H8JL3",
     "sendrollshome_aLTPmr",

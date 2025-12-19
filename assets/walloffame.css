@@ -88,10 +88,23 @@
   padding: 0.5rem 1rem;
 
   transition: all var(--transition-speed-default) var(--transition-ease);
+  
+  @media (max-width: 768px) {
+    top: 85%;
+    max-width: 90%;
+    margin: 0 auto;
+  }
 }
 
 .wall-of-fame__ig-button:hover {
   background: var(--color-yellow);
   color: var(--color-black);
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+}
+
+.wall-of-fame__ig-button a {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
 }

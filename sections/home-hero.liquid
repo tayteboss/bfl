@@ -1,0 +1,203 @@
+{{ 'home-hero.css' | asset_url | stylesheet_tag }}
+
+{%- assign heading = section.settings.heading -%}
+{% comment %}
+  {%- assign subheading = section.settings.subheading -%}
+  {%- assign description = section.settings.description -%}
+  {%- assign link_text = section.settings.link_text -%}
+  {%- assign link_url = section.settings.link_url -%}
+{% endcomment %}
+
+<section
+  id="HomeHero-{{ section.id }}"
+  class="home-hero home-hero--muted"
+  data-home-hero
+  aria-label="{{ heading | default: 'Home hero' | escape }}"
+>
+  <div class="home-hero__media" aria-hidden="true">
+    <div class="home-hero__media-outer">
+      <button class="home-hero__mute-wrapper" type="button" aria-label="Unmute video">
+        <div class="home-hero__unmute-wrapper-icon">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.083 4.31011C10.0828 4.18243 10.0448 4.05767 9.9738 3.95156C9.90277 3.84546 9.80191 3.76277 9.68394 3.71394C9.56597 3.6651 9.43617 3.6523 9.31094 3.67716C9.1857 3.70202 9.07063 3.76342 8.98026 3.85361L5.87826 6.95469C5.75855 7.07512 5.61612 7.1706 5.45924 7.23558C5.30236 7.30057 5.13415 7.33378 4.96434 7.33328H2.74967C2.50656 7.33328 2.2734 7.42985 2.10149 7.60176C1.92958 7.77367 1.83301 8.00683 1.83301 8.24994V13.7499C1.83301 13.9931 1.92958 14.2262 2.10149 14.3981C2.2734 14.57 2.50656 14.6666 2.74967 14.6666H4.96434C5.13415 14.6661 5.30236 14.6993 5.45924 14.7643C5.61612 14.8293 5.75855 14.9248 5.87826 15.0452L8.97934 18.1472C9.06972 18.2378 9.18496 18.2994 9.31043 18.3245C9.43591 18.3495 9.56599 18.3367 9.68419 18.2877C9.80239 18.2387 9.90338 18.1557 9.97438 18.0493C10.0454 17.9428 10.0832 17.8177 10.083 17.6898V4.31011Z" stroke="#F6F6F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14.667 8.25C15.262 9.04336 15.5837 10.0083 15.5837 11C15.5837 11.9917 15.262 12.9566 14.667 13.75" stroke="#F6F6F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M17.75 16.8336C18.5161 16.0675 19.1238 15.158 19.5384 14.1571C19.953 13.1561 20.1664 12.0833 20.1664 10.9999C20.1664 9.91651 19.953 8.84371 19.5384 7.84276C19.1238 6.84182 18.5161 5.93234 17.75 5.16626" stroke="#F6F6F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="home-hero__mute-wrapper-icon">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.083 4.31036C10.0828 4.18267 10.0448 4.05791 9.9738 3.95181C9.90277 3.8457 9.80191 3.76302 9.68394 3.71418C9.56597 3.66534 9.43617 3.65255 9.31094 3.67741C9.1857 3.70226 9.07063 3.76366 8.98026 3.85386L5.87826 6.95494C5.75855 7.07537 5.61612 7.17084 5.45924 7.23583C5.30236 7.30081 5.13415 7.33402 4.96434 7.33352H2.74967C2.50656 7.33352 2.2734 7.4301 2.10149 7.60201C1.92958 7.77392 1.83301 8.00707 1.83301 8.25019V13.7502C1.83301 13.9933 1.92958 14.2265 2.10149 14.3984C2.2734 14.5703 2.50656 14.6669 2.74967 14.6669H4.96434C5.13415 14.6664 5.30236 14.6996 5.45924 14.7646C5.61612 14.8295 5.75855 14.925 5.87826 15.0454L8.97934 18.1474C9.06972 18.238 9.18496 18.2997 9.31043 18.3247C9.43591 18.3497 9.56599 18.3369 9.68419 18.2879C9.80239 18.2389 9.90338 18.156 9.97438 18.0495C10.0454 17.9431 10.0832 17.818 10.083 17.69V4.31036Z" stroke="#F6F6F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M20.167 8.25L14.667 13.75" stroke="#F6F6F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14.667 8.25L20.167 13.75" stroke="#F6F6F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </button>
+      <button class="home-hero__close-wrapper"></button>
+      <div class="home-hero__media-inner">
+        {%- if section.settings.video != blank -%}
+          {{
+            section.settings.video
+            | video_tag:
+              class: 'home-hero__video',
+              autoplay: true,
+              loop: true,
+              muted: true,
+              playsinline: true,
+              controls: false,
+              preload: 'metadata'
+          }}
+        {%- elsif section.settings.fallback_image != blank -%}
+          <img
+            class="home-hero__image"
+            src="{{ section.settings.fallback_image | image_url }}"
+            alt="{{ section.settings.fallback_image.alt | default: heading | escape }}"
+            loading="lazy"
+            width="auto"
+            height="auto"
+          >
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  {% comment %}
+    <div class="home-hero__content">
+      <div class="home-hero__content-header-wrapper">
+        {%- if heading != blank -%}
+          <h1 class="home-hero__heading type-h1-small">{{ heading }}</h1>
+        {%- endif -%}
+
+        {%- if subheading != blank -%}
+          <div class="home-hero__subheading type-h1-small">{{ subheading }}</div>
+        {%- endif -%}
+      </div>
+
+      {%- if description != blank -%}
+        <div class="home-hero__description rich-text type-p-large">{{ description }}</div>
+      {%- endif -%}
+
+      {%- if link_text != blank and link_url != blank -%}
+        <div class="home-hero__cta">
+          <a class="home-hero__link type-p-large" href="{{ link_url }}">
+            {{- link_text -}}
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+  {% endcomment %}
+</section>
+
+<script>
+  (() => {
+    const COOKIE_NAME = 'bfl_home_hero_closed';
+    const COOKIE_MAX_AGE_SECONDS = 60 * 60; // 1hr
+    const SHOW_DELAY_MS = 1000;
+
+    const root = document.getElementById('HomeHero-{{ section.id }}');
+    if (!root) return;
+
+    const inDesignMode = !!(window.Shopify && window.Shopify.designMode);
+
+    const getCookie = (name) => {
+      const parts = document.cookie ? document.cookie.split('; ') : [];
+      for (const part of parts) {
+        if (part.startsWith(name + '=')) return part.slice(name.length + 1);
+      }
+      return null;
+    };
+
+    const setCookie = (name, value, maxAgeSeconds) => {
+      let cookie = `${name}=${value}; Max-Age=${maxAgeSeconds}; Path=/; SameSite=Lax`;
+      if (window.location && window.location.protocol === 'https:') cookie += '; Secure';
+      document.cookie = cookie;
+    };
+
+    const setMutedUI = (isMuted) => {
+      root.classList.toggle('home-hero--muted', isMuted);
+      const muteBtn = root.querySelector('.home-hero__mute-wrapper');
+      if (muteBtn) muteBtn.setAttribute('aria-label', isMuted ? 'Unmute video' : 'Mute video');
+    };
+
+    const close = () => {
+      // Only persist dismissal if the user explicitly closes the video.
+      // If they refresh without closing, we want it to show again.
+      if (!inDesignMode) setCookie(COOKIE_NAME, '1', COOKIE_MAX_AGE_SECONDS);
+
+      const video = root.querySelector('video');
+      if (video) {
+        try {
+          video.muted = true;
+          video.pause();
+          video.currentTime = 0;
+        } catch (e) {}
+      }
+
+      root.remove();
+    };
+
+    const init = () => {
+      if (!inDesignMode && getCookie(COOKIE_NAME)) {
+        root.remove();
+        return;
+      }
+
+      const video = root.querySelector('video');
+      const muteBtn = root.querySelector('.home-hero__mute-wrapper');
+      if (muteBtn) {
+        if (!video) {
+          muteBtn.style.display = 'none';
+        } else {
+          setMutedUI(!!video.muted);
+          muteBtn.addEventListener('click', () => {
+            try {
+              video.muted = !video.muted;
+              if (!video.muted) video.play().catch(() => {});
+              setMutedUI(!!video.muted);
+            } catch (e) {}
+          });
+        }
+      }
+
+      const closeBtn = root.querySelector('.home-hero__close-wrapper');
+      if (closeBtn) closeBtn.addEventListener('click', close);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && root.classList.contains('home-hero--visible')) close();
+      });
+
+      window.setTimeout(() => {
+        root.classList.add('home-hero--visible');
+      }, SHOW_DELAY_MS);
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init, { once: true });
+    } else {
+      init();
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Home hero",
+  "settings": [
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video file"
+    },
+    {
+      "type": "image_picker",
+      "id": "fallback_image",
+      "label": "Fallback image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Home hero",
+      "category": "Homepage"
+    }
+  ]
+}
+{% endschema %}
