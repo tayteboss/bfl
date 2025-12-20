@@ -7,7 +7,8 @@
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 200ms var(--transition-ease), visibility 0s linear 200ms;
+
+  transition: opacity 200ms var(--transition-ease), visibility 0s linear 0s;
 
   @media (max-width: 768px) {
     position: relative;
@@ -25,24 +26,18 @@
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transition: opacity 200ms var(--transition-ease), visibility 0s;
+  transition: opacity 200ms var(--transition-ease), visibility 0s linear 0s;
 }
 
 .home-hero__media {
   height: 100%;
   width: 100%;
   overflow: hidden;
-  width: 64vw;
-
-  transition: all 250ms var(--transition-ease);
+  width: 55vw;
 
   @media (max-width: 768px) {
     width: 100%;
   }
-}
-
-.home-hero__media:hover {
-  width: 64.5vw;
 }
 
 .home-hero__media-outer {

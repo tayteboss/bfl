@@ -89,27 +89,25 @@
 
 <script>
   (() => {
-    const COOKIE_NAME = 'bfl_home_hero_closed';
-    const COOKIE_MAX_AGE_SECONDS = 60 * 60; // 1hr
-    const SHOW_DELAY_MS = 1000;
+    const STORAGE_KEY = 'bfl_home_hero_seen';
 
     const root = document.getElementById('HomeHero-{{ section.id }}');
     if (!root) return;
 
     const inDesignMode = !!(window.Shopify && window.Shopify.designMode);
 
-    const getCookie = (name) => {
-      const parts = document.cookie ? document.cookie.split('; ') : [];
-      for (const part of parts) {
-        if (part.startsWith(name + '=')) return part.slice(name.length + 1);
+    const storageGet = (key) => {
+      try {
+        return window.sessionStorage.getItem(key);
+      } catch (e) {
+        return null;
       }
-      return null;
     };
 
-    const setCookie = (name, value, maxAgeSeconds) => {
-      let cookie = `${name}=${value}; Max-Age=${maxAgeSeconds}; Path=/; SameSite=Lax`;
-      if (window.location && window.location.protocol === 'https:') cookie += '; Secure';
-      document.cookie = cookie;
+    const storageSet = (key, value) => {
+      try {
+        window.sessionStorage.setItem(key, value);
+      } catch (e) {}
     };
 
     const setMutedUI = (isMuted) => {
@@ -119,9 +117,8 @@
     };
 
     const close = () => {
-      // Only persist dismissal if the user explicitly closes the video.
-      // If they refresh without closing, we want it to show again.
-      if (!inDesignMode) setCookie(COOKIE_NAME, '1', COOKIE_MAX_AGE_SECONDS);
+      // Persist dismissal for this tab/session (sessionStorage is per-tab).
+      if (!inDesignMode) storageSet(STORAGE_KEY, '1');
 
       const video = root.querySelector('video');
       if (video) {
@@ -136,10 +133,14 @@
     };
 
     const init = () => {
-      if (!inDesignMode && getCookie(COOKIE_NAME)) {
+      if (!inDesignMode && storageGet(STORAGE_KEY)) {
         root.remove();
         return;
       }
+
+      // Mark as seen for this tab even if user doesn't close.
+      // Closing the tab clears this, so a new tab will show again.
+      if (!inDesignMode) storageSet(STORAGE_KEY, '1');
 
       const video = root.querySelector('video');
       const muteBtn = root.querySelector('.home-hero__mute-wrapper');
@@ -165,9 +166,8 @@
         if (e.key === 'Escape' && root.classList.contains('home-hero--visible')) close();
       });
 
-      window.setTimeout(() => {
-        root.classList.add('home-hero--visible');
-      }, SHOW_DELAY_MS);
+      // Show immediately (no delay)
+      root.classList.add('home-hero--visible');
     };
 
     if (document.readyState === 'loading') {

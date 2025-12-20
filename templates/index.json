@@ -13,17 +13,18 @@
       "type": "home-hero",
       "name": "Home hero",
       "settings": {
-        "video": "shopify://files/videos/coldbrewchemist.mp4",
-        "heading": "Heading here",
-        "subheading": "Sub heading here",
-        "description": "<p>Here is where you can put a description</p>",
-        "link_text": "Link text",
-        "link_url": "shopify://products/amber-t200"
+        "video": "shopify://files/videos/coldbrewchemist.mp4"
       }
     },
     "featured_collection_wHifxE": {
       "type": "featured-collection",
       "blocks": {
+        "collection_kt9ggJ": {
+          "type": "collection",
+          "settings": {
+            "collection": "cameras"
+          }
+        },
         "collection_EAV7rA": {
           "type": "collection",
           "settings": {
@@ -44,6 +45,7 @@
         }
       },
       "block_order": [
+        "collection_kt9ggJ",
         "collection_EAV7rA",
         "collection_GMbPrN",
         "collection_ibAqLT"
