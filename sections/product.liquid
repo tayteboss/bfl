@@ -166,7 +166,7 @@
             {%- endif -%}
 
             <div class="product-form__bottom">
-              <div class="product-form__buy-button" data-hover-shake>
+              <div class="product-form__buy-button">
                 {%- render 'buy-buttons',
                   product: product,
                   product_form_id: product_form_id,
@@ -259,14 +259,19 @@
               <h2 class="similar-products__title type-h2-medium">{{ related_title }}</h2>
               <div class="similar-products__list layout-grid">
                 {%- for item in base_collection.products -%}
-                  {%- if item.id != product.id and item.template_suffix != 'news-events' -%}
-                    {%- unless item.tags contains 'Hidden' -%}
-                      {% render 'product-card', product: item %}
-                      {%- assign similar_rendered = similar_rendered | plus: 1 -%}
-                      {%- if similar_rendered >= related_limit -%}
-                        {%- break -%}
-                      {%- endif -%}
-                    {%- endunless -%}
+                  {%- assign has_hidden_tag = false -%}
+                  {%- for tag in item.tags -%}
+                    {%- if tag == 'Hidden' -%}
+                      {%- assign has_hidden_tag = true -%}
+                      {%- break -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                  {%- if item.id != product.id and item.template_suffix != 'news-events' and has_hidden_tag == false -%}
+                    {% render 'product-card', product: item %}
+                    {%- assign similar_rendered = similar_rendered | plus: 1 -%}
+                    {%- if similar_rendered >= related_limit -%}
+                      {%- break -%}
+                    {%- endif -%}
                   {%- endif -%}
                 {%- endfor -%}
               </div>

@@ -221,17 +221,17 @@
     (function waitForFonts() {
       try {
         // Check if fonts are already loaded synchronously
-        if (document && document.fonts && document.fonts.status === 'loaded') {
-          document.documentElement.classList.add('fonts-ready');
-          return;
-        }
+        // if (document && document.fonts && document.fonts.status === 'loaded') {
+        //   document.documentElement.classList.add('fonts-ready');
+        //   return;
+        // }
 
         if (document && document.fonts && typeof document.fonts.ready?.then === 'function') {
           // Use fonts.ready API (doesn't wait for videos/images)
           document.fonts.ready.then(() => {
             document.documentElement.classList.add('fonts-ready');
           });
-          
+
           // Timeout fallback: show logo after 200ms even if fonts aren't ready
           // This prevents the logo from being blocked by slow-loading resources
           setTimeout(() => {

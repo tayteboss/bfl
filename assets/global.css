@@ -1695,6 +1695,7 @@ body.hide-header .header-logo-marquee {
   border-radius: 100px;
   padding: 0 24px;
   min-height: 59px;
+  max-height: 59px;
 
   @media (max-width: 768px) {
     height: 59px;
@@ -1841,3 +1842,4 @@ body.hide-header .header-logo-marquee {
     font-size: 0.8125rem;
   }
 }
+
