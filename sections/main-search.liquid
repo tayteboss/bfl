@@ -28,7 +28,7 @@
     data-search-selector
   >
     <div class="layout-wrapper">
-      <section class="featured-collection__header">
+      <div class="featured-collection__header">
         <h1
           id="featured-collection-heading"
           class="featured-collection__heading type-h1-large"
@@ -106,10 +106,10 @@
             {%- endif -%}
           </div>
         {% endcomment %}
-      </section>
+      </div>
     </div>
 
-    <section
+    <div
       class="collection-list layout-grid layout-wrapper"
       role="region"
       aria-label="Search results"
@@ -143,7 +143,7 @@
           </div>
         </div>
       {% endunless %}
-    </section>
+    </div>
 
     {%- if paginate.pages > 1 -%}
       <div class="pagination-button">
@@ -152,9 +152,9 @@
         </div>
       </div>
     {%- endif -%}
-  </div>
+  </section>
 {% endpaginate %}
-</section>
+
 {% if section.settings.image_shape == 'arch' %}
   {{ 'mask-arch.svg' | inline_asset_content }}
 {%- endif -%}

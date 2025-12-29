@@ -1784,3 +1784,60 @@ body.hide-header .header-logo-marquee {
     font-size: 13.5vw;
   }
 }
+
+#shopify-pc__banner {
+  box-shadow: none !important;
+  background: var(--color-yellow) !important;
+  border-radius: 24px !important;
+  bottom: 24px !important;
+}
+
+#shopify-pc__prefs__dialog {
+  box-shadow: none !important;
+  border-radius: 24px !important;
+}
+
+#shopify-pc__prefs__essential {
+  border-top: none !important;
+}
+
+#shopify-pc__prefs__header-accept,
+#shopify-pc__prefs__header-decline {
+  border: none !important;
+  border-radius: 100px !important;
+  background: var(--color-black) !important;
+  color: var(--color-white) !important;
+  cursor: pointer !important;
+}
+
+#shopify-pc__prefs__header-save {
+  border: none !important;
+  cursor: pointer !important;
+}
+
+#shopify-pc__prefs__header-actions button:hover {
+  background: var(--color-yellow) !important;
+  color: var(--color-black) !important;
+}
+
+#shopify-pc__banner__btn-accept,
+#shopify-pc__banner__btn-decline {
+  border: none !important;
+  border-radius: 100px !important;
+  background: var(--color-black) !important;
+  color: var(--color-white) !important;
+}
+
+#shopify-pc__banner__btn-accept:hover,
+#shopify-pc__banner__btn-decline:hover {
+  background: var(--color-black) !important;
+  color: var(--color-yellow) !important;
+}
+
+.shopify-pc__banner__body a {
+  font-size: 0.875rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.8125rem;
+  }
+}

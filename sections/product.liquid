@@ -260,11 +260,13 @@
               <div class="similar-products__list layout-grid">
                 {%- for item in base_collection.products -%}
                   {%- if item.id != product.id and item.template_suffix != 'news-events' -%}
-                    {% render 'product-card', product: item %}
-                    {%- assign similar_rendered = similar_rendered | plus: 1 -%}
-                    {%- if similar_rendered >= related_limit -%}
-                      {%- break -%}
-                    {%- endif -%}
+                    {%- unless item.tags contains 'Hidden' -%}
+                      {% render 'product-card', product: item %}
+                      {%- assign similar_rendered = similar_rendered | plus: 1 -%}
+                      {%- if similar_rendered >= related_limit -%}
+                        {%- break -%}
+                      {%- endif -%}
+                    {%- endunless -%}
                   {%- endif -%}
                 {%- endfor -%}
               </div>

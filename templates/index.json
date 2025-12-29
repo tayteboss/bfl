@@ -13,7 +13,7 @@
       "type": "home-hero",
       "name": "Home hero",
       "settings": {
-        "video": "shopify://files/videos/coldbrewchemist.mp4"
+        "video": "shopify://files/videos/HERO Probe Loop2K -_9d8c43b0-e51c-4b14-9346-bcb8a148d2f8.mp4"
       }
     },
     "featured_collection_wHifxE": {
@@ -61,35 +61,35 @@
         "image_KHyr8t": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/56c39f85-af6e-471b-8e03-7b00a1ce3a0e.jpg",
+            "image": "shopify://shop_images/Isa-Osorio-x-Bellows_00011113_000111130033.png",
             "alt": "Carousel image"
           }
         },
         "image_xACxnj": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/6_1665896639_jpg.webp",
+            "image": "shopify://shop_images/Isa-O.x-Bellows_00111111_001111110004.png",
             "alt": "Carousel image"
           }
         },
         "image_XU3RBp": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/IMG_0338.jpg",
+            "image": "shopify://shop_images/Isa-O.x-Bellows_00111113_001111130010.png",
+            "alt": "Carousel image"
+          }
+        },
+        "image_3b3aw3": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/00006565_000065650006.png",
             "alt": "Carousel image"
           }
         },
         "image_VDfMNB": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/13_2.jpg",
-            "alt": "Carousel image"
-          }
-        },
-        "image_TLMjtc": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/IMG_0354_2.jpg",
+            "image": "shopify://shop_images/Isa-O.x-Bellows_00111115_001111150010.png",
             "alt": "Carousel image"
           }
         }
@@ -98,8 +98,8 @@
         "image_KHyr8t",
         "image_xACxnj",
         "image_XU3RBp",
-        "image_VDfMNB",
-        "image_TLMjtc"
+        "image_3b3aw3",
+        "image_VDfMNB"
       ],
       "name": "Image Carousel",
       "settings": {
@@ -123,6 +123,7 @@
       "blocks": {
         "image_jUptyX": {
           "type": "image",
+          "name": "Carousel Image - Dec 2025",
           "settings": {
             "month": "12",
             "year": 2025,
@@ -134,6 +135,7 @@
         },
         "image_8qhKbJ": {
           "type": "image",
+          "name": "Carousel Image - Dec 2025",
           "settings": {
             "month": "12",
             "year": 2025,
@@ -145,6 +147,7 @@
         },
         "image_NYezea": {
           "type": "image",
+          "name": "Carousel Image - Dec 2025",
           "settings": {
             "month": "12",
             "year": 2025,
@@ -156,6 +159,7 @@
         },
         "image_TPE8Lp": {
           "type": "image",
+          "name": "Carousel Image - Dec 2025",
           "settings": {
             "month": "12",
             "year": 2025,
@@ -167,6 +171,7 @@
         },
         "image_J6GRBJ": {
           "type": "image",
+          "name": "Carousel Image - Nov 2025",
           "settings": {
             "month": "11",
             "year": 2025,
@@ -178,6 +183,7 @@
         },
         "image_MaY3Rk": {
           "type": "image",
+          "name": "Carousel Image - Nov 2025",
           "settings": {
             "month": "11",
             "year": 2025,
@@ -189,6 +195,7 @@
         },
         "image_3EFe73": {
           "type": "image",
+          "name": "Carousel Image - Nov 2025",
           "settings": {
             "month": "11",
             "year": 2025,
@@ -200,6 +207,7 @@
         },
         "image_Ce3zUh": {
           "type": "image",
+          "name": "Carousel Image - Nov 2025",
           "settings": {
             "month": "11",
             "year": 2025,
@@ -211,6 +219,7 @@
         },
         "image_dfzfcc": {
           "type": "image",
+          "name": "Carousel Image - Nov 2025",
           "settings": {
             "month": "11",
             "year": 2025,
@@ -286,7 +295,7 @@
         "show_view_all": true,
         "view_all_link": "shopify://pages/faqs",
         "view_all_text": "View all FAQs",
-        "photo": "shopify://shop_images/IMG_0340_2.png"
+        "photo": "shopify://shop_images/300006565_000065650006.png"
       }
     },
     "drop_off_bbQxHD": {
