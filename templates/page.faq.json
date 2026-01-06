@@ -22,28 +22,28 @@
           "type": "faq_item",
           "settings": {
             "question": "Atlanta",
-            "answer": "<p>Daily from 10:00AM -7:00PM</p>"
+            "answer": "<p>Daily from 10:00AM -7:00PM</p><p>+1 (404) 907-4191</p><p>1140 Euclid Ave NE Atlanta GA 30307</p>"
           }
         },
         "faq_item_KQjqW9": {
           "type": "faq_item",
           "settings": {
             "question": "Chicago",
-            "answer": "<p>Daily from 10:00AM -7:00PM</p>"
+            "answer": "<p>Daily from 10:00AM -7:00PM</p><p>+1 (773) 904-7434</p><p>1359 N Milwaukee Ave Chicago IL 60622</p>"
           }
         },
         "faq_item_eTe4en": {
           "type": "faq_item",
           "settings": {
             "question": "Miami",
-            "answer": "<p>Daily from 10:00AM -7:00PM</p>"
+            "answer": "<p>Daily from 10:00AM - 7:00PM</p><p>+1 (305) 721-0284</p><p>2051 NW 2nd Ave Miami FL 33127</p>"
           }
         },
         "faq_item_qcEjdh": {
           "type": "faq_item",
           "settings": {
             "question": "Orlando",
-            "answer": "<p>Monday: 10am - 6pm<br/>Tueday: 10am - 6pm<br/>Wednesday: 10am - 6pm<br/>Thursday: 10am - 6pm<br/>Friday: 10am - 6pm<br/>Saturday: 10am - 7pm<br/>Sunday: 10am - 6pm</p>"
+            "answer": "<p>Daily 10am - 6pm </p><p>+1 (407) 704-1100</p><p>2426 E Robinson St Orlando FL 32803</p>"
           }
         },
         "faq_heading_dmYtMB": {
@@ -63,7 +63,7 @@
           "type": "faq_item",
           "settings": {
             "question": "What is Your Turnaround Time?",
-            "answer": "<p><strong>24 hours </strong>is the <strong>Standard </strong>turnaround time for development for Color (C-41) and Black & White development. Alternative processes such as E6 and ECN2 are usually 72hours.<br/><br/>Our <strong>72hour </strong>turnaround offers a 10% Discount on development and scanning.</p>"
+            "answer": "<p><strong>24 hours </strong>is the <strong>Standard </strong>turnaround time for development and digitizing! Same day based on lab availability. <br/><br/>Our <strong>72-hour </strong><em>\"No Rush Babe\"</em><strong> </strong>turnaround offers a 10% Discount on development and scanning.</p>"
           }
         },
         "faq_item_gegcPN": {
@@ -139,7 +139,7 @@
           "type": "faq_item",
           "settings": {
             "question": "How do I ship my film to you?",
-            "answer": "<p>Go to the <a href=\"/pages/send-us-your-rolls\" title=\"Send Us Your Rolls\">Send Us Your Rolls Page to make an order.</a></p><p>Place your rolls in a baggie and if you want to be extra careful, add your order number. Place the rolls in a box or envelope and ship them to us using your favorite carrier. <strong>We recommend shipping with FEDEX or UPS!</strong></p><p>MIAMI: 2051 NW 2nd ave Miami, Fl 33127<br/>CHICAGO: 1702 N Damen ave Chicago, IL 60647<br/>ATLANTA: 1440 Euclid AVE NE Atlanta, GA 30307<br/>ORLANDO: 2426 East Robinson St Orlando, FL 32803</p>"
+            "answer": "<p>Go to the <a href=\"/pages/send-us-your-rolls\" title=\"Send Us Your Rolls\">Send Us Your Rolls Page to make an order.</a></p><p>Place your rolls in a baggie and if you want to be extra careful, add your order number. Place the rolls in a box or envelope and ship them to us using your favorite carrier. <strong>We recommend shipping with FEDEX or UPS!</strong></p><p>MIAMI:  2051 NW 2nd ave Miami, Fl 33127</p><p><br/>CHICAGO: 1359 N Milwaukee Ave Chicago IL 60622</p><p><br/>ATLANTA: 1440 Euclid AVE NE Atlanta, GA 30307</p><p><br/>ORLANDO: 2426 East Robinson St Orlando, FL 32803</p>"
           }
         },
         "faq_item_Q8Mk3L": {
@@ -190,7 +190,7 @@
       ],
       "settings": {
         "need_help_heading": "NEED HELP?",
-        "need_help_message": "<p>CALL US ON <a href=\"tel:+13054564006\">+1 (305) 456 4006</a> OR EMAIL <strong>contact@bellowsfilmlab.com</strong> — A REAL HUMAN WILL REPLY WITHIN ONE BUSINESS DAY.</p>"
+        "need_help_message": "<p>CALL US AT <em>+1 (773) 904 7434 </em>OR EMAIL <strong>chicago@bellowsfilmlab.com</strong> — A REAL HUMAN WILL REPLY WITHIN ONE BUSINESS DAY.</p>"
       }
     }
   },

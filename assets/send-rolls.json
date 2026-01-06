@@ -85,8 +85,8 @@
           },
           "price_overrides": {
             "film_format": {
-              "35mm": 4,
               "120": 3,
+              "35mm": 4,
               "8x10 (Sheet)": 3
             }
           },
@@ -105,8 +105,8 @@
           },
           "price_overrides": {
             "film_format": {
-              "35mm": 4,
               "120": 3,
+              "35mm": 4,
               "8x10 (Sheet)": 3
             }
           },
@@ -251,16 +251,16 @@
       "accordion_sub_title": "Choose how you want your scans to be framed. We offer both white borders and sprocket-style borders for 35mm film.",
       "sub_title": "Select your border style",
       "options": [
-				{
-					"label": "None",
-					"price": 0,
+        {
+          "label": "None",
+          "price": 0,
           "default": true,
           "default_if": {
             "film_format": [
               "Disposable"
             ]
           }
-				},
+        },
         {
           "label": "White Border",
           "price": 5,
@@ -334,7 +334,9 @@
       "accordion_title": "What resolution do you want for your contact sheet?",
       "accordion_sub_title": "Contact sheets are a great way to share your images with friends and family. Choose the resolution that fits your needs.",
       "show_if": {
-        "add_ons_contact_sheet": ["Yes"]
+        "add_ons_contact_sheet": [
+          "Yes"
+        ]
       },
       "options": [
         {
@@ -444,8 +446,8 @@
           },
           "price_overrides": {
             "film_format": {
-              "35mm": 4,
               "120": 3,
+              "35mm": 4,
               "8x10 (Sheet)": 3
             }
           },
@@ -464,8 +466,8 @@
           },
           "price_overrides": {
             "film_format": {
-              "35mm": 4,
               "120": 3,
+              "35mm": 4,
               "8x10 (Sheet)": 3
             }
           },
@@ -564,7 +566,9 @@
       "accordion_title": "What resolution do you want for your contact sheet?",
       "accordion_sub_title": "Contact sheets are a great way to share your images with friends and family. Choose the resolution that fits your needs.",
       "show_if": {
-        "add_ons_contact_sheet": ["Yes"]
+        "add_ons_contact_sheet": [
+          "Yes"
+        ]
       },
       "options": [
         {
@@ -588,7 +592,7 @@
       ]
     }
   },
-	"Scan Only": {
+  "Scan Only": {
     "description": "Digital copies of your already processed film. For those that want rescans of previously developed film from their archive.",
     "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/scan-only_7579160a-4f6b-41b1-bf30-1977e8621395.png?v=1763627397",
     "Film Format": {
@@ -674,8 +678,8 @@
           },
           "price_overrides": {
             "film_format": {
-              "35mm": 4,
               "120": 3,
+              "35mm": 4,
               "8x10 (Sheet)": 3
             }
           },
@@ -694,8 +698,8 @@
           },
           "price_overrides": {
             "film_format": {
-              "35mm": 4,
               "120": 3,
+              "35mm": 4,
               "8x10 (Sheet)": 3
             }
           },
@@ -802,16 +806,16 @@
       "accordion_sub_title": "Choose how you want your scans to be framed. We offer both white borders and sprocket-style borders for 35mm film.",
       "sub_title": "Select your border style",
       "options": [
-				{
-					"label": "None",
-					"price": 0,
+        {
+          "label": "None",
+          "price": 0,
           "default": true,
           "default_if": {
             "film_format": [
               "Disposable"
             ]
           }
-				},
+        },
         {
           "label": "White Border",
           "price": 5,
@@ -884,7 +888,9 @@
       "accordion_title": "What resolution do you want for your contact sheet?",
       "accordion_sub_title": "Contact sheets are a great way to share your images with friends and family. Choose the resolution that fits your needs.",
       "show_if": {
-        "add_ons_contact_sheet": ["Yes"]
+        "add_ons_contact_sheet": [
+          "Yes"
+        ]
       },
       "options": [
         {
@@ -916,7 +922,7 @@
         "Atlanta"
       ]
     },
-		"Film Format": {
+    "Film Format": {
       "accordion_title": "What film format do I have?",
       "accordion_sub_title": "Film comes in different shapes and sizes. Match your film to the kinds listed below when ordering.",
       "sub_title": "Film comes in different shapes and sizes. Match your film to the kinds listed below when ordering.",
@@ -942,30 +948,30 @@
         }
       ]
     },
-		"Resolution": {
-			"accordion_title": "Which resolution is right for me?",
-			"accordion_sub_title": "Scans are high-quality digital copies of your film. Different resolutions affect how you can use your images — from quick sharing to large-format printing. Choose the option that fits your project best.",
-			"options": [
-				{
-					"label": "Regular",
-					"price": 30,
-					"description": "Standard full-optical scan (100mb) — great for general use.",
-					"description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/low-res.png?v=1763627397"
-				},
-				{
-					"label": "High",
-					"price": 70,
-					"description": "High-detail scan at the upper optical limit (200mb) — ideal for large prints or archival-quality work.",
-					"description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/mid-res.png?v=1763627397"
-				},
-				{
-					"label": "Ultra High",
-					"price": 90,
-					"description": "Maximum resolution + bit depth (600mb) with 3F raw-style scan — perfect for preservation or re-editable scans.",
-					"description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/high-res.png?v=1763627397"
-				}
-			]
-		},
+    "Resolution": {
+      "accordion_title": "Which resolution is right for me?",
+      "accordion_sub_title": "Scans are high-quality digital copies of your film. Different resolutions affect how you can use your images — from quick sharing to large-format printing. Choose the option that fits your project best.",
+      "options": [
+        {
+          "label": "Regular",
+          "price": 30,
+          "description": "Standard full-optical scan (100mb) — great for general use.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/low-res.png?v=1763627397"
+        },
+        {
+          "label": "High",
+          "price": 70,
+          "description": "High-detail scan at the upper optical limit (200mb) — ideal for large prints or archival-quality work.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/mid-res.png?v=1763627397"
+        },
+        {
+          "label": "Ultra High",
+          "price": 90,
+          "description": "Maximum resolution + bit depth (600mb) with 3F raw-style scan — perfect for preservation or re-editable scans.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/high-res.png?v=1763627397"
+        }
+      ]
+    },
     "Add Ons - Do you want your negatives shipped back to you?": {
       "options": [
         {
@@ -978,7 +984,7 @@
         }
       ]
     },
-		"Add Ons - Contact Sheet": {
+    "Add Ons - Contact Sheet": {
       "options": [
         {
           "label": "Yes",
@@ -1018,7 +1024,9 @@
       "accordion_title": "What resolution do you want for your contact sheet?",
       "accordion_sub_title": "Contact sheets are a great way to share your images with friends and family. Choose the resolution that fits your needs.",
       "show_if": {
-        "add_ons_contact_sheet": ["Yes"]
+        "add_ons_contact_sheet": [
+          "Yes"
+        ]
       },
       "options": [
         {

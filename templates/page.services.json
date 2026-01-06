@@ -26,6 +26,20 @@
             "anchor_id": "scanning"
           }
         },
+        "service_link_ebp9pd": {
+          "type": "service-link",
+          "settings": {
+            "link_text": "Printing",
+            "anchor_id": ""
+          }
+        },
+        "service_link_6zTiGJ": {
+          "type": "service-link",
+          "settings": {
+            "link_text": "Tape Digitizing",
+            "anchor_id": "tape-digitizing"
+          }
+        },
         "service_link_DeeQgG": {
           "type": "service-link",
           "settings": {
@@ -46,22 +60,16 @@
             "link_text": "Camera Rental",
             "anchor_id": "camera-rental"
           }
-        },
-        "service_link_6zTiGJ": {
-          "type": "service-link",
-          "settings": {
-            "link_text": "Tape Digitizing",
-            "anchor_id": "tape-digitizing"
-          }
         }
       },
       "block_order": [
         "service_link_3LN3tm",
         "service_link_nEy4qw",
+        "service_link_ebp9pd",
+        "service_link_6zTiGJ",
         "service_link_DeeQgG",
         "service_link_iJ3R64",
-        "service_link_w9GGdF",
-        "service_link_6zTiGJ"
+        "service_link_w9GGdF"
       ],
       "name": "Services Details",
       "settings": {

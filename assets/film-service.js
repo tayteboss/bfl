@@ -207,7 +207,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const errors = [];
     getVisibleFieldsets().forEach((fs) => {
       const visibleRadios = getVisibleRadiosInFieldset(fs);
-      if (visibleRadios.length === 0) {
+      const visibleInputs = Array.from(
+        fs.querySelectorAll('input:not([type="radio"]):not([type="hidden"]), select, textarea')
+      ).filter(isVisible);
+
+      if (visibleRadios.length === 0 && visibleInputs.length === 0) {
         fs.classList.remove('rolls-form-card--error');
         return;
       }
@@ -236,8 +240,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } else {
         // Default behavior: at least one visible radio in this fieldset must be selected
-        const anyChecked = visibleRadios.some((r) => r.checked);
-        if (!anyChecked) {
+        // AND/OR all visible required text inputs must be filled
+        const anyRadioChecked = visibleRadios.length === 0 || visibleRadios.some((r) => r.checked);
+
+        let inputsValid = true;
+        if (visibleInputs.length > 0) {
+          visibleInputs.forEach((input) => {
+            if (input.hasAttribute('required') && !input.value.trim()) {
+              inputsValid = false;
+            }
+            if (input.pattern && input.value && !new RegExp(input.pattern).test(input.value)) {
+              inputsValid = false;
+            }
+          });
+        }
+
+        if (!anyRadioChecked || !inputsValid) {
           fs.classList.add('rolls-form-card--error');
           errors.push(fs);
         } else {
@@ -848,8 +866,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Append selected options ---
     form.querySelectorAll('fieldset').forEach((fs) => {
+      const group = fs.dataset.group;
+
+      // Special handling for consolidated Delivery Address
+      if (group === 'Delivery Address') {
+        if (!isVisible(fs)) return;
+
+        const name = fs.querySelector('input[name="properties[Delivery Name]"]')?.value;
+        const addr1 = fs.querySelector('input[name="properties[Delivery Address 1]"]')?.value;
+        const addr2 = fs.querySelector('input[name="properties[Delivery Address 2]"]')?.value;
+        const city = fs.querySelector('input[name="properties[Delivery City]"]')?.value;
+        const state = fs.querySelector('select[name="properties[Delivery State]"]')?.value;
+        const zip = fs.querySelector('input[name="properties[Delivery Zip]"]')?.value;
+        const country = fs.querySelector('input[name="properties[Delivery Country]"]')?.value;
+
+        if (name && addr1 && city && state && zip) {
+          const lines = [name, addr1, addr2, `${city}, ${state} ${zip}`, country].filter(Boolean);
+
+          fd.append('properties[Delivery Address]', lines.join('\n'));
+        }
+        return; // Stop here for this fieldset so individual fields aren't added
+      }
+
       const checked = fs.querySelector('input[type="radio"]:checked');
       if (checked) fd.append(`properties[${fs.dataset.group}]`, checked.value);
+
+      // Append text/select/hidden inputs if fieldset is visible
+      if (isVisible(fs)) {
+        const inputs = fs.querySelectorAll('input:not([type="radio"]), select, textarea');
+        inputs.forEach((input) => {
+          if (input.name && input.value) {
+            fd.append(input.name, input.value);
+          }
+        });
+      }
     });
 
     // --- Total price summary ---

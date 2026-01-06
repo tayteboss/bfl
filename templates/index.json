@@ -13,7 +13,7 @@
       "type": "home-hero",
       "name": "Home hero",
       "settings": {
-        "video": "shopify://files/videos/HERO Probe Loop2K -_9d8c43b0-e51c-4b14-9346-bcb8a148d2f8.mp4"
+        "video": "shopify://files/videos/Hero16x9_1.mp4"
       }
     },
     "featured_collection_wHifxE": {
@@ -121,6 +121,83 @@
     "walloffame_AnARbN": {
       "type": "walloffame",
       "blocks": {
+        "image_E4dHb6": {
+          "type": "image",
+          "settings": {
+            "month": "1",
+            "year": 2026,
+            "image": "shopify://shop_images/edgar.creative.jpg",
+            "alt": "Carousel image",
+            "button": "@edgar.creative",
+            "cta": "https://www.instagram.com/edgar.creative/?hl=en"
+          }
+        },
+        "image_T3Xc4n": {
+          "type": "image",
+          "settings": {
+            "month": "1",
+            "year": 2026,
+            "image": "shopify://shop_images/c.dela_cruz.jpg",
+            "alt": "Carousel image",
+            "button": "@c.dela_cruz",
+            "cta": "https://www.instagram.com/c.dela_cruz/"
+          }
+        },
+        "image_jHFJ84": {
+          "type": "image",
+          "settings": {
+            "month": "1",
+            "year": 2026,
+            "image": "shopify://shop_images/another.grainy.memory.jpg",
+            "alt": "Carousel image",
+            "button": "@another.grainy.memory",
+            "cta": "https://www.instagram.com/another.grainy.memory/"
+          }
+        },
+        "image_fikVkG": {
+          "type": "image",
+          "settings": {
+            "month": "1",
+            "year": 2026,
+            "image": "shopify://shop_images/allyise.jpg",
+            "alt": "Carousel image",
+            "button": "@allyise",
+            "cta": "https://www.instagram.com/allyise/"
+          }
+        },
+        "image_64akFC": {
+          "type": "image",
+          "settings": {
+            "month": "1",
+            "year": 2026,
+            "image": "shopify://shop_images/ebexr.jpg",
+            "alt": "Carousel image",
+            "button": "@ebexr",
+            "cta": "https://www.instagram.com/ebexr/"
+          }
+        },
+        "image_GeTa9d": {
+          "type": "image",
+          "settings": {
+            "month": "1",
+            "year": 2026,
+            "image": "shopify://shop_images/josephinenmanetphotography.jpg",
+            "alt": "Carousel image",
+            "button": "@josephinenmanetphotography",
+            "cta": "https://www.instagram.com/josephinenmanetphotography/?hl=en"
+          }
+        },
+        "image_rEjbTd": {
+          "type": "image",
+          "settings": {
+            "month": "1",
+            "year": 2026,
+            "image": "shopify://shop_images/jordanziegphoto.jpg",
+            "alt": "Carousel image",
+            "button": "@jordanziegphoto",
+            "cta": "https://www.instagram.com/jordanziegphoto/"
+          }
+        },
         "image_jUptyX": {
           "type": "image",
           "name": "Carousel Image - Dec 2025",
@@ -231,6 +308,13 @@
         }
       },
       "block_order": [
+        "image_E4dHb6",
+        "image_T3Xc4n",
+        "image_jHFJ84",
+        "image_fikVkG",
+        "image_64akFC",
+        "image_GeTa9d",
+        "image_rEjbTd",
         "image_jUptyX",
         "image_8qhKbJ",
         "image_NYezea",
