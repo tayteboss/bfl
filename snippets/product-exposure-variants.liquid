@@ -1,7 +1,10 @@
 {%- assign exposure_option_index = null -%}
 {%- assign selected_exposure_value = null -%}
 {%- for option in product.options_with_values -%}
-  {%- if option.name == 'Exposures' -%}
+  {%- assign opt_normalized = option.name | downcase | strip -%}
+  {%- assign opt_tokens = opt_normalized | split: ' ' -%}
+  {%- assign opt_first = opt_tokens[0] -%}
+  {%- if opt_first == 'exposures' or opt_first == 'exposure' -%}
     {%- assign exposure_option_index = forloop.index0 -%}
   {%- endif -%}
 {%- endfor -%}
@@ -24,7 +27,10 @@
     <fieldset class="variant-options">
       <div class="variant-selector__options">
         {%- for option in product.options_with_values -%}
-          {%- if option.name == 'Exposures' -%}
+          {%- assign opt_normalized = option.name | downcase | strip -%}
+          {%- assign opt_tokens = opt_normalized | split: ' ' -%}
+          {%- assign opt_first = opt_tokens[0] -%}
+          {%- if opt_first == 'exposures' or opt_first == 'exposure' -%}
             {%- for value in option.values -%}
               {%- assign available_for_value = false -%}
               {%- for v in product.variants -%}

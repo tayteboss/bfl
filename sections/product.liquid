@@ -92,8 +92,10 @@
             {%- endif -%}
             {%- assign has_exposure_option = false -%}
             {%- for opt in product.options -%}
-              {%- assign opt_down = opt | downcase -%}
-              {%- if opt_down == 'exposures' or opt_down == 'exposure' -%}
+              {%- assign opt_normalized = opt | downcase | strip -%}
+              {%- assign opt_tokens = opt_normalized | split: ' ' -%}
+              {%- assign opt_first = opt_tokens[0] -%}
+              {%- if opt_first == 'exposures' or opt_first == 'exposure' -%}
                 {%- assign has_exposure_option = true -%}
                 {%- break -%}
               {%- endif -%}
@@ -109,8 +111,10 @@
 
             {%- assign has_color_option = false -%}
             {%- for opt in product.options -%}
-              {%- assign opt_down = opt | downcase -%}
-              {%- if opt_down == 'color' -%}
+              {%- assign opt_normalized = opt | downcase | strip -%}
+              {%- assign opt_tokens = opt_normalized | split: ' ' -%}
+              {%- assign opt_first = opt_tokens[0] -%}
+              {%- if opt_first == 'color' or opt_first == 'colors' -%}
                 {%- assign has_color_option = true -%}
                 {%- break -%}
               {%- endif -%}
