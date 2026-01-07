@@ -7,7 +7,9 @@
       muted
       playsinline
       preload="auto"
-      {% if section.settings.poster != blank %}poster="{{ section.settings.poster | image_url }}"{% endif %}
+      {% if section.settings.poster != blank %}
+        poster="{{ section.settings.poster | image_url }}"
+      {% endif %}
     >
       <source src="{{ section.settings.video_url }}" type="video/mp4">
     </video>
@@ -26,124 +28,113 @@
 </section>
 
 <style>
-
-
-/* Ensure hero is flush to top */
-.video-hero {
-  position: relative;
-  margin: 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
-  z-index: 1;
-}
-
-.video-hero__wrap{
-  position: relative;
-  width: 100%;
-  height: 80vh;
-  min-height: 520px;
-  overflow: hidden;
-
- 
-  line-height: 0;
-  font-size: 0;
-}
-
-.video-hero__video{
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-}
-
-/* Overlay */
-.video-hero__overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.25);
-  pointer-events: none;
-}
-
-/* Lower-third text */
-.video-hero__content {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 12%;
-  z-index: 2;
-  color: #fff;
-  padding: 0 24px;
-}
-
-
-
-
-#shopify-section-header,
-.shopify-section-header {
-  position: absolute !important;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 50;
-
-.header-wrapper,
-header.header,
-.header-wrapper--border-bottom {
-  background: transparent !important;
-  border-bottom: 0 !important;
-  box-shadow: none !important;
-}
-
-
-.header-wrapper::after {
-  display: none !important;
-}
-
-@media (max-width: 749px) {
-  .video-hero__wrap {
-    min-height: 560px;
+  /* Ensure hero is flush to top */
+  .video-hero {
+    position: relative;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    z-index: 1;
   }
 
+  .video-hero__wrap{
+    position: relative;
+    width: 100%;
+    height: 80vh;
+    min-height: 520px;
+    overflow: hidden;
+
+
+    line-height: 0;
+    font-size: 0;
+  }
+
+  .video-hero__video{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Overlay */
+  .video-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.25);
+    pointer-events: none;
+  }
+
+  /* Lower-third text */
   .video-hero__content {
-    bottom: 16%;
-    padding: 0 18px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 12%;
+    z-index: 2;
+    color: #fff;
+    padding: 0 24px;
   }
-}
-
-body.template-index #MainContent {
-  padding-top: 0 !important;
-}
-
-
-body.template-index #MainContent > .shopify-section:first-child {
-  margin-top: 0 !important;
-}
-/* FIX: remove extra blank area under the video */
-.video-hero__wrap {
-  height: 80vh !important;
-  min-height: 520px !important;
-  max-height: 900px !important;
-}
-
-.video-hero__video {
-  height: 100% !important;
-  width: 100% !important;
-  object-fit: cover !important;
-  display: block !important;
-}
 
 
 
+
+  #shopify-section-header,
+  .shopify-section-header {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 50;
+
+  .header-wrapper,
+  header.header,
+  .header-wrapper--border-bottom {
+    background: transparent !important;
+    border-bottom: 0 !important;
+    box-shadow: none !important;
+  }
+
+
+  .header-wrapper::after {
+    display: none !important;
+  }
+
+  @media (max-width: 749px) {
+    .video-hero__wrap {
+      min-height: 560px;
+    }
+
+    .video-hero__content {
+      bottom: 16%;
+      padding: 0 18px;
+    }
+  }
+
+  body.template-index #MainContent {
+    padding-top: 0 !important;
+  }
+
+
+  body.template-index #MainContent > .shopify-section:first-child {
+    margin-top: 0 !important;
+  }
+  /* FIX: remove extra blank area under the video */
+  .video-hero__wrap {
+    height: 80vh !important;
+    min-height: 520px !important;
+    max-height: 900px !important;
+  }
+
+  .video-hero__video {
+    height: 100% !important;
+    width: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+  }
 </style>
-
-
-
-
 
 {% schema %}
 {

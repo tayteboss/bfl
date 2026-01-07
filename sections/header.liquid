@@ -81,6 +81,47 @@
 %}
 
 <script>
+
+  // Mark fonts-ready to avoid logo shift when variable fonts load
+  (function waitForFonts() {
+    try {
+      // Check if fonts are already loaded synchronously
+      // if (document && document.fonts && document.fonts.status === 'loaded') {
+      //   document.documentElement.classList.add('fonts-ready');
+      //   return;
+      // }
+
+      if (document && document.fonts && typeof document.fonts.ready?.then === 'function') {
+        // Use fonts.ready API (doesn't wait for videos/images)
+        document.fonts.ready.then(() => {
+          document.documentElement.classList.add('fonts-ready');
+        });
+
+        // Timeout fallback: show logo after 3000ms even if fonts aren't ready
+        // This prevents the logo from being blocked indefinitely if fonts fail to load
+        setTimeout(() => {
+          if (!document.documentElement.classList.contains('fonts-ready')) {
+            document.documentElement.classList.add('fonts-ready');
+          }
+        }, 3000);
+      } else {
+        // Fallback: use DOMContentLoaded instead of window.load
+        // DOMContentLoaded fires when HTML is parsed, before images/videos load
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', () => {
+            document.documentElement.classList.add('fonts-ready');
+          }, { once: true });
+        } else {
+          // Already loaded
+          document.documentElement.classList.add('fonts-ready');
+        }
+      }
+    } catch (e) {
+      // Defensive: ensure logo is shown even if fonts API fails
+      document.documentElement.classList.add('fonts-ready');
+    }
+  })();
+
   document.addEventListener('DOMContentLoaded', function () {
     const header = document.querySelector('header');
     const menuToggle = document.querySelector('.menu-toggle');
@@ -216,46 +257,6 @@
         document.removeEventListener('click', onDocumentClick, true);
       }
     });
-
-    // Mark fonts-ready to avoid logo shift when variable fonts load
-    (function waitForFonts() {
-      try {
-        // Check if fonts are already loaded synchronously
-        // if (document && document.fonts && document.fonts.status === 'loaded') {
-        //   document.documentElement.classList.add('fonts-ready');
-        //   return;
-        // }
-
-        if (document && document.fonts && typeof document.fonts.ready?.then === 'function') {
-          // Use fonts.ready API (doesn't wait for videos/images)
-          document.fonts.ready.then(() => {
-            document.documentElement.classList.add('fonts-ready');
-          });
-
-          // Timeout fallback: show logo after 200ms even if fonts aren't ready
-          // This prevents the logo from being blocked by slow-loading resources
-          setTimeout(() => {
-            if (!document.documentElement.classList.contains('fonts-ready')) {
-              document.documentElement.classList.add('fonts-ready');
-            }
-          }, 200);
-        } else {
-          // Fallback: use DOMContentLoaded instead of window.load
-          // DOMContentLoaded fires when HTML is parsed, before images/videos load
-          if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-              document.documentElement.classList.add('fonts-ready');
-            }, { once: true });
-          } else {
-            // Already loaded
-            document.documentElement.classList.add('fonts-ready');
-          }
-        }
-      } catch (e) {
-        // Defensive: ensure logo is shown even if fonts API fails
-        document.documentElement.classList.add('fonts-ready');
-      }
-    })();
 
     // Toggle `scrolled` and `minimise-header` on header when beyond threshold and hide near page bottom.
     // Run scroll listeners on all viewports so body.minimise-header / body.hide-header
