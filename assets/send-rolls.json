@@ -286,7 +286,7 @@
       "options": [
         {
           "label": "Yes",
-          "price": 12
+          "price": 0
         },
         {
           "label": "No",
@@ -516,7 +516,7 @@
       "options": [
         {
           "label": "Yes",
-          "price": 12
+          "price": 0
         },
         {
           "label": "No",
@@ -836,7 +836,7 @@
       "options": [
         {
           "label": "Yes",
-          "price": 12
+          "price": 0
         },
         {
           "label": "No",
@@ -970,7 +970,7 @@
       "options": [
         {
           "label": "Yes",
-          "price": 12
+          "price": 0
         },
         {
           "label": "No",

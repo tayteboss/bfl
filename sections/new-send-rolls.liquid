@@ -964,7 +964,7 @@
                         <p>📦 Pack your order with:</p>
                         <ul>
                           <li>Your film rolls</li>
-                          <li>Your printed order slip</li>
+                          <li>Your printed receipt and/or contact information</li>
                         </ul>
                       </div>
                     </div>
@@ -986,6 +986,13 @@
             </dl>
           </div>
 
+          <p
+            class="type-p-small"
+            style="margin: 0 auto 1.5rem auto; opacity: 0.7; max-width: 300px; text-align: center;"
+          >
+            * This total cost is pre-tax. Tax is calculated once added to your bag.
+          </p>
+
           <div class="send-rolls-form-submit">
             <button type="submit" class="primary-button primary-button--black">Add to Bag</button>
           </div>
@@ -1005,7 +1012,22 @@
 
 <!-- VARIANT DATA: use the main form product's variants for pricing -->
 <script>
-  window.filmServiceVariants = {{ target_product.variants | json }};
+  window.filmServiceProductHandle = {{ target_product.handle | json }};
+  window.filmServiceVariants = [
+    {%- for variant in target_product.variants limit: 5000 -%}
+      {
+        "id": {{ variant.id }},
+        "price": {{ variant.price }},
+        "title": {{ variant.title | json }},
+        "available": {{ variant.available }}
+      }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ];
+  {% if section.settings.return_shipping_product != blank %}
+    window.returnShippingVariantId = {{ section.settings.return_shipping_product.selected_or_first_available_variant.id | json }};
+  {% else %}
+    window.returnShippingVariantId = null;
+  {% endif %}
 </script>
 
 <script
@@ -1026,6 +1048,11 @@
       "type": "product",
       "id": "main_form_product",
       "label": "Main Film Service Product (metafields + UI)"
+    },
+    {
+      "type": "product",
+      "id": "return_shipping_product",
+      "label": "Return Shipping Product"
     }
   ],
   "presets": [
