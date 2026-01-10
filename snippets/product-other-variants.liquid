@@ -102,10 +102,21 @@
       const optionNames = {{ product.options | json }};
 
       function getSelectedForName(name, index) {
+        const nameLower = name.toLowerCase();
         // Use exposure radio if present
-        if (name === 'Exposures') {
+        if (nameLower === 'exposures' || nameLower === 'exposure') {
           const exp = root.querySelector('input[name="exposure-choice"]:checked');
           return exp ? exp.value : null;
+        }
+        // Use color radio if present
+        if (nameLower === 'color' || nameLower === 'colors') {
+          const color = root.querySelector('input[name="color-choice"]:checked');
+          return color ? color.value : null;
+        }
+        // Use size radio if present
+        if (nameLower === 'size' || nameLower === 'sizes') {
+          const size = root.querySelector('input[name="size-choice"]:checked');
+          return size ? size.value : null;
         }
         // Otherwise look for our select
         const sel = root.querySelector(`select[name="options[${CSS.escape(name)}]"]`);
@@ -122,15 +133,20 @@
         const selected = optionNames.map((name, idx) => getSelectedForName(name, idx));
         const matched = findVariantByOptions(selected);
         if (!matched) return;
-        idInput.value = matched.id;
-        idInput.toggleAttribute('disabled', !matched.available);
-        idInput.dispatchEvent(new Event('change', { bubbles: true }));
+        
+        // Update ALL id inputs to handle cases where apps inject duplicate inputs
+        const idInputs = form.querySelectorAll('input[name="id"]');
+        idInputs.forEach(idInput => {
+          idInput.value = matched.id;
+          idInput.toggleAttribute('disabled', !matched.available);
+          idInput.dispatchEvent(new Event('change', { bubbles: true }));
+        });
       }
 
       // Bind to our selects
       root.querySelectorAll('.other-variant-options select').forEach((sel) => sel.addEventListener('change', handleVariantChange));
-      // Also react to exposure changes if present
-      root.querySelectorAll('input[name="exposure-choice"]').forEach((radio) => radio.addEventListener('change', handleVariantChange));
+      // Also react to special variant changes if present
+      root.querySelectorAll('input[name="exposure-choice"], input[name="color-choice"], input[name="size-choice"]').forEach((radio) => radio.addEventListener('change', handleVariantChange));
 
       // Initialize
       handleVariantChange();

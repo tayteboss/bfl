@@ -289,11 +289,14 @@
         }
         
         function updateVariantUI(matched) {
-          // Update variant ID input
-          idInput.value = matched.id;
-          // Never disable the input - just disable the button if unavailable
-          idInput.removeAttribute('disabled');
-          idInput.dispatchEvent(new Event('change', { bubbles: true }));
+          // Update ALL variant ID inputs to handle duplicates (e.g. from apps)
+          const idInputs = form.querySelectorAll('input[name="id"]');
+          idInputs.forEach(input => {
+            input.value = matched.id;
+            // Never disable the input - just disable the button if unavailable
+            input.removeAttribute('disabled');
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+          });
 
           // Update price in-place (fallback)
           const priceNodes = root.querySelectorAll('.product-content__price .type-p-large');

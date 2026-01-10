@@ -146,7 +146,12 @@
 
           {%- for property in item.properties -%}
             {%- assign property_first_char = property.first | slice: 0 -%}
-            {%- if property.last != blank and property_first_char != '_' and property.first != 'Total Price' and property.first != 'Delivery Address' -%}
+            {%- if property.last != blank
+              and property_first_char != '_'
+              and property.first != 'Total Price'
+              and property.first != 'Delivery Address'
+              and property.first != 'Upload your prints here!'
+            -%}
               <div class="product-option type-p-small">
                 <dt class="type-p-small">{{ property.first }}:</dt>
                 <dd class="type-p-small">
@@ -217,14 +222,19 @@
                 <label class="visually-hidden" for="Quantity-{{ index }}">
                   {{- 'products.product.quantity.label' | t -}}
                 </label>
-                <quantity-input class="quantity cart-quantity" {% if item.properties._role == 'return_shipping' %}style="pointer-events:none;"{% endif %}>
+                <quantity-input
+                  class="quantity cart-quantity"
+                  {% if item.properties._role == 'return_shipping' %}
+                    style="pointer-events:none;"
+                  {% endif %}
+                >
                   {%- unless item.properties._role == 'return_shipping' -%}
-                  <button class="quantity__button" name="minus" type="button">
-                    <span class="visually-hidden">
-                      {{- 'products.product.quantity.decrease' | t: product: item.product.title | escape -}}
-                    </span>
-                    <span class="svg-wrapper"> - </span>
-                  </button>
+                    <button class="quantity__button" name="minus" type="button">
+                      <span class="visually-hidden">
+                        {{- 'products.product.quantity.decrease' | t: product: item.product.title | escape -}}
+                      </span>
+                      <span class="svg-wrapper"> - </span>
+                    </button>
                   {%- endunless -%}
                   <input
                     class="quantity__input"
@@ -244,15 +254,17 @@
                     aria-label="{{ 'products.product.quantity.input_label' | t: product: item.product.title | escape }}"
                     id="Quantity-{{ index }}"
                     data-index="{{ index }}"
-                    {% if item.properties._role == 'return_shipping' %}readonly{% endif %}
+                    {% if item.properties._role == 'return_shipping' %}
+                      readonly
+                    {% endif %}
                   >
                   {%- unless item.properties._role == 'return_shipping' -%}
-                  <button class="quantity__button" name="plus" type="button">
-                    <span class="visually-hidden">
-                      {{- 'products.product.quantity.increase' | t: product: item.product.title | escape -}}
-                    </span>
-                    <span class="svg-wrapper"> + </span>
-                  </button>
+                    <button class="quantity__button" name="plus" type="button">
+                      <span class="visually-hidden">
+                        {{- 'products.product.quantity.increase' | t: product: item.product.title | escape -}}
+                      </span>
+                      <span class="svg-wrapper"> + </span>
+                    </button>
                   {%- endunless -%}
                 </quantity-input>
               </div>
