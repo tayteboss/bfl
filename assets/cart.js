@@ -58,12 +58,12 @@ class CartItems extends HTMLElement {
 
   validateReturnShipping(cartInput) {
     if (!window.globalReturnShippingVariantId) return;
-    
+
     // Always fetch fresh cart to be 100% sure of state (avoids race conditions with event payloads)
     // Add cache buster to prevent stale reads
     fetch(window.routes.cart_url + '.js?t=' + Date.now())
-      .then(res => res.json())
-      .then(cart => {
+      .then((res) => res.json())
+      .then((cart) => {
         this._runGuardLogic(cart);
       })
       .catch(console.error);
@@ -80,13 +80,15 @@ class CartItems extends HTMLElement {
 
       // Handle Array format: [{name: 'K', value: 'V'}]
       if (Array.isArray(props)) {
-        return props.some(p => {
+        return props.some((p) => {
           const k = String(p.name || '');
           // Check for robust hidden flag first
           if (k === '_return_shipping_required' && String(p.value) === 'true') return true;
           // Fallback to legacy string match (case-insensitive)
           const kLower = k.toLowerCase();
-          const vLower = String(p.value || '').trim().toLowerCase();
+          const vLower = String(p.value || '')
+            .trim()
+            .toLowerCase();
           return kLower.includes('negatives shipped back') && vLower === 'yes';
         });
       }
@@ -96,15 +98,15 @@ class CartItems extends HTMLElement {
       if (props['_return_shipping_required'] === 'true') return true;
 
       // Fallback to legacy string match
-      return Object.keys(props).some(k => {
+      return Object.keys(props).some((k) => {
         const key = String(k).toLowerCase();
         const val = String(props[k]).trim().toLowerCase();
         return key.includes('negatives shipped back') && val === 'yes';
       });
     };
 
-    const needsShipping = cart.items.some(item => hasShippingProperty(item));
-    const shippingItem = cart.items.find(item => item.id === shippingId || item.variant_id === shippingId);
+    const needsShipping = cart.items.some((item) => hasShippingProperty(item));
+    const shippingItem = cart.items.find((item) => item.id === shippingId || item.variant_id === shippingId);
 
     // console.log('Cart Guard Check:', { needsShipping, hasShippingItem: !!shippingItem });
 
@@ -114,31 +116,32 @@ class CartItems extends HTMLElement {
     if (needsShipping) {
       if (!shippingItem) {
         // MISSING: Add it
-        console.log('Guard: Adding missing shipping item...');
         fetch(window.routes.cart_add_url, {
           ...fetchConfig(),
           body: JSON.stringify({
-            items: [{
-              id: shippingId,
-              quantity: 1,
-              properties: { _role: 'return_shipping' }
-            }]
-          })
+            items: [
+              {
+                id: shippingId,
+                quantity: 1,
+                properties: { _role: 'return_shipping' },
+              },
+            ],
+          }),
         })
-        .then(res => res.json())
-        .then(() => this.refreshCart()) // No args = fetch fresh
-        .catch(console.error);
+          .then((res) => res.json())
+          .then(() => this.refreshCart()) // No args = fetch fresh
+          .catch(console.error);
         return; // Exit to avoid conflict
       } else if (shippingItem.quantity !== 1) {
         // WRONG QTY: Fix it
-        console.log('Guard: Correcting shipping quantity...');
+        // console.log('Guard: Correcting shipping quantity...');
         updates[shippingItem.key] = 1;
         hasUpdates = true;
       }
     } else {
       if (shippingItem) {
         // ORPHANED: Remove it
-        console.log('Guard: Removing orphaned shipping item...');
+        // console.log('Guard: Removing orphaned shipping item...');
         updates[shippingItem.key] = 0;
         hasUpdates = true;
       }
@@ -147,11 +150,11 @@ class CartItems extends HTMLElement {
     if (hasUpdates) {
       fetch(window.routes.cart_update_url, {
         ...fetchConfig(),
-        body: JSON.stringify({ updates })
+        body: JSON.stringify({ updates }),
       })
-      .then(res => res.json())
-      .then(data => this.refreshCart(data))
-      .catch(console.error);
+        .then((res) => res.json())
+        .then((data) => this.refreshCart(data))
+        .catch(console.error);
     }
   }
 
@@ -159,18 +162,18 @@ class CartItems extends HTMLElement {
     // Helper to sync everything up after an auto-correction
     // If we have state, publish it. If not, fetch it.
     if (parsedState) {
-        publish(PUB_SUB_EVENTS.cartUpdate, {
-          source: 'cart-guard',
-          cartData: parsedState
-        });
+      publish(PUB_SUB_EVENTS.cartUpdate, {
+        source: 'cart-guard',
+        cartData: parsedState,
+      });
     } else {
-        fetch(window.routes.cart_url + '.js')
-        .then(r => r.json())
-        .then(cart => {
-            publish(PUB_SUB_EVENTS.cartUpdate, {
-              source: 'cart-guard',
-              cartData: cart
-            });
+      fetch(window.routes.cart_url + '.js')
+        .then((r) => r.json())
+        .then((cart) => {
+          publish(PUB_SUB_EVENTS.cartUpdate, {
+            source: 'cart-guard',
+            cartData: cart,
+          });
         });
     }
   }

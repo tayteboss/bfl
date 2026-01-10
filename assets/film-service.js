@@ -336,8 +336,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const updateOrderSummaryVisibility = () => {
     if (!orderSummary) return;
+    // Check if a location is selected first
+    const locationSelected = !!form.querySelector('input[name="location"]:checked');
     const anyChecked = !!form.querySelector('input[type="radio"]:checked');
-    orderSummary.style.display = anyChecked ? '' : 'none';
+
+    // Only show if a location is selected AND at least one radio is checked (which is redundant if location is checked, but good for safety)
+    const shouldShow = locationSelected && anyChecked;
+
+    orderSummary.style.display = shouldShow ? '' : 'none';
   };
 
   // --- UI helpers for Order Summary ---
@@ -951,7 +957,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const hasShipping = cart.items.some((item) => item.id === shippingId || item.variant_id === shippingId);
 
           if (!hasShipping) {
-            console.log('Queuing Return Shipping product:', shippingId);
+            // console.log('Queuing Return Shipping product:', shippingId);
             itemsToAdd.push({
               id: parseInt(shippingId, 10),
               quantity: 1,
