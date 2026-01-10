@@ -12,6 +12,19 @@
     "main": {
       "type": "drop-off",
       "blocks": {
+        "location_8mE6KA": {
+          "type": "location",
+          "settings": {
+            "id": "studio-boise",
+            "name": "Studio Boise",
+            "address": "4619 W Emerald St Suite 106, Boise, ID 83706",
+            "lat": "43.61159896850586",
+            "lng": "-116.23944091796875",
+            "phone": "(208) 917-7427",
+            "website": "https://studioboise.org/",
+            "google_maps_url": "https://www.google.com/maps/search/studio+boise/@43.6112503,-116.2397195,12z?entry=s&sa=X&ved=1t%3A199789"
+          }
+        },
         "location_VYX89q": {
           "type": "location",
           "name": "Bellows Film Lab Orlando",
@@ -177,6 +190,7 @@
         }
       },
       "block_order": [
+        "location_8mE6KA",
         "location_VYX89q",
         "location_G4CVT6",
         "location_TxFwkb",
