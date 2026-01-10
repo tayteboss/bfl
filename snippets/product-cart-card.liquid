@@ -146,7 +146,7 @@
 
           {%- for property in item.properties -%}
             {%- assign property_first_char = property.first | slice: 0 -%}
-            {%- if property.last != blank and property_first_char != '_' and property.first != 'Total Price' -%}
+            {%- if property.last != blank and property_first_char != '_' and property.first != 'Total Price' and property.first != 'Delivery Address' -%}
               <div class="product-option type-p-small">
                 <dt class="type-p-small">{{ property.first }}:</dt>
                 <dd class="type-p-small">
@@ -171,20 +171,18 @@
         <p class="product-option type-p-small">{{ item.selling_plan_allocation.selling_plan.name }}</p>
       {%- endif -%}
 
-      {%- unless item.properties._role == 'return_shipping' -%}
-        <cart-remove-button
-          class="cart-remove-button type-p-small"
-          data-key="{{ item.key }}"
+      <cart-remove-button
+        class="cart-remove-button type-p-small"
+        data-key="{{ item.key }}"
+      >
+        <button
+          type="button"
+          class="button button--tertiary cart-remove-button type-p-small"
+          aria-label="{{ 'sections.cart.remove_title' | t: title: item.title | escape }}"
         >
-          <button
-            type="button"
-            class="button button--tertiary cart-remove-button type-p-small"
-            aria-label="{{ 'sections.cart.remove_title' | t: title: item.title | escape }}"
-          >
-            remove
-          </button>
-        </cart-remove-button>
-      {%- endunless -%}
+          remove
+        </button>
+      </cart-remove-button>
 
       <ul class="discounts list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">
         {%- for discount in item.line_level_discount_allocations -%}
@@ -217,15 +215,13 @@
                 <label class="visually-hidden" for="Quantity-{{ index }}">
                   {{- 'products.product.quantity.label' | t -}}
                 </label>
-                <quantity-input class="quantity cart-quantity" {% if item.properties._role == 'return_shipping' %}style="pointer-events:none;"{% endif %}>
-                  {%- unless item.properties._role == 'return_shipping' -%}
+                <quantity-input class="quantity cart-quantity">
                   <button class="quantity__button" name="minus" type="button">
                     <span class="visually-hidden">
                       {{- 'products.product.quantity.decrease' | t: product: item.product.title | escape -}}
                     </span>
                     <span class="svg-wrapper"> - </span>
                   </button>
-                  {%- endunless -%}
                   <input
                     class="quantity__input"
                     type="number"
@@ -244,16 +240,13 @@
                     aria-label="{{ 'products.product.quantity.input_label' | t: product: item.product.title | escape }}"
                     id="Quantity-{{ index }}"
                     data-index="{{ index }}"
-                    {% if item.properties._role == 'return_shipping' %}readonly{% endif %}
                   >
-                  {%- unless item.properties._role == 'return_shipping' -%}
                   <button class="quantity__button" name="plus" type="button">
                     <span class="visually-hidden">
                       {{- 'products.product.quantity.increase' | t: product: item.product.title | escape -}}
                     </span>
                     <span class="svg-wrapper"> + </span>
                   </button>
-                  {%- endunless -%}
                 </quantity-input>
               </div>
             </div>

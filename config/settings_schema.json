@@ -1463,16 +1463,6 @@
         "id": "cart_color_scheme",
         "label": "t:sections.all.colors.label",
         "default": "scheme-1"
-      },
-      {
-        "type": "header",
-        "content": "Return Shipping Logic"
-      },
-      {
-        "type": "product",
-        "id": "cart_return_shipping_product",
-        "label": "Return Shipping Product",
-        "info": "Select the product used for return shipping fees. The logic will automatically add/remove this product from the cart based on 'Send Rolls' options."
       }
     ]
   }

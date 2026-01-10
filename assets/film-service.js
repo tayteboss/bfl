@@ -207,7 +207,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const errors = [];
     getVisibleFieldsets().forEach((fs) => {
       const visibleRadios = getVisibleRadiosInFieldset(fs);
-      if (visibleRadios.length === 0) {
+      const visibleInputs = Array.from(
+        fs.querySelectorAll('input:not([type="radio"]):not([type="hidden"]), select, textarea')
+      ).filter(isVisible);
+
+      if (visibleRadios.length === 0 && visibleInputs.length === 0) {
         fs.classList.remove('rolls-form-card--error');
         return;
       }
@@ -236,8 +240,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } else {
         // Default behavior: at least one visible radio in this fieldset must be selected
-        const anyChecked = visibleRadios.some((r) => r.checked);
-        if (!anyChecked) {
+        // AND/OR all visible required text inputs must be filled
+        const anyRadioChecked = visibleRadios.length === 0 || visibleRadios.some((r) => r.checked);
+
+        let inputsValid = true;
+        if (visibleInputs.length > 0) {
+          visibleInputs.forEach((input) => {
+            if (input.hasAttribute('required') && !input.value.trim()) {
+              inputsValid = false;
+            }
+            if (input.pattern && input.value && !new RegExp(input.pattern).test(input.value)) {
+              inputsValid = false;
+            }
+          });
+        }
+
+        if (!anyRadioChecked || !inputsValid) {
           fs.classList.add('rolls-form-card--error');
           errors.push(fs);
         } else {
@@ -760,76 +778,22 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Match variant by price on the main form product only (single product with up to 2048 variants)
-  // Async to allow fetching missing variants if needed
-  async function findVariantByPrice(priceDollars) {
+  function findVariantByPrice(priceDollars) {
     const cents = Math.round(priceDollars * 100);
 
-    let variants = Array.isArray(window.filmServiceVariants) ? window.filmServiceVariants : [];
+    const variants = Array.isArray(window.filmServiceVariants) ? window.filmServiceVariants : [];
 
-    // Helper to find in list
-    const find = (list) => list.find((v) => Number(v.price) === cents);
-
-    let variant = find(variants);
-
-    // Fallback: If exact price match fails, try matching Title == PriceDollars (e.g. Title "21")
-    if (!variant) {
-      const titleMatch = variants.find((v) => v.title === String(priceDollars));
-      if (titleMatch) {
-        variant = titleMatch;
-      }
+    if (!variants.length) {
+      console.warn('No variants configured on main film service product for dynamic pricing.');
+      return null;
     }
 
-    // If not found, and we suspect truncation (or just missing), try fetching full JSON
-    if (!variant && window.filmServiceProductHandle) {
-      try {
-        // Use custom view to get ALL variants (bypassing default 250 limit)
-        const ts = Date.now();
-        const res = await fetch(`/products/${window.filmServiceProductHandle}?view=film-service-variants&t=${ts}`);
-        if (res.ok) {
-          const productData = await res.json();
-          const vars = (productData.variants || []).filter((v) => v !== null);
-
-          if (vars.length > 0) {
-            window.filmServiceVariants = vars; // Update global cache
-            variants = vars;
-            variant = find(variants);
-
-            // Re-check title match if still not found
-            if (!variant) {
-              const titleMatchRetry = variants.find((v) => v.title === String(priceDollars));
-              if (titleMatchRetry) variant = titleMatchRetry;
-            }
-          }
-        }
-      } catch (e) {}
-    }
-
-    // If still not found, try the Search API as a last resort (for variants > 250)
-    if (!variant && window.filmServiceProductHandle) {
-      try {
-        // Search for the variant Title (which we assume matches the priceDollars, e.g., "21")
-        const searchRes = await fetch(`/search?q=${priceDollars}&view=variant-id&type=product`);
-        if (searchRes.ok) {
-          const searchData = await searchRes.json();
-          // Find exact match for price
-          const found = searchData.find((v) => v.price === cents);
-          if (found) {
-            return {
-              id: found.id,
-              price: found.price,
-              title: found.title,
-              available: true,
-            };
-          }
-        }
-      } catch (e) {}
-    }
+    const variant = variants.find((v) => Number(v.price) === cents) || null;
 
     if (!variant) {
       console.warn('No variant found at exact price on main film service product.', {
         priceDollars,
         cents,
-        variantsCount: variants.length,
       });
     }
 
@@ -883,7 +847,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const matchedVariant = await findVariantByPrice(total);
+    const matchedVariant = findVariantByPrice(total);
     if (!matchedVariant) {
       setErrorMessage('Something went wrong calculating your total. Please contact us so we can help with your order.');
       const target = errorEl || form;
@@ -893,62 +857,56 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // --- Check if we need to add separate Return Shipping product ---
-    // The group name in JSON is "Add Ons - Do you want your negatives shipped back to you?"
-    // Liquid 'handle' filter usually converts this to "add-ons-do-you-want-your-negatives-shipped-back-to-you"
-    const returnShippingRadio = Array.from(form.querySelectorAll('input[type="radio"]:checked')).find((r) =>
-      r.name.includes('negatives-shipped-back')
-    );
+    variantInput.value = matchedVariant.id;
 
-    const shippingId = window.globalReturnShippingVariantId || window.returnShippingVariantId;
+    const fd = new FormData();
+    fd.append('id', matchedVariant.id);
     const selectedQty = Math.max(1, parseInt(qtyInput?.value || '1', 10) || 1);
-    const itemsToAdd = [];
+    fd.append('quantity', selectedQty);
 
-    // 1. Check if we need to add Return Shipping
-    if (returnShippingRadio && (returnShippingRadio.value || '').toLowerCase() === 'yes' && shippingId) {
-      try {
-        const cartRes = await fetch('/cart.js');
-        if (cartRes.ok) {
-          const cart = await cartRes.json();
-          const hasShipping = cart.items.some((item) => item.id === shippingId || item.variant_id === shippingId);
-
-          if (!hasShipping) {
-            console.log('Queuing Return Shipping product:', shippingId);
-            itemsToAdd.push({
-              id: parseInt(shippingId, 10),
-              quantity: 1,
-              properties: { _role: 'return_shipping' },
-            });
-          }
-        }
-      } catch (err) {
-        console.error('Error checking cart for shipping item:', err);
-      }
-    }
-
-    // 2. Add the Main Film Service Item
-    const mainItem = {
-      id: matchedVariant.id,
-      quantity: selectedQty,
-      properties: {},
-    };
-
-    // Collect properties from fieldsets
+    // --- Append selected options ---
     form.querySelectorAll('fieldset').forEach((fs) => {
+      const group = fs.dataset.group;
+
+      // Special handling for consolidated Delivery Address
+      if (group === 'Delivery Address') {
+        if (!isVisible(fs)) return;
+
+        const name = fs.querySelector('input[name="properties[Delivery Name]"]')?.value;
+        const addr1 = fs.querySelector('input[name="properties[Delivery Address 1]"]')?.value;
+        const addr2 = fs.querySelector('input[name="properties[Delivery Address 2]"]')?.value;
+        const city = fs.querySelector('input[name="properties[Delivery City]"]')?.value;
+        const state = fs.querySelector('select[name="properties[Delivery State]"]')?.value;
+        const zip = fs.querySelector('input[name="properties[Delivery Zip]"]')?.value;
+        const country = fs.querySelector('input[name="properties[Delivery Country]"]')?.value;
+
+        if (name && addr1 && city && state && zip) {
+          const lines = [name, addr1, addr2, `${city}, ${state} ${zip}`, country].filter(Boolean);
+
+          fd.append('properties[Delivery Address]', lines.join('\n'));
+        }
+        return; // Stop here for this fieldset so individual fields aren't added
+      }
+
       const checked = fs.querySelector('input[type="radio"]:checked');
-      if (checked) mainItem.properties[fs.dataset.group] = checked.value;
+      if (checked) fd.append(`properties[${fs.dataset.group}]`, checked.value);
+
+      // Append text/select/hidden inputs if fieldset is visible
+      if (isVisible(fs)) {
+        const inputs = fs.querySelectorAll('input:not([type="radio"]), select, textarea');
+        inputs.forEach((input) => {
+          if (input.name && input.value) {
+            fd.append(input.name, input.value);
+          }
+        });
+      }
     });
 
-    // Add hidden flag for robust cart guard tracking
-    if (returnShippingRadio && (returnShippingRadio.value || '').toLowerCase() === 'yes') {
-      mainItem.properties['_return_shipping_required'] = 'true';
-    }
+    // --- Total price summary ---
+    fd.append('properties[Total Price]', `$${total.toFixed(2)}`);
 
-    // Add special properties
-    mainItem.properties['Total Price'] = `$${total.toFixed(2)}`;
-    mainItem.properties['_timestamp'] = Date.now();
-
-    itemsToAdd.push(mainItem);
+    // ✅ UNIQUE TIMESTAMP to prevent Shopify from merging identical line items
+    fd.append('properties[_timestamp]', Date.now());
 
     const resetButtonState = () => {
       if (!submitBtn) return;
@@ -968,51 +926,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       if (window.CartDrawerAPI && typeof window.CartDrawerAPI.addToCart === 'function') {
-        // Warning: CartDrawerAPI might not support bulk add easily if it expects FormData
-        // We will fallback to standard fetch for bundled items to ensure atomicity
-      }
-
-      const endpoint =
-        (window.Shopify && window.Shopify.routes && window.Shopify.routes.root + 'cart/add.js') || '/cart/add.js';
-
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-        body: JSON.stringify({
-          items: itemsToAdd,
-          sections: 'cart-drawer,cart-icon-bubble',
-          sections_url: window.location.pathname,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok || data.status === 'error' || data.description) {
-        const message = data.description || data.message || 'Error adding to cart.';
-        console.error('Add to cart error:', data);
-        setErrorMessage(message);
-        const target = errorEl || form;
-        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        await window.CartDrawerAPI.addToCart(fd, submitBtn);
+        clearFormAndScrollTop();
         resetButtonState();
         return;
       }
 
-      // Clear and scroll on success
+      const endpoint = typeof routes !== 'undefined' && routes?.cart_add_url ? routes.cart_add_url : '/cart/add.js';
+      const config = typeof fetchConfig === 'function' ? fetchConfig('javascript') : { method: 'POST', headers: {} };
+      config.headers = config.headers || {};
+      config.headers['X-Requested-With'] = 'XMLHttpRequest';
+      delete config.headers['Content-Type'];
+      config.body = fd;
+
+      const response = await fetch(endpoint, config);
+      const text = await response.text();
+      let data;
+      try {
+        data = text ? JSON.parse(text) : {};
+      } catch (parseErr) {
+        data = { status: 'error', description: text || 'Unknown error' };
+      }
+
+      if (!response.ok || data?.status === 'error') {
+        const message =
+          data?.description ||
+          data?.message ||
+          'We couldn’t add this film service to your bag. Please try again, or contact us if it keeps happening.';
+        console.error('Film service add to cart error:', data);
+        setErrorMessage(message);
+        const target = errorEl || form;
+        if (target && typeof target.scrollIntoView === 'function') {
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        resetButtonState();
+        return;
+      }
+
+      // Clear and scroll on success before rendering/redirecting
       clearFormAndScrollTop();
 
       if (cartDrawer && typeof cartDrawer.renderContents === 'function') {
-        // Pass the data (which now includes 'sections') to the drawer to render
         cartDrawer.renderContents(data);
-
-        // Trigger global update for other components (like header bubble) if needed
-        if (window.publish && window.PUB_SUB_EVENTS) {
-          // We can pass the same data, or minimal data. cart-items often refetches if needed.
-          // But renderContents usually handles the drawer itself.
-          window.publish(window.PUB_SUB_EVENTS.cartUpdate, { source: 'film-service', cartData: data });
-        }
+      } else if (typeof routes !== 'undefined' && routes?.cart_url) {
+        window.location.href = routes.cart_url;
       } else {
         window.location.href = '/cart';
       }
@@ -1020,7 +977,12 @@ document.addEventListener('DOMContentLoaded', () => {
       resetButtonState();
     } catch (err) {
       console.error(err);
-      setErrorMessage('Unexpected error. Please contact us.');
+      // Fallback UI error for unexpected issues during add-to-cart
+      setErrorMessage('Please contact us for single orders over $2000 or if this error keeps happening.');
+      const target = errorEl || form;
+      if (target && typeof target.scrollIntoView === 'function') {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
       resetButtonState();
     }
   });

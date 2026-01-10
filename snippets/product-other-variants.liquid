@@ -1,11 +1,6 @@
 {%- assign has_other_options = false -%}
 {%- for option in product.options_with_values -%}
-  {%- assign opt_normalized = option.name | downcase | strip -%}
-  {%- assign opt_tokens = opt_normalized | split: ' ' -%}
-  {%- assign opt_first = opt_tokens[0] -%}
-  {%- if opt_first == 'exposures' or opt_first == 'exposure' or opt_first == 'color' or opt_first == 'colors' or opt_first == 'size' or opt_first == 'sizes' -%}
-    {%- continue -%}
-  {%- endif -%}
+  {%- if option.name == 'Exposures' -%}{%- continue -%}{%- endif -%}
   {%- if option.values.size > 1 -%}
     {%- assign has_other_options = true -%}
     {%- break -%}
@@ -15,12 +10,7 @@
 {%- if has_other_options -%}
   <div class="other-variant-options" data-section-id="{{ section_id }}">
     {%- for option in product.options_with_values -%}
-      {%- assign opt_normalized = option.name | downcase | strip -%}
-      {%- assign opt_tokens = opt_normalized | split: ' ' -%}
-      {%- assign opt_first = opt_tokens[0] -%}
-      {%- if opt_first == 'exposures' or opt_first == 'exposure' or opt_first == 'color' or opt_first == 'colors' or opt_first == 'size' or opt_first == 'sizes' or option.values.size <= 1 -%}
-        {%- continue -%}
-      {%- endif -%}
+      {%- if option.name == 'Exposures' or option.values.size <= 1 -%}{%- continue -%}{%- endif -%}
       <div class="product-form__input">
         {% comment %} <label class="form__label" for="Option-{{ section_id }}-{{ forloop.index0 }}">{{ option.name }}</label> {% endcomment %}
         <div class="select-wrapper">
@@ -58,17 +48,7 @@
     {%- endfor -%}
   </div>
 
-  {%- assign has_exposure = false -%}
-  {%- for opt in product.options -%}
-    {%- assign opt_normalized = opt | downcase | strip -%}
-    {%- assign opt_tokens = opt_normalized | split: ' ' -%}
-    {%- assign opt_first = opt_tokens[0] -%}
-    {%- if opt_first == 'exposures' or opt_first == 'exposure' -%}
-      {%- assign has_exposure = true -%}
-      {%- break -%}
-    {%- endif -%}
-  {%- endfor -%}
-  {%- unless has_exposure -%}
+  {%- unless product.options contains 'Exposures' -%}
     <script type="application/json" id="ProductVariants-{{ section_id }}">
       {{ product.variants | json }}
     </script>

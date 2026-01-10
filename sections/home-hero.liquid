@@ -96,10 +96,6 @@
 
     const inDesignMode = !!(window.Shopify && window.Shopify.designMode);
 
-    const isMobileOrTablet = () => {
-      return window.innerWidth <= 1024;
-    };
-
     const storageGet = (key) => {
       try {
         return window.sessionStorage.getItem(key);
@@ -122,8 +118,7 @@
 
     const close = () => {
       // Persist dismissal for this tab/session (sessionStorage is per-tab).
-      // Skip on mobile/tablet - always show on those devices
-      if (!inDesignMode && !isMobileOrTablet()) storageSet(STORAGE_KEY, '1');
+      if (!inDesignMode) storageSet(STORAGE_KEY, '1');
 
       const video = root.querySelector('video');
       if (video) {
@@ -138,18 +133,14 @@
     };
 
     const init = () => {
-      // Always show on mobile/tablet, ignore storage check
-      const shouldCheckStorage = !inDesignMode && !isMobileOrTablet();
-
-      if (shouldCheckStorage && storageGet(STORAGE_KEY)) {
+      if (!inDesignMode && storageGet(STORAGE_KEY)) {
         root.remove();
         return;
       }
 
       // Mark as seen for this tab even if user doesn't close.
       // Closing the tab clears this, so a new tab will show again.
-      // Skip on mobile/tablet - always show on those devices
-      if (shouldCheckStorage) storageSet(STORAGE_KEY, '1');
+      if (!inDesignMode) storageSet(STORAGE_KEY, '1');
 
       const video = root.querySelector('video');
       const muteBtn = root.querySelector('.home-hero__mute-wrapper');
