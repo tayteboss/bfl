@@ -146,7 +146,7 @@
 
           {%- for property in item.properties -%}
             {%- assign property_first_char = property.first | slice: 0 -%}
-            {%- if property.last != blank and property_first_char != '_' and property.first != 'Total Price' -%}
+            {%- if property.last != blank and property_first_char != '_' and property.first != 'Total Price' and property.first != 'Delivery Address' -%}
               <div class="product-option type-p-small">
                 <dt class="type-p-small">{{ property.first }}:</dt>
                 <dd class="type-p-small">

@@ -206,43 +206,55 @@ document.addEventListener('DOMContentLoaded', () => {
   const validateOpenFields = () => {
     const errors = [];
     getVisibleFieldsets().forEach((fs) => {
+      let isInvalid = false;
+
+      // 1. Radio Validation
       const visibleRadios = getVisibleRadiosInFieldset(fs);
-      if (visibleRadios.length === 0) {
-        fs.classList.remove('rolls-form-card--error');
-        return;
+      if (visibleRadios.length > 0) {
+        const groupNameAttr = fs.getAttribute('data-group') || fs.dataset.group || '';
+
+        // Special case: the aggregated "Add Ons" card contains multiple logical radio groups.
+        if (groupNameAttr.trim().toLowerCase() === 'add ons') {
+          const groupsByName = new Map();
+          visibleRadios.forEach((r) => {
+            const name = r.name || '__anon__';
+            if (!groupsByName.has(name)) groupsByName.set(name, []);
+            groupsByName.get(name).push(r);
+          });
+
+          const hasMissingGroupSelection = Array.from(groupsByName.values()).some((groupRadios) => {
+            if (!groupRadios.length) return false;
+            return !groupRadios.some((r) => r.checked);
+          });
+          if (hasMissingGroupSelection) isInvalid = true;
+        } else {
+          // Default behavior: at least one visible radio in this fieldset must be selected
+          const anyChecked = visibleRadios.some((r) => r.checked);
+          if (!anyChecked) isInvalid = true;
+        }
       }
-      const groupNameAttr = fs.getAttribute('data-group') || fs.dataset.group || '';
 
-      // Special case: the aggregated "Add Ons" card contains multiple logical radio groups.
-      // We require *each visible radio group by name* within this fieldset to have a selection.
-      if (groupNameAttr.trim().toLowerCase() === 'add ons') {
-        const groupsByName = new Map();
-        visibleRadios.forEach((r) => {
-          const name = r.name || '__anon__';
-          if (!groupsByName.has(name)) groupsByName.set(name, []);
-          groupsByName.get(name).push(r);
-        });
+      // 2. Text/Select Validation (e.g. Address fields)
+      const requiredInputs = Array.from(
+        fs.querySelectorAll(
+          'input:not([type="radio"]):not([type="checkbox"])[required], select[required], textarea[required]'
+        )
+      ).filter((el) => isVisible(el) && !el.disabled);
 
-        const hasMissingGroupSelection = Array.from(groupsByName.values()).some((groupRadios) => {
-          if (!groupRadios.length) return false;
-          return !groupRadios.some((r) => r.checked);
-        });
+      if (requiredInputs.some((el) => !el.value.trim())) {
+        isInvalid = true;
+      }
 
-        if (hasMissingGroupSelection) {
-          fs.classList.add('rolls-form-card--error');
-          errors.push(fs);
-        } else {
-          fs.classList.remove('rolls-form-card--error');
-        }
+      // If no radios and no required inputs, we consider it valid (unless we want to enforce logic for info-only cards, which we don't)
+      if (visibleRadios.length === 0 && requiredInputs.length === 0) {
+        isInvalid = false;
+      }
+
+      if (isInvalid) {
+        fs.classList.add('rolls-form-card--error');
+        errors.push(fs);
       } else {
-        // Default behavior: at least one visible radio in this fieldset must be selected
-        const anyChecked = visibleRadios.some((r) => r.checked);
-        if (!anyChecked) {
-          fs.classList.add('rolls-form-card--error');
-          errors.push(fs);
-        } else {
-          fs.classList.remove('rolls-form-card--error');
-        }
+        fs.classList.remove('rolls-form-card--error');
       }
     });
     return { errors };
@@ -836,6 +848,28 @@ document.addEventListener('DOMContentLoaded', () => {
     return variant;
   }
 
+  function prefillAddressFields() {
+    try {
+      const stored = localStorage.getItem('bellows_delivery_address');
+      if (!stored) return;
+      const addressData = JSON.parse(stored);
+
+      form
+        .querySelectorAll(
+          'fieldset[data-group="Delivery Address"] input, fieldset[data-group="Delivery Address"] select'
+        )
+        .forEach((input) => {
+          if (!input.name || !input.name.includes('properties[')) return;
+          const key = input.name.match(/properties\[(.*?)\]/)?.[1];
+          if (key && addressData[key]) {
+            input.value = addressData[key];
+          }
+        });
+    } catch (e) {
+      console.error('Error loading address', e);
+    }
+  }
+
   function clearFormAndScrollTop() {
     try {
       form.reset();
@@ -845,6 +879,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Reset totals and summary
     if (totalDisplay) totalDisplay.textContent = formatMoney(basePrice);
     if (osList) osList.innerHTML = '';
+
+    // Restore address if present
+    prefillAddressFields();
+
     applyConditions();
     updateOrderSummaryVisibility();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -935,9 +973,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Collect properties from fieldsets
     form.querySelectorAll('fieldset').forEach((fs) => {
+      // Skip hidden/unavailable fieldsets
+      if (!isVisible(fs)) return;
+
+      // 1. Radio properties
       const checked = fs.querySelector('input[type="radio"]:checked');
       if (checked) mainItem.properties[fs.dataset.group] = checked.value;
+
+      // 2. Text/Select properties (e.g. Address fields)
+      const addressParts = [];
+      // Check if this is the specific Delivery Address group
+      const isAddressGroup = fs.dataset.group === 'Delivery Address';
+
+      fs.querySelectorAll('input[type="text"], input[type="email"], select, textarea').forEach((input) => {
+        if (!input.name || !input.name.startsWith('properties[') || input.disabled) return;
+        const match = input.name.match(/properties\[(.*?)\]/);
+        // Only add if we have a key and a value
+        if (match && match[1] && input.value.trim() !== '') {
+          if (isAddressGroup) {
+            addressParts.push(input.value.trim());
+          } else {
+            mainItem.properties[match[1]] = input.value.trim();
+          }
+        }
+      });
+
+      if (isAddressGroup && addressParts.length > 0) {
+        mainItem.properties['Delivery Address'] = addressParts.join(', ');
+      }
     });
+
+    // Save address details to localStorage for convenience
+    try {
+      // Find all address inputs that have a value
+      const addressInputs = form.querySelectorAll(
+        'fieldset[data-group="Delivery Address"] input, fieldset[data-group="Delivery Address"] select'
+      );
+      const addressData = {};
+      let hasAddress = false;
+      addressInputs.forEach((input) => {
+        if (!input.name || !input.name.includes('properties[')) return;
+        const key = input.name.match(/properties\[(.*?)\]/)?.[1];
+        if (key && input.value.trim()) {
+          addressData[key] = input.value.trim();
+          hasAddress = true;
+        }
+      });
+      if (hasAddress) {
+        localStorage.setItem('bellows_delivery_address', JSON.stringify(addressData));
+      }
+    } catch (e) {
+      console.error('Error saving address', e);
+    }
 
     // Add hidden flag for robust cart guard tracking
     if (returnShippingRadio && (returnShippingRadio.value || '').toLowerCase() === 'yes') {
@@ -1026,6 +1113,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Init
+  prefillAddressFields();
   applyConditions();
   updateDeliveryInfoVisibility();
   updateOrderSummaryVisibility();
