@@ -1339,6 +1339,10 @@ if (!customElements.get('bulk-add')) {
       // If server returned sections, render directly
       if (data.sections && cartDrawer && typeof cartDrawer.renderContents === 'function') {
         cartDrawer.renderContents(data);
+        // Open the drawer after rendering
+        if (typeof cartDrawer.open === 'function') {
+          cartDrawer.open(activeElement);
+        }
         return data;
       }
 
@@ -1360,6 +1364,10 @@ if (!customElements.get('bulk-add')) {
           return acc;
         }, {});
         cartDrawer.renderContents({ sections: sectionsMap });
+        // Open the drawer after rendering
+        if (typeof cartDrawer.open === 'function') {
+          cartDrawer.open(activeElement);
+        }
       }
 
       return data;

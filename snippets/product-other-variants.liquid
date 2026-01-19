@@ -71,33 +71,50 @@
     {%- endfor -%}
   </div>
 
-  {%- assign has_exposure = false -%}
-  {%- for opt in product.options -%}
-    {%- assign opt_normalized = opt | downcase | strip -%}
-    {%- assign opt_tokens = opt_normalized | split: ' ' -%}
-    {%- assign opt_first = opt_tokens[0] -%}
-    {%- if opt_first == 'exposures' or opt_first == 'exposure' -%}
-      {%- assign has_exposure = true -%}
-      {%- break -%}
-    {%- endif -%}
-  {%- endfor -%}
-  {%- unless has_exposure -%}
-    <script type="application/json" id="ProductVariants-{{ section_id }}">
-      {{ product.variants | json }}
-    </script>
-  {%- endunless -%}
+  {%- comment -%}
+    Always include variants JSON - it's needed for variant matching.
+    The exposure snippet also includes it with the same ID, but having it here
+    ensures it's available even if exposure snippet doesn't render first.
+  {%- endcomment -%}
+  <script type="application/json" id="ProductVariants-{{ section_id }}">
+    {{ product.variants | json }}
+  </script>
 
   <script>
     (function() {
+      function init() {
       const root = document.getElementById('MainProduct-{{ section_id }}');
       if (!root) return;
+      
       const form = document.getElementById('{{ product_form_id }}');
       if (!form) return;
+      
       const idInput = form.querySelector('input[name="id"]');
       if (!idInput) return;
-      const variantsEl = document.getElementById('ProductVariants-{{ section_id }}');
+      
       let variants = [];
-      try { variants = JSON.parse(variantsEl?.textContent || '[]'); } catch (e) {}
+      const variantsEl = document.getElementById('ProductVariants-{{ section_id }}');
+      if (variantsEl) {
+        try { 
+          variants = JSON.parse(variantsEl.textContent || '[]'); 
+        } catch (e) {}
+      }
+      
+      if (variants.length === 0) {
+        const structuredDataScript = root.querySelector('script[type="application/ld+json"]');
+        if (structuredDataScript) {
+          try {
+            const structuredData = JSON.parse(structuredDataScript.textContent);
+            if (structuredData.offers && Array.isArray(structuredData.offers)) {
+              // This won't give us full variant data, but it's a fallback
+            }
+          } catch (e) {}
+        }
+        
+        if (window.productData && window.productData.variants) {
+          variants = window.productData.variants;
+        }
+      }
 
       const optionNames = {{ product.options | json }};
 
@@ -129,27 +146,54 @@
         return variants.find((v) => Array.isArray(v.options) && v.options.every((opt, i) => opt === selected[i])) || null;
       }
 
-      function handleVariantChange() {
+      function handleVariantChange(event) {
         const selected = optionNames.map((name, idx) => getSelectedForName(name, idx));
         const matched = findVariantByOptions(selected);
         if (!matched) return;
         
-        // Update ALL id inputs to handle cases where apps inject duplicate inputs
         const idInputs = form.querySelectorAll('input[name="id"]');
-        idInputs.forEach(idInput => {
-          idInput.value = matched.id;
-          idInput.toggleAttribute('disabled', !matched.available);
-          idInput.dispatchEvent(new Event('change', { bubbles: true }));
+        idInputs.forEach((input) => {
+          input.value = matched.id;
+          input.toggleAttribute('disabled', !matched.available);
+          input.dispatchEvent(new Event('change', { bubbles: true }));
         });
       }
 
-      // Bind to our selects
-      root.querySelectorAll('.other-variant-options select').forEach((sel) => sel.addEventListener('change', handleVariantChange));
-      // Also react to special variant changes if present
-      root.querySelectorAll('input[name="exposure-choice"], input[name="color-choice"], input[name="size-choice"]').forEach((radio) => radio.addEventListener('change', handleVariantChange));
 
-      // Initialize
+      root.querySelectorAll('.other-variant-options select').forEach((sel) => {
+        sel.addEventListener('change', handleVariantChange);
+      });
+      
+      root.querySelectorAll('input[name="exposure-choice"], input[name="color-choice"], input[name="size-choice"]').forEach((radio) => {
+        radio.addEventListener('change', handleVariantChange);
+      });
+
+      form.addEventListener('submit', (e) => {
+        const selected = optionNames.map((name, idx) => getSelectedForName(name, idx));
+        const matched = findVariantByOptions(selected);
+        
+        if (matched) {
+          const finalIdInputs = form.querySelectorAll('input[name="id"]');
+          finalIdInputs.forEach((input) => {
+            if (input.value !== matched.id) {
+              input.value = matched.id;
+              input.toggleAttribute('disabled', !matched.available);
+              input.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+          });
+        }
+      }, { capture: true });
+
       handleVariantChange();
+      }
+      
+      // Run immediately or wait for DOM
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        // DOM already ready, but wait a tick to ensure everything is loaded
+        setTimeout(init, 0);
+      }
     })();
   </script>
 {%- endif -%}

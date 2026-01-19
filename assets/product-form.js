@@ -139,43 +139,28 @@ if (!customElements.get('product-form')) {
 
       onSubmitHandler(evt) {
         evt.preventDefault();
-        console.log('Product form: submit handler called');
 
         // Safety checks
         if (!this.form) {
-          // console.error('Product form: form not initialized');
           return;
         }
 
         if (!this.submitButton) {
-          // console.error('Product form: submit button not found');
           return;
         }
 
         // Check if button is disabled (both attribute and property)
         if (this.submitButton.getAttribute('aria-disabled') === 'true' || this.submitButton.disabled) {
-          // console.log('Product form: button is disabled', {
-          //   ariaDisabled: this.submitButton.getAttribute('aria-disabled'),
-          //   disabled: this.submitButton.disabled,
-          // });
           return;
         }
 
         // Re-get variant input to ensure we have the latest value
         const variantInput = this.variantIdInput;
         if (!variantInput) {
-          // console.error('Product form: variant input not found');
           return;
         }
 
-        // console.log('Product form: variant input state', {
-        //   value: variantInput.value,
-        //   disabled: variantInput.disabled,
-        //   hasValue: !!variantInput.value,
-        // });
-
         if (variantInput.disabled) {
-          // console.error('Product form: variant input is disabled');
           return;
         }
 
@@ -219,11 +204,8 @@ if (!customElements.get('product-form')) {
 
         // Get variant ID directly from input (more reliable than FormData)
         const variantId = this.variantIdInput.value;
-        // console.log('Product form: variant ID from input:', variantId);
 
         if (!variantId || variantId === '') {
-          // console.error('Product form: variant ID is missing or empty');
-          // console.error('Variant input:', this.variantIdInput);
           this.handleErrorMessage('Please select a product option');
           // Reset button state
           this.submitButton.classList.remove('loading');
@@ -290,7 +272,6 @@ if (!customElements.get('product-form')) {
         // Ensure variant ID is in form data
         if (!formData.get('id') || formData.get('id') !== variantId) {
           formData.set('id', variantId);
-          // console.log('Product form: set variant ID in formData:', variantId);
         }
 
         if (this.cart && typeof this.cart.getSectionsToRender === 'function') {
@@ -306,10 +287,13 @@ if (!customElements.get('product-form')) {
 
         // Universal path: use CartDrawerAPI if present
         if (window.CartDrawerAPI && typeof window.CartDrawerAPI.addToCart === 'function') {
-          // console.log('Product form: using CartDrawerAPI');
           window.CartDrawerAPI.addToCart(formData, this.submitButton)
             .then(() => {
               this.error = false;
+              // Ensure cart drawer is opened after successful add
+              if (this.cart && typeof this.cart.open === 'function') {
+                this.cart.open(this.submitButton);
+              }
               this.submitButton.classList.remove('loading');
               this.submitButton.removeAttribute('aria-disabled');
               const loadingSpinner =
@@ -317,7 +301,6 @@ if (!customElements.get('product-form')) {
               if (loadingSpinner) loadingSpinner.classList.add('hidden');
             })
             .catch((err) => {
-              console.error('CartDrawerAPI error:', err);
               this.handleErrorMessage(err?.message || 'Unable to add item to cart. Please try again.');
               this.error = true;
               this.submitButton.classList.remove('loading');
@@ -430,7 +413,6 @@ if (!customElements.get('product-form')) {
 
             // Ensure cart drawer is found
             if (!this.cart) {
-              console.error('Cart drawer not found');
               return;
             }
 
@@ -480,6 +462,10 @@ if (!customElements.get('product-form')) {
                   setTimeout(() => {
                     if (this.cart && typeof this.cart.renderContents === 'function') {
                       this.cart.renderContents(response);
+                      // Open the drawer after rendering
+                      if (typeof this.cart.open === 'function') {
+                        this.cart.open(this.submitButton);
+                      }
                     }
                   });
                 },
@@ -489,8 +475,12 @@ if (!customElements.get('product-form')) {
             } else {
               if (this.cart && typeof this.cart.renderContents === 'function') {
                 this.cart.renderContents(response);
+                // Open the drawer after rendering
+                if (typeof this.cart.open === 'function') {
+                  this.cart.open(this.submitButton);
+                }
               } else {
-                console.error('Cart renderContents method not available');
+                console.error('[product-form] Cart renderContents method not available');
               }
             }
           })
