@@ -81,7 +81,7 @@
     },
     "service_jehEyF": {
       "type": "service",
-      "name": "Type of Service",
+      "name": "Film Development",
       "settings": {
         "anchor_id": "film-development",
         "heading": "Film Development",
@@ -95,7 +95,7 @@
     },
     "service_zXRfUN": {
       "type": "service",
-      "name": "Type of Service",
+      "name": "Scanning",
       "settings": {
         "anchor_id": "scanning",
         "heading": "Scanning",
@@ -107,9 +107,23 @@
         "cta": "shopify://pages/send-us-your-rolls"
       }
     },
+    "service_GBPgiH": {
+      "type": "service",
+      "name": "Printing",
+      "settings": {
+        "anchor_id": "",
+        "heading": "Printing",
+        "badge": "",
+        "paragraph": "At Bellows, we treat printing as an extension of your art. Every detail—tone, texture, color, and depth—is preserved with intention.\n\nOur studio specializes in large-format fine art prints up to 44\" × 60\", crafted with archival papers and pigment-based inks for museum-quality longevity. Choose from matte, gloss, luster, metallic, or premium fine-art stocks to match the mood of your work.\n\nEach print is hand-inspected, color-checked, and packaged with care so it arrives ready to frame, display, or share.\n\nBellows Film Lab is dedicated to supporting artists—bringing your images to life with the same craft and precision we bring to every part of our process.",
+        "notes": "<p><strong>Paper We Use:</strong></p><ul><li>Arista-II RC Lustre Inkjet Paper </li><li>Canson Infinity Baryta Prestige II Paper</li><li>Canson Infinity Plattine Fibre Rag Inkjet Paper</li><li>Canson Rag Photographique Inkjet Paper</li><li></li></ul><p>Questions about printing? </p><p>Email contact@bellowsfilmlab.com</p><p></p>",
+        "table-caption": "",
+        "button": "",
+        "cta": ""
+      }
+    },
     "service_3Qnrpd": {
       "type": "service",
-      "name": "Type of Service",
+      "name": "Flextight",
       "settings": {
         "anchor_id": "flextight",
         "heading": "Flextight X5 Drum-Quality Scans",
@@ -123,7 +137,7 @@
     },
     "service_dEWPfw": {
       "type": "service",
-      "name": "Type of Service",
+      "name": "Darkroom Rental (Atlanta Only)",
       "settings": {
         "anchor_id": "darkroom",
         "heading": "Darkroom Rental (Atlanta Only)",
@@ -137,7 +151,7 @@
     },
     "service_DwyEKt": {
       "type": "service",
-      "name": "Type of Service",
+      "name": "Camera Rental",
       "settings": {
         "anchor_id": "camera-rental",
         "heading": "Camera Rental",
@@ -151,7 +165,7 @@
     },
     "service_aHeRqQ": {
       "type": "service",
-      "name": "Type of Service",
+      "name": "Tape Digitizing",
       "settings": {
         "anchor_id": "tape-digitizing",
         "heading": "Tape Digitizing",
@@ -173,6 +187,7 @@
     "services_fwfpCD",
     "service_jehEyF",
     "service_zXRfUN",
+    "service_GBPgiH",
     "service_3Qnrpd",
     "service_dEWPfw",
     "service_DwyEKt",

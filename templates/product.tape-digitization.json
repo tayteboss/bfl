@@ -11,7 +11,6 @@
   "sections": {
     "main": {
       "type": "product-tape-digitization",
-      "settings": {},
       "blocks": {
         "variant_picker": {
           "type": "variant_picker",
@@ -23,11 +22,11 @@
       },
       "block_order": [
         "variant_picker"
-      ]
+      ],
+      "settings": {}
     }
   },
   "order": [
     "main"
   ]
 }
-
