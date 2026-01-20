@@ -957,11 +957,20 @@ document.addEventListener('DOMContentLoaded', () => {
           const hasShipping = cart.items.some((item) => item.id === shippingId || item.variant_id === shippingId);
 
           if (!hasShipping) {
+            // Get location from form
+            const locationRadio = form.querySelector('input[name="location"]:checked');
+            const locationValue = locationRadio ? locationRadio.value : null;
+
+            const returnShippingProperties = { _role: 'return_shipping' };
+            if (locationValue) {
+              returnShippingProperties['Location'] = locationValue;
+            }
+
             // console.log('Queuing Return Shipping product:', shippingId);
             itemsToAdd.push({
               id: parseInt(shippingId, 10),
               quantity: 1,
-              properties: { _role: 'return_shipping' },
+              properties: returnShippingProperties,
             });
           }
         }
