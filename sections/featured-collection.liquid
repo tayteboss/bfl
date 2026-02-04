@@ -20,6 +20,13 @@
         role="navigation"
         aria-label="Collection filters"
       >
+        {% if request.page_type == 'index' %}
+          {% render 'filter-button',
+            title: 'Send us your rolls',
+            id: 'send-us-your-rolls',
+            url: '/pages/send-us-your-rolls'
+          %}
+        {% endif %}
         {% for block in section.blocks %}
           {% assign collection = collections[block.settings.collection] %}
           {% if collection %}

@@ -1,0 +1,157 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "wrapper": "div.gw-rd-page-wrapper",
+  "sections": {
+    "walloffame_DzeCLX": {
+      "type": "walloffame",
+      "custom_css": [
+        ".wall-of-fame {margin-bottom: -4.6875rem;}",
+        ".wall-of-fame__header-wrapper {margin-bottom: 0;}",
+        "@media (max-width: 768px) {.wall-of-fame {margin-bottom: -2.8125rem; }}"
+      ],
+      "name": "Wall of Fame",
+      "settings": {
+        "heading": "Rewards Program",
+        "text": "Become a member of our loyalty program and gain access to exclusive member benefits every time you shop."
+      }
+    },
+    "rich_text_Qwgw7F": {
+      "type": "rich-text",
+      "custom_css": [
+        ".rich-text-section {margin-block: -4.6875rem;}",
+        ".rich-text-section__button {padding-top: 0;}",
+        ".primary-button {border-radius: 20px; background-color: #282828; color: #fff; font-size: 16px; font-weight: 600; line-height: 1;}",
+        "@media (max-width: 768px) {.rich-text-section {margin-block: -2.8125rem; }}"
+      ],
+      "name": "Rich text",
+      "settings": {
+        "content": "",
+        "button": "Join us",
+        "cta": "/account"
+      }
+    },
+    "image_simple_hwUKfE": {
+      "type": "image-simple",
+      "custom_css": [
+        ".image-simple {margin-block: -4.6875rem;}",
+        ".layout-wrapper {padding-inline: 0;}",
+        ".image-simple__inner {max-width: none; margin: 0;}",
+        ".image-simple__image-inner {border-radius: 0;}",
+        "@media (max-width: 768px) {.image-simple {margin-block: -2.8125rem; }}"
+      ],
+      "name": "Image (simple)",
+      "settings": {
+        "image": "shopify://shop_images/banner1_61c8fd6d-08b5-4918-9191-0b7ed5c6f1b3.jpg",
+        "alt": "page_main_banner",
+        "caption": ""
+      }
+    },
+    "1770105655712cebe1": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_2ee25f2_bf8gAw": {
+          "type": "ai_gen_block_2ee25f2",
+          "settings": {
+            "section_title": "How It Works",
+            "title_size": 44,
+            "title_weight": 900,
+            "title_color": "#282828",
+            "desktop_width_percent": 100,
+            "card_1_icon": "earn",
+            "card_1_title": "Earn",
+            "card_1_description": "Collect points on every purchase",
+            "card_2_icon": "redeem",
+            "card_2_title": "Redeem",
+            "card_2_description": "Apply points toward credits, gifts, or services",
+            "card_3_icon": "track",
+            "card_3_title": "Track",
+            "card_3_description": "Your tier updates automatically over a rolling 12-month period",
+            "card_title_color": "#101010",
+            "card_description_color": "#101010"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_2ee25f2_bf8gAw"
+      ],
+      "settings": {}
+    },
+    "reward_page_content": {
+      "type": "apps",
+      "blocks": {
+        "rewards_ways_to_earn_page_widget": {
+          "type": "shopify://apps/growave-loyalty-wishlist/blocks/v2.rewards.waysToEarnPageWidget/b3d2efbe-110a-4e27-84a8-1f2ed63996a4",
+          "settings": {
+            "custom_css": ""
+          }
+        },
+        "rewards_available_rewards_page_widget": {
+          "type": "shopify://apps/growave-loyalty-wishlist/blocks/block.rewards.availableRewardsPageWidget/b3d2efbe-110a-4e27-84a8-1f2ed63996a4",
+          "settings": {
+            "custom_css": ""
+          }
+        },
+        "rewards_ways_to_spend_page_widget": {
+          "type": "shopify://apps/growave-loyalty-wishlist/blocks/v2.rewards.waysToSpendPageWidget/b3d2efbe-110a-4e27-84a8-1f2ed63996a4",
+          "settings": {
+            "custom_css": ""
+          }
+        },
+        "rewards_vip_tiers_page_widget": {
+          "type": "shopify://apps/growave-loyalty-wishlist/blocks/block.rewards.vipTiersPageWidget/b3d2efbe-110a-4e27-84a8-1f2ed63996a4",
+          "settings": {
+            "custom_css": ""
+          }
+        },
+        "rewards_referral_program_page_widget": {
+          "type": "shopify://apps/growave-loyalty-wishlist/blocks/block.rewards.referralProgramPageWidget/b3d2efbe-110a-4e27-84a8-1f2ed63996a4",
+          "settings": {
+            "custom_css": ""
+          }
+        },
+        "rewards_history_page_widget": {
+          "type": "shopify://apps/growave-loyalty-wishlist/blocks/block.rewards.historyPageWidget/b3d2efbe-110a-4e27-84a8-1f2ed63996a4",
+          "settings": {
+            "custom_css": ""
+          }
+        }
+      },
+      "block_order": [
+        "rewards_ways_to_earn_page_widget",
+        "rewards_available_rewards_page_widget",
+        "rewards_ways_to_spend_page_widget",
+        "rewards_vip_tiers_page_widget",
+        "rewards_referral_program_page_widget",
+        "rewards_history_page_widget"
+      ],
+      "settings": {}
+    },
+    "faq_qKzT3x": {
+      "type": "faq",
+      "name": "FAQ",
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "show_view_all": true,
+        "view_all_link": "",
+        "view_all_text": "View all FAQs"
+      }
+    }
+  },
+  "order": [
+    "walloffame_DzeCLX",
+    "rich_text_Qwgw7F",
+    "image_simple_hwUKfE",
+    "1770105655712cebe1",
+    "reward_page_content",
+    "faq_qKzT3x"
+  ]
+}

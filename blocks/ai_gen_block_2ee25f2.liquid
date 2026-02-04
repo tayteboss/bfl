@@ -1,0 +1,361 @@
+{% doc %}
+  @prompt
+    i need how it works section. It's a section with title and 3 cards under the title. All elements are centered. Cards are aligned horizontally with 15px gap. A card has #f6f6f6 background, 28px block 24px inline paddings, height 400px. There are 3 elements in the center of a card: icon, title, description. Icon has 60px size, with round #000 borders and #FEF76F background, in the center there's a svg icon. card title is 24px size, 900 bold, capitalized. card description is 20px size, 200 bold. Gap between card elements are 20px
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-how-it-works-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    padding: 40px 20px;
+  }
+
+  .ai-how-it-works-container-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .ai-how-it-works-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    font-weight: {{ block.settings.title_weight }};
+    color: {{ block.settings.title_color }};
+    text-align: center;
+    margin: 0;
+  }
+
+  .ai-how-it-works-cards-{{ ai_gen_id }} {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .ai-how-it-works-card-{{ ai_gen_id }} {
+    background-color: #f6f6f6;
+    padding: 28px 24px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex: 1;
+    max-width: 400px;
+    border-radius: 16px;
+  }
+
+  .ai-how-it-works-icon-{{ ai_gen_id }} {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #FEF76F;
+    border: 1px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .ai-how-it-works-icon-{{ ai_gen_id }} svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .ai-how-it-works-card-title-{{ ai_gen_id }} {
+    font-size: 24px;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: {{ block.settings.card_title_color }};
+    text-align: center;
+    margin: 0;
+  }
+
+  .ai-how-it-works-card-description-{{ ai_gen_id }} {
+    font-size: 20px;
+    font-weight: 200;
+    color: {{ block.settings.card_description_color }};
+    text-align: center;
+    margin: 0;
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-how-it-works-cards-{{ ai_gen_id }} {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .ai-how-it-works-card-{{ ai_gen_id }} {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+{% endstyle %}
+
+<how-it-works-{{ ai_gen_id }} class="ai-how-it-works-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-how-it-works-container-{{ ai_gen_id }}">
+    {% if block.settings.section_title != blank %}
+      <h2 class="ai-how-it-works-title-{{ ai_gen_id }}">{{ block.settings.section_title }}</h2>
+    {% endif %}
+
+    <div class="ai-how-it-works-cards-{{ ai_gen_id }}">
+      {% for i in (1..3) %}
+        {% liquid
+          assign card_title_key = 'card_' | append: i | append: '_title'
+          assign card_description_key = 'card_' | append: i | append: '_description'
+          assign card_icon_key = 'card_' | append: i | append: '_icon'
+
+          assign card_title = block.settings[card_title_key]
+          assign card_description = block.settings[card_description_key]
+          assign card_icon = block.settings[card_icon_key]
+        %}
+
+        <div class="ai-how-it-works-card-{{ ai_gen_id }}">
+          <div class="ai-how-it-works-icon-{{ ai_gen_id }}">
+            {% if card_icon == 'earn' %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
+                <path d="M12.3336 16.2348C8.87111 16.2348 6.04611 13.4301 6.04611 9.99242C6.04611 6.55474 8.87111 3.75 12.3336 3.75C15.7961 3.75 18.6211 6.55474 18.6211 9.99242C18.6211 13.4301 15.8086 16.2348 12.3336 16.2348ZM12.3336 6.23207C10.2461 6.23207 8.54611 7.91988 8.54611 9.99242C8.54611 12.0649 10.2461 13.7528 12.3336 13.7528C14.4211 13.7528 16.1211 12.0649 16.1211 9.99242C16.1211 7.91988 14.4211 6.23207 12.3336 6.23207Z" fill="black" style="fill:black;fill-opacity:1;"/>
+                <path d="M12.3344 23.7679H3.80942C4.30942 19.5359 7.93442 16.2348 12.3344 16.2348C13.0219 16.2348 13.5844 15.6763 13.5844 14.9937C13.5844 14.3112 13.0219 13.7527 12.3344 13.7527C6.22192 13.7527 1.24692 18.692 1.24692 24.7731C1.24692 24.8227 1.24692 24.9717 1.24692 25.0213C1.24692 25.7039 1.80942 26.2623 2.49692 26.2623H12.3344C13.0219 26.2623 13.5844 25.7039 13.5844 25.0213C13.5844 24.3387 13.0219 23.7679 12.3344 23.7679Z" fill="black" style="fill:black;fill-opacity:1;"/>
+                <path d="M27.4986 21.683H16.4611C15.7736 21.683 15.2111 21.1245 15.2111 20.442C15.2111 19.7594 15.7736 19.2009 16.4611 19.2009H27.4986C28.1861 19.2009 28.7486 19.7594 28.7486 20.442C28.7486 21.1245 28.1861 21.683 27.4986 21.683Z" fill="black" style="fill:black;fill-opacity:1;"/>
+                <path d="M26.2737 16.8925H19.9862C19.2987 16.8925 18.7362 16.334 18.7362 15.6514C18.7362 14.9689 19.2987 14.4104 19.9862 14.4104H26.2737C26.9612 14.4104 27.5237 14.9689 27.5237 15.6514C27.5237 16.334 26.9612 16.8925 26.2737 16.8925Z" fill="black" style="fill:black;fill-opacity:1;"/>
+                <path d="M22.6744 26.2501H16.6369C15.9494 26.2501 15.3869 25.6917 15.3869 25.0091C15.3869 24.3265 15.9494 23.7681 16.6369 23.7681H22.6744C23.3619 23.7681 23.9244 24.3265 23.9244 25.0091C23.9244 25.6917 23.3619 26.2501 22.6744 26.2501Z" fill="black" style="fill:black;fill-opacity:1;"/>
+              </svg>
+            {% elsif card_icon == 'redeem' %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
+                <path d="M18.8742 28.7498C18.5452 28.7498 18.2288 28.6248 17.9757 28.3873L6.18096 16.7248C5.95317 16.4998 5.82661 16.2123 5.81396 15.8998L5.57351 10.8998C5.53554 10.2123 6.07972 9.62478 6.77576 9.58728C7.45915 9.56228 8.06661 10.0873 8.10457 10.7748L8.31971 15.2998L18.8869 25.7373L26.594 18.1248C27.0875 17.6373 27.8848 17.6373 28.3784 18.1248C28.8719 18.6123 28.8719 19.3998 28.3784 19.8873L19.7728 28.3873C19.5197 28.6248 19.2033 28.7498 18.8742 28.7498Z" fill="black" style="fill:black;fill-opacity:1;"/>
+                <path d="M24.6461 16.6999C24.3171 16.6999 24.0007 16.5749 23.7476 16.3374L15.509 8.1999L6.52369 7.7749C6.20731 7.7624 5.91623 7.6249 5.68844 7.4124L1.61343 3.3874C1.11987 2.8999 1.11987 2.1124 1.61343 1.6249C2.10698 1.1374 2.90427 1.1374 3.39783 1.6249L7.13115 5.3124L16.1164 5.7374C16.4328 5.7499 16.7239 5.8874 16.9517 6.0999L25.5446 14.5874C26.0382 15.0749 26.0382 15.8624 25.5446 16.3499C25.2915 16.5749 24.9625 16.6999 24.6461 16.6999Z" fill="black" style="fill:black;fill-opacity:1;"/>
+                <path d="M12.7982 14.2249C13.8466 14.2249 14.6965 13.3854 14.6965 12.3499C14.6965 11.3143 13.8466 10.4749 12.7982 10.4749C11.7498 10.4749 10.8999 11.3143 10.8999 12.3499C10.8999 13.3854 11.7498 14.2249 12.7982 14.2249Z" fill="black" style="fill:black;fill-opacity:1;"/>
+              </svg>
+            {% elsif card_icon == 'track' %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
+                <path d="M26.2225 4.0885C25.6225 3.74376 24.86 3.95307 24.51 4.54405C24.16 5.13503 24.3725 5.88607 24.9725 6.2308C25.7725 6.67404 26.2475 7.21577 26.2475 7.64669C26.2475 8.74247 23.485 10.3307 19.1725 10.3307C14.86 10.3307 12.0975 8.74247 12.0975 7.64669C12.0975 6.55092 14.8475 4.96266 19.1725 4.96266C19.8475 4.96266 20.51 4.9996 21.1475 5.08578C21.835 5.17196 22.46 4.69179 22.5475 4.01463C22.635 3.33747 22.1475 2.72186 21.46 2.63568C20.71 2.54949 19.9475 2.50024 19.1725 2.50024C13.71 2.50024 9.59747 4.71642 9.59747 7.64669C9.59747 10.577 13.71 12.7931 19.1725 12.7931C24.635 12.7931 28.7475 10.577 28.7475 7.64669C28.7475 6.28005 27.8475 5.01191 26.2225 4.0885Z" fill="black" style="fill:black;fill-opacity:1;"/>
+                <path d="M27.4986 11.8206C26.8111 11.8206 26.2486 12.3746 26.2486 13.0518C26.2486 14.1475 23.4861 15.7358 19.1736 15.7358C18.4236 15.7358 17.7361 15.6742 17.0861 15.5881C17.2861 16.2652 17.5361 17.3856 17.3611 18.112C17.9486 18.1736 18.5486 18.1982 19.1736 18.1982C24.6361 18.1982 28.7486 15.982 28.7486 13.0518C28.7486 12.3746 28.1861 11.8206 27.4986 11.8206Z" fill="black" style="fill:black;fill-opacity:1;"/>
+                <path d="M27.4989 17.0654C26.8114 17.0654 26.2489 17.6195 26.2489 18.2966C26.2489 19.3924 23.4864 20.9807 19.1739 20.9807C18.1864 20.9807 17.2864 20.8945 16.4739 20.7467C16.2239 21.3254 15.7364 22.2857 15.0864 22.9752C16.3114 23.2707 17.6864 23.4431 19.1739 23.4431C24.6364 23.4431 28.7489 21.2269 28.7489 18.2966C28.7489 17.6195 28.1864 17.0654 27.4989 17.0654Z" fill="black" style="fill:black;fill-opacity:1;"/>
+                <path d="M9.80942 26.2503C8.45942 26.2503 7.15942 25.9424 5.95942 25.3515C5.34692 25.0437 5.09692 24.3049 5.40942 23.7017C5.72192 23.0984 6.47192 22.8521 7.08442 23.1599C7.93442 23.5785 8.84692 23.8001 9.80942 23.8001C13.1469 23.8001 15.8719 21.1284 15.8719 17.8288C15.8719 14.5415 13.1594 11.8574 9.80942 11.8574C6.45942 11.8574 3.74692 14.5415 3.74692 17.8288C3.74692 18.7399 3.94692 19.6017 4.34692 20.4143C4.64692 21.0299 4.38442 21.7687 3.75942 22.0641C3.13442 22.3596 2.39692 22.1011 2.08442 21.4855C1.53442 20.3405 1.24692 19.1092 1.24692 17.8288C1.24692 13.1748 5.08442 9.39502 9.80942 9.39502C14.5344 9.39502 18.3719 13.1748 18.3719 17.8288C18.3719 22.4828 14.5219 26.2503 9.80942 26.2503Z" fill="black" style="fill:black;fill-opacity:1;"/>
+              </svg>
+            {% else %}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
+            {% endif %}
+          </div>
+
+          {% if card_title != blank %}
+            <h3 class="ai-how-it-works-card-title-{{ ai_gen_id }}">{{ card_title }}</h3>
+          {% endif %}
+
+          {% if card_description != blank %}
+            <p class="ai-how-it-works-card-description-{{ ai_gen_id }}">{{ card_description }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</how-it-works-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class HowItWorks{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+    }
+
+    customElements.define('how-it-works-{{ ai_gen_id }}', HowItWorks{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "How it works",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section title",
+      "default": "How it works"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "title_weight",
+      "label": "Title weight",
+      "min": 100,
+      "max": 900,
+      "step": 100,
+      "default": 700
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#121212"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Card 1"
+    },
+    {
+      "type": "select",
+      "id": "card_1_icon",
+      "label": "Icon",
+      "options": [
+        {
+          "value": "earn",
+          "label": "Earn"
+        },
+        {
+          "value": "redeem",
+          "label": "Redeem"
+        },
+        {
+          "value": "track",
+          "label": "Track"
+        }
+      ],
+      "default": "earn"
+    },
+    {
+      "type": "text",
+      "id": "card_1_title",
+      "label": "Title",
+      "default": "Step one"
+    },
+    {
+      "type": "textarea",
+      "id": "card_1_description",
+      "label": "Description",
+      "default": "Start your journey with our simple process"
+    },
+    {
+      "type": "header",
+      "content": "Card 2"
+    },
+    {
+      "type": "select",
+      "id": "card_2_icon",
+      "label": "Icon",
+      "options": [
+        {
+          "value": "earn",
+          "label": "Earn"
+        },
+        {
+          "value": "redeem",
+          "label": "Redeem"
+        },
+        {
+          "value": "track",
+          "label": "Track"
+        }
+      ],
+      "default": "redeem"
+    },
+    {
+      "type": "text",
+      "id": "card_2_title",
+      "label": "Title",
+      "default": "Step two"
+    },
+    {
+      "type": "textarea",
+      "id": "card_2_description",
+      "label": "Description",
+      "default": "Experience the difference with our quality service"
+    },
+    {
+      "type": "header",
+      "content": "Card 3"
+    },
+    {
+      "type": "select",
+      "id": "card_3_icon",
+      "label": "Icon",
+      "options": [
+        {
+          "value": "earn",
+          "label": "Earn"
+        },
+        {
+          "value": "redeem",
+          "label": "Redeem"
+        },
+        {
+          "value": "track",
+          "label": "Track"
+        }
+      ],
+      "default": "track"
+    },
+    {
+      "type": "text",
+      "id": "card_3_title",
+      "label": "Title",
+      "default": "Step three"
+    },
+    {
+      "type": "textarea",
+      "id": "card_3_description",
+      "label": "Description",
+      "default": "Enjoy the results and share your success"
+    },
+    {
+      "type": "header",
+      "content": "Card style"
+    },
+    {
+      "type": "color",
+      "id": "card_title_color",
+      "label": "Card title color",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "card_description_color",
+      "label": "Card description color",
+      "default": "#121212"
+    }
+  ],
+  "presets": [
+    {
+      "name": "How it works"
+    }
+  ]
+}
+{% endschema %}
