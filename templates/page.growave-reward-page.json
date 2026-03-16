@@ -137,6 +137,31 @@
     },
     "faq_qKzT3x": {
       "type": "faq",
+      "blocks": {
+        "faq_9qFRA9": {
+          "type": "faq",
+          "settings": {
+            "faq-heading": "",
+            "question": "How do I redeem my points?",
+            "answer": "<p>Before completing your order, you will have the option to apply any available loyalty points in the “Discount” section at checkout.</p>"
+          }
+        },
+        "faq_7p7xda": {
+          "type": "faq",
+          "settings": {
+            "faq-heading": "",
+            "question": "What is your turnaround time?",
+            "answer": "<p>Our standard turnaround is 2-3 business days.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_9qFRA9",
+        "faq_7p7xda"
+      ],
+      "custom_css": [
+        ".faq__image-wrapper {display: none;}"
+      ],
       "name": "FAQ",
       "settings": {
         "heading": "Frequently Asked Questions",

@@ -1,0 +1,133 @@
+{
+  "Photo Prints": {
+    "description": "Crisp, vibrant photographic prints on premium photo media — ideal for portraits, landscapes, and editorial work. Available in gloss, luster, and metallic finishes.",
+    "Sizes": {
+      "description": "Print Size",
+      "accordion_title": "⚠️ Read more about cropping & aspect ratios",
+      "accordion_sub_title": "Your image will be cropped to fit the selected print dimensions. If your file's aspect ratio doesn't match your chosen size, our team will contact you — or use the notes field below to specify your cropping preference.",
+      "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/cropping-placeholder.png",
+      "options": [
+        { "label": "3.5” × 5”", "price": 0 },
+        { "label": "4” × 6”", "price": 0 },
+        { "label": "5” × 7”", "price": 0 },
+        { "label": "8” × 10”", "price": 0 },
+        { "label": "8” × 12”", "price": 0 }
+      ]
+    },
+    "Process": {
+      "description": "What type of film did you shoot?",
+      "options": [
+        { "label": "Color", "price": 0 },
+        { "label": "Black and White", "price": 0 }
+      ]
+    },
+    "Borders": {
+      "description": "Edge-to-edge or with bleed?",
+      "options": [
+        { "label": "Borderless (Edge-to-edge)", "price": 0 },
+        { "label": "Borders (0.5” white)", "price": 0 }
+      ]
+    },
+    "Scanning Options": {
+      "description": "Do you want us to scan your prints?",
+      "options": [
+        { "label": "Yes", "price": 0 },
+        { "label": "No", "price": 0 }
+      ]
+    }
+  },
+  "Fine Arts": {
+    "description": "Museum-quality pigment prints on archival fine-art papers. Perfect for artists, galleries, and collectors. Available up to 44\" × 60\" with exceptional colour longevity.",
+    "Sizes": {
+      "description": "Print Size",
+      "accordion_title": "⚠️ Read more about cropping & aspect ratios",
+      "accordion_sub_title": "Your image will be cropped to fit the selected print dimensions. If your file's aspect ratio doesn't match your chosen size, our team will contact you — or use the notes field below to specify your cropping preference.",
+      "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/cropping-placeholder.png",
+      "options": [
+        { "label": "11” × 14”", "price": 0 },
+        { "label": "16” × 20”", "price": 0 },
+        { "label": "20” × 24”", "price": 0 },
+        { "label": "20” × 30”", "price": 0 },
+        { "label": "24” × 30”", "price": 0 },
+        { "label": "30” × 40”", "price": 0 },
+        { "label": "40” × 50”", "price": 0 },
+        { "label": "44” × 60”", "price": 0 }
+      ]
+    },
+    "Process": {
+      "description": "What type of film did you shoot?",
+      "options": [
+        { "label": "Color", "price": 0 },
+        { "label": "Black and White", "price": 0 }
+      ]
+    },
+    "Paper": {
+      "description": "Paper Selection",
+      "accordion_title": "Don't know what paper to choose?",
+      "options": [
+        { "label": "Matte", "price": 0, "description": "Flat, non-reflective finish. Good for hand-holding, framing behind glass without glare" },
+        { "label": "Luster", "price": 0, "description": "Semi-gloss, slight sheen. The most popular middle ground — some richness in the blacks without full glare" },
+        { "label": "Glossy", "price": 0, "description": "High-shine surface that makes colours pop and blacks appear deep and rich." },
+        { "label": "Fibre Paper", "price": 0, "description": "A premium cotton-based archival stock with a subtle texture and exceptional tonal range." }
+      ]
+    },
+    "Borders": {
+      "description": "Edge-to-edge or with bleed?",
+      "options": [
+        { "label": "Borderless (Edge-to-edge)", "price": 0 },
+        { "label": "Borders (0.5” white)", "price": 0 }
+      ]
+    },
+    "Scanning Options": {
+      "description": "Do you want us to scan your prints?",
+      "options": [
+        { "label": "Yes", "price": 0 },
+        { "label": "No", "price": 0 }
+      ]
+    }
+  },
+  "Darkroom Prints": {
+    "description": "Traditional wet-process darkroom prints for those who value analogue craft. Rich tonal depth and a classic aesthetic that digital can't replicate.",
+    "Sizes": {
+      "description": "Print Size",
+      "accordion_title": "⚠️ Read more about cropping & aspect ratios",
+      "accordion_sub_title": "Your image will be cropped to fit the selected print dimensions. If your file's aspect ratio doesn't match your chosen size, our team will contact you — or use the notes field below to specify your cropping preference.",
+      "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/cropping-placeholder.png",
+      "options": [
+        { "label": "8” × 10”", "price": 0 },
+        { "label": "11” × 14”", "price": 0 },
+        { "label": "12” × 16”", "price": 0 },
+        { "label": "16” × 20”", "price": 0 }
+      ]
+    },
+    "Process": {
+      "description": "What type of film did you shoot?",
+      "options": [
+        { "label": "Color", "price": 0 },
+        { "label": "Black and White", "price": 0 }
+      ]
+    },
+    "Paper": {
+      "description": "Paper Selection",
+      "accordion_title": "Don't know what paper to choose?",
+      "options": [
+        { "label": "RC Matte", "price": 0 },
+        { "label": "RC Lustre", "price": 0 }
+      ]
+    },
+    "Borders": {
+      "description": "Edge-to-edge or with bleed?",
+      "options": [
+        { "label": "Borderless (Edge-to-edge)", "price": 0 },
+        { "label": "Borders (0.5” white)", "price": 0 }
+      ]
+    },
+    "Scanning Options": {
+      "description": "Do you want us to scan your prints?",
+      "options": [
+        { "label": "Yes", "price": 0 },
+        { "label": "No", "price": 0 }
+      ]
+    }
+  }
+}

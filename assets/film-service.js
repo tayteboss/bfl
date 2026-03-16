@@ -383,6 +383,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fieldsets in DOM order with checked radios
     form.querySelectorAll('fieldset.rolls-form-card').forEach((fs) => {
+      // Special handling for grouped "Add Ons" fieldset
+      if (fs.dataset.group === 'Add Ons') {
+        const checkedRadios = fs.querySelectorAll('input[type="radio"]:checked');
+        checkedRadios.forEach((radio) => {
+          const val = (radio.value || '').trim();
+          // Skip "No" or empty values for Add Ons in summary
+          if (!val || val.toLowerCase() === 'no') return;
+
+          // Derive label from name: "add-ons-contact-sheet" -> "Contact Sheet"
+          let label = radio.name || 'Add On';
+          label = label.replace(/^add-ons-/, '').replace(/-/g, ' ');
+          // Title Case
+          label = label.replace(/\b\w/g, (c) => c.toUpperCase());
+
+          const priceNum = Number(radio.dataset.price || 0);
+          createRow(label, val, priceNum);
+        });
+        return;
+      }
+
       const checked = fs.querySelector('input[type="radio"]:checked');
       if (!checked) return;
       // Skip neutral/base selections in the summary
@@ -992,8 +1012,22 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!isVisible(fs)) return;
 
       // 1. Radio properties
-      const checked = fs.querySelector('input[type="radio"]:checked');
-      if (checked) mainItem.properties[fs.dataset.group] = checked.value;
+      if (fs.dataset.group === 'Add Ons') {
+        const checkedRadios = fs.querySelectorAll('input[type="radio"]:checked');
+        checkedRadios.forEach((radio) => {
+          const val = (radio.value || '').trim();
+          if (!val || val.toLowerCase() === 'no') return;
+
+          let key = radio.name || 'Add On';
+          key = key.replace(/^add-ons-/, '').replace(/-/g, ' ');
+          key = key.replace(/\b\w/g, (c) => c.toUpperCase());
+
+          mainItem.properties[key] = val;
+        });
+      } else {
+        const checked = fs.querySelector('input[type="radio"]:checked');
+        if (checked) mainItem.properties[fs.dataset.group] = checked.value;
+      }
 
       // 2. Text/Select properties (e.g. Address fields)
       const addressParts = [];
