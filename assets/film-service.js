@@ -250,11 +250,62 @@ document.addEventListener('DOMContentLoaded', () => {
         isInvalid = false;
       }
 
+      // 3. Upload Validation (Uploadly)
+      const groupNameAttr = fs.getAttribute('data-group') || fs.dataset.group || '';
+      if (groupNameAttr.trim().toLowerCase() === 'upload') {
+        // Uploadly sometimes dynamically generates the fields, wait to check form fields specifically
+        // Find inputs that contain Uploadly data (Uploadly often targets hidden inputs or adds properties)
+        const uploadInputs = Array.from(document.querySelectorAll('input[name*="properties"]'))
+          .filter((el) => {
+            const nameStr = el.name.toLowerCase();
+            if (nameStr.includes('[return delivery]') || 
+                nameStr.includes('[turnaround]') || 
+                nameStr.includes('[message]') ||
+                nameStr.includes('[total price]') ||
+                nameStr.includes('[_timestamp]')) {
+              return false;
+            }
+            return true;
+          });
+          
+        // Use document.querySelector to see if Uploadly widget actually attached a file
+        // Uploadly widget creates items with class .uploadly-item or .uploadly-file
+        const uploadlyItems = document.querySelectorAll('.uploadly-item, .uploadly-file, .uploadly-list-item, .uploadly-preview, .uploady-item, .uploady-list-item, .uploady-preview, [data-uploadly-id], [class*="uploadly-"], [class*="uploady-"]');
+        
+        const hasUploadedFile = uploadInputs.some((el) => el.value && el.value.trim() !== '') || uploadlyItems.length > 0;
+        
+        // As a fallback, check if there's any file input with a file selected
+        const fileInputs = Array.from(document.querySelectorAll('input[type="file"]'));
+        const hasNativeFile = fileInputs.some((el) => el.files && el.files.length > 0);
+        
+        if (!hasUploadedFile && !hasNativeFile) {
+          isInvalid = true;
+        }
+      }
+
       if (isInvalid) {
         fs.classList.add('rolls-form-card--error');
         errors.push(fs);
+        
+        // Add explicit error message for Upload if not present
+        if (groupNameAttr.trim().toLowerCase() === 'upload') {
+          let errorMsg = fs.querySelector('.upload-error-msg');
+          if (!errorMsg) {
+            errorMsg = document.createElement('p');
+            errorMsg.className = 'upload-error-msg type-p-small';
+            errorMsg.style.color = 'var(--color-error, var(--color-red, #d22d2d))';
+            errorMsg.style.marginTop = '0.5rem';
+            errorMsg.textContent = 'Please upload a file to continue.';
+            const inner = fs.querySelector('.rolls-form-card__inner');
+            if (inner) inner.appendChild(errorMsg);
+          }
+        }
       } else {
         fs.classList.remove('rolls-form-card--error');
+        if (groupNameAttr.trim().toLowerCase() === 'upload') {
+          const errorMsg = fs.querySelector('.upload-error-msg');
+          if (errorMsg) errorMsg.remove();
+        }
       }
     });
     return { errors };
@@ -403,6 +454,41 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      // Special handling for Delivery Options fieldset which has multiple questions
+      if (fs.dataset.group === 'Delivery Options') {
+        const checkedRadios = fs.querySelectorAll('input[type="radio"]:checked');
+        checkedRadios.forEach((radio) => {
+          let label = radio.name || 'Delivery Option';
+          // Extract text inside brackets, e.g. properties[Return Delivery] -> Return Delivery
+          const match = label.match(/\[(.*?)\]/);
+          if (match && match[1]) label = match[1];
+
+          let valueText = (radio.value || '').trim();
+          // Skip default standard options if we don't want to clutter the summary, or keep them.
+          // Since it's a core choice, we'll keep them.
+
+          let priceNum = Number(radio.dataset.price || 0);
+
+          // If this is Turnaround, calculate the dynamic price modifier
+          if (label === 'Turnaround') {
+            // Calculate base total before multiplier to find the added cost
+            let preTotal = basePrice;
+            form.querySelectorAll('input[type="radio"]:checked').forEach((input) => {
+              preTotal += Number(input.dataset.price || 0);
+            });
+            const turnaroundValue = valueText.toLowerCase();
+            if (turnaroundValue.includes('rush')) {
+              priceNum = preTotal * 2; // (Total * 3 means it adds preTotal * 2)
+            } else if (turnaroundValue.includes('speedy')) {
+              priceNum = preTotal * 1; // (Total * 2 means it adds preTotal * 1)
+            }
+          }
+
+          createRow(label, valueText, priceNum);
+        });
+        return;
+      }
+
       const checked = fs.querySelector('input[type="radio"]:checked');
       if (!checked) return;
       // Skip neutral/base selections in the summary
@@ -468,6 +554,18 @@ document.addEventListener('DOMContentLoaded', () => {
     form.querySelectorAll('input[type="radio"]:checked').forEach((input) => {
       total += Number(input.dataset.price || 0);
     });
+
+    // Apply multiplier based on Turnaround selection
+    const turnaroundRadio = form.querySelector('input[name="properties[Turnaround]"]:checked');
+    if (turnaroundRadio) {
+      const turnaroundValue = (turnaroundRadio.value || '').toLowerCase();
+      if (turnaroundValue.includes('rush')) {
+        total *= 3;
+      } else if (turnaroundValue.includes('speedy')) {
+        total *= 2;
+      }
+    }
+
     const qty = getQuantity();
     const displayTotal = qty > 1 ? total * qty : total;
     if (totalDisplay) totalDisplay.textContent = formatMoney(displayTotal);
@@ -1034,7 +1132,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Check if this is the specific Delivery Address group
       const isAddressGroup = fs.dataset.group === 'Delivery Address';
 
-      fs.querySelectorAll('input[type="text"], input[type="email"], select, textarea').forEach((input) => {
+      fs.querySelectorAll('input[type="text"], input[type="email"], input[type="hidden"], select, textarea').forEach((input) => {
         if (!input.name || !input.name.startsWith('properties[') || input.disabled) return;
         const match = input.name.match(/properties\[(.*?)\]/);
         // Only add if we have a key and a value
@@ -1043,6 +1141,42 @@ document.addEventListener('DOMContentLoaded', () => {
             addressParts.push(input.value.trim());
           } else {
             mainItem.properties[match[1]] = input.value.trim();
+          }
+        }
+      });
+      
+      // Look for uploady elements to add as property (fallback to ensure uploadly link gets added)
+      const uploadlyHiddenInputs = document.querySelectorAll('input[type="hidden"]');
+      uploadlyHiddenInputs.forEach(input => {
+        if (input.name && input.name.startsWith('properties[') && input.value && input.value.trim() !== '') {
+           const match = input.name.match(/properties\[(.*?)\]/);
+           if (match && match[1]) {
+             // Only add if not already present to avoid overriding legitimate fieldset inputs
+             if (!mainItem.properties[match[1]]) {
+               mainItem.properties[match[1]] = input.value;
+             }
+           }
+        }
+      });
+      
+      // Also grab form properties from outside the fieldset (e.g. Uploady inputs appended to body)
+      const extraUploadInputs = document.querySelectorAll('input[type="hidden"][name*="properties"], input[type="text"][name*="properties"]');
+      extraUploadInputs.forEach(input => {
+        // Skip known properties that are not uploadly specific, avoid overriding things
+        const nameStr = input.name.toLowerCase();
+        if (nameStr.includes('[return delivery]') || 
+            nameStr.includes('[turnaround]') || 
+            nameStr.includes('[message]') ||
+            nameStr.includes('[total price]') ||
+            nameStr.includes('[_timestamp]')) {
+          return;
+        }
+
+        const match = input.name.match(/properties\[(.*?)\]/);
+        if (match && match[1] && input.value && input.value.trim() !== '') {
+          // Only add if not already present
+          if (!mainItem.properties[match[1]]) {
+            mainItem.properties[match[1]] = input.value;
           }
         }
       });
@@ -1166,4 +1300,46 @@ document.addEventListener('DOMContentLoaded', () => {
   applyConditions();
   updateDeliveryInfoVisibility();
   updateOrderSummaryVisibility();
+
+      // Add an observer to clear Upload error if hidden inputs are added by Uploadly
+  const uploadFs = form.querySelector('fieldset[data-group="Upload"]');
+  if (uploadFs) {
+    const observer = new MutationObserver((mutations) => {
+      let shouldCheck = false;
+      for (const mutation of mutations) {
+        if (mutation.addedNodes.length > 0 || mutation.type === 'attributes') {
+          shouldCheck = true;
+          break;
+        }
+      }
+      if (shouldCheck) {
+        const uploadInputs = Array.from(document.querySelectorAll('input[name*="properties"]'))
+          .filter((el) => {
+            const nameStr = el.name.toLowerCase();
+            if (nameStr.includes('[return delivery]') || 
+                nameStr.includes('[turnaround]') || 
+                nameStr.includes('[message]') ||
+                nameStr.includes('[total price]') ||
+                nameStr.includes('[_timestamp]')) {
+              return false;
+            }
+            return true;
+          });
+          
+          const uploadlyItems = document.querySelectorAll('.uploadly-item, .uploadly-file, .uploadly-list-item, .uploadly-preview, .uploady-item, .uploady-list-item, .uploady-preview, [data-uploadly-id], [class*="uploadly-"], [class*="uploady-"]');
+        const hasUploadedFile = uploadInputs.some((el) => el.value && el.value.trim() !== '') || uploadlyItems.length > 0;
+        
+        // As a fallback, check if there's any file input with a file selected
+        const fileInputs = Array.from(document.querySelectorAll('input[type="file"]'));
+        const hasNativeFile = fileInputs.some((el) => el.files && el.files.length > 0);
+        
+        if (hasUploadedFile || hasNativeFile) {
+          uploadFs.classList.remove('rolls-form-card--error');
+          const errorMsg = uploadFs.querySelector('.upload-error-msg');
+          if (errorMsg) errorMsg.remove();
+        }
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['value', 'class'] });
+  }
 });

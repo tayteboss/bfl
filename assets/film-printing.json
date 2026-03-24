@@ -5,34 +5,13 @@
       "description": "Print Size",
       "accordion_title": "⚠️ Read more about cropping & aspect ratios",
       "accordion_sub_title": "Your image will be cropped to fit the selected print dimensions. If your file's aspect ratio doesn't match your chosen size, our team will contact you — or use the notes field below to specify your cropping preference.",
-      "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/cropping-placeholder.png",
+      "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/image-3.png?v=1774338614",
       "options": [
-        { "label": "3.5” × 5”", "price": 0 },
-        { "label": "4” × 6”", "price": 0 },
-        { "label": "5” × 7”", "price": 0 },
-        { "label": "8” × 10”", "price": 0 },
-        { "label": "8” × 12”", "price": 0 }
-      ]
-    },
-    "Process": {
-      "description": "What type of film did you shoot?",
-      "options": [
-        { "label": "Color", "price": 0 },
-        { "label": "Black and White", "price": 0 }
-      ]
-    },
-    "Borders": {
-      "description": "Edge-to-edge or with bleed?",
-      "options": [
-        { "label": "Borderless (Edge-to-edge)", "price": 0 },
-        { "label": "Borders (0.5” white)", "price": 0 }
-      ]
-    },
-    "Scanning Options": {
-      "description": "Do you want us to scan your prints?",
-      "options": [
-        { "label": "Yes", "price": 0 },
-        { "label": "No", "price": 0 }
+        { "label": "3.5” × 5”", "price": 0.4 },
+        { "label": "4” × 6”", "price": 0.4 },
+        { "label": "5” × 7”", "price": 1.5 },
+        { "label": "8” × 10”", "price": 5.5 },
+        { "label": "8” × 12”", "price": 6.5 }
       ]
     }
   },
@@ -42,64 +21,105 @@
       "description": "Print Size",
       "accordion_title": "⚠️ Read more about cropping & aspect ratios",
       "accordion_sub_title": "Your image will be cropped to fit the selected print dimensions. If your file's aspect ratio doesn't match your chosen size, our team will contact you — or use the notes field below to specify your cropping preference.",
-      "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/cropping-placeholder.png",
+      "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/image.png?v=1774305053",
       "options": [
-        { "label": "11” × 14”", "price": 0 },
-        { "label": "16” × 20”", "price": 0 },
-        { "label": "20” × 24”", "price": 0 },
-        { "label": "20” × 30”", "price": 0 },
-        { "label": "24” × 30”", "price": 0 },
-        { "label": "30” × 40”", "price": 0 },
-        { "label": "40” × 50”", "price": 0 },
-        { "label": "44” × 60”", "price": 0 }
-      ]
-    },
-    "Process": {
-      "description": "What type of film did you shoot?",
-      "options": [
-        { "label": "Color", "price": 0 },
-        { "label": "Black and White", "price": 0 }
+        { "label": "11” × 14”", "price": 10 },
+        { "label": "16” × 20”", "price": 20 },
+        { "label": "20” × 24”", "price": 30 },
+        { "label": "20” × 30”", "price": 35 },
+        { "label": "24” × 30”", "price": 40 },
+        { "label": "30” × 40”", "price": 80 },
+        { "label": "40” × 50”", "price": 150 },
+        { "label": "44” × 60”", "price": 200 }
       ]
     },
     "Paper": {
       "description": "Paper Selection",
       "accordion_title": "Don't know what paper to choose?",
       "options": [
-        { "label": "Matte", "price": 0, "description": "Flat, non-reflective finish. Good for hand-holding, framing behind glass without glare" },
-        { "label": "Luster", "price": 0, "description": "Semi-gloss, slight sheen. The most popular middle ground — some richness in the blacks without full glare" },
-        { "label": "Glossy", "price": 0, "description": "High-shine surface that makes colours pop and blacks appear deep and rich." },
-        { "label": "Fibre Paper", "price": 0, "description": "A premium cotton-based archival stock with a subtle texture and exceptional tonal range." }
+        {
+          "label": "Matte",
+          "price": 0,
+          "show_if": {
+            "sizes": [
+              "11” × 14”",
+              "16” × 20”",
+              "20” × 24”",
+              "20” × 30”",
+              "24” × 30”"
+            ]
+          },
+          "description": "Canson Infinity Rag Photographique — A heavy weight 100% cotton paper, that is museum grade with a smooth matte finish. 310 GSM",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/matte.png?v=1774305292"
+        },
+        {
+          "label": "Luster",
+          "price": 0,
+          "show_if": {
+            "sizes": [
+              "11” × 14”",
+              "16” × 20”",
+              "20” × 24”",
+              "20” × 30”",
+              "24” × 30”"
+            ]
+          },
+          "description": "Arista II RC Luster — A medium weight, resin-coated paper with a luster finish - 252 GSM",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/luster.png?v=1774305292"
+        },
+        {
+          "label": "Glossy",
+          "price": 0,
+          "show_if": {
+            "sizes": [
+              "11” × 14”",
+              "16” × 20”",
+              "20” × 24”",
+              "20” × 30”",
+              "24” × 30”"
+            ]
+          },
+          "description": "Canson Infinity Baryta Prestige II — A heavy weight baryta paper, coated in barium sulfate to give the aesthetic of traditional darkroom paper with a glossy finish. 340 GSM",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/glossy.png?v=1774305293"
+        },
+        {
+          "label": "Fibre Paper",
+          "price": 0,
+          "default_if": {
+            "sizes": [
+              "30” × 40”",
+              "40” × 50”",
+              "44” × 60”"
+            ]
+          },
+          "price_overrides": {
+            "sizes": {
+              "11” × 14”": 10,
+              "16” × 20”": 5,
+              "20” × 24”": 10,
+              "20” × 30”": 10,
+              "24” × 30”": 10,
+              "30” × 40”": 0,
+              "40” × 50”": 0,
+              "44” × 60”": 0
+            }
+          },
+          "description": "Canson Infinity Platine Fibre Rag — A heavy weight paper great for detailed black and white as well as color prints with a satin finish - 310 GSM",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/fibre.png?v=1774305292"
+        }
       ]
     },
     "Borders": {
       "description": "Edge-to-edge or with bleed?",
       "options": [
         { "label": "Borderless (Edge-to-edge)", "price": 0 },
-        { "label": "Borders (0.5” white)", "price": 0 }
-      ]
-    },
-    "Scanning Options": {
-      "description": "Do you want us to scan your prints?",
-      "options": [
-        { "label": "Yes", "price": 0 },
-        { "label": "No", "price": 0 }
+        { "label": "Borders (0.5” white)", "price": 0 },
+        { "label": "Borders (1” white)", "price": 0 }
       ]
     }
   },
   "Darkroom Prints": {
     "description": "Traditional wet-process darkroom prints for those who value analogue craft. Rich tonal depth and a classic aesthetic that digital can't replicate.",
-    "Sizes": {
-      "description": "Print Size",
-      "accordion_title": "⚠️ Read more about cropping & aspect ratios",
-      "accordion_sub_title": "Your image will be cropped to fit the selected print dimensions. If your file's aspect ratio doesn't match your chosen size, our team will contact you — or use the notes field below to specify your cropping preference.",
-      "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/cropping-placeholder.png",
-      "options": [
-        { "label": "8” × 10”", "price": 0 },
-        { "label": "11” × 14”", "price": 0 },
-        { "label": "12” × 16”", "price": 0 },
-        { "label": "16” × 20”", "price": 0 }
-      ]
-    },
     "Process": {
       "description": "What type of film did you shoot?",
       "options": [
@@ -107,12 +127,57 @@
         { "label": "Black and White", "price": 0 }
       ]
     },
+    "Sizes": {
+      "description": "Print Size",
+      "accordion_title": "⚠️ Read more about cropping & aspect ratios",
+      "accordion_sub_title": "Your image will be cropped to fit the selected print dimensions. If your file's aspect ratio doesn't match your chosen size, our team will contact you — or use the notes field below to specify your cropping preference.",
+      "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/image-2.png?v=1774316122",
+      "options": [
+        {
+          "label": "8” × 10”",
+          "price": 25,
+          "price_overrides": {
+            "process": {
+              "Color": 28
+            }
+          }
+        },
+        {
+          "label": "11” × 14”",
+          "price": 40,
+          "price_overrides": {
+            "process": {
+              "Color": 45
+            }
+          }
+        },
+        {
+          "label": "12” × 16”",
+          "price": 50,
+          "price_overrides": {
+            "process": {
+              "Color": 60
+            }
+          }
+        },
+        {
+          "label": "16” × 20”",
+          "price": 80,
+          "price_overrides": {
+            "process": {
+              "Color": 90
+            }
+          }
+        }
+      ]
+    },
     "Paper": {
       "description": "Paper Selection",
       "accordion_title": "Don't know what paper to choose?",
+      "accordion_sub_title": "RC = Resin Coated paper, which is the standard darkroom print paper. It comes in different surface finishes:",
       "options": [
-        { "label": "RC Matte", "price": 0 },
-        { "label": "RC Lustre", "price": 0 }
+        { "label": "RC Matte", "price": 0, "description": "Flat, non-reflective finish. Good for hand-holding, framing behind glass without glare", "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/matte.png?v=1774305292" },
+        { "label": "RC Luster", "price": 0, "description": "Semi-gloss, slight sheen. The most popular middle ground — some richness in the blacks without full glare", "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/luster.png?v=1774305292" }
       ]
     },
     "Borders": {
@@ -124,9 +189,18 @@
     },
     "Scanning Options": {
       "description": "Do you want us to scan your prints?",
+      "show_if": {
+        "sizes": ["8” × 10”", "11” × 14”"]
+      },
       "options": [
         { "label": "Yes", "price": 0 },
-        { "label": "No", "price": 0 }
+        { 
+          "label": "No", 
+          "price": 0,
+          "default_if": {
+            "sizes": ["8” × 10”", "11” × 14”"]
+          }
+        }
       ]
     }
   }

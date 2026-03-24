@@ -71,7 +71,7 @@
       {%- if item.original_line_price == 0 and item.product.title == 'Return Shipping (Negatives)' -%}
         {% assign is_zero_price_return_shipping = true %}
       {%- endif -%}
-      {% unless is_zero_price_return_shipping %}
+      {% unless is_zero_price_return_shipping or item.product.handle == 'film-printing' or item.product.handle == 'film-service' %}
         <div class="cart-item__price-wrapper">
           {%- if item.quantity > 1 -%}
             <span class="cart-item__quantity-note type-p-small"> Qty: {{ item.quantity }} - </span>
@@ -261,11 +261,11 @@
                       aria-label="{{ 'products.product.quantity.input_label' | t: product: item.product.title | escape }}"
                       id="Quantity-{{ index }}"
                       data-index="{{ index }}"
-                      {% if item.properties._role == 'return_shipping' %}
+                      {% if item.properties._role == 'return_shipping' or item.product.handle == 'film-printing' or item.product.handle == 'film-service' %}
                         readonly
                       {% endif %}
                     >
-                    {%- unless item.properties._role == 'return_shipping' -%}
+                    {%- unless item.properties._role == 'return_shipping' or item.product.handle == 'film-printing' or item.product.handle == 'film-service' -%}
                       <button class="quantity__button" name="plus" type="button">
                         <span class="visually-hidden">
                           {{- 'products.product.quantity.increase' | t: product: item.product.title | escape -}}

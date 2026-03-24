@@ -16,10 +16,21 @@
     },
     "film_printing_nD9h7U": {
       "type": "film-printing",
+      "blocks": {
+        "uploadly_file_upload_app_block_crVNJJ": {
+          "type": "shopify://apps/uploadly-file-upload/blocks/app-block/d91e9a53-de3d-49df-b7a1-ac8a15b213e5",
+          "settings": {
+            "featured_product": "{{section.settings.main_form_product}}"
+          }
+        }
+      },
+      "block_order": [
+        "uploadly_file_upload_app_block_crVNJJ"
+      ],
       "name": "Film Printing (Dynamic)",
       "settings": {
         "main_form_product": "film-printing",
-        "return_shipping_product": ""
+        "return_shipping_product": []
       }
     }
   },

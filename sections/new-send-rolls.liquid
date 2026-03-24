@@ -1030,7 +1030,7 @@
     {%- endfor -%}
   ];
   {% if section.settings.return_shipping_product != blank %}
-    window.returnShippingVariantId = {{ section.settings.return_shipping_product.selected_or_first_available_variant.id | json }};
+    window.returnShippingVariantId = {{ section.settings.return_shipping_product.first.selected_or_first_available_variant.id | json }};
   {% else %}
     window.returnShippingVariantId = null;
   {% endif %}
@@ -1056,9 +1056,10 @@
       "label": "Main Film Service Product (metafields + UI)"
     },
     {
-      "type": "product",
+      "type": "product_list",
       "id": "return_shipping_product",
-      "label": "Return Shipping Product"
+      "label": "Return Shipping Product",
+      "limit": 1
     }
   ],
   "presets": [

@@ -29,7 +29,7 @@
       <h2 class="send-rolls-subtitle type-h2-medium">Photo, Fine Art & Darkroom</h2>
     </section>
 
-    <form id="film-service-form" action="{{ routes.cart_add_url }}" method="post">
+    <form id="film-service-form" action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data">
       <input type="hidden" name="id" value="{{ target_product.selected_or_first_available_variant.id }}">
 
       <!-- BASE PRICE -->
@@ -371,8 +371,162 @@
           </div>
         {% endfor %}
 
-        <!-- Negatives Options (Was Delivery in previous form) -->
-        <fieldset data-group="Negatives" class="rolls-form-card">
+        <!-- Quantity // How many rolls - sheets? -->
+        <fieldset data-group="Quantity" class="rolls-form-card">
+          <h3 class="rolls-form-card__heading type-h1-x-small">Number of copies</h3>
+          <div class="rolls-form-card__inner">
+            <p class="rolls-form-card__subheading type-p">How many copies do you want?</p>
+            <div class="rolls-form-card__options">
+              <div class="cart-item__quantity-wrapper quantity-popover-wrapper">
+                <div class="quantity-input-wrapper quantity-bubble">
+                  <button
+                    type="button"
+                    class="quantity-btn quantity-btn--minus type-button-large"
+                    name="minus"
+                    aria-label="Decrease quantity"
+                  >
+                    -
+                  </button>
+                  <input
+                    id="Quantity-NewSendRolls"
+                    name="quantity"
+                    type="number"
+                    class="input-selector quantity-input quantity-number type-button-large"
+                    min="1"
+                    step="1"
+                    value="1"
+                    aria-label="quantity"
+                  >
+                  <button
+                    type="button"
+                    class="quantity-btn quantity-btn--plus type-button-large"
+                    name="plus"
+                    aria-label="Increase quantity"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Upload -->
+        <fieldset data-group="Upload" class="rolls-form-card">
+          <h3 class="rolls-form-card__heading type-h1-x-small">Upload your file</h3>
+          <div class="rolls-form-card__inner">
+            <p class="rolls-form-card__subheading type-p">Upload files to print</p>
+            <div id="uploadly-button-container" style="margin-top: 1.5rem;">
+                {%- for block in section.blocks -%}
+                  {% render block %}
+                {%- else -%}
+                  <button type="button" class="primary-button primary-button--black" id="custom-uploadly-trigger">Choose File 📂</button>
+                {%- endfor -%}
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Delivery (New) -->
+        <fieldset data-group="Delivery Options" class="rolls-form-card">
+          <h3 class="rolls-form-card__heading type-h1-x-small">Delivery</h3>
+          <div class="rolls-form-card__inner rolls-form-card__inner--delivery">
+
+            <div class="rolls-form-card__inner-content">
+              <p class="rolls-form-card__subheading type-p">How will you receive your prints?</p>
+              <div class="rolls-form-card__options rolls-form-card__options--delivery">
+                 <label class="bubble-option" for="ReturnPickup">
+                    <input
+                      id="ReturnPickup"
+                      type="radio"
+                      name="properties[Return Delivery]"
+                      value="Pick-up"
+                      data-price="0"
+                      required
+                    >
+                    <div class="bubble-option__inner">
+                      <div class="bubble-option__icon"></div>
+                      <div class="bubble-option__label">Pick-up <span class="opt-price">($0)</span></div>
+                    </div>
+                  </label>
+                  <label class="bubble-option" for="ReturnShip">
+                    <input
+                      id="ReturnShip"
+                      type="radio"
+                      name="properties[Return Delivery]"
+                      value="Ship"
+                      data-price="0"
+                    >
+                    <div class="bubble-option__inner">
+                      <div class="bubble-option__icon"></div>
+                      <div class="bubble-option__label">Ship <span class="opt-price">($0)</span></div>
+                    </div>
+                  </label>
+              </div>
+            </div>
+            
+            <div class="rolls-form-card__inner-content">
+              <p class="rolls-form-card__addon-heading type-p">Turn around times.</p>
+              <div class="rolls-form-card__options">
+                  <label class="bubble-option" for="TurnaroundRush">
+                    <input
+                      id="TurnaroundRush"
+                      type="radio"
+                      name="properties[Turnaround]"
+                      value="Rush (1 Day)"
+                      data-price="0"
+                    >
+                    <div class="bubble-option__inner">
+                      <div class="bubble-option__icon"></div>
+                      <div class="bubble-option__label">Rush (1 Day) <span class="opt-price">($0)</span></div>
+                    </div>
+                  </label>
+                  <label class="bubble-option" for="TurnaroundSpeedy">
+                    <input
+                      id="TurnaroundSpeedy"
+                      type="radio"
+                      name="properties[Turnaround]"
+                      value="Speedy (2-3 days)"
+                      data-price="0"
+                    >
+                    <div class="bubble-option__inner">
+                      <div class="bubble-option__icon"></div>
+                      <div class="bubble-option__label">Speedy (2-3 days) <span class="opt-price">($0)</span></div>
+                    </div>
+                  </label>
+                  <label class="bubble-option" for="TurnaroundStandard">
+                    <input
+                      id="TurnaroundStandard"
+                      type="radio"
+                      name="properties[Turnaround]"
+                      value="Standard (4-5 days)"
+                      data-price="0"
+                      checked="checked"
+                      data-default-option="true"
+                    >
+                    <div class="bubble-option__inner">
+                      <div class="bubble-option__icon"></div>
+                      <div class="bubble-option__label">Standard (4-5 days) <span class="opt-price">($0)</span></div>
+                    </div>
+                  </label>
+              </div>
+              <p class="rolls-form-card__addon-subheading type-p-small">Turnaround time begins upon receiving of film negatives, not the order date.</p>
+            </div>
+
+            <div class="rolls-form-card__input-wrapper">
+              <label for="OrderMessage" class="type-p">Include a message with your order</label>
+              <textarea 
+                id="OrderMessage" 
+                name="properties[Message]" 
+                placeholder="How do you want your image to be cropped? ie. “keep the subject centred” or &quot;crop from the bottom only&quot; and “custom sizes”." 
+                class="input-text" 
+                rows="6" 
+              ></textarea>
+            </div>
+          </div>
+        </fieldset>
+
+         <!-- Negatives Options (Was Delivery in previous form) -->
+         <fieldset data-group="Negatives" class="rolls-form-card">
           <h3 class="rolls-form-card__heading type-h1-x-small" order-summary-heading="Negatives">Negatives</h3>
           <div class="rolls-form-card__inner rolls-form-card__inner--content">
             <p class="rolls-form-card__subheading type-p">How will you deliver your negatives?</p>
@@ -594,150 +748,6 @@
           </div>
         </fieldset>
 
-        <!-- Quantity // How many rolls - sheets? -->
-        <fieldset data-group="Quantity" class="rolls-form-card">
-          <h3 class="rolls-form-card__heading type-h1-x-small">How many copies do you want?</h3>
-          <div class="rolls-form-card__inner">
-            <div class="rolls-form-card__options">
-              <div class="cart-item__quantity-wrapper quantity-popover-wrapper">
-                <div class="quantity-input-wrapper quantity-bubble">
-                  <button
-                    type="button"
-                    class="quantity-btn quantity-btn--minus type-button-large"
-                    name="minus"
-                    aria-label="Decrease quantity"
-                  >
-                    -
-                  </button>
-                  <input
-                    id="Quantity-NewSendRolls"
-                    name="quantity"
-                    type="number"
-                    class="input-selector quantity-input quantity-number type-button-large"
-                    min="1"
-                    step="1"
-                    value="1"
-                    aria-label="quantity"
-                  >
-                  <button
-                    type="button"
-                    class="quantity-btn quantity-btn--plus type-button-large"
-                    name="plus"
-                    aria-label="Increase quantity"
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </fieldset>
-
-        <!-- Upload -->
-        <fieldset data-group="Upload" class="rolls-form-card">
-          <h3 class="rolls-form-card__heading type-h1-x-small">Upload your file</h3>
-          <div class="rolls-form-card__inner">
-            <p class="rolls-form-card__subheading type-p">Upload files to print</p>
-            <div style="margin-top: 1.5rem;">
-                <button type="button" class="primary-button primary-button--black" onclick="document.querySelector('.uploady-trigger-btn')?.click()">Choose File 📂</button>
-                <!-- Placeholder for Uploady trigger if it needs a specific class -->
-            </div>
-          </div>
-        </fieldset>
-
-        <!-- Delivery (New) -->
-        <fieldset data-group="Delivery Options" class="rolls-form-card">
-          <h3 class="rolls-form-card__heading type-h1-x-small">Delivery</h3>
-          <div class="rolls-form-card__inner">
-            <p class="rolls-form-card__subheading type-p">How will you receive your prints?</p>
-            <div class="rolls-form-card__options">
-               <label class="bubble-option" for="ReturnPickup">
-                  <input
-                    id="ReturnPickup"
-                    type="radio"
-                    name="properties[Return Delivery]"
-                    value="Pick-up"
-                    data-price="0"
-                    required
-                  >
-                  <div class="bubble-option__inner">
-                    <div class="bubble-option__icon"></div>
-                    <div class="bubble-option__label">Pick-up <span class="opt-price">($0)</span></div>
-                  </div>
-                </label>
-                <label class="bubble-option" for="ReturnShip">
-                  <input
-                    id="ReturnShip"
-                    type="radio"
-                    name="properties[Return Delivery]"
-                    value="Ship"
-                    data-price="0"
-                  >
-                  <div class="bubble-option__inner">
-                    <div class="bubble-option__icon"></div>
-                    <div class="bubble-option__label">Ship <span class="opt-price">($0)</span></div>
-                  </div>
-                </label>
-            </div>
-            
-            <p class="rolls-form-card__addon-heading type-p" style="margin-top: 2rem;">Turn around times</p>
-            <div class="rolls-form-card__options">
-                <label class="bubble-option" for="TurnaroundRush">
-                  <input
-                    id="TurnaroundRush"
-                    type="radio"
-                    name="properties[Turnaround]"
-                    value="Rush (1 Day)"
-                    data-price="0"
-                    required
-                  >
-                  <div class="bubble-option__inner">
-                    <div class="bubble-option__icon"></div>
-                    <div class="bubble-option__label">Rush (1 Day) <span class="opt-price">($0)</span></div>
-                  </div>
-                </label>
-                <label class="bubble-option" for="TurnaroundSpeedy">
-                  <input
-                    id="TurnaroundSpeedy"
-                    type="radio"
-                    name="properties[Turnaround]"
-                    value="Speedy (2-3 days)"
-                    data-price="0"
-                  >
-                  <div class="bubble-option__inner">
-                    <div class="bubble-option__icon"></div>
-                    <div class="bubble-option__label">Speedy (2-3 days) <span class="opt-price">($0)</span></div>
-                  </div>
-                </label>
-                <label class="bubble-option" for="TurnaroundStandard">
-                  <input
-                    id="TurnaroundStandard"
-                    type="radio"
-                    name="properties[Turnaround]"
-                    value="Standard (4-5 days)"
-                    data-price="0"
-                  >
-                  <div class="bubble-option__inner">
-                    <div class="bubble-option__icon"></div>
-                    <div class="bubble-option__label">Standard (4-5 days) <span class="opt-price">($0)</span></div>
-                  </div>
-                </label>
-            </div>
-
-            <div class="rolls-form-card__input-wrapper" style="margin-top: 2rem;">
-              <label for="OrderMessage" class="type-p" style="display:block; margin-bottom: 0.5rem; font-weight: 500;">Include a message with your order</label>
-              <textarea 
-                id="OrderMessage" 
-                name="properties[Message]" 
-                placeholder="How do you want your image to be cropped? ie. “keep the subject centred” or &quot;crop from the bottom only&quot; and “custom sizes”." 
-                class="input-text" 
-                rows="4" 
-                style="width: 100%; border: 1px solid rgba(0,0,0,0.1); padding: 10px; border-radius: 4px; resize: vertical;"
-              ></textarea>
-            </div>
-          </div>
-        </fieldset>
-
         <aside class="order-summary" data-order-summary data-fly-in-animation style="display: none;">
           <div class="order-summary__header">
             <h3 class="order-summary__title type-h1-x-small">Order Summary</h3>
@@ -788,7 +798,7 @@
     {%- endfor -%}
   ];
   {% if section.settings.return_shipping_product != blank %}
-    window.returnShippingVariantId = {{ section.settings.return_shipping_product.selected_or_first_available_variant.id | json }};
+    window.returnShippingVariantId = {{ section.settings.return_shipping_product.first.selected_or_first_available_variant.id | json }};
   {% else %}
     window.returnShippingVariantId = null;
   {% endif %}
@@ -814,9 +824,26 @@
       "label": "Main Film Service Product (metafields + UI)"
     },
     {
-      "type": "product",
+      "type": "product_list",
       "id": "return_shipping_product",
-      "label": "Return Shipping Product"
+      "label": "Return Shipping Product",
+      "limit": 1
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "text",
+      "name": "Text Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
     }
   ],
   "presets": [
