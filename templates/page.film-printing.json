@@ -30,7 +30,10 @@
       "name": "Film Printing (Dynamic)",
       "settings": {
         "main_form_product": "film-printing",
-        "return_shipping_product": []
+        "return_shipping_product": [],
+        "size_shipping_product": [
+          "print-size-shipping-items"
+        ]
       }
     }
   },

@@ -9,14 +9,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const totalDisplay = document.querySelector('#film-total-display');
   const osList = document.querySelector('[data-os-list]');
   const osToggle = document.querySelector('[data-os-toggle]');
-  const osDetails = document.querySelector('[data-os-details]');
+  const bottomTotalDisplay = document.querySelector('#bottom-film-total-display');
+  const bottomOsList = document.querySelector('#bottom-os-list');
+  const bottomOrderSummary = document.querySelector('#bottom-order-summary');
+  const bottomAnchor = document.querySelector('#bottom-order-summary-anchor');
   const orderSummary = document.querySelector('[data-order-summary]');
   const qtyInput = form.querySelector('input[name="quantity"]');
   const qtyMinusBtn = form.querySelector('.quantity-btn--minus');
   const qtyPlusBtn = form.querySelector('.quantity-btn--plus');
   // Feature flag: show per-option prices in the Order Summary
   const OS_SHOW_PRICES = true;
-  const basePrice = Number(document.querySelector('#base-price').dataset.base);
+  const basePrice = 0; // Removed base price as requested
   const variantInput = form.querySelector('input[name="id"]');
   const submitBtn = form.querySelector('button[type="submit"]');
   const cartDrawer = document.querySelector('cart-drawer');
@@ -35,6 +38,88 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const getQuantity = () =>
     Math.max(1, parseInt((form.querySelector('input[name="quantity"]') || {}).value || '1', 10) || 1);
+
+  const getActualFilesCount = () => {
+    // If Darkroom Prints is selected, the upload section is hidden and files are not required
+    const serviceRadio = form.querySelector('input[name="service"]:checked');
+    if (serviceRadio && serviceRadio.value === 'Darkroom Prints') {
+      return 0;
+    }
+
+    let count = 0;
+    
+    // 1. Try to count visible Uploadly DOM list items first (matches what the user actually sees)
+    const listItems = Array.from(document.querySelectorAll('.uploadly-list-item, .uploady-list-item, .uploadly-file, .uploady-file, .uploadly-item, .uploady-item'));
+    
+    const visibleItems = listItems.filter(el => {
+      const rect = el.getBoundingClientRect();
+      return rect.width > 0 && rect.height > 0;
+    });
+    
+    if (visibleItems.length > 0) {
+      // Deduplicate nested elements (e.g. an item inside a list item wrapper)
+      const validContainers = visibleItems.filter((el) => {
+        let parent = el.parentElement;
+        while (parent) {
+          if (visibleItems.includes(parent)) return false;
+          parent = parent.parentElement;
+        }
+        return true;
+      });
+      count = validContainers.length;
+    } 
+    
+    // 2. If no DOM items found, fallback to parsing the hidden inputs injected by Uploadly
+    if (count === 0) {
+      const fileKeys = new Set();
+      const uploadInputs = Array.from(document.querySelectorAll('input[name*="properties"]')).filter((el) => {
+        const nameStr = el.name.toLowerCase();
+        if (
+          nameStr.includes('[return delivery]') ||
+          nameStr.includes('[turnaround]') ||
+          nameStr.includes('[message]') ||
+          nameStr.includes('[total price]') ||
+          nameStr.includes('[_timestamp]') ||
+          nameStr.includes('[delivery address]') ||
+          nameStr.includes('[_return_shipping_required]') ||
+          nameStr.includes('[files uploaded]') ||
+          nameStr.includes('[_files uploaded]')
+        ) {
+          return false;
+        }
+        return el.value && el.value.trim() !== '';
+      });
+      
+      uploadInputs.forEach(el => {
+        const match = el.name.match(/properties\[(.*?)\]/);
+        if (match && match[1]) {
+          const key = match[1];
+          const val = el.value.trim();
+          
+          // Only count properties that don't start with '_' (ignores internal thumbnails)
+          if (!key.startsWith('_') && (val.includes('http') || val.includes('uploadly'))) {
+            const urls = val.match(/https?:\/\/[^\s,]+/g);
+            if (urls && urls.length > 1) {
+              urls.forEach((u, idx) => fileKeys.add(`${key}_${idx}`));
+            } else {
+              fileKeys.add(key);
+            }
+          }
+        }
+      });
+      count = fileKeys.size;
+    }
+    
+    // 3. Add native file inputs (if any)
+    const nativeFileInputs = Array.from(document.querySelectorAll('input[type="file"]')).reduce((sum, el) => sum + (el.files ? el.files.length : 0), 0);
+    if (count === 0 && nativeFileInputs > 0) {
+      count = nativeFileInputs;
+    }
+    
+    return count;
+  };
+
+  const getUploadedFilesCount = () => Math.max(1, getActualFilesCount());
 
   // Wire up quantity +/- buttons for this form (not handled by global <quantity-input> component)
   const syncQuantity = (delta) => {
@@ -82,6 +167,50 @@ document.addEventListener('DOMContentLoaded', () => {
       if (carrier && carrier.classList.contains('is-unavailable')) return false;
       return isVisible(carrier);
     });
+
+  const osWrapper = document.querySelector('.os-wrapper');
+
+  // --- Order Summary floating visibility ---
+  function updateOrderSummaryVisibility() {
+    if (!osWrapper) return;
+
+    // Check if the form is empty
+    const noSelections = basePrice === total;
+    if (noSelections && !getQuantity() > 1) {
+      osWrapper.style.display = 'none';
+      if (bottomOrderSummary) bottomOrderSummary.style.display = 'none';
+      return;
+    }
+
+    osWrapper.style.display = 'block';
+    if (bottomOrderSummary) {
+      bottomOrderSummary.style.display = '';
+    }
+
+    const scrollPosition = window.scrollY + window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    const windowHeight = window.innerHeight;
+
+    // Check if we are within 400px of the absolute bottom of the page OR
+    // if we've scrolled past the bottom order summary anchor
+    const isNearBottom = documentHeight - scrollPosition < windowHeight;
+    let isPastBottomAnchor = false;
+
+    if (bottomAnchor) {
+      const anchorRect = bottomAnchor.getBoundingClientRect();
+      // Hide if anchor is within 100px of entering viewport, or if we've scrolled past it completely
+      isPastBottomAnchor = anchorRect.top < window.innerHeight + 100;
+    }
+
+    if (isNearBottom || isPastBottomAnchor) {
+      osWrapper.classList.add('is-hidden-by-scroll');
+    } else {
+      osWrapper.classList.remove('is-hidden-by-scroll');
+    }
+  }
+
+  window.addEventListener('scroll', updateOrderSummaryVisibility, { passive: true });
+  window.addEventListener('resize', updateOrderSummaryVisibility, { passive: true });
 
   // --- Delivery info visibility (Mail In vs Drop Off copy) ---
   const mailInInfo = form.querySelector('[data-delivery-info="mail-in"]');
@@ -255,29 +384,38 @@ document.addEventListener('DOMContentLoaded', () => {
       if (groupNameAttr.trim().toLowerCase() === 'upload') {
         // Uploadly sometimes dynamically generates the fields, wait to check form fields specifically
         // Find inputs that contain Uploadly data (Uploadly often targets hidden inputs or adds properties)
-        const uploadInputs = Array.from(document.querySelectorAll('input[name*="properties"]'))
-          .filter((el) => {
-            const nameStr = el.name.toLowerCase();
-            if (nameStr.includes('[return delivery]') || 
-                nameStr.includes('[turnaround]') || 
-                nameStr.includes('[message]') ||
-                nameStr.includes('[total price]') ||
-                nameStr.includes('[_timestamp]')) {
-              return false;
-            }
-            return true;
-          });
-          
+        const uploadInputs = Array.from(document.querySelectorAll('input[name*="properties"]')).filter((el) => {
+          const nameStr = el.name.toLowerCase();
+          if (
+            nameStr.includes('[return delivery]') ||
+            nameStr.includes('[turnaround]') ||
+            nameStr.includes('[message]') ||
+            nameStr.includes('[total price]') ||
+            nameStr.includes('[_timestamp]')
+          ) {
+            return false;
+          }
+          return true;
+        });
+
         // Use document.querySelector to see if Uploadly widget actually attached a file
         // Uploadly widget creates items with class .uploadly-item or .uploadly-file
-        const uploadlyItems = document.querySelectorAll('.uploadly-item, .uploadly-file, .uploadly-list-item, .uploadly-preview, .uploady-item, .uploady-list-item, .uploady-preview, [data-uploadly-id], [class*="uploadly-"], [class*="uploady-"]');
-        
-        const hasUploadedFile = uploadInputs.some((el) => el.value && el.value.trim() !== '') || uploadlyItems.length > 0;
-        
+        const uploadlyItems = document.querySelectorAll(
+          '.uploadly-item, .uploadly-file, .uploadly-list-item, .uploadly-preview, .uploady-item, .uploady-list-item, .uploady-preview, [data-uploadly-id], [class*="uploadly-"], [class*="uploady-"]'
+        );
+
+        // Also check if Uploadly added its success class to the body or container
+        const hasUploadySuccess = document.querySelector('.uploady-success, .uploadly-success') !== null;
+
+        const hasUploadedFile =
+          uploadInputs.some((el) => el.value && el.value.trim() !== '') ||
+          uploadlyItems.length > 0 ||
+          hasUploadySuccess;
+
         // As a fallback, check if there's any file input with a file selected
         const fileInputs = Array.from(document.querySelectorAll('input[type="file"]'));
         const hasNativeFile = fileInputs.some((el) => el.files && el.files.length > 0);
-        
+
         if (!hasUploadedFile && !hasNativeFile) {
           isInvalid = true;
         }
@@ -286,7 +424,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (isInvalid) {
         fs.classList.add('rolls-form-card--error');
         errors.push(fs);
-        
+
         // Add explicit error message for Upload if not present
         if (groupNameAttr.trim().toLowerCase() === 'upload') {
           let errorMsg = fs.querySelector('.upload-error-msg');
@@ -385,7 +523,7 @@ document.addEventListener('DOMContentLoaded', () => {
   //   serviceRadios[0].dispatchEvent(new Event('change'));
   // }
 
-  const updateOrderSummaryVisibility = () => {
+  const updateOrderSummaryVisibilityState = () => {
     if (!orderSummary) return;
     // Check if a location is selected first
     const locationSelected = !!form.querySelector('input[name="location"]:checked');
@@ -394,14 +532,42 @@ document.addEventListener('DOMContentLoaded', () => {
     // Only show if a location is selected AND at least one radio is checked (which is redundant if location is checked, but good for safety)
     const shouldShow = locationSelected && anyChecked;
 
-    orderSummary.style.display = shouldShow ? '' : 'none';
+    if (shouldShow) {
+      orderSummary.style.display = '';
+      if (bottomOrderSummary) bottomOrderSummary.style.display = 'block';
+      // Small delay to allow display block to apply before adding visible class for transition
+      setTimeout(() => {
+        orderSummary.classList.add('is-visible');
+      }, 10);
+    } else {
+      orderSummary.classList.remove('is-visible');
+      orderSummary.classList.remove('is-expanded');
+      setTimeout(() => {
+        if (!orderSummary.classList.contains('is-visible')) {
+          orderSummary.style.display = 'none';
+          // Don't forcefully hide the bottom summary here if it's meant to be managed by CSS/other state
+          // if (bottomOrderSummary) bottomOrderSummary.style.display = 'none';
+        }
+      }, 400); // match CSS transition duration
+    }
   };
+
+  // Add click listener for mobile support to expand the summary
+  if (orderSummary) {
+    const osHeader = orderSummary.querySelector('.order-summary__header');
+    if (osHeader) {
+      osHeader.style.cursor = 'pointer';
+      osHeader.addEventListener('click', () => {
+        orderSummary.classList.toggle('is-expanded');
+      });
+    }
+  }
 
   // --- UI helpers for Order Summary ---
   const formatMoney = (num) => `$${Number(num || 0).toFixed(2)}`;
 
-  const createRow = (labelText, valueText, priceNum) => {
-    if (!osList) return;
+  const createRow = (listEl, labelText, valueText, priceNum) => {
+    if (!listEl) return;
     const row = document.createElement('div');
     row.className = 'order-summary__row';
 
@@ -425,12 +591,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     row.appendChild(dt);
     row.appendChild(dd);
-    osList.appendChild(row);
+    listEl.appendChild(row);
   };
 
   const renderSummary = () => {
-    if (!osList) return;
-    osList.innerHTML = '';
+    if (osList) osList.innerHTML = '';
+    if (bottomOsList) bottomOsList.innerHTML = '';
 
     // Fieldsets in DOM order with checked radios
     form.querySelectorAll('fieldset.rolls-form-card').forEach((fs) => {
@@ -449,7 +615,8 @@ document.addEventListener('DOMContentLoaded', () => {
           label = label.replace(/\b\w/g, (c) => c.toUpperCase());
 
           const priceNum = Number(radio.dataset.price || 0);
-          createRow(label, val, priceNum);
+          createRow(osList, label, val, priceNum);
+          createRow(bottomOsList, label, val, priceNum);
         });
         return;
       }
@@ -484,7 +651,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
           }
 
-          createRow(label, valueText, priceNum);
+          createRow(osList, label, valueText, priceNum);
+          createRow(bottomOsList, label, valueText, priceNum);
         });
         return;
       }
@@ -518,20 +686,34 @@ document.addEventListener('DOMContentLoaded', () => {
         valueText = (checked.value || '').trim();
       }
       const priceNum = Number(checked.dataset.price || 0);
-      createRow(labelText, valueText, priceNum);
+      createRow(osList, labelText, valueText, priceNum);
+      createRow(bottomOsList, labelText, valueText, priceNum);
     });
 
     // --- Totals area (consider quantity) ---
     const qty = getQuantity();
+    const fileCount = getUploadedFilesCount();
+    const multiplier = qty * fileCount;
     const perRoll = Number(total || 0);
-    const grand = perRoll * qty;
+    const grand = perRoll * multiplier;
 
-    if (qty > 1) {
-      createRow('Quantity', String(qty), 0);
-      createRow('Subtotal', `${qty} × ${formatMoney(perRoll)}`, grand);
-      createRow('Total', formatMoney(grand), 0);
+    if (multiplier > 1) {
+      if (fileCount > 1) {
+        createRow(osList, 'Files Uploaded', String(fileCount), 0);
+        createRow(bottomOsList, 'Files Uploaded', String(fileCount), 0);
+      }
+      if (qty > 1) {
+        createRow(osList, 'Copies per file', String(qty), 0);
+        createRow(bottomOsList, 'Copies per file', String(qty), 0);
+      }
+      createRow(osList, 'Subtotal', `${multiplier} × ${formatMoney(perRoll)}`, grand);
+      createRow(osList, 'Total', formatMoney(grand), 0);
+
+      createRow(bottomOsList, 'Subtotal', `${multiplier} × ${formatMoney(perRoll)}`, grand);
+      createRow(bottomOsList, 'Total', formatMoney(grand), 0);
     } else {
-      createRow('Total', formatMoney(perRoll), 0);
+      createRow(osList, 'Total', formatMoney(perRoll), 0);
+      createRow(bottomOsList, 'Total', formatMoney(perRoll), 0);
     }
   };
 
@@ -567,11 +749,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const qty = getQuantity();
-    const displayTotal = qty > 1 ? total * qty : total;
+    const fileCount = getUploadedFilesCount();
+    const multiplier = qty * fileCount;
+    const displayTotal = total * multiplier;
+
     if (totalDisplay) totalDisplay.textContent = formatMoney(displayTotal);
+    if (bottomTotalDisplay) bottomTotalDisplay.textContent = formatMoney(displayTotal);
     // Clear any previous high-price error when recalculating
     setErrorMessage('');
     renderSummary();
+    updateOrderSummaryVisibilityState();
     updateOrderSummaryVisibility();
   }
 
@@ -888,6 +1075,7 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollToNextVisibleFieldset(fs, 100);
       }
 
+      updateOrderSummaryVisibilityState();
       updateOrderSummaryVisibility();
     } else if (e.target.matches('input[name="quantity"]')) {
       // React to quantity changes
@@ -898,6 +1086,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Match variant by price on the main form product only (single product with up to 2048 variants)
   // Async to allow fetching missing variants if needed
   async function findVariantByPrice(priceDollars) {
+    // For prices under $1, the format is usually 0.X. E.g. $0.40 -> 40 cents.
+    // The variant title should be "0.40" (string representation of the price) or "40" if you name it in cents.
+    // Standard setup: title matches string of price dollars e.g. "0.4"
     const cents = Math.round(priceDollars * 100);
 
     let variants = Array.isArray(window.filmServiceVariants) ? window.filmServiceVariants : [];
@@ -907,16 +1098,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let variant = find(variants);
 
-    // Fallback: If exact price match fails, try matching Title == PriceDollars (e.g. Title "21")
+    // Fallback: If exact price match fails, try matching Title == PriceDollars (e.g. Title "21" or "0.4")
     if (!variant) {
-      const titleMatch = variants.find((v) => v.title === String(priceDollars));
+      // Create variations to check against
+      const asString = String(priceDollars);
+      const asFixed = Number(priceDollars).toFixed(2);
+      const asCents = String(cents);
+      const withoutLeadingZero = asString.startsWith('0.') ? asString.substring(1) : asString;
+      const withoutLeadingZeroFixed = asFixed.startsWith('0.') ? asFixed.substring(1) : asFixed;
+      // Additionally check for formats like "0.40" vs ".40"
+      const withoutLeadingZeroCents = asFixed.replace(/^0\./, '.');
+
+      const titleMatch = variants.find((v) => {
+        const t = v.title;
+        // Only allow matching raw cents string if the price is $1 or more, to avoid 0.40 ($0.40) matching the "40" ($40.00) variant
+        const isCentsMatch = priceDollars >= 1 ? t === asCents : false;
+
+        return (
+          t === asString ||
+          t === asFixed ||
+          isCentsMatch ||
+          t === withoutLeadingZero ||
+          t === withoutLeadingZeroFixed ||
+          t === withoutLeadingZeroCents
+        );
+      });
+
       if (titleMatch) {
         variant = titleMatch;
       }
     }
 
     // If not found, and we suspect truncation (or just missing), try fetching full JSON
-    if (!variant && window.filmServiceProductHandle) {
+    // Only attempt if not previously rate limited
+    if (!variant && window.filmServiceProductHandle && !window.rateLimitFilmVariants) {
       try {
         // Use custom view to get ALL variants (bypassing default 250 limit)
         const ts = Date.now();
@@ -932,16 +1147,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Re-check title match if still not found
             if (!variant) {
-              const titleMatchRetry = variants.find((v) => v.title === String(priceDollars));
+              const asString = String(priceDollars);
+              const asFixed = Number(priceDollars).toFixed(2);
+              const asCents = String(cents);
+              const withoutLeadingZero = asString.startsWith('0.') ? asString.substring(1) : asString;
+              const withoutLeadingZeroFixed = asFixed.startsWith('0.') ? asFixed.substring(1) : asFixed;
+
+              // Additionally check for formats like "0.40" vs ".40"
+              const withoutLeadingZeroCents = asFixed.replace(/^0\./, '.');
+
+              const titleMatchRetry = variants.find((v) => {
+                const t = v.title;
+                const isCentsMatch = priceDollars >= 1 ? t === asCents : false;
+                return (
+                  t === asString ||
+                  t === asFixed ||
+                  isCentsMatch ||
+                  t === withoutLeadingZero ||
+                  t === withoutLeadingZeroFixed ||
+                  t === withoutLeadingZeroCents
+                );
+              });
+
               if (titleMatchRetry) variant = titleMatchRetry;
             }
           }
+        } else if (res.status === 429) {
+          window.rateLimitFilmVariants = true;
         }
       } catch (e) {}
     }
 
     // If still not found, try the Search API as a last resort (for variants > 250)
-    if (!variant && window.filmServiceProductHandle) {
+    // Only attempt if not previously rate limited
+    if (!variant && window.filmServiceProductHandle && !window.rateLimitSearchVariants) {
       try {
         // Search for the variant Title (which we assume matches the priceDollars, e.g., "21")
         const searchRes = await fetch(`/search?q=${priceDollars}&view=variant-id&type=product`);
@@ -957,6 +1196,8 @@ document.addEventListener('DOMContentLoaded', () => {
               available: true,
             };
           }
+        } else if (searchRes.status === 429) {
+          window.rateLimitSearchVariants = true;
         }
       } catch (e) {}
     }
@@ -1008,6 +1249,7 @@ document.addEventListener('DOMContentLoaded', () => {
     prefillAddressFields();
 
     applyConditions();
+    updateOrderSummaryVisibilityState();
     updateOrderSummaryVisibility();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -1064,6 +1306,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const shippingId = window.globalReturnShippingVariantId || window.returnShippingVariantId;
     const selectedQty = Math.max(1, parseInt(qtyInput?.value || '1', 10) || 1);
+    const fileCount = getUploadedFilesCount();
+    const finalQty = selectedQty * fileCount;
     const itemsToAdd = [];
 
     // 1. Check if we need to add Return Shipping
@@ -1100,11 +1344,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Add the Main Film Service Item
     const mainItem = {
       id: matchedVariant.id,
-      quantity: selectedQty,
+      quantity: finalQty,
       properties: {},
     };
 
     // Collect properties from fieldsets
+    const serviceRadio = form.querySelector('input[name="service"]:checked');
+    const isDarkroom = serviceRadio && serviceRadio.value === 'Darkroom Prints';
+
     form.querySelectorAll('fieldset').forEach((fs) => {
       // Skip hidden/unavailable fieldsets
       if (!isVisible(fs)) return;
@@ -1132,43 +1379,55 @@ document.addEventListener('DOMContentLoaded', () => {
       // Check if this is the specific Delivery Address group
       const isAddressGroup = fs.dataset.group === 'Delivery Address';
 
-      fs.querySelectorAll('input[type="text"], input[type="email"], input[type="hidden"], select, textarea').forEach((input) => {
-        if (!input.name || !input.name.startsWith('properties[') || input.disabled) return;
-        const match = input.name.match(/properties\[(.*?)\]/);
-        // Only add if we have a key and a value
-        if (match && match[1] && input.value.trim() !== '') {
-          if (isAddressGroup) {
-            addressParts.push(input.value.trim());
-          } else {
-            mainItem.properties[match[1]] = input.value.trim();
+      fs.querySelectorAll('input[type="text"], input[type="email"], input[type="hidden"], select, textarea').forEach(
+        (input) => {
+          if (!input.name || !input.name.startsWith('properties[') || input.disabled) return;
+          const match = input.name.match(/properties\[(.*?)\]/);
+          // Only add if we have a key and a value
+          if (match && match[1] && input.value.trim() !== '') {
+            if (isAddressGroup) {
+              addressParts.push(input.value.trim());
+            } else {
+              mainItem.properties[match[1]] = input.value.trim();
+            }
+          }
+        }
+      );
+
+      if (isAddressGroup && addressParts.length > 0) {
+        mainItem.properties['Delivery Address'] = addressParts.join(', ');
+      }
+    });
+
+    if (!isDarkroom) {
+      // Look for uploady elements to add as property (fallback to ensure uploadly link gets added)
+      const uploadlyHiddenInputs = document.querySelectorAll('input[type="hidden"]');
+      uploadlyHiddenInputs.forEach((input) => {
+        if (input.name && input.name.startsWith('properties[') && input.value && input.value.trim() !== '') {
+          const match = input.name.match(/properties\[(.*?)\]/);
+          if (match && match[1]) {
+            // Only add if not already present to avoid overriding legitimate fieldset inputs
+            if (!mainItem.properties[match[1]]) {
+              mainItem.properties[match[1]] = input.value;
+            }
           }
         }
       });
-      
-      // Look for uploady elements to add as property (fallback to ensure uploadly link gets added)
-      const uploadlyHiddenInputs = document.querySelectorAll('input[type="hidden"]');
-      uploadlyHiddenInputs.forEach(input => {
-        if (input.name && input.name.startsWith('properties[') && input.value && input.value.trim() !== '') {
-           const match = input.name.match(/properties\[(.*?)\]/);
-           if (match && match[1]) {
-             // Only add if not already present to avoid overriding legitimate fieldset inputs
-             if (!mainItem.properties[match[1]]) {
-               mainItem.properties[match[1]] = input.value;
-             }
-           }
-        }
-      });
-      
+
       // Also grab form properties from outside the fieldset (e.g. Uploady inputs appended to body)
-      const extraUploadInputs = document.querySelectorAll('input[type="hidden"][name*="properties"], input[type="text"][name*="properties"]');
-      extraUploadInputs.forEach(input => {
+      const extraUploadInputs = document.querySelectorAll(
+        'input[type="hidden"][name*="properties"], input[type="text"][name*="properties"]'
+      );
+      extraUploadInputs.forEach((input) => {
         // Skip known properties that are not uploadly specific, avoid overriding things
         const nameStr = input.name.toLowerCase();
-        if (nameStr.includes('[return delivery]') || 
-            nameStr.includes('[turnaround]') || 
-            nameStr.includes('[message]') ||
-            nameStr.includes('[total price]') ||
-            nameStr.includes('[_timestamp]')) {
+        if (
+          nameStr.includes('[return delivery]') ||
+          nameStr.includes('[turnaround]') ||
+          nameStr.includes('[message]') ||
+          nameStr.includes('[total price]') ||
+          nameStr.includes('[_timestamp]')
+        ) {
           return;
         }
 
@@ -1180,11 +1439,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
       });
-
-      if (isAddressGroup && addressParts.length > 0) {
-        mainItem.properties['Delivery Address'] = addressParts.join(', ');
-      }
-    });
+    }
 
     // Save address details to localStorage for convenience
     try {
@@ -1216,9 +1471,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add special properties
     mainItem.properties['Total Price'] = `$${total.toFixed(2)}`;
+    if (fileCount > 1) {
+      mainItem.properties['Files Uploaded'] = String(fileCount);
+    }
     mainItem.properties['_timestamp'] = Date.now();
 
+    // 3. Add the Size Shipping Product Item
+    // We add a hidden $0 product that maps the selected size to a variant with a physical weight.
+    // This allows shipping apps like Parcelify to calculate shipping cost.
+    let sizeItem = null;
+    const selectedSize = mainItem.properties['Sizes'];
+    if (selectedSize && window.sizeShippingVariants && window.sizeShippingVariants.length > 0) {
+      // Try to find the variant whose title matches the selected size
+      // e.g. "8” × 10”" -> "8x10"
+      const normSize = (s) => (s || '').replace(/[^0-9xX×.]/g, '').replace(/[×X]/g, 'x').toLowerCase();
+      const match = window.sizeShippingVariants.find(v => normSize(v.title) === normSize(selectedSize));
+      
+      if (match) {
+        sizeItem = {
+          id: match.id,
+          quantity: finalQty,
+          properties: {
+            '_role': 'shipping_size',
+            '_parent_timestamp': mainItem.properties['_timestamp']
+          }
+        };
+      }
+    }
+
     itemsToAdd.push(mainItem);
+    if (sizeItem) {
+      itemsToAdd.push(sizeItem);
+    }
 
     const resetButtonState = () => {
       if (!submitBtn) return;
@@ -1301,9 +1585,12 @@ document.addEventListener('DOMContentLoaded', () => {
   updateDeliveryInfoVisibility();
   updateOrderSummaryVisibility();
 
-      // Add an observer to clear Upload error if hidden inputs are added by Uploadly
+  // Add an observer to clear Upload error if hidden inputs are added by Uploadly, and to re-trigger total calculation
   const uploadFs = form.querySelector('fieldset[data-group="Upload"]');
   if (uploadFs) {
+    let checkTimeout = null;
+    let lastKnownFileCount = getActualFilesCount();
+    
     const observer = new MutationObserver((mutations) => {
       let shouldCheck = false;
       for (const mutation of mutations) {
@@ -1313,33 +1600,47 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
       if (shouldCheck) {
-        const uploadInputs = Array.from(document.querySelectorAll('input[name*="properties"]'))
-          .filter((el) => {
+        if (checkTimeout) clearTimeout(checkTimeout);
+        checkTimeout = setTimeout(() => {
+          const currentCount = getActualFilesCount();
+          
+          const uploadInputs = Array.from(document.querySelectorAll('input[name*="properties"]')).filter((el) => {
             const nameStr = el.name.toLowerCase();
-            if (nameStr.includes('[return delivery]') || 
-                nameStr.includes('[turnaround]') || 
-                nameStr.includes('[message]') ||
-                nameStr.includes('[total price]') ||
-                nameStr.includes('[_timestamp]')) {
+            if (
+              nameStr.includes('[return delivery]') ||
+              nameStr.includes('[turnaround]') ||
+              nameStr.includes('[message]') ||
+              nameStr.includes('[total price]') ||
+              nameStr.includes('[_timestamp]')
+            ) {
               return false;
             }
             return true;
           });
-          
-          const uploadlyItems = document.querySelectorAll('.uploadly-item, .uploadly-file, .uploadly-list-item, .uploadly-preview, .uploady-item, .uploady-list-item, .uploady-preview, [data-uploadly-id], [class*="uploadly-"], [class*="uploady-"]');
-        const hasUploadedFile = uploadInputs.some((el) => el.value && el.value.trim() !== '') || uploadlyItems.length > 0;
-        
-        // As a fallback, check if there's any file input with a file selected
-        const fileInputs = Array.from(document.querySelectorAll('input[type="file"]'));
-        const hasNativeFile = fileInputs.some((el) => el.files && el.files.length > 0);
-        
-        if (hasUploadedFile || hasNativeFile) {
-          uploadFs.classList.remove('rolls-form-card--error');
-          const errorMsg = uploadFs.querySelector('.upload-error-msg');
-          if (errorMsg) errorMsg.remove();
-        }
+
+          const uploadlyItems = document.querySelectorAll(
+            '.uploadly-item, .uploadly-file, .uploadly-list-item, .uploadly-preview, .uploady-item, .uploady-list-item, .uploady-preview, [data-uploadly-id], [class*="uploadly-"], [class*="uploady-"]'
+          );
+          const hasUploadedFile =
+            uploadInputs.some((el) => el.value && el.value.trim() !== '') || uploadlyItems.length > 0;
+
+          // As a fallback, check if there's any file input with a file selected
+          const fileInputs = Array.from(document.querySelectorAll('input[type="file"]'));
+          const hasNativeFile = fileInputs.some((el) => el.files && el.files.length > 0);
+
+          if (hasUploadedFile || hasNativeFile || currentCount > 0) {
+            uploadFs.classList.remove('rolls-form-card--error');
+            const errorMsg = uploadFs.querySelector('.upload-error-msg');
+            if (errorMsg) errorMsg.remove();
+          }
+
+          if (currentCount !== lastKnownFileCount) {
+            lastKnownFileCount = currentCount;
+            calculateTotal();
+          }
+        }, 250);
       }
     });
-    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['value', 'class'] });
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['value'] });
   }
 });

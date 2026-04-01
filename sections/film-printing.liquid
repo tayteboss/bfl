@@ -25,7 +25,7 @@
 <div class="send-rolls">
   <div class="layout-wrapper">
     <section class="send-rolls-title-wrapper">
-      <h1 class="send-rolls-title type-h2-medium">Film Printing</h1>
+      <h1 class="send-rolls-title type-h2-medium">Printing</h1>
       <h2 class="send-rolls-subtitle type-h2-medium">Photo, Fine Art & Darkroom</h2>
     </section>
 
@@ -65,12 +65,12 @@
                   type="radio"
                   name="location"
                   value="Chicago"
-                  data-price="2"
+                  data-price="0"
                   data-map-search="1359 N Milwaukee Ave, Chicago, IL 60622"
                 >
                 <div class="bubble-option__inner">
                   <div class="bubble-option__icon"></div>
-                  <div class="bubble-option__label">Chicago <span class="opt-price">($2)</span></div>
+                  <div class="bubble-option__label">Chicago <span class="opt-price">($0)</span></div>
                 </div>
               </label>
               <label class="bubble-option" for="LocationOrlando">
@@ -138,17 +138,18 @@
             </div>
           </div>
           <div class="rolls-form-card-content">
-            <h3 class="rolls-form-card-content__heading type-p">What service is right for me?</h3>
-
             <button
               type="button"
-              class="rolls-form-card-content-trigger-btn"
+              class="rolls-form-card-content__header-btn"
               aria-expanded="false"
               aria-controls="rfc-content-service-info"
               id="rfc-btn-service-info"
               data-faq-trigger
             >
-              <div class="rolls-form-card-content-trigger"></div>
+              <h3 class="rolls-form-card-content__heading type-p">What service is right for me?</h3>
+              <div class="rolls-form-card-content-trigger-btn">
+                <div class="rolls-form-card-content-trigger"></div>
+              </div>
             </button>
 
             <div
@@ -281,19 +282,22 @@
                   {% if accordion_title or accordion_sub_title or feature_image %}
                     {% assign content_uid = service_name | append: '-' | append: group_name | handle %}
                     <div class="rolls-form-card-content">
-                      {% if accordion_title %}
-                        <h3 class="rolls-form-card-content__heading type-p">{{ accordion_title }}</h3>
-                      {% endif %}
-
                       <button
                         type="button"
-                        class="rolls-form-card-content-trigger-btn"
+                        class="rolls-form-card-content__header-btn"
                         aria-expanded="false"
                         aria-controls="rfc-content-{{ content_uid }}"
                         id="rfc-btn-{{ content_uid }}"
                         data-faq-trigger
                       >
-                        <div class="rolls-form-card-content-trigger" data-content-trigger></div>
+                        {% if accordion_title %}
+                          <h3 class="rolls-form-card-content__heading type-p">{{ accordion_title }}</h3>
+                        {% else %}
+                          <div></div>
+                        {% endif %}
+                        <div class="rolls-form-card-content-trigger-btn">
+                          <div class="rolls-form-card-content-trigger" data-content-trigger></div>
+                        </div>
                       </button>
 
                       <div
@@ -412,7 +416,7 @@
         </fieldset>
 
         <!-- Upload -->
-        <fieldset data-group="Upload" class="rolls-form-card">
+        <fieldset data-group="Upload" class="rolls-form-card" data-show-if='{"service":["Photo Prints","Fine Arts"]}'>
           <h3 class="rolls-form-card__heading type-h1-x-small">Upload your file</h3>
           <div class="rolls-form-card__inner">
             <p class="rolls-form-card__subheading type-p">Upload files to print</p>
@@ -431,7 +435,7 @@
           <h3 class="rolls-form-card__heading type-h1-x-small">Delivery</h3>
           <div class="rolls-form-card__inner rolls-form-card__inner--delivery">
 
-            <div class="rolls-form-card__inner-content">
+            {% comment %} <div class="rolls-form-card__inner-content">
               <p class="rolls-form-card__subheading type-p">How will you receive your prints?</p>
               <div class="rolls-form-card__options rolls-form-card__options--delivery">
                  <label class="bubble-option" for="ReturnPickup">
@@ -462,7 +466,7 @@
                     </div>
                   </label>
               </div>
-            </div>
+            </div> {% endcomment %}
             
             <div class="rolls-form-card__inner-content">
               <p class="rolls-form-card__addon-heading type-p">Turn around times.</p>
@@ -509,7 +513,7 @@
                     </div>
                   </label>
               </div>
-              <p class="rolls-form-card__addon-subheading type-p-small">Turnaround time begins upon receiving of film negatives, not the order date.</p>
+              <p class="rolls-form-card__addon-subheading type-p-small">Turnaround time begins upon receiving of the scans / uploads.</p>
             </div>
 
             <div class="rolls-form-card__input-wrapper">
@@ -517,7 +521,7 @@
               <textarea 
                 id="OrderMessage" 
                 name="properties[Message]" 
-                placeholder="How do you want your image to be cropped? ie. “keep the subject centred” or &quot;crop from the bottom only&quot; and “custom sizes”." 
+                placeholder="📝 How do you want your image to be cropped? ie. “keep the subject centred” or &quot;crop from the bottom only&quot; and “custom sizes”." 
                 class="input-text" 
                 rows="6" 
               ></textarea>
@@ -526,12 +530,29 @@
         </fieldset>
 
          <!-- Negatives Options (Was Delivery in previous form) -->
-         <fieldset data-group="Negatives" class="rolls-form-card">
+         <fieldset data-group="Negatives" class="rolls-form-card" data-show-if='{"service":["Darkroom Prints"]}'>
           <h3 class="rolls-form-card__heading type-h1-x-small" order-summary-heading="Negatives">Negatives</h3>
           <div class="rolls-form-card__inner rolls-form-card__inner--content">
             <p class="rolls-form-card__subheading type-p">How will you deliver your negatives?</p>
-            <div class="rolls-form-card__options rolls-form-card__options--addon">
-              <div class="rolls-form-card__addon-option">
+            <p class="rolls-form-card__addon-heading type-p">Delivery Method</p>
+            <div class="rolls-form-card__options">
+              <div>
+                <label class="bubble-option" for="DeliveryBellows">
+                  <input
+                    id="DeliveryBellows"
+                    type="radio"
+                    name="delivery"
+                    value="Already at Bellows"
+                    data-price="0"
+                  >
+                  <div class="bubble-option__inner">
+                    <div class="bubble-option__icon"></div>
+                    <div class="bubble-option__label">Already at Bellows <span class="opt-price">($0)</span></div>
+                  </div>
+                </label>
+              </div>
+
+              <div>
                 <label class="bubble-option" for="DeliveryDropOff">
                   <input
                     id="DeliveryDropOff"
@@ -547,9 +568,7 @@
                 </label>
               </div>
 
-              <p class="rolls-form-card__addon-heading type-p">Delivery Method</p>
-
-              <div class="rolls-form-card__addon-option">
+              <div>
                 <label class="bubble-option" for="DeliveryMailIn">
                   <input
                     id="DeliveryMailIn"
@@ -570,17 +589,18 @@
 
           {% assign delivery_content_uid = 'delivery-info' %}
           <div class="rolls-form-card-content">
-            <h3 class="rolls-form-card-content__heading type-p">Delivery details</h3>
-
             <button
               type="button"
-              class="rolls-form-card-content-trigger-btn"
+              class="rolls-form-card-content__header-btn"
               aria-expanded="true"
               aria-controls="rfc-content-{{ delivery_content_uid }}"
               id="rfc-btn-{{ delivery_content_uid }}"
               data-faq-trigger
             >
-              <div class="rolls-form-card-content-trigger" data-content-trigger></div>
+              <h3 class="rolls-form-card-content__heading type-p">Delivery details</h3>
+              <div class="rolls-form-card-content-trigger-btn">
+                <div class="rolls-form-card-content-trigger" data-content-trigger></div>
+              </div>
             </button>
 
             <div
@@ -748,14 +768,53 @@
           </div>
         </fieldset>
 
-        <aside class="order-summary" data-order-summary data-fly-in-animation style="display: none;">
+        <div class="order-summary-wrapper os-wrapper" data-order-summary style="display: none;">
+          <aside class="order-summary">
+            <div class="order-summary__header">
+              <h3 class="order-summary__title type-h1-x-small">Order Summary</h3>
+              <div class="order-summary__total type-p" id="film-total-display" aria-live="polite">$0.00</div>
+            </div>
+
+            <div class="order-summary__details" data-os-details>
+              <dl class="order-summary__list" data-os-list>
+                <!-- rows injected by film-service.js -->
+              </dl>
+            </div>
+
+            <p
+              class="type-p-small"
+              style="margin: 0 auto 1.5rem auto; opacity: 0.7; max-width: 300px; text-align: center;"
+            >
+              * This total cost is pre-tax. Tax is calculated once added to your bag. If you'd like to pick up the order, please select "Pick Up" at the checkout page.
+            </p>
+
+            <div class="send-rolls-form-submit">
+              <button type="submit" class="primary-button primary-button--black">Add to Bag</button>
+            </div>
+
+            <div
+              class="send-rolls-form-error type-p-small"
+              data-film-service-error
+              role="alert"
+              aria-live="polite"
+              style="display:none;"
+            ></div>
+          </aside>
+        </div>
+
+        <div class="form-note">
+          <p class="form-note__content">If you'd like to pick up the order, please select "Pick Up" at the checkout page.</p>
+        </div>
+
+        <div id="bottom-order-summary-anchor"></div>
+        <aside class="order-summary bottom-order-summary" id="bottom-order-summary" style="display: none;">
           <div class="order-summary__header">
             <h3 class="order-summary__title type-h1-x-small">Order Summary</h3>
-            <div class="order-summary__total type-p" id="film-total-display" aria-live="polite">$0.00</div>
+            <div class="order-summary__total type-p" id="bottom-film-total-display" aria-live="polite">$0.00</div>
           </div>
 
           <div class="order-summary__details" data-os-details>
-            <dl class="order-summary__list" data-os-list>
+            <dl class="order-summary__list" id="bottom-os-list">
               <!-- rows injected by film-service.js -->
             </dl>
           </div>
@@ -768,17 +827,18 @@
           </p>
 
           <div class="send-rolls-form-submit">
-            <button type="submit" class="primary-button primary-button--black">Add to Bag</button>
+            <button type="submit" class="primary-button primary-button--black" id="bottom-submit-btn">Add to Bag</button>
           </div>
 
           <div
             class="send-rolls-form-error type-p-small"
-            data-film-service-error
+            data-film-service-error-bottom
             role="alert"
             aria-live="polite"
             style="display:none;"
           ></div>
         </aside>
+
       </div>
     </form>
   </div>
@@ -797,6 +857,21 @@
       }{% unless forloop.last %},{% endunless %}
     {%- endfor -%}
   ];
+
+  {% if section.settings.size_shipping_product != blank %}
+    window.sizeShippingVariants = [
+      {%- for variant in section.settings.size_shipping_product.first.variants limit: 100 -%}
+        {
+          "id": {{ variant.id }},
+          "title": {{ variant.title | json }},
+          "weight": {{ variant.weight | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ];
+  {% else %}
+    window.sizeShippingVariants = [];
+  {% endif %}
+
   {% if section.settings.return_shipping_product != blank %}
     window.returnShippingVariantId = {{ section.settings.return_shipping_product.first.selected_or_first_available_variant.id | json }};
   {% else %}
@@ -828,6 +903,13 @@
       "id": "return_shipping_product",
       "label": "Return Shipping Product",
       "limit": 1
+    },
+    {
+      "type": "product_list",
+      "id": "size_shipping_product",
+      "label": "Size Shipping Product (For Parcelify/Weights)",
+      "limit": 1,
+      "info": "Create a $0 product with variants named after your sizes (e.g. '8” × 10”', '11” × 14”'). Set the weight on those variants so Parcelify can calculate shipping."
     }
   ],
   "blocks": [

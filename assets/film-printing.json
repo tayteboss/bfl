@@ -1,36 +1,74 @@
 {
   "Photo Prints": {
-    "description": "Crisp, vibrant photographic prints on premium photo media — ideal for portraits, landscapes, and editorial work. Available in gloss, luster, and metallic finishes.",
+    "description": "Crisp, vibrant photographic prints on premium luster paper - Classic film lab style. Ideal for 4” x 6”  prints, but also available in 3” x 5”,  5” x 7”, 8“ x 10” and 8” x 12”.",
     "Sizes": {
       "description": "Print Size",
       "accordion_title": "⚠️ Read more about cropping & aspect ratios",
       "accordion_sub_title": "Your image will be cropped to fit the selected print dimensions. If your file's aspect ratio doesn't match your chosen size, our team will contact you — or use the notes field below to specify your cropping preference.",
-      "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/image-3.png?v=1774338614",
       "options": [
-        { "label": "3.5” × 5”", "price": 0.4 },
-        { "label": "4” × 6”", "price": 0.4 },
-        { "label": "5” × 7”", "price": 1.5 },
-        { "label": "8” × 10”", "price": 5.5 },
-        { "label": "8” × 12”", "price": 6.5 }
+        {
+          "label": "3.5” × 5”",
+          "price": 0.4
+        },
+        {
+          "label": "4” × 6”",
+          "price": 0.4
+        },
+        {
+          "label": "5” × 7”",
+          "price": 1.5
+        },
+        {
+          "label": "8” × 10”",
+          "price": 5.5
+        },
+        {
+          "label": "8” × 12”",
+          "price": 6.5
+        }
       ]
     }
   },
   "Fine Arts": {
-    "description": "Museum-quality pigment prints on archival fine-art papers. Perfect for artists, galleries, and collectors. Available up to 44\" × 60\" with exceptional colour longevity.",
+    "description": "Museum quality prints on many different types of paper. Perfect for artists, galleries, collectors, and photographers. Available up to 44” wide. Panaromic prints available. ",
     "Sizes": {
       "description": "Print Size",
       "accordion_title": "⚠️ Read more about cropping & aspect ratios",
       "accordion_sub_title": "Your image will be cropped to fit the selected print dimensions. If your file's aspect ratio doesn't match your chosen size, our team will contact you — or use the notes field below to specify your cropping preference.",
       "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/image.png?v=1774305053",
       "options": [
-        { "label": "11” × 14”", "price": 10 },
-        { "label": "16” × 20”", "price": 20 },
-        { "label": "20” × 24”", "price": 30 },
-        { "label": "20” × 30”", "price": 35 },
-        { "label": "24” × 30”", "price": 40 },
-        { "label": "30” × 40”", "price": 80 },
-        { "label": "40” × 50”", "price": 150 },
-        { "label": "44” × 60”", "price": 200 }
+        {
+          "label": "11” × 14”",
+          "price": 15
+        },
+        {
+          "label": "16” × 20”",
+          "price": 25
+        },
+        {
+          "label": "20” × 24”",
+          "price": 30
+        },
+        {
+          "label": "20” × 30”",
+          "price": 35
+        },
+        {
+          "label": "24” × 30”",
+          "price": 40
+        },
+        {
+          "label": "30” × 40”",
+          "price": 80
+        },
+        {
+          "label": "40” × 50”",
+          "price": 150
+        },
+        {
+          "label": "44” × 60”",
+          "price": 200
+        }
       ]
     },
     "Paper": {
@@ -94,7 +132,7 @@
           },
           "price_overrides": {
             "sizes": {
-              "11” × 14”": 10,
+              "11” × 14”": 5,
               "16” × 20”": 5,
               "20” × 24”": 10,
               "20” × 30”": 10,
@@ -112,26 +150,40 @@
     "Borders": {
       "description": "Edge-to-edge or with bleed?",
       "options": [
-        { "label": "Borderless (Edge-to-edge)", "price": 0 },
-        { "label": "Borders (0.5” white)", "price": 0 },
-        { "label": "Borders (1” white)", "price": 0 }
+        {
+          "label": "Borderless (Edge-to-edge)",
+          "price": 0
+        },
+        {
+          "label": "Borders (0.5” white)",
+          "price": 0
+        },
+        {
+          "label": "Borders (1” white)",
+          "price": 0
+        }
       ]
     }
   },
   "Darkroom Prints": {
-    "description": "Traditional wet-process darkroom prints for those who value analogue craft. Rich tonal depth and a classic aesthetic that digital can't replicate.",
+    "description": "Traditional wet-process darkroom prints for those who value the analog craft. Available for B&W and RA-4 color. Available up to 16” x 20”.",
     "Process": {
       "description": "What type of film did you shoot?",
       "options": [
-        { "label": "Color", "price": 0 },
-        { "label": "Black and White", "price": 0 }
+        {
+          "label": "Color",
+          "price": 0
+        },
+        {
+          "label": "Black and White",
+          "price": 0
+        }
       ]
     },
     "Sizes": {
       "description": "Print Size",
       "accordion_title": "⚠️ Read more about cropping & aspect ratios",
       "accordion_sub_title": "Your image will be cropped to fit the selected print dimensions. If your file's aspect ratio doesn't match your chosen size, our team will contact you — or use the notes field below to specify your cropping preference.",
-      "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/image-2.png?v=1774316122",
       "options": [
         {
           "label": "8” × 10”",
@@ -176,30 +228,49 @@
       "accordion_title": "Don't know what paper to choose?",
       "accordion_sub_title": "RC = Resin Coated paper, which is the standard darkroom print paper. It comes in different surface finishes:",
       "options": [
-        { "label": "RC Matte", "price": 0, "description": "Flat, non-reflective finish. Good for hand-holding, framing behind glass without glare", "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/matte.png?v=1774305292" },
-        { "label": "RC Luster", "price": 0, "description": "Semi-gloss, slight sheen. The most popular middle ground — some richness in the blacks without full glare", "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/luster.png?v=1774305292" }
+        {
+          "label": "RC Matte",
+          "price": 0,
+          "description": "Flat, non-reflective finish. Good for hand-holding, framing behind glass without glare",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/matte.png?v=1774305292"
+        },
+        {
+          "label": "RC Luster",
+          "price": 0,
+          "description": "Semi-gloss, slight sheen. The most popular middle ground — some richness in the blacks without full glare",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/luster.png?v=1774305292"
+        }
       ]
     },
     "Borders": {
       "description": "Edge-to-edge or with bleed?",
       "options": [
-        { "label": "Borderless (Edge-to-edge)", "price": 0 },
-        { "label": "Borders (0.5” white)", "price": 0 }
+        {
+          "label": "Borderless (Edge-to-edge)",
+          "price": 0
+        },
+        {
+          "label": "Borders (0.5” white)",
+          "price": 0
+        }
       ]
     },
     "Scanning Options": {
       "description": "Do you want us to scan your prints?",
       "show_if": {
-        "sizes": ["8” × 10”", "11” × 14”"]
+        "sizes": [
+          "8” × 10”",
+          "11” × 14”"
+        ]
       },
       "options": [
-        { "label": "Yes", "price": 0 },
-        { 
-          "label": "No", 
-          "price": 0,
-          "default_if": {
-            "sizes": ["8” × 10”", "11” × 14”"]
-          }
+        {
+          "label": "Yes",
+          "price": 20
+        },
+        {
+          "label": "No",
+          "price": 0
         }
       ]
     }

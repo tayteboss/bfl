@@ -138,17 +138,18 @@
             </div>
           </div>
           <div class="rolls-form-card-content">
-            <h3 class="rolls-form-card-content__heading type-p">I’m not sure what I need?</h3>
-
             <button
               type="button"
-              class="rolls-form-card-content-trigger-btn"
+              class="rolls-form-card-content__header-btn"
               aria-expanded="false"
               aria-controls="rfc-content-{{ content_uid }}"
               id="rfc-btn-{{ content_uid }}"
               data-faq-trigger
             >
-              <div class="rolls-form-card-content-trigger"></div>
+              <h3 class="rolls-form-card-content__heading type-p">I’m not sure what I need?</h3>
+              <div class="rolls-form-card-content-trigger-btn">
+                <div class="rolls-form-card-content-trigger"></div>
+              </div>
             </button>
 
             <div
@@ -308,19 +309,22 @@
                   {% if has_content %}
                     {% assign content_uid = service_name | append: '-' | append: group_name | handle %}
                     <div class="rolls-form-card-content">
-                      {% if accordion_title %}
-                        <h3 class="rolls-form-card-content__heading type-p">{{ accordion_title }}</h3>
-                      {% endif %}
-
                       <button
                         type="button"
-                        class="rolls-form-card-content-trigger-btn"
+                        class="rolls-form-card-content__header-btn"
                         aria-expanded="false"
                         aria-controls="rfc-content-{{ content_uid }}"
                         id="rfc-btn-{{ content_uid }}"
                         data-faq-trigger
                       >
-                        <div class="rolls-form-card-content-trigger" data-content-trigger></div>
+                        {% if accordion_title %}
+                          <h3 class="rolls-form-card-content__heading type-p">{{ accordion_title }}</h3>
+                        {% else %}
+                          <div></div>
+                        {% endif %}
+                        <div class="rolls-form-card-content-trigger-btn">
+                          <div class="rolls-form-card-content-trigger" data-content-trigger></div>
+                        </div>
                       </button>
 
                       <div
@@ -498,20 +502,21 @@
                           {% if accordion_title or accordion_sub_title %}
                             {% assign content_uid = service_name | append: '-' | append: group_name | handle %}
                             <div class="rolls-form-card-content">
+                              <button
+                              type="button"
+                              class="rolls-form-card-content__header-btn"
+                              aria-expanded="false"
+                              aria-controls="rfc-content-{{ content_uid }}"
+                              id="rfc-btn-{{ content_uid }}"
+                              data-faq-trigger
+                            >
                               <h3 class="rolls-form-card-content__heading type-p">
                                 {{ accordion_title | default: stripped_name }}
                               </h3>
-
-                              <button
-                                type="button"
-                                class="rolls-form-card-content-trigger-btn"
-                                aria-expanded="false"
-                                aria-controls="rfc-content-{{ content_uid }}"
-                                id="rfc-btn-{{ content_uid }}"
-                                data-faq-trigger
-                              >
+                              <div class="rolls-form-card-content-trigger-btn">
                                 <div class="rolls-form-card-content-trigger"></div>
-                              </button>
+                              </div>
+                            </button>
 
                               <div
                                 class="rolls-form-card-content-outer"
@@ -635,19 +640,20 @@
                     {% if accordion_title or accordion_sub_title %}
                       {% assign content_uid = service_name | append: '-' | append: group_name | handle %}
                       <div class="rolls-form-card-content">
-                        <h3 class="rolls-form-card-content__heading type-p">
-                          {{ accordion_title | default: stripped_name }}
-                        </h3>
-
                         <button
                           type="button"
-                          class="rolls-form-card-content-trigger-btn"
+                          class="rolls-form-card-content__header-btn"
                           aria-expanded="false"
                           aria-controls="rfc-content-{{ content_uid }}"
                           id="rfc-btn-{{ content_uid }}"
                           data-faq-trigger
                         >
-                          <div class="rolls-form-card-content-trigger"></div>
+                          <h3 class="rolls-form-card-content__heading type-p">
+                            {{ accordion_title | default: stripped_name }}
+                          </h3>
+                          <div class="rolls-form-card-content-trigger-btn">
+                            <div class="rolls-form-card-content-trigger"></div>
+                          </div>
                         </button>
 
                         <div
@@ -803,17 +809,18 @@
 
           {% assign delivery_content_uid = 'delivery-info' %}
           <div class="rolls-form-card-content">
-            <h3 class="rolls-form-card-content__heading type-p">Delivery details</h3>
-
             <button
               type="button"
-              class="rolls-form-card-content-trigger-btn"
+              class="rolls-form-card-content__header-btn"
               aria-expanded="true"
               aria-controls="rfc-content-{{ delivery_content_uid }}"
               id="rfc-btn-{{ delivery_content_uid }}"
               data-faq-trigger
             >
-              <div class="rolls-form-card-content-trigger" data-content-trigger></div>
+              <h3 class="rolls-form-card-content__heading type-p">Delivery details</h3>
+              <div class="rolls-form-card-content-trigger-btn">
+                <div class="rolls-form-card-content-trigger" data-content-trigger></div>
+              </div>
             </button>
 
             <div
