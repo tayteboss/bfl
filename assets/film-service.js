@@ -1272,13 +1272,10 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Guard against totals that exceed our variant coverage / business limit
-    const variants = Array.isArray(window.filmServiceVariants) ? window.filmServiceVariants : [];
-    const maxVariantCents = variants.reduce((max, v) => Math.max(max, Number(v.price || 0) || 0), 0);
-    const maxVariantDollars = maxVariantCents / 100;
+    // With Cart Transform API, we no longer need to find a variant by price.
+    // We just pass the custom price and use the base variant ID.
     const HARD_LIMIT_DOLLARS = 2000;
-
-    if (total > maxVariantDollars || total > HARD_LIMIT_DOLLARS) {
+    if (total > HARD_LIMIT_DOLLARS) {
       setErrorMessage('Please contact us for single orders over $2000.');
       const target = errorEl || form;
       if (target && typeof target.scrollIntoView === 'function') {
@@ -1287,9 +1284,12 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const matchedVariant = await findVariantByPrice(total);
-    if (!matchedVariant) {
-      setErrorMessage('Something went wrong calculating your total. Please contact us so we can help with your order.');
+    // Use the variant ID from the hidden input on the form, or the global window var
+    const baseVariantInput = form.querySelector('input[name="id"]');
+    const baseVariantId = baseVariantInput ? parseInt(baseVariantInput.value, 10) : window.filmServiceBaseVariantId;
+
+    if (!baseVariantId) {
+      setErrorMessage('Something went wrong finding the base product. Please refresh the page or contact us.');
       const target = errorEl || form;
       if (target && typeof target.scrollIntoView === 'function') {
         target.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1343,9 +1343,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Add the Main Film Service Item
     const mainItem = {
-      id: matchedVariant.id,
+      id: baseVariantId,
       quantity: finalQty,
-      properties: {},
+      properties: {
+        _custom_price_cents: Math.round(total * 100).toString(),
+        // Add a fallback public property just in case Shopify strips hidden ones in Cart Transform
+        _fallback_price_cents: Math.round(total * 100).toString()
+      },
     };
 
     // Collect properties from fieldsets

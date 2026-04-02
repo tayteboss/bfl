@@ -1,0 +1,17 @@
+query CartTransformRunInput {
+  presentmentCurrencyRate
+  cart {
+    lines {
+      id
+      customPrice: attribute(key: "_custom_price_cents") {
+        value
+      }
+      customPriceFallback: attribute(key: "Total Price") {
+        value
+      }
+      fallbackPrice: attribute(key: "_fallback_price_cents") {
+        value
+      }
+    }
+  }
+}

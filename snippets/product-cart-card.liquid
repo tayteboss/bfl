@@ -71,7 +71,7 @@
       {%- if item.original_line_price == 0 and item.product.title == 'Return Shipping (Negatives)' -%}
         {% assign is_zero_price_return_shipping = true %}
       {%- endif -%}
-      {% unless is_zero_price_return_shipping or item.product.handle == 'film-printing' or item.product.handle == 'film-service' %}
+      {% unless is_zero_price_return_shipping %}
         <div class="cart-item__price-wrapper">
           {%- if item.quantity > 1 -%}
             <span class="cart-item__quantity-note type-p-small"> Qty: {{ item.quantity }} - </span>

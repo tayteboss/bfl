@@ -1023,19 +1023,11 @@
   </div>
 </div>
 
-<!-- VARIANT DATA: use the main form product's variants for pricing -->
+<!-- VARIANT DATA: use the main form product's first variant for base pricing -->
 <script>
   window.filmServiceProductHandle = {{ target_product.handle | json }};
-  window.filmServiceVariants = [
-    {%- for variant in target_product.variants limit: 5000 -%}
-      {
-        "id": {{ variant.id }},
-        "price": {{ variant.price }},
-        "title": {{ variant.title | json }},
-        "available": {{ variant.available }}
-      }{% unless forloop.last %},{% endunless %}
-    {%- endfor -%}
-  ];
+  window.filmServiceBaseVariantId = {{ target_product.selected_or_first_available_variant.id | json }};
+  window.filmServiceVariants = []; // Not needed anymore, we use Cart Transform API
   {% if section.settings.return_shipping_product != blank %}
     window.returnShippingVariantId = {{ section.settings.return_shipping_product.first.selected_or_first_available_variant.id | json }};
   {% else %}

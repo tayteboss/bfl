@@ -1,0 +1,22 @@
+{
+  "name": "dynamic-pricing-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "shopify app deploy"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@shopify/app": "^3.58.2",
+    "@shopify/cli": "^3.92.1"
+  },
+  "dependencies": {
+    "@shopify/shopify_function": "~2.0.0",
+    "node-fetch": "^3.3.2"
+  },
+  "type": "module"
+}
