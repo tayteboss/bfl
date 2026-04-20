@@ -12,7 +12,8 @@
         },
         {
           "label": "4” × 6”",
-          "price": 0.4
+          "price": 0.4,
+          "default": true
         },
         {
           "label": "5” × 7”",
@@ -68,6 +69,10 @@
         {
           "label": "44” × 60”",
           "price": 200
+        },
+        {
+          "label": "Custom",
+          "price": 0
         }
       ]
     },
@@ -166,6 +171,13 @@
     }
   },
   "Darkroom Prints": {
+    "show_if": {
+      "location": [
+        "Miami",
+        "Chicago",
+        "Atlanta"
+      ]
+    },
     "description": "Traditional wet-process darkroom prints for those who value the analog craft. Available for B&W and RA-4 color. Available up to 16” x 20”.",
     "Process": {
       "description": "What type of film did you shoot?",

@@ -168,6 +168,138 @@ document.addEventListener('DOMContentLoaded', () => {
       return isVisible(carrier);
     });
 
+  const customSizeContainer = form.querySelector('[data-custom-size-container]');
+  const customSizeFieldset = customSizeContainer ? customSizeContainer.closest('fieldset.rolls-form-card') : null;
+  const customSizeWidthInput = form.querySelector('[data-custom-size-input="width"]');
+  const customSizeHeightInput = form.querySelector('[data-custom-size-input="height"]');
+  const customSizeErrorEl = form.querySelector('[data-custom-size-error]');
+  const customSizeTouched = { width: false, height: false };
+
+  const setInlineError = (el, message) => {
+    if (!el) return;
+    el.textContent = message || '';
+    el.style.display = message ? '' : 'none';
+    if (message) {
+      el.style.color = 'var(--color-error, var(--color-red, #d22d2d))';
+      el.style.marginTop = '0.5rem';
+    }
+  };
+
+  const isFineArtsCustomSizeActive = () => {
+    const serviceRadio = form.querySelector('input[name="service"]:checked');
+    const sizeRadio = form.querySelector('input[name="sizes"]:checked');
+    return (
+      serviceRadio &&
+      serviceRadio.value === 'Fine Arts' &&
+      sizeRadio &&
+      (sizeRadio.value || '').trim().toLowerCase() === 'custom'
+    );
+  };
+
+  const validateCustomDimension = (rawValue, opts) => {
+    const options = opts || {};
+    const label = options.label || 'Value';
+    const hasMax = Number.isFinite(options.max);
+    const max = options.max;
+    const value = (rawValue || '').toString().trim();
+
+    if (!value) {
+      return { valid: false, message: `${label} is required.` };
+    }
+
+    if (!/^\d+$/.test(value)) {
+      return { valid: false, message: `${label} must be a whole number.` };
+    }
+
+    const numericValue = Number(value);
+    if (!Number.isFinite(numericValue) || numericValue < 1) {
+      return { valid: false, message: `${label} must be at least 1.` };
+    }
+
+    if (hasMax && numericValue > max) {
+      return { valid: false, message: `${label} must be ${max}" or less.` };
+    }
+
+    return { valid: true, numericValue, message: '' };
+  };
+
+  const getCustomSizeValidation = (opts) => {
+    const options = opts || {};
+    const showErrors = !!options.showErrors;
+    const forceAll = !!options.forceAll;
+
+    if (!customSizeContainer || !customSizeWidthInput || !customSizeHeightInput) {
+      return { active: false, valid: true, width: null, height: null };
+    }
+
+    const active = isFineArtsCustomSizeActive() && isVisible(customSizeContainer);
+    if (!active) {
+      customSizeTouched.width = false;
+      customSizeTouched.height = false;
+      if (showErrors || forceAll) {
+        setInlineError(customSizeErrorEl, '');
+      }
+      return { active: false, valid: true, width: null, height: null };
+    }
+
+    const widthResult = validateCustomDimension(customSizeWidthInput.value, { label: 'Width', max: 44 });
+    const heightResult = validateCustomDimension(customSizeHeightInput.value, { label: 'Height' });
+    const isValid = widthResult.valid && heightResult.valid;
+
+    if (showErrors || forceAll) {
+      const canShowWidth = forceAll || customSizeTouched.width;
+      const canShowHeight = forceAll || customSizeTouched.height;
+      let errorMessage = '';
+
+      if (canShowWidth && !widthResult.valid) {
+        errorMessage = widthResult.message;
+      } else if (canShowHeight && !heightResult.valid) {
+        errorMessage = heightResult.message;
+      }
+
+      if (!errorMessage && forceAll && !isValid) {
+        errorMessage = !widthResult.valid ? widthResult.message : heightResult.message;
+      }
+
+      setInlineError(customSizeErrorEl, errorMessage);
+    }
+
+    return {
+      active,
+      valid: isValid,
+      width: widthResult.valid ? widthResult.numericValue : null,
+      height: heightResult.valid ? heightResult.numericValue : null,
+    };
+  };
+
+  const getFineArtsCustomSizePrice = (width, height, paperLabel) => {
+    const area = Number(width || 0) * Number(height || 0);
+    const normalizedPaper = (paperLabel || '').toString().trim().toLowerCase();
+    const isFibre = normalizedPaper === 'fibre paper';
+    const rawPrice = isFibre ? 3 + 0.073 * area : 12 + 0.04 * area;
+    return Math.round(rawPrice);
+  };
+
+  const syncCustomSizePrice = (showErrors = false) => {
+    const customSizeRadio = form.querySelector('input[name="sizes"][value="Custom"]');
+    if (!customSizeRadio) return;
+
+    const validation = getCustomSizeValidation({ showErrors });
+    let newPrice = 0;
+
+    if (validation.active && validation.valid) {
+      const selectedPaper = form.querySelector('input[name="paper"]:checked');
+      newPrice = getFineArtsCustomSizePrice(validation.width, validation.height, selectedPaper?.value || '');
+    }
+
+    customSizeRadio.dataset.price = newPrice;
+    const customSizeLabel = customSizeRadio.closest('label');
+    const customSizePriceEl = customSizeLabel ? customSizeLabel.querySelector('.opt-price') : null;
+    if (customSizePriceEl) {
+      customSizePriceEl.textContent = newPrice > 0 ? `$${newPrice}` : 'Free';
+    }
+  };
+
   const osWrapper = document.querySelector('.os-wrapper');
 
   // --- Order Summary floating visibility ---
@@ -330,18 +462,20 @@ document.addEventListener('DOMContentLoaded', () => {
     form.querySelectorAll('fieldset.rolls-form-card').forEach((fs) => {
       if (!isVisible(fs)) fs.classList.remove('rolls-form-card--error');
     });
+    if (customSizeContainer && !isVisible(customSizeContainer)) {
+      setInlineError(customSizeErrorEl, '');
+    }
   };
 
   const validateOpenFields = () => {
     const errors = [];
     getVisibleFieldsets().forEach((fs) => {
       let isInvalid = false;
+      const groupNameAttr = fs.getAttribute('data-group') || fs.dataset.group || '';
 
       // 1. Radio Validation
       const visibleRadios = getVisibleRadiosInFieldset(fs);
       if (visibleRadios.length > 0) {
-        const groupNameAttr = fs.getAttribute('data-group') || fs.dataset.group || '';
-
         // Special case: the aggregated "Add Ons" card contains multiple logical radio groups.
         if (groupNameAttr.trim().toLowerCase() === 'add ons') {
           const groupsByName = new Map();
@@ -374,13 +508,20 @@ document.addEventListener('DOMContentLoaded', () => {
         isInvalid = true;
       }
 
+      // 2b. Custom size validation
+      if (customSizeContainer && fs.contains(customSizeContainer)) {
+        const customValidation = getCustomSizeValidation({ showErrors: true, forceAll: true });
+        if (customValidation.active && !customValidation.valid) {
+          isInvalid = true;
+        }
+      }
+
       // If no radios and no required inputs, we consider it valid (unless we want to enforce logic for info-only cards, which we don't)
       if (visibleRadios.length === 0 && requiredInputs.length === 0) {
         isInvalid = false;
       }
 
       // 3. Upload Validation (Uploadly)
-      const groupNameAttr = fs.getAttribute('data-group') || fs.dataset.group || '';
       if (groupNameAttr.trim().toLowerCase() === 'upload') {
         // Uploadly sometimes dynamically generates the fields, wait to check form fields specifically
         // Find inputs that contain Uploadly data (Uploadly often targets hidden inputs or adds properties)
@@ -645,9 +786,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             const turnaroundValue = valueText.toLowerCase();
             if (turnaroundValue.includes('rush')) {
-              priceNum = preTotal * 2; // (Total * 3 means it adds preTotal * 2)
-            } else if (turnaroundValue.includes('speedy')) {
               priceNum = preTotal * 1; // (Total * 2 means it adds preTotal * 1)
+            } else if (turnaroundValue.includes('speedy')) {
+              priceNum = preTotal * 0.5; // (Total * 1.5 means it adds preTotal * 0.5)
             }
           }
 
@@ -689,6 +830,13 @@ document.addEventListener('DOMContentLoaded', () => {
       createRow(osList, labelText, valueText, priceNum);
       createRow(bottomOsList, labelText, valueText, priceNum);
     });
+
+    const customValidation = getCustomSizeValidation({ showErrors: false });
+    if (customValidation.active && customValidation.valid) {
+      const valueText = `${customValidation.width}" × ${customValidation.height}"`;
+      createRow(osList, 'Custom Dimensions', valueText, 0);
+      createRow(bottomOsList, 'Custom Dimensions', valueText, 0);
+    }
 
     // --- Totals area (consider quantity) ---
     const qty = getQuantity();
@@ -732,6 +880,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Total calc ---
   function calculateTotal() {
+    syncCustomSizePrice(false);
+
     total = basePrice;
     form.querySelectorAll('input[type="radio"]:checked').forEach((input) => {
       total += Number(input.dataset.price || 0);
@@ -742,9 +892,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (turnaroundRadio) {
       const turnaroundValue = (turnaroundRadio.value || '').toLowerCase();
       if (turnaroundValue.includes('rush')) {
-        total *= 3;
-      } else if (turnaroundValue.includes('speedy')) {
         total *= 2;
+      } else if (turnaroundValue.includes('speedy')) {
+        total *= 1.5;
       }
     }
 
@@ -1061,6 +1211,9 @@ document.addEventListener('DOMContentLoaded', () => {
             scrollToFieldset(quantityFs, 100);
             handledScroll = true;
           }
+        } else if (groupKey === 'sizes' && valueNorm === 'custom') {
+          // Keep focus in Sizes so users can fill custom width/height immediately.
+          handledScroll = true;
         }
       }
 
@@ -1080,6 +1233,27 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (e.target.matches('input[name="quantity"]')) {
       // React to quantity changes
       calculateTotal();
+    } else if (e.target.matches('[data-custom-size-input]')) {
+      // React to custom width/height changes
+      getCustomSizeValidation({ showErrors: true });
+      calculateTotal();
+    }
+  });
+
+  form.addEventListener('input', (e) => {
+    if (e.target.matches('[data-custom-size-input]')) {
+      getCustomSizeValidation({ showErrors: true });
+      calculateTotal();
+    }
+  });
+
+  form.addEventListener('focusout', (e) => {
+    if (e.target === customSizeWidthInput) {
+      customSizeTouched.width = true;
+      getCustomSizeValidation({ showErrors: true });
+    } else if (e.target === customSizeHeightInput) {
+      customSizeTouched.height = true;
+      getCustomSizeValidation({ showErrors: true });
     }
   });
 
@@ -1267,8 +1441,18 @@ document.addEventListener('DOMContentLoaded', () => {
         .sort((a, b) => a.top - b.top)[0].fs;
       const targetY = Math.max(0, first.getBoundingClientRect().top + window.scrollY - 250);
       window.scrollTo({ top: targetY, behavior: 'smooth' });
-      const focusTarget = first.querySelector('input[type="radio"]');
+      const focusTarget = first.querySelector('input[type="radio"], input, select, textarea');
       if (focusTarget) focusTarget.focus({ preventScroll: true });
+      return;
+    }
+
+    const customValidation = getCustomSizeValidation({ showErrors: true, forceAll: true });
+    if (customValidation.active && !customValidation.valid) {
+      const scrollTarget = customSizeContainer || customSizeFieldset;
+      if (scrollTarget) {
+        const targetY = Math.max(0, scrollTarget.getBoundingClientRect().top + window.scrollY - 250);
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+      }
       return;
     }
 
@@ -1383,7 +1567,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // Check if this is the specific Delivery Address group
       const isAddressGroup = fs.dataset.group === 'Delivery Address';
 
-      fs.querySelectorAll('input[type="text"], input[type="email"], input[type="hidden"], select, textarea').forEach(
+      fs
+        .querySelectorAll('input[type="text"], input[type="email"], input[type="number"], input[type="hidden"], select, textarea')
+        .forEach(
         (input) => {
           if (!input.name || !input.name.startsWith('properties[') || input.disabled) return;
           const match = input.name.match(/properties\[(.*?)\]/);
@@ -1402,6 +1588,12 @@ document.addEventListener('DOMContentLoaded', () => {
         mainItem.properties['Delivery Address'] = addressParts.join(', ');
       }
     });
+
+    if (customValidation.active && customValidation.valid) {
+      mainItem.properties['Custom Width'] = `${customValidation.width}"`;
+      mainItem.properties['Custom Height'] = `${customValidation.height}"`;
+      mainItem.properties['Custom Size'] = `${customValidation.width}" × ${customValidation.height}"`;
+    }
 
     if (!isDarkroom) {
       // Look for uploady elements to add as property (fallback to ensure uploadly link gets added)
@@ -1486,11 +1678,59 @@ document.addEventListener('DOMContentLoaded', () => {
     let sizeItem = null;
     const selectedSize = mainItem.properties['Sizes'];
     if (selectedSize && window.sizeShippingVariants && window.sizeShippingVariants.length > 0) {
-      // Try to find the variant whose title matches the selected size
-      // e.g. "8” × 10”" -> "8x10"
+      // Normalize label sizes like `8” × 10”` => `8x10`
       const normSize = (s) => (s || '').replace(/[^0-9xX×.]/g, '').replace(/[×X]/g, 'x').toLowerCase();
-      const match = window.sizeShippingVariants.find(v => normSize(v.title) === normSize(selectedSize));
-      
+
+      // Parse dimensions from variant titles like `11x14`, `11 × 14`, `11" x 14"`, etc.
+      const parseDims = (value) => {
+        const text = (value || '').toString();
+        const match = text.match(/(\d+(?:\.\d+)?)\s*[x×]\s*(\d+(?:\.\d+)?)/i);
+        if (!match) return null;
+        const a = Number(match[1]);
+        const b = Number(match[2]);
+        if (!Number.isFinite(a) || !Number.isFinite(b)) return null;
+        const shortSide = Math.min(a, b);
+        const longSide = Math.max(a, b);
+        return { shortSide, longSide, area: shortSide * longSide };
+      };
+
+      let match = null;
+
+      // Preset sizes keep exact title matching behavior.
+      if (!customValidation.active || !customValidation.valid) {
+        match = window.sizeShippingVariants.find((v) => normSize(v.title) === normSize(selectedSize));
+      } else {
+        const customShort = Math.min(customValidation.width, customValidation.height);
+        const customLong = Math.max(customValidation.width, customValidation.height);
+
+        const parsedVariants = window.sizeShippingVariants
+          .map((variant) => ({ variant, dims: parseDims(variant.title) }))
+          .filter((entry) => !!entry.dims);
+
+        const fitting = parsedVariants
+          .filter(
+            (entry) => entry.dims.shortSide >= customShort && entry.dims.longSide >= customLong
+          )
+          .sort((a, b) => {
+            // Pick the smallest bucket that still fits the custom size.
+            if (a.dims.area !== b.dims.area) return a.dims.area - b.dims.area;
+            if (a.dims.longSide !== b.dims.longSide) return a.dims.longSide - b.dims.longSide;
+            return a.dims.shortSide - b.dims.shortSide;
+          });
+
+        if (fitting.length > 0) {
+          match = fitting[0].variant;
+        } else if (parsedVariants.length > 0) {
+          // If no bucket fully fits, fall back to the largest configured bucket.
+          parsedVariants.sort((a, b) => {
+            if (a.dims.area !== b.dims.area) return b.dims.area - a.dims.area;
+            if (a.dims.longSide !== b.dims.longSide) return b.dims.longSide - a.dims.longSide;
+            return b.dims.shortSide - a.dims.shortSide;
+          });
+          match = parsedVariants[0].variant;
+        }
+      }
+
       if (match) {
         sizeItem = {
           id: match.id,

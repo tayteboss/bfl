@@ -181,6 +181,57 @@
   }
 }
 
+.rolls-form-card__options--custom-size {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding: 24px 0;
+}
+
+.rolls-form-card__options--custom-size .rolls-form-card__input-wrapper {
+  padding: 0;
+  width: 115px;
+}
+
+.custom-size-input-field {
+  position: relative;
+  width: 100%;
+}
+
+.custom-size-input-field .input-text {
+  width: 100%;
+  padding-right: 1.75rem;
+}
+
+.custom-size-input-suffix {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0.6;
+  font-family: var(--font-gt-standard-mono-regular);
+  line-height: 1;
+}
+
+.rolls-form-card__options--custom-size input[type="number"] {
+  /* Hide number input spinners/arrows in most browsers */
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+.rolls-form-card__options--custom-size input[type="number"]::-webkit-outer-spin-button,
+.rolls-form-card__options--custom-size input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.rolls-form-card__options-separator {
+  text-align: center;
+  font-family: var(--font-gt-standard-mono-regular);
+  font-weight: 400;
+  font-size: 14px;
+}
+
 .rolls-form-card .quantity-popover-container {
   max-width: 25rem;
   width: 120px;

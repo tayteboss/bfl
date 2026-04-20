@@ -216,10 +216,7 @@
           <div class="service-groups-wrapper" data-for-service="{{ service_name | escape }}">
             {% for group in groups %}
               {% assign group_name = group[0] %}
-              {% unless group_name == 'show_if'
-                or group_name == 'description'
-                or group_name == 'description_image'
-              %}
+              {% unless group_name == 'show_if' or group_name == 'description' or group_name == 'description_image' %}
                 {% assign group_data = group[1] %}
                 {% assign group_show_if = group_data.show_if | default: null %}
                 {% assign sub_title = group_data.sub_title %}
@@ -241,11 +238,11 @@
                   </h3>
                   <div class="rolls-form-card__inner {% if accordion_title %}rolls-form-card__inner--content{% endif %}">
                     {% if description %}
-                        <p class="rolls-form-card__subheading type-p">{{ description }}</p>
+                      <p class="rolls-form-card__subheading type-p">{{ description }}</p>
                     {% elsif sub_title %}
-                        <p class="rolls-form-card__subheading type-p">{{ sub_title }}</p>
+                      <p class="rolls-form-card__subheading type-p">{{ sub_title }}</p>
                     {% endif %}
-                    
+
                     <div class="rolls-form-card__options">
                       {% if options and options.size > 0 %}
                         {% for opt in options %}
@@ -277,6 +274,53 @@
                         {% endfor %}
                       {% endif %}
                     </div>
+
+                    {% if service_name == 'Fine Arts' and group_name == 'Sizes' %}
+                      <div data-custom-size-container data-show-if='{"service":["Fine Arts"],"sizes":["Custom"]}'>
+                        <p class="rolls-form-card__subheading type-p" style="margin-top:1.5rem;">Custom size input</p>
+                        <div class="rolls-form-card__options rolls-form-card__options--custom-size">
+                          <div class="rolls-form-card__input-wrapper">
+                            <div class="custom-size-input-field">
+                              <input
+                                id="CustomSizeWidth"
+                                type="number"
+                                name="properties[Custom Width]"
+                                class="input-text"
+                                min="1"
+                                max="44"
+                                step="1"
+                                inputmode="numeric"
+                                placeholder="Width"
+                                required
+                                data-custom-size-input="width"
+                              >
+                              <span class="custom-size-input-suffix" aria-hidden="true">"</span>
+                            </div>
+                          </div>
+
+                          <div class="rolls-form-card__options-separator type-body">x</div>
+
+                          <div class="rolls-form-card__input-wrapper">
+                            <div class="custom-size-input-field">
+                              <input
+                                id="CustomSizeHeight"
+                                type="number"
+                                name="properties[Custom Height]"
+                                class="input-text"
+                                min="1"
+                                step="1"
+                                inputmode="numeric"
+                                placeholder="Height"
+                                required
+                                data-custom-size-input="height"
+                              >
+                              <span class="custom-size-input-suffix" aria-hidden="true">"</span>
+                            </div>
+                          </div>
+                        </div>
+                        <p class="type-p-small" data-custom-size-error style="display:none;"></p>
+                      </div>
+                    {% endif %}
                   </div>
 
                   {% if accordion_title or accordion_sub_title or feature_image %}
@@ -312,7 +356,7 @@
                           {% if accordion_sub_title %}
                             <p class="rolls-form-card-content__subheading type-p">{{ accordion_sub_title }}</p>
                           {% endif %}
-                          
+
                           {% if options and options.size > 0 %}
                             {% assign has_opts_desc = false %}
                             {% for opt in options %}
@@ -320,7 +364,7 @@
                                 {% assign has_opts_desc = true %}
                               {% endif %}
                             {% endfor %}
-                            
+
                             {% if has_opts_desc %}
                               <div class="rolls-form-card-content-options">
                                 {% for opt in options %}
@@ -339,7 +383,9 @@
                                         </div>
                                       {% endif %}
                                       <div class="rolls-form-card-content-option__content">
-                                        <p class="rolls-form-card-content-option__label type-p-small">{{ opt.label }}</p>
+                                        <p class="rolls-form-card-content-option__label type-p-small">
+                                          {{ opt.label }}
+                                        </p>
                                         {% if opt.description %}
                                           <p class="rolls-form-card-content-option__description type-p-small">
                                             {{ opt.description }}
@@ -421,11 +467,13 @@
           <div class="rolls-form-card__inner">
             <p class="rolls-form-card__subheading type-p">Upload files to print</p>
             <div id="uploadly-button-container" style="margin-top: 1.5rem;">
-                {%- for block in section.blocks -%}
-                  {% render block %}
-                {%- else -%}
-                  <button type="button" class="primary-button primary-button--black" id="custom-uploadly-trigger">Choose File 📂</button>
-                {%- endfor -%}
+              {%- for block in section.blocks -%}
+                {% render block %}
+              {%- else -%}
+                <button type="button" class="primary-button primary-button--black" id="custom-uploadly-trigger">
+                  Choose File 📂
+                </button>
+              {%- endfor -%}
             </div>
           </div>
         </fieldset>
@@ -434,103 +482,106 @@
         <fieldset data-group="Delivery Options" class="rolls-form-card">
           <h3 class="rolls-form-card__heading type-h1-x-small">Delivery</h3>
           <div class="rolls-form-card__inner rolls-form-card__inner--delivery">
-
-            {% comment %} <div class="rolls-form-card__inner-content">
-              <p class="rolls-form-card__subheading type-p">How will you receive your prints?</p>
-              <div class="rolls-form-card__options rolls-form-card__options--delivery">
-                 <label class="bubble-option" for="ReturnPickup">
-                    <input
-                      id="ReturnPickup"
-                      type="radio"
-                      name="properties[Return Delivery]"
-                      value="Pick-up"
-                      data-price="0"
-                      required
-                    >
-                    <div class="bubble-option__inner">
-                      <div class="bubble-option__icon"></div>
-                      <div class="bubble-option__label">Pick-up <span class="opt-price">($0)</span></div>
-                    </div>
-                  </label>
-                  <label class="bubble-option" for="ReturnShip">
-                    <input
-                      id="ReturnShip"
-                      type="radio"
-                      name="properties[Return Delivery]"
-                      value="Ship"
-                      data-price="0"
-                    >
-                    <div class="bubble-option__inner">
-                      <div class="bubble-option__icon"></div>
-                      <div class="bubble-option__label">Ship <span class="opt-price">($0)</span></div>
-                    </div>
-                  </label>
+            {% comment %}
+              <div class="rolls-form-card__inner-content">
+                <p class="rolls-form-card__subheading type-p">How will you receive your prints?</p>
+                <div class="rolls-form-card__options rolls-form-card__options--delivery">
+                   <label class="bubble-option" for="ReturnPickup">
+                      <input
+                        id="ReturnPickup"
+                        type="radio"
+                        name="properties[Return Delivery]"
+                        value="Pick-up"
+                        data-price="0"
+                        required
+                      >
+                      <div class="bubble-option__inner">
+                        <div class="bubble-option__icon"></div>
+                        <div class="bubble-option__label">Pick-up <span class="opt-price">($0)</span></div>
+                      </div>
+                    </label>
+                    <label class="bubble-option" for="ReturnShip">
+                      <input
+                        id="ReturnShip"
+                        type="radio"
+                        name="properties[Return Delivery]"
+                        value="Ship"
+                        data-price="0"
+                      >
+                      <div class="bubble-option__inner">
+                        <div class="bubble-option__icon"></div>
+                        <div class="bubble-option__label">Ship <span class="opt-price">($0)</span></div>
+                      </div>
+                    </label>
+                </div>
               </div>
-            </div> {% endcomment %}
-            
+            {% endcomment %}
+
             <div class="rolls-form-card__inner-content">
               <p class="rolls-form-card__addon-heading type-p">Turn around times.</p>
               <div class="rolls-form-card__options">
-                  <label class="bubble-option" for="TurnaroundRush">
-                    <input
-                      id="TurnaroundRush"
-                      type="radio"
-                      name="properties[Turnaround]"
-                      value="Rush (1 Day)"
-                      data-price="0"
-                    >
-                    <div class="bubble-option__inner">
-                      <div class="bubble-option__icon"></div>
-                      <div class="bubble-option__label">Rush (1 Day) <span class="opt-price">($0)</span></div>
-                    </div>
-                  </label>
-                  <label class="bubble-option" for="TurnaroundSpeedy">
-                    <input
-                      id="TurnaroundSpeedy"
-                      type="radio"
-                      name="properties[Turnaround]"
-                      value="Speedy (2-3 days)"
-                      data-price="0"
-                    >
-                    <div class="bubble-option__inner">
-                      <div class="bubble-option__icon"></div>
-                      <div class="bubble-option__label">Speedy (2-3 days) <span class="opt-price">($0)</span></div>
-                    </div>
-                  </label>
-                  <label class="bubble-option" for="TurnaroundStandard">
-                    <input
-                      id="TurnaroundStandard"
-                      type="radio"
-                      name="properties[Turnaround]"
-                      value="Standard (4-5 days)"
-                      data-price="0"
-                      checked="checked"
-                      data-default-option="true"
-                    >
-                    <div class="bubble-option__inner">
-                      <div class="bubble-option__icon"></div>
-                      <div class="bubble-option__label">Standard (4-5 days) <span class="opt-price">($0)</span></div>
-                    </div>
-                  </label>
+                <label class="bubble-option" for="TurnaroundRush">
+                  <input
+                    id="TurnaroundRush"
+                    type="radio"
+                    name="properties[Turnaround]"
+                    value="Rush (1 Day)"
+                    data-price="0"
+                  >
+                  <div class="bubble-option__inner">
+                    <div class="bubble-option__icon"></div>
+                    <div class="bubble-option__label">Rush (1 Day) <span class="opt-price">($0)</span></div>
+                  </div>
+                </label>
+                <label class="bubble-option" for="TurnaroundSpeedy">
+                  <input
+                    id="TurnaroundSpeedy"
+                    type="radio"
+                    name="properties[Turnaround]"
+                    value="Speedy (2-3 days)"
+                    data-price="0"
+                  >
+                  <div class="bubble-option__inner">
+                    <div class="bubble-option__icon"></div>
+                    <div class="bubble-option__label">Speedy (2-3 days) <span class="opt-price">($0)</span></div>
+                  </div>
+                </label>
+                <label class="bubble-option" for="TurnaroundStandard">
+                  <input
+                    id="TurnaroundStandard"
+                    type="radio"
+                    name="properties[Turnaround]"
+                    value="Standard (4-5 days)"
+                    data-price="0"
+                    checked="checked"
+                    data-default-option="true"
+                  >
+                  <div class="bubble-option__inner">
+                    <div class="bubble-option__icon"></div>
+                    <div class="bubble-option__label">Standard (4-5 days) <span class="opt-price">($0)</span></div>
+                  </div>
+                </label>
               </div>
-              <p class="rolls-form-card__addon-subheading type-p-small">Turnaround time begins upon receiving of the scans / uploads.</p>
+              <p class="rolls-form-card__addon-subheading type-p-small">
+                Turnaround time begins upon receiving of the scans / uploads.
+              </p>
             </div>
 
             <div class="rolls-form-card__input-wrapper">
               <label for="OrderMessage" class="type-p">Include a message with your order</label>
-              <textarea 
-                id="OrderMessage" 
-                name="properties[Message]" 
-                placeholder="📝 How do you want your image to be cropped? ie. “keep the subject centred” or &quot;crop from the bottom only&quot; and “custom sizes”." 
-                class="input-text" 
-                rows="6" 
+              <textarea
+                id="OrderMessage"
+                name="properties[Message]"
+                placeholder="How do you want your image cropped? For example: keep the subject centered, crop from the bottom only, or custom sizes."
+                class="input-text"
+                rows="6"
               ></textarea>
             </div>
           </div>
         </fieldset>
 
-         <!-- Negatives Options (Was Delivery in previous form) -->
-         <fieldset data-group="Negatives" class="rolls-form-card" data-show-if='{"service":["Darkroom Prints"]}'>
+        <!-- Negatives Options (Was Delivery in previous form) -->
+        <fieldset data-group="Negatives" class="rolls-form-card" data-show-if='{"service":["Darkroom Prints"]}'>
           <h3 class="rolls-form-card__heading type-h1-x-small" order-summary-heading="Negatives">Negatives</h3>
           <div class="rolls-form-card__inner rolls-form-card__inner--content">
             <p class="rolls-form-card__subheading type-p">How will you deliver your negatives?</p>
@@ -785,7 +836,8 @@
               class="type-p-small"
               style="margin: 0 auto 1.5rem auto; opacity: 0.7; max-width: 300px; text-align: center;"
             >
-              * This total cost is pre-tax. Tax is calculated once added to your bag. If you'd like to pick up the order, please select "Pick Up" at the checkout page.
+              * This total cost is pre-tax. Tax is calculated once added to your bag. If you'd like to pick up the
+              order, please select "Pick Up" at the checkout page.
             </p>
 
             <div class="send-rolls-form-submit">
@@ -803,7 +855,9 @@
         </div>
 
         <div class="form-note">
-          <p class="form-note__content">If you'd like to pick up the order, please select "Pick Up" at the checkout page.</p>
+          <p class="form-note__content">
+            If you'd like to pick up the order, please select "Pick Up" at the checkout page.
+          </p>
         </div>
 
         <div id="bottom-order-summary-anchor"></div>
@@ -827,7 +881,9 @@
           </p>
 
           <div class="send-rolls-form-submit">
-            <button type="submit" class="primary-button primary-button--black" id="bottom-submit-btn">Add to Bag</button>
+            <button type="submit" class="primary-button primary-button--black" id="bottom-submit-btn">
+              Add to Bag
+            </button>
           </div>
 
           <div
@@ -838,7 +894,6 @@
             style="display:none;"
           ></div>
         </aside>
-
       </div>
     </form>
   </div>
