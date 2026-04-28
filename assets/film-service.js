@@ -23,6 +23,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const variantInput = form.querySelector('input[name="id"]');
   const submitBtn = form.querySelector('button[type="submit"]');
   const cartDrawer = document.querySelector('cart-drawer');
+  const uploadlyContainer = form.querySelector('[data-uploadly-container]');
+  const uploadlyFallbackButton = uploadlyContainer
+    ? uploadlyContainer.querySelector('[data-uploadly-fallback-button]')
+    : null;
+  const uploadlyHasAppBlock = uploadlyContainer
+    ? String(uploadlyContainer.dataset.uploadlyHasAppBlock || '').toLowerCase() === 'true'
+    : false;
   const serviceRadios = form.querySelectorAll('input[name="service"]');
   const serviceBlocks = form.querySelectorAll('.service-groups-wrapper');
   let total = basePrice;
@@ -120,6 +127,91 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const getUploadedFilesCount = () => Math.max(1, getActualFilesCount());
+
+  const hasUploadyWidgetMounted = () => {
+    if (!uploadlyContainer) return false;
+    // If the app block rendered any interactive UI in the container,
+    // keep our fallback button hidden to avoid duplicate "Choose File" buttons.
+    const genericInteractive = uploadlyContainer.querySelector(
+      'button:not([data-uploadly-fallback-button]), [role="button"]:not([data-uploadly-fallback-button]), a[href], .uploady, .uploadly'
+    );
+    if (genericInteractive) return true;
+
+    const selectors = [
+      '.uploadly-button',
+      '.uploady-button',
+      '.uploadly-drop-zone',
+      '.uploady-drop-zone',
+      '.uploadly-list',
+      '.uploady-list',
+      '[data-uploadly-id]',
+      'input[type="file"]',
+    ];
+    return selectors.some((selector) => !!uploadlyContainer.querySelector(selector));
+  };
+
+  const isThemePreviewContext = () => {
+    try {
+      const params = new URLSearchParams(window.location.search || '');
+      if (params.has('preview_theme_id')) return true;
+      if (window.Shopify && window.Shopify.designMode) return true;
+    } catch (_) {}
+    return false;
+  };
+
+  const shouldBypassUploadRequirementForPreview = () => {
+    // Allow add-to-cart without upload only when:
+    // - this is a preview context
+    // - Uploady app block is configured
+    // - Uploady failed to mount
+    return isThemePreviewContext() && uploadlyHasAppBlock && !hasUploadyWidgetMounted();
+  };
+
+  const syncUploadlyFallbackVisibility = () => {
+    if (!uploadlyContainer || !uploadlyFallbackButton) return;
+    // If an Uploady app block is configured, never show our fallback button.
+    // This avoids showing a dead button in preview environments where app scripts fail to mount.
+    if (uploadlyHasAppBlock) {
+      uploadlyFallbackButton.style.display = 'none';
+      return;
+    }
+    uploadlyFallbackButton.style.display = hasUploadyWidgetMounted() ? 'none' : '';
+  };
+
+  const openUploadlyFromFallback = () => {
+    // 1) Prefer Uploady/Uploadly interactive controls if mounted.
+    const triggerSelectors = [
+      '.uploadly-button',
+      '.uploady-button',
+      '[data-uploadly-open]',
+      '[class*="uploadly-button"]',
+      '[class*="uploady-button"]',
+      '[class*="uploadly-trigger"]',
+      '[class*="uploady-trigger"]',
+    ];
+
+    for (const selector of triggerSelectors) {
+      const inContainer = uploadlyContainer ? uploadlyContainer.querySelector(selector) : null;
+      const anywhere = document.querySelector(selector);
+      const target = inContainer || anywhere;
+      if (target && typeof target.click === 'function') {
+        target.click();
+        return true;
+      }
+    }
+
+    // 2) Fall back to any file input if present.
+    const fileInput =
+      (uploadlyContainer && uploadlyContainer.querySelector('input[type="file"]')) ||
+      document.querySelector('input[type="file"]');
+
+    if (fileInput && typeof fileInput.click === 'function') {
+      fileInput.click();
+      return true;
+    }
+
+    return false;
+  };
 
   // Wire up quantity +/- buttons for this form (not handled by global <quantity-input> component)
   const syncQuantity = (delta) => {
@@ -523,6 +615,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // 3. Upload Validation (Uploadly)
       if (groupNameAttr.trim().toLowerCase() === 'upload') {
+        if (shouldBypassUploadRequirementForPreview()) {
+          isInvalid = false;
+        } else {
         // Uploadly sometimes dynamically generates the fields, wait to check form fields specifically
         // Find inputs that contain Uploadly data (Uploadly often targets hidden inputs or adds properties)
         const uploadInputs = Array.from(document.querySelectorAll('input[name*="properties"]')).filter((el) => {
@@ -559,6 +654,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!hasUploadedFile && !hasNativeFile) {
           isInvalid = true;
+        }
         }
       }
 
@@ -1828,6 +1924,27 @@ document.addEventListener('DOMContentLoaded', () => {
   applyConditions();
   updateDeliveryInfoVisibility();
   updateOrderSummaryVisibility();
+  syncUploadlyFallbackVisibility();
+
+  // In theme preview / staging, app blocks can fail to mount immediately.
+  // Re-check for a short period so the fallback button reliably appears.
+  setTimeout(syncUploadlyFallbackVisibility, 300);
+  setTimeout(syncUploadlyFallbackVisibility, 1200);
+  setTimeout(syncUploadlyFallbackVisibility, 2500);
+
+  if (uploadlyFallbackButton) {
+    uploadlyFallbackButton.addEventListener('click', () => {
+      if (uploadlyHasAppBlock) return;
+      // Re-check immediately in case Uploady mounted after our last poll.
+      syncUploadlyFallbackVisibility();
+      const opened = openUploadlyFromFallback();
+      if (!opened) {
+        setErrorMessage(
+          'Upload tool did not load in this preview. Please refresh preview or open this theme in the customizer/live view.'
+        );
+      }
+    });
+  }
 
   // Add an observer to clear Upload error if hidden inputs are added by Uploadly, and to re-trigger total calculation
   const uploadFs = form.querySelector('fieldset[data-group="Upload"]');
@@ -1882,6 +1999,7 @@ document.addEventListener('DOMContentLoaded', () => {
             lastKnownFileCount = currentCount;
             calculateTotal();
           }
+          syncUploadlyFallbackVisibility();
         }, 250);
       }
     });

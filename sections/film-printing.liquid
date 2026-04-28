@@ -466,14 +466,30 @@
           <h3 class="rolls-form-card__heading type-h1-x-small">Upload your file</h3>
           <div class="rolls-form-card__inner">
             <p class="rolls-form-card__subheading type-p">Upload files to print</p>
-            <div id="uploadly-button-container" style="margin-top: 1.5rem;">
+            {% assign has_upload_app_block = false %}
+            <div
+              id="uploadly-button-container"
+              data-uploadly-container
+              data-uploadly-has-app-block="{{ has_upload_app_block }}"
+              style="margin-top: 1.5rem;"
+            >
               {%- for block in section.blocks -%}
-                {% render block %}
-              {%- else -%}
-                <button type="button" class="primary-button primary-button--black" id="custom-uploadly-trigger">
-                  Choose File 📂
-                </button>
+                {% if block.type == '@app' %}
+                  {% assign has_upload_app_block = true %}
+                  {% render block %}
+                {% endif %}
               {%- endfor -%}
+              <button
+                type="button"
+                class="primary-button primary-button--black"
+                id="custom-uploadly-trigger"
+                data-uploadly-fallback-button
+                {% if has_upload_app_block %}
+                  style="display:none;"
+                {% endif %}
+              >
+                Choose File 📂
+              </button>
             </div>
           </div>
         </fieldset>
