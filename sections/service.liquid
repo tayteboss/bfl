@@ -1,0 +1,211 @@
+{{ 'services.css' | asset_url | stylesheet_tag }}
+
+<div
+  id="{{ section.settings.anchor_id }}"
+  class="service-card in-view-fade"
+  role="article"
+  aria-labelledby="service-heading-{{ section.settings.anchor_id }}"
+  data-in-view
+>
+  <div class="layout-wrapper">
+    <div class="layout-grid">
+      <div class="service-card__content">
+
+        {% if section.settings.heading != blank %}
+          <div class="service-card__heading-wrapper">
+            <h3 id="service-heading-{{ section.settings.anchor_id }}" class="service-card__heading type-h1-x-small">
+              {{ section.settings.heading }}
+            </h3>
+
+            {% if section.settings.badge != blank %}
+              <div
+                class="service-card__badge badge-button type-h1-x-small"
+                role="text"
+                aria-label="{{ section.settings.badge }}"
+              >
+                {{ section.settings.badge }}
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if section.settings.paragraph != blank %}
+          <p class="service-card__paragraph type-p">
+            {{ section.settings.paragraph | newline_to_br }}
+          </p>
+        {% endif %}
+
+        {% if section.settings.notes != blank %}
+          <div class="service-card__notes type-p" role="complementary">
+            {{ section.settings.notes }}
+          </div>
+        {% endif %}
+
+      </div>
+
+      {% assign has_button_1 = false %}
+      {% assign has_button_2 = false %}
+
+      {% if section.settings.button != blank and section.settings.cta != blank %}
+        {% assign has_button_1 = true %}
+      {% endif %}
+
+      {% if section.settings.buttonA != blank and section.settings.ctaA != blank %}
+        {% assign has_button_2 = true %}
+      {% endif %}
+
+      {% if has_button_1 or has_button_2 %}
+        <div class="service-card__button-wrapper service-card__button-wrapper--multiple">
+
+          {% if has_button_1 %}
+            <div data-hover-shake>
+              <a
+                class="primary-button primary-button--small"
+                href="{{ section.settings.cta }}"
+                aria-label="{{ section.settings.button }}"
+              >
+                {{ section.settings.button }}
+              </a>
+            </div>
+          {% endif %}
+
+          {% if has_button_2 %}
+            <div data-hover-shake>
+              <a
+                class="primary-button primary-button--small"
+                href="{{ section.settings.ctaA }}"
+                aria-label="{{ section.settings.buttonA }}"
+              >
+                {{ section.settings.buttonA }}
+              </a>
+            </div>
+          {% endif %}
+
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+  {% if section.settings['service-image-left'] != blank %}
+    <div class="service-card__image-wrapper service-card__image-wrapper--left">
+      <div class="service-card__image-wrapper-inner" data-parallax>
+        <img
+          src="{{ section.settings['service-image-left'] | image_url }}"
+          width="auto"
+          height="auto"
+          alt="{% if section.settings.heading != blank %}{{ section.settings.heading }} service image{% else %}Service image{% endif %}"
+        >
+      </div>
+    </div>
+  {% endif %}
+
+  {% if section.settings['service-image-right'] != blank %}
+    <div class="service-card__image-wrapper service-card__image-wrapper--right">
+      <div class="service-card__image-wrapper-inner" data-parallax>
+        <img
+          src="{{ section.settings['service-image-right'] | image_url }}"
+          width="auto"
+          height="auto"
+          alt="{% if section.settings.heading != blank %}{{ section.settings.heading }} service image{% else %}Service image{% endif %}"
+        >
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+  .service-card__button-wrapper--multiple {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .service-card__button-wrapper--multiple > div {
+    display: flex;
+  }
+
+  @media screen and (max-width: 749px) {
+    .service-card__button-wrapper--multiple {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "servicetype",
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "Anchor ID (no spaces use '-')"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Service Heading"
+    },
+    {
+      "type": "text",
+      "id": "badge",
+      "label": "Badge Text"
+    },
+    {
+      "type": "textarea",
+      "id": "paragraph",
+      "label": "Service Text"
+    },
+    {
+      "type": "richtext",
+      "id": "notes",
+      "label": "Service Notes"
+    },
+    {
+      "type": "text",
+      "id": "table-caption",
+      "label": "Table Caption"
+    },
+    {
+      "type": "text",
+      "id": "button",
+      "label": "First Button Text"
+    },
+    {
+      "type": "url",
+      "id": "cta",
+      "label": "First Button Link"
+    },
+    {
+      "type": "text",
+      "id": "buttonA",
+      "label": "Second Button Text"
+    },
+    {
+      "type": "url",
+      "id": "ctaA",
+      "label": "Second Button Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "service-image-right",
+      "label": "Image right"
+    },
+    {
+      "type": "image_picker",
+      "id": "service-image-left",
+      "label": "Image left"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Type of Service",
+      "category": "Services"
+    }
+  ]
+}
+{% endschema %}
+

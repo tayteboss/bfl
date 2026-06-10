@@ -1,0 +1,13 @@
+{% layout none %}
+{%- assign target_product = all_products[product.handle] -%}
+{ "id": {{ target_product.id }}, "reported_count": {{ target_product.variants.size }}, "variants": [
+{%- for i in (0..2000) -%}
+  {%- assign variant = target_product.variants[i] -%}
+  {%- if variant -%}
+    {%- unless forloop.first -%},{%- endunless -%}
+    { "id": {{ variant.id }}, "price": {{ variant.price }}, "title": {{ variant.title | json }}, "available":
+    {{ variant.available }}
+    }
+  {%- endif -%}
+{%- endfor -%}
+] }

@@ -1,0 +1,147 @@
+{{ 'events-page.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'events-page.js' | asset_url }}" defer></script>
+
+<div
+  class="events-collection"
+  data-section-id="{{ section.id }}"
+  data-events-collection
+  role="main"
+  aria-label="News &amp; Events Collection"
+>
+  <div class="layout-wrapper">
+    <section class="events-collection__header" aria-labelledby="collection-heading">
+      <h1 class="events-collection__heading type-h1-large" id="collection-heading">
+        {{ section.settings.title }}
+      </h1>
+      <div
+        class="collection-filters"
+        role="navigation"
+        aria-label="News &amp; Events filters"
+      >
+        {%- comment -%}
+          Build tag list from the full collection (all pages, ignoring current tag filter)
+          so tags like "News" and "Events" always remain visible.
+        {%- endcomment -%}
+        {% assign _tag_list = collection.all_tags %}
+        {% render 'events-filter-button', tags_array: _tag_list %}
+      </div>
+    </section>
+
+    <section class="events-list-wrapper" aria-label="News &amp; Events List">
+      {% paginate collection.products by 12 %}
+        {% assign any_items = false %}
+        <div class="events-list" aria-label="News &amp; Events">
+          <div class="events-list__inner" data-events-group="upcoming">
+            {% for product in collection.products %}
+              {% if product.template_suffix == 'news-events' %}
+                {% render 'events-card', product: product %}
+                {% assign any_items = true %}
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        {% unless any_items %}
+          <div class="events-empty-message">
+            <p class="events-empty-message__title type-h1-x-small">No news or events</p>
+          </div>
+        {% endunless %}
+
+        {% if paginate.pages > 1 and paginate.next %}
+          <section class="events-pagination-button" aria-label="Pagination">
+            <div data-hover-shake>
+              <a
+                href="{{ paginate.next.url }}"
+                class="primary-button"
+                data-events-load-more
+                aria-label="Load more News &amp; Events"
+                >Load More</a
+              >
+            </div>
+          </section>
+        {% endif %}
+      {% endpaginate %}
+    </section>
+    <section class="host-events-content" aria-label="Host Events Information">
+      {% if section.settings.host_title %}
+        <h2 class="host-events-content__heading type-h1-small" id="host-events-heading">
+          {{ section.settings.host_title }}
+        </h2>
+      {% endif %}
+      {% if section.settings.host_description %}
+        <p class="host-events-content__description type-p-x-large" aria-labelledby="host-events-heading">
+          {{ section.settings.host_description }}
+        </p>
+      {% endif %}
+      {% if section.settings.host_button_link and section.settings.host_button_title %}
+        <div class="host-events-content__button-wrapper">
+          <div data-hover-shake="small">
+            <a
+              href="{{ section.settings.host_button_link }}"
+              class="host-events-content__button primary-button primary-button--small"
+              aria-label="{{ section.settings.host_button_title }}"
+            >
+              {{- section.settings.host_button_title -}}
+            </a>
+          </div>
+        </div>
+      {% endif %}
+    </section>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "News & Events",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Page heading",
+      "default": "What's on at Bellows"
+    },
+    {
+      "type": "text",
+      "id": "event_present",
+      "label": "Upcoming heading",
+      "default": "Upcoming News & Events"
+    },
+    {
+      "type": "text",
+      "id": "event_past",
+      "label": "Past heading",
+      "default": "Past News & Events"
+    },
+    {
+      "type": "text",
+      "id": "host_title",
+      "label": "Host title",
+      "default": "Host your event at Bellows"
+    },
+    {
+      "type": "textarea",
+      "id": "host_description",
+      "label": "Host description",
+      "default": "Got an idea for a workshop, photowalk, or creative gathering? We love collaborating with photographers, artists, and educators to bring new experiences to our community."
+    },
+    {
+      "type": "text",
+      "id": "host_button_title",
+      "label": "Host button title",
+      "default": "Let's make it happen"
+    },
+    {
+      "type": "text",
+      "id": "host_button_link",
+      "label": "Host button email link",
+      "default": "mailto:events@bellows.com"
+    }
+  ],
+  "presets": [
+    {
+      "name": "News & Events List",
+      "category": "News & Events"
+    }
+  ]
+}
+{% endschema %}

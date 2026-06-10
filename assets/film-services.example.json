@@ -1,0 +1,217 @@
+{
+  "Develop + Scan": {
+    "show_if": {
+      "location": ["Miami", "Chicago", "Orlando", "Atlanta"]
+    },
+    "Film Type": {
+      "sub_title": "Choose the process that matches your film.",
+      "options": [
+        { "label": "C-41 Color Negative", "price": 0 },
+        { "label": "Black & White", "price": 2 },
+        { "label": "E-6 Slide", "price": 5 }
+      ]
+    },
+    "Film Format": {
+      "sub_title": "Pick your film format.",
+      "options": [
+        { "label": "35mm", "price": 0 },
+        { "label": "120", "price": 2 },
+        { "label": "Large Format 4x5", "price": 8 }
+      ]
+    },
+    "Scan Resolution": {
+      "sub_title": "Select your scan size.",
+      "accordion_title": "About scan sizes",
+      "accordion_sub_title": "Choose the resolution that fits your needs",
+      "options": [
+        {
+          "label": "Standard",
+          "price": 0,
+          "description": "Good for web and small prints.",
+          "price_overrides": {
+            "Film Format": {
+              "Large Format 4x5": 0
+            }
+          }
+        },
+        {
+          "label": "High-Res",
+          "price": 6,
+          "description": "Sharper files with more detail.",
+          "price_overrides": {
+            "Film Format": {
+              "120": 8,
+              "Large Format 4x5": 12
+            }
+          }
+        },
+        {
+          "label": "XL",
+          "price": 12,
+          "description": "Maximum resolution for large prints.",
+          "price_overrides": {
+            "Film Format": {
+              "120": 15,
+              "Large Format 4x5": 25
+            }
+          }
+        }
+      ]
+    },
+    "Scan Delivery": {
+      "sub_title": "How would you like your scans delivered?",
+      "options": [
+        { "label": "Google Drive", "price": 0 },
+        { "label": "Dropbox", "price": 0 }
+      ]
+    },
+    "Turnaround": {
+      "sub_title": "Faster options cost more.",
+      "options": [
+        { "label": "Standard", "price": 0 },
+        { "label": "Rush", "price": 15 }
+      ]
+    },
+    "Add Ons - Push/Pull": {
+      "sub_title": "Adjust development for creative results.",
+      "options": [
+        { "label": "None", "price": 0 },
+        {
+          "label": "+1 or -1 Stop",
+          "price": 3,
+          "show_if": { "Film Type": ["C-41 Color Negative", "Black & White"] }
+        }
+      ]
+    },
+    "Add Ons - Dust Removal": {
+      "options": [
+        { "label": "None", "price": 0 },
+        { "label": "Enhanced Dust Removal", "price": 4 }
+      ]
+    },
+    "Add Ons - TIFF Files": {
+      "options": [
+        { "label": "JPEG", "price": 0 },
+        { "label": "TIFF", "price": 5 }
+      ]
+    },
+    "Add Ons - E-6 Mounting": {
+      "show_if": { "Film Type": ["E-6 Slide"] },
+      "sub_title": "Only for E-6 slide film.",
+      "options": [
+        { "label": "None", "price": 0 },
+        { "label": "Mount Slides", "price": 8 }
+      ]
+    }
+  },
+  "Develop Only": {
+    "Film Type": {
+      "sub_title": "Choose the process that matches your film.",
+      "options": [
+        { "label": "C-41 Color Negative", "price": 0 },
+        { "label": "Black & White", "price": 2 },
+        { "label": "E-6 Slide", "price": 6 }
+      ]
+    },
+    "Film Format": {
+      "sub_title": "Pick your film format.",
+      "options": [
+        { "label": "35mm", "price": 0 },
+        { "label": "120", "price": 2 },
+        { "label": "Large Format 4x5", "price": 10 }
+      ]
+    },
+    "Return Negatives": {
+      "sub_title": "Choose how to handle your negatives.",
+      "options": [
+        { "label": "Sleeved", "price": 0 },
+        { "label": "Cut and Sleeved", "price": 3 }
+      ]
+    },
+    "Turnaround": {
+      "sub_title": "Faster options cost more.",
+      "options": [
+        { "label": "Standard", "price": 0 },
+        { "label": "Rush", "price": 12 }
+      ]
+    },
+    "Add Ons - Push/Pull": {
+      "options": [
+        { "label": "None", "price": 0 },
+        {
+          "label": "+1 or -1 Stop",
+          "price": 3,
+          "show_if": { "Film Type": ["C-41 Color Negative", "Black & White"] }
+        }
+      ]
+    },
+    "Add Ons - Rush Processing": {
+      "options": [
+        { "label": "None", "price": 0 },
+        { "label": "Same-Day Rush (when available)", "price": 20 }
+      ]
+    }
+  },
+  "Scan Only": {
+    "Film Format": {
+      "sub_title": "Pick your film format to scan.",
+      "options": [
+        { "label": "35mm", "price": 0 },
+        { "label": "120", "price": 2 },
+        { "label": "Large Format 4x5", "price": 8 }
+      ]
+    },
+    "Scan Resolution": {
+      "accordion_title": "About scan sizes",
+      "accordion_sub_title": "Choose the resolution that fits your needs",
+      "options": [
+        {
+          "label": "Standard",
+          "price": 6,
+          "price_overrides": {
+            "Film Format": {
+              "35mm": 6,
+              "120": 8,
+              "Large Format 4x5": 10
+            }
+          }
+        },
+        {
+          "label": "High-Res",
+          "price": 10,
+          "price_overrides": {
+            "Film Format": {
+              "35mm": 10,
+              "120": 12,
+              "Large Format 4x5": 18
+            }
+          }
+        },
+        {
+          "label": "XL",
+          "price": 16,
+          "price_overrides": {
+            "Film Format": {
+              "35mm": 16,
+              "120": 20,
+              "Large Format 4x5": 28
+            }
+          }
+        }
+      ]
+    },
+    "Scan Delivery": {
+      "options": [
+        { "label": "Google Drive", "price": 0 },
+        { "label": "Dropbox", "price": 0 }
+      ]
+    },
+    "Add Ons - TIFF Files": {
+      "options": [
+        { "label": "JPEG", "price": 0 },
+        { "label": "TIFF", "price": 5 }
+      ]
+    }
+  }
+}
+

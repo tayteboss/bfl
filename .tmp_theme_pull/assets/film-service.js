@@ -1,0 +1,2008 @@
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.querySelector('#film-service-form');
+  if (!form) return;
+  // Disable native constraint validation so our custom validator handles errors/scroll
+  try {
+    form.setAttribute('novalidate', 'novalidate');
+  } catch (_) {}
+
+  const totalDisplay = document.querySelector('#film-total-display');
+  const osList = document.querySelector('[data-os-list]');
+  const osToggle = document.querySelector('[data-os-toggle]');
+  const bottomTotalDisplay = document.querySelector('#bottom-film-total-display');
+  const bottomOsList = document.querySelector('#bottom-os-list');
+  const bottomOrderSummary = document.querySelector('#bottom-order-summary');
+  const bottomAnchor = document.querySelector('#bottom-order-summary-anchor');
+  const orderSummary = document.querySelector('[data-order-summary]');
+  const qtyInput = form.querySelector('input[name="quantity"]');
+  const qtyMinusBtn = form.querySelector('.quantity-btn--minus');
+  const qtyPlusBtn = form.querySelector('.quantity-btn--plus');
+  // Feature flag: show per-option prices in the Order Summary
+  const OS_SHOW_PRICES = true;
+  const basePrice = 0; // Removed base price as requested
+  const variantInput = form.querySelector('input[name="id"]');
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const cartDrawer = document.querySelector('cart-drawer');
+  const uploadlyContainer = form.querySelector('[data-uploadly-container]');
+  const uploadlyFallbackButton = uploadlyContainer
+    ? uploadlyContainer.querySelector('[data-uploadly-fallback-button]')
+    : null;
+  const uploadlyHasAppBlock = uploadlyContainer
+    ? String(uploadlyContainer.dataset.uploadlyHasAppBlock || '').toLowerCase() === 'true'
+    : false;
+  const serviceRadios = form.querySelectorAll('input[name="service"]');
+  const serviceBlocks = form.querySelectorAll('.service-groups-wrapper');
+  let total = basePrice;
+
+  const errorEl = form.querySelector('[data-film-service-error]');
+
+  const setErrorMessage = (msg) => {
+    if (!errorEl) return;
+    const message = msg || '';
+    errorEl.textContent = message;
+    errorEl.style.display = message ? '' : 'none';
+  };
+
+  const getQuantity = () =>
+    Math.max(1, parseInt((form.querySelector('input[name="quantity"]') || {}).value || '1', 10) || 1);
+
+  const getActualFilesCount = () => {
+    // If Darkroom Prints is selected, the upload section is hidden and files are not required
+    const serviceRadio = form.querySelector('input[name="service"]:checked');
+    if (serviceRadio && serviceRadio.value === 'Darkroom Prints') {
+      return 0;
+    }
+
+    let count = 0;
+    
+    // 1. Try to count visible Uploadly DOM list items first (matches what the user actually sees)
+    const listItems = Array.from(document.querySelectorAll('.uploadly-list-item, .uploady-list-item, .uploadly-file, .uploady-file, .uploadly-item, .uploady-item'));
+    
+    const visibleItems = listItems.filter(el => {
+      const rect = el.getBoundingClientRect();
+      return rect.width > 0 && rect.height > 0;
+    });
+    
+    if (visibleItems.length > 0) {
+      // Deduplicate nested elements (e.g. an item inside a list item wrapper)
+      const validContainers = visibleItems.filter((el) => {
+        let parent = el.parentElement;
+        while (parent) {
+          if (visibleItems.includes(parent)) return false;
+          parent = parent.parentElement;
+        }
+        return true;
+      });
+      count = validContainers.length;
+    } 
+    
+    // 2. If no DOM items found, fallback to parsing the hidden inputs injected by Uploadly
+    if (count === 0) {
+      const fileKeys = new Set();
+      const uploadInputs = Array.from(document.querySelectorAll('input[name*="properties"]')).filter((el) => {
+        const nameStr = el.name.toLowerCase();
+        if (
+          nameStr.includes('[return delivery]') ||
+          nameStr.includes('[turnaround]') ||
+          nameStr.includes('[message]') ||
+          nameStr.includes('[total price]') ||
+          nameStr.includes('[_timestamp]') ||
+          nameStr.includes('[delivery address]') ||
+          nameStr.includes('[_return_shipping_required]') ||
+          nameStr.includes('[files uploaded]') ||
+          nameStr.includes('[_files uploaded]')
+        ) {
+          return false;
+        }
+        return el.value && el.value.trim() !== '';
+      });
+      
+      uploadInputs.forEach(el => {
+        const match = el.name.match(/properties\[(.*?)\]/);
+        if (match && match[1]) {
+          const key = match[1];
+          const val = el.value.trim();
+          
+          // Only count properties that don't start with '_' (ignores internal thumbnails)
+          if (!key.startsWith('_') && (val.includes('http') || val.includes('uploadly'))) {
+            const urls = val.match(/https?:\/\/[^\s,]+/g);
+            if (urls && urls.length > 1) {
+              urls.forEach((u, idx) => fileKeys.add(`${key}_${idx}`));
+            } else {
+              fileKeys.add(key);
+            }
+          }
+        }
+      });
+      count = fileKeys.size;
+    }
+    
+    // 3. Add native file inputs (if any)
+    const nativeFileInputs = Array.from(document.querySelectorAll('input[type="file"]')).reduce((sum, el) => sum + (el.files ? el.files.length : 0), 0);
+    if (count === 0 && nativeFileInputs > 0) {
+      count = nativeFileInputs;
+    }
+    
+    return count;
+  };
+
+  const getUploadedFilesCount = () => Math.max(1, getActualFilesCount());
+
+  const hasUploadyWidgetMounted = () => {
+    if (!uploadlyContainer) return false;
+    // If the app block rendered any interactive UI in the container,
+    // keep our fallback button hidden to avoid duplicate "Choose File" buttons.
+    const genericInteractive = uploadlyContainer.querySelector(
+      'button:not([data-uploadly-fallback-button]), [role="button"]:not([data-uploadly-fallback-button]), a[href], .uploady, .uploadly'
+    );
+    if (genericInteractive) return true;
+
+    const selectors = [
+      '.uploadly-button',
+      '.uploady-button',
+      '.uploadly-drop-zone',
+      '.uploady-drop-zone',
+      '.uploadly-list',
+      '.uploady-list',
+      '[data-uploadly-id]',
+      'input[type="file"]',
+    ];
+    return selectors.some((selector) => !!uploadlyContainer.querySelector(selector));
+  };
+
+  const isThemePreviewContext = () => {
+    try {
+      const params = new URLSearchParams(window.location.search || '');
+      if (params.has('preview_theme_id')) return true;
+      if (window.Shopify && window.Shopify.designMode) return true;
+    } catch (_) {}
+    return false;
+  };
+
+  const shouldBypassUploadRequirementForPreview = () => {
+    // Allow add-to-cart without upload only when:
+    // - this is a preview context
+    // - Uploady app block is configured
+    // - Uploady failed to mount
+    return isThemePreviewContext() && uploadlyHasAppBlock && !hasUploadyWidgetMounted();
+  };
+
+  const syncUploadlyFallbackVisibility = () => {
+    if (!uploadlyContainer || !uploadlyFallbackButton) return;
+    // If an Uploady app block is configured, never show our fallback button.
+    // This avoids showing a dead button in preview environments where app scripts fail to mount.
+    if (uploadlyHasAppBlock) {
+      uploadlyFallbackButton.style.display = 'none';
+      return;
+    }
+    uploadlyFallbackButton.style.display = hasUploadyWidgetMounted() ? 'none' : '';
+  };
+
+  const openUploadlyFromFallback = () => {
+    // 1) Prefer Uploady/Uploadly interactive controls if mounted.
+    const triggerSelectors = [
+      '.uploadly-button',
+      '.uploady-button',
+      '[data-uploadly-open]',
+      '[class*="uploadly-button"]',
+      '[class*="uploady-button"]',
+      '[class*="uploadly-trigger"]',
+      '[class*="uploady-trigger"]',
+    ];
+
+    for (const selector of triggerSelectors) {
+      const inContainer = uploadlyContainer ? uploadlyContainer.querySelector(selector) : null;
+      const anywhere = document.querySelector(selector);
+      const target = inContainer || anywhere;
+      if (target && typeof target.click === 'function') {
+        target.click();
+        return true;
+      }
+    }
+
+    // 2) Fall back to any file input if present.
+    const fileInput =
+      (uploadlyContainer && uploadlyContainer.querySelector('input[type="file"]')) ||
+      document.querySelector('input[type="file"]');
+
+    if (fileInput && typeof fileInput.click === 'function') {
+      fileInput.click();
+      return true;
+    }
+
+    return false;
+  };
+
+  // Wire up quantity +/- buttons for this form (not handled by global <quantity-input> component)
+  const syncQuantity = (delta) => {
+    if (!qtyInput) return;
+    const current = Math.max(1, parseInt(qtyInput.value || '1', 10) || 1);
+    const next = Math.max(1, current + delta);
+    if (next === current) return;
+    qtyInput.value = String(next);
+    // Trigger change so totals & order summary update
+    qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
+  };
+
+  if (qtyMinusBtn) {
+    qtyMinusBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+      syncQuantity(-1);
+    });
+  }
+
+  if (qtyPlusBtn) {
+    qtyPlusBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+      syncQuantity(1);
+    });
+  }
+
+  // Hide all service groups initially
+  serviceBlocks.forEach((block) => (block.style.display = 'none'));
+
+  // --- Visibility helpers for validation ---
+  const isVisible = (el) => {
+    if (!el) return false;
+    const style = window.getComputedStyle(el);
+    if (style.display === 'none' || style.visibility === 'hidden') return false;
+    return !!(el.offsetParent || style.position === 'fixed');
+  };
+
+  const getVisibleFieldsets = () =>
+    Array.from(form.querySelectorAll('fieldset.rolls-form-card')).filter((fs) => isVisible(fs));
+
+  const getVisibleRadiosInFieldset = (fs) =>
+    Array.from(fs.querySelectorAll('input[type="radio"]')).filter((r) => {
+      const carrier = r.closest('label') || r;
+      // Exclude unavailable options (faded out) from validation
+      if (carrier && carrier.classList.contains('is-unavailable')) return false;
+      return isVisible(carrier);
+    });
+
+  const customSizeContainer = form.querySelector('[data-custom-size-container]');
+  const customSizeFieldset = customSizeContainer ? customSizeContainer.closest('fieldset.rolls-form-card') : null;
+  const customSizeWidthInput = form.querySelector('[data-custom-size-input="width"]');
+  const customSizeHeightInput = form.querySelector('[data-custom-size-input="height"]');
+  const customSizeErrorEl = form.querySelector('[data-custom-size-error]');
+  const customSizeTouched = { width: false, height: false };
+
+  const setInlineError = (el, message) => {
+    if (!el) return;
+    el.textContent = message || '';
+    el.style.display = message ? '' : 'none';
+    if (message) {
+      el.style.color = 'var(--color-error, var(--color-red, #d22d2d))';
+      el.style.marginTop = '0.5rem';
+    }
+  };
+
+  const isFineArtsCustomSizeActive = () => {
+    const serviceRadio = form.querySelector('input[name="service"]:checked');
+    const sizeRadio = form.querySelector('input[name="sizes"]:checked');
+    return (
+      serviceRadio &&
+      serviceRadio.value === 'Fine Arts' &&
+      sizeRadio &&
+      (sizeRadio.value || '').trim().toLowerCase() === 'custom'
+    );
+  };
+
+  const validateCustomDimension = (rawValue, opts) => {
+    const options = opts || {};
+    const label = options.label || 'Value';
+    const hasMax = Number.isFinite(options.max);
+    const max = options.max;
+    const value = (rawValue || '').toString().trim();
+
+    if (!value) {
+      return { valid: false, message: `${label} is required.` };
+    }
+
+    if (!/^\d+$/.test(value)) {
+      return { valid: false, message: `${label} must be a whole number.` };
+    }
+
+    const numericValue = Number(value);
+    if (!Number.isFinite(numericValue) || numericValue < 1) {
+      return { valid: false, message: `${label} must be at least 1.` };
+    }
+
+    if (hasMax && numericValue > max) {
+      return { valid: false, message: `${label} must be ${max}" or less.` };
+    }
+
+    return { valid: true, numericValue, message: '' };
+  };
+
+  const getCustomSizeValidation = (opts) => {
+    const options = opts || {};
+    const showErrors = !!options.showErrors;
+    const forceAll = !!options.forceAll;
+
+    if (!customSizeContainer || !customSizeWidthInput || !customSizeHeightInput) {
+      return { active: false, valid: true, width: null, height: null };
+    }
+
+    const active = isFineArtsCustomSizeActive() && isVisible(customSizeContainer);
+    if (!active) {
+      customSizeTouched.width = false;
+      customSizeTouched.height = false;
+      if (showErrors || forceAll) {
+        setInlineError(customSizeErrorEl, '');
+      }
+      return { active: false, valid: true, width: null, height: null };
+    }
+
+    const widthResult = validateCustomDimension(customSizeWidthInput.value, { label: 'Width', max: 44 });
+    const heightResult = validateCustomDimension(customSizeHeightInput.value, { label: 'Height' });
+    const isValid = widthResult.valid && heightResult.valid;
+
+    if (showErrors || forceAll) {
+      const canShowWidth = forceAll || customSizeTouched.width;
+      const canShowHeight = forceAll || customSizeTouched.height;
+      let errorMessage = '';
+
+      if (canShowWidth && !widthResult.valid) {
+        errorMessage = widthResult.message;
+      } else if (canShowHeight && !heightResult.valid) {
+        errorMessage = heightResult.message;
+      }
+
+      if (!errorMessage && forceAll && !isValid) {
+        errorMessage = !widthResult.valid ? widthResult.message : heightResult.message;
+      }
+
+      setInlineError(customSizeErrorEl, errorMessage);
+    }
+
+    return {
+      active,
+      valid: isValid,
+      width: widthResult.valid ? widthResult.numericValue : null,
+      height: heightResult.valid ? heightResult.numericValue : null,
+    };
+  };
+
+  const getFineArtsCustomSizePrice = (width, height, paperLabel) => {
+    const area = Number(width || 0) * Number(height || 0);
+    const normalizedPaper = (paperLabel || '').toString().trim().toLowerCase();
+    const isFibre = normalizedPaper === 'fibre paper';
+    const rawPrice = isFibre ? 3 + 0.073 * area : 12 + 0.04 * area;
+    return Math.round(rawPrice);
+  };
+
+  const syncCustomSizePrice = (showErrors = false) => {
+    const customSizeRadio = form.querySelector('input[name="sizes"][value="Custom"]');
+    if (!customSizeRadio) return;
+
+    const validation = getCustomSizeValidation({ showErrors });
+    let newPrice = 0;
+
+    if (validation.active && validation.valid) {
+      const selectedPaper = form.querySelector('input[name="paper"]:checked');
+      newPrice = getFineArtsCustomSizePrice(validation.width, validation.height, selectedPaper?.value || '');
+    }
+
+    customSizeRadio.dataset.price = newPrice;
+    const customSizeLabel = customSizeRadio.closest('label');
+    const customSizePriceEl = customSizeLabel ? customSizeLabel.querySelector('.opt-price') : null;
+    if (customSizePriceEl) {
+      customSizePriceEl.textContent = newPrice > 0 ? `$${newPrice}` : 'Free';
+    }
+  };
+
+  const osWrapper = document.querySelector('.os-wrapper');
+
+  // --- Order Summary floating visibility ---
+  function updateOrderSummaryVisibility() {
+    if (!osWrapper) return;
+
+    // Check if the form is empty
+    const noSelections = basePrice === total;
+    if (noSelections && !getQuantity() > 1) {
+      osWrapper.style.display = 'none';
+      if (bottomOrderSummary) bottomOrderSummary.style.display = 'none';
+      return;
+    }
+
+    osWrapper.style.display = 'block';
+    if (bottomOrderSummary) {
+      bottomOrderSummary.style.display = '';
+    }
+
+    const scrollPosition = window.scrollY + window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    const windowHeight = window.innerHeight;
+
+    // Check if we are within 400px of the absolute bottom of the page OR
+    // if we've scrolled past the bottom order summary anchor
+    const isNearBottom = documentHeight - scrollPosition < windowHeight;
+    let isPastBottomAnchor = false;
+
+    if (bottomAnchor) {
+      const anchorRect = bottomAnchor.getBoundingClientRect();
+      // Hide if anchor is within 100px of entering viewport, or if we've scrolled past it completely
+      isPastBottomAnchor = anchorRect.top < window.innerHeight + 100;
+    }
+
+    if (isNearBottom || isPastBottomAnchor) {
+      osWrapper.classList.add('is-hidden-by-scroll');
+    } else {
+      osWrapper.classList.remove('is-hidden-by-scroll');
+    }
+  }
+
+  window.addEventListener('scroll', updateOrderSummaryVisibility, { passive: true });
+  window.addEventListener('resize', updateOrderSummaryVisibility, { passive: true });
+
+  // --- Delivery info visibility (Mail In vs Drop Off copy) ---
+  const mailInInfo = form.querySelector('[data-delivery-info="mail-in"]');
+  const dropOffInfo = form.querySelector('[data-delivery-info="drop-off"]');
+  const deliveryMap = form.querySelector('.rolls-form-card-content__drop-off-map');
+  const deliveryDivider = form.querySelector('[data-delivery-divider]');
+
+  const refreshDropOffMap = (opts) => {
+    const options = opts || {};
+    try {
+      if (window.BellowsDropOffMap) {
+        if (typeof window.BellowsDropOffMap.invalidateAll === 'function') {
+          window.BellowsDropOffMap.invalidateAll();
+        }
+        // Allow callers to skip resetting the view so we don't blow away a user-focused zoom
+        if (!options.skipReset && typeof window.BellowsDropOffMap.resetAll === 'function') {
+          window.BellowsDropOffMap.resetAll();
+        }
+      }
+    } catch (_e) {}
+  };
+
+  const updateDeliveryInfoVisibility = () => {
+    if (!mailInInfo || !dropOffInfo) return;
+    const selected = form.querySelector('input[name="delivery"]:checked');
+
+    if (!selected) {
+      // No delivery selected yet: show both text blocks and the map, show divider
+      mailInInfo.style.display = '';
+      dropOffInfo.style.display = '';
+      if (deliveryMap) deliveryMap.style.display = '';
+      if (deliveryDivider) deliveryDivider.style.display = '';
+      refreshDropOffMap();
+      return;
+    }
+
+    const val = (selected.value || '').toString().trim().toLowerCase();
+
+    if (val === 'mail in' || val === 'mail-in') {
+      // Mail In only
+      mailInInfo.style.display = '';
+      dropOffInfo.style.display = 'none';
+      if (deliveryMap) deliveryMap.style.display = 'none';
+      if (deliveryDivider) deliveryDivider.style.display = 'none';
+    } else if (val === 'drop off' || val === 'drop-off') {
+      // Drop Off only + map
+      mailInInfo.style.display = 'none';
+      dropOffInfo.style.display = '';
+      if (deliveryMap) deliveryMap.style.display = '';
+      if (deliveryDivider) deliveryDivider.style.display = 'none';
+      // Only invalidate size so we keep any zoom/location chosen by the user (e.g. via city selection)
+      refreshDropOffMap({ skipReset: true });
+    } else {
+      // Fallback: both visible and map visible
+      mailInInfo.style.display = '';
+      dropOffInfo.style.display = '';
+      if (deliveryMap) deliveryMap.style.display = '';
+      if (deliveryDivider) deliveryDivider.style.display = '';
+      refreshDropOffMap();
+    }
+  };
+
+  const scrollToFieldset = (fs, offset = 100) => {
+    if (!fs) return;
+    const rect = fs.getBoundingClientRect();
+    const targetTop = Math.max(0, rect.top + window.scrollY - offset);
+    window.scrollTo({ top: targetTop, behavior: 'smooth' });
+  };
+
+  const scrollToNextVisibleFieldset = (currentFs, offset = 100) => {
+    if (!currentFs) return;
+    const fieldsets = Array.from(form.querySelectorAll('fieldset.rolls-form-card'));
+    const idx = fieldsets.indexOf(currentFs);
+    if (idx === -1) return;
+    for (let i = idx + 1; i < fieldsets.length; i += 1) {
+      const candidate = fieldsets[i];
+      if (isVisible(candidate)) {
+        scrollToFieldset(candidate, offset);
+        break;
+      }
+    }
+  };
+
+  // Auto-select any option marked as data-default-option="true" when a fieldset becomes active,
+  // but do it per radio "name" so multiple logical groups inside one fieldset (e.g. Add Ons)
+  // each get their own default.
+  const applyDefaultsInContainer = (container) => {
+    if (!container) return;
+    const fieldsets = container.querySelectorAll('fieldset.rolls-form-card');
+    fieldsets.forEach((fs) => {
+      if (!isVisible(fs)) return;
+      const visibleRadios = getVisibleRadiosInFieldset(fs);
+      if (!visibleRadios.length) return;
+
+      // Group by radio name so each logical group can get its own default
+      const groupsByName = new Map();
+      visibleRadios.forEach((r) => {
+        const name = r.name || '__anon__';
+        if (!groupsByName.has(name)) groupsByName.set(name, []);
+        groupsByName.get(name).push(r);
+      });
+
+      groupsByName.forEach((groupRadios) => {
+        if (!groupRadios.length) return;
+        const anyChecked = groupRadios.some((r) => r.checked);
+        if (anyChecked) return;
+        const defaultRadio = groupRadios.find((r) => r.dataset.defaultOption === 'true');
+        if (!defaultRadio) return;
+        defaultRadio.checked = true;
+        // Fire change so pricing / conditions update
+        defaultRadio.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+    });
+  };
+
+  const clearErrorsOnHidden = () => {
+    form.querySelectorAll('fieldset.rolls-form-card').forEach((fs) => {
+      if (!isVisible(fs)) fs.classList.remove('rolls-form-card--error');
+    });
+    if (customSizeContainer && !isVisible(customSizeContainer)) {
+      setInlineError(customSizeErrorEl, '');
+    }
+  };
+
+  const validateOpenFields = () => {
+    const errors = [];
+    getVisibleFieldsets().forEach((fs) => {
+      let isInvalid = false;
+      const groupNameAttr = fs.getAttribute('data-group') || fs.dataset.group || '';
+
+      // 1. Radio Validation
+      const visibleRadios = getVisibleRadiosInFieldset(fs);
+      if (visibleRadios.length > 0) {
+        // Special case: the aggregated "Add Ons" card contains multiple logical radio groups.
+        if (groupNameAttr.trim().toLowerCase() === 'add ons') {
+          const groupsByName = new Map();
+          visibleRadios.forEach((r) => {
+            const name = r.name || '__anon__';
+            if (!groupsByName.has(name)) groupsByName.set(name, []);
+            groupsByName.get(name).push(r);
+          });
+
+          const hasMissingGroupSelection = Array.from(groupsByName.values()).some((groupRadios) => {
+            if (!groupRadios.length) return false;
+            return !groupRadios.some((r) => r.checked);
+          });
+          if (hasMissingGroupSelection) isInvalid = true;
+        } else {
+          // Default behavior: at least one visible radio in this fieldset must be selected
+          const anyChecked = visibleRadios.some((r) => r.checked);
+          if (!anyChecked) isInvalid = true;
+        }
+      }
+
+      // 2. Text/Select Validation (e.g. Address fields)
+      const requiredInputs = Array.from(
+        fs.querySelectorAll(
+          'input:not([type="radio"]):not([type="checkbox"])[required], select[required], textarea[required]'
+        )
+      ).filter((el) => isVisible(el) && !el.disabled);
+
+      if (requiredInputs.some((el) => !el.value.trim())) {
+        isInvalid = true;
+      }
+
+      // 2b. Custom size validation
+      if (customSizeContainer && fs.contains(customSizeContainer)) {
+        const customValidation = getCustomSizeValidation({ showErrors: true, forceAll: true });
+        if (customValidation.active && !customValidation.valid) {
+          isInvalid = true;
+        }
+      }
+
+      // If no radios and no required inputs, we consider it valid (unless we want to enforce logic for info-only cards, which we don't)
+      if (visibleRadios.length === 0 && requiredInputs.length === 0) {
+        isInvalid = false;
+      }
+
+      // 3. Upload Validation (Uploadly)
+      if (groupNameAttr.trim().toLowerCase() === 'upload') {
+        if (shouldBypassUploadRequirementForPreview()) {
+          isInvalid = false;
+        } else {
+        // Uploadly sometimes dynamically generates the fields, wait to check form fields specifically
+        // Find inputs that contain Uploadly data (Uploadly often targets hidden inputs or adds properties)
+        const uploadInputs = Array.from(document.querySelectorAll('input[name*="properties"]')).filter((el) => {
+          const nameStr = el.name.toLowerCase();
+          if (
+            nameStr.includes('[return delivery]') ||
+            nameStr.includes('[turnaround]') ||
+            nameStr.includes('[message]') ||
+            nameStr.includes('[total price]') ||
+            nameStr.includes('[_timestamp]')
+          ) {
+            return false;
+          }
+          return true;
+        });
+
+        // Use document.querySelector to see if Uploadly widget actually attached a file
+        // Uploadly widget creates items with class .uploadly-item or .uploadly-file
+        const uploadlyItems = document.querySelectorAll(
+          '.uploadly-item, .uploadly-file, .uploadly-list-item, .uploadly-preview, .uploady-item, .uploady-list-item, .uploady-preview, [data-uploadly-id], [class*="uploadly-"], [class*="uploady-"]'
+        );
+
+        // Also check if Uploadly added its success class to the body or container
+        const hasUploadySuccess = document.querySelector('.uploady-success, .uploadly-success') !== null;
+
+        const hasUploadedFile =
+          uploadInputs.some((el) => el.value && el.value.trim() !== '') ||
+          uploadlyItems.length > 0 ||
+          hasUploadySuccess;
+
+        // As a fallback, check if there's any file input with a file selected
+        const fileInputs = Array.from(document.querySelectorAll('input[type="file"]'));
+        const hasNativeFile = fileInputs.some((el) => el.files && el.files.length > 0);
+
+        if (!hasUploadedFile && !hasNativeFile) {
+          isInvalid = true;
+        }
+        }
+      }
+
+      if (isInvalid) {
+        fs.classList.add('rolls-form-card--error');
+        errors.push(fs);
+
+        // Add explicit error message for Upload if not present
+        if (groupNameAttr.trim().toLowerCase() === 'upload') {
+          let errorMsg = fs.querySelector('.upload-error-msg');
+          if (!errorMsg) {
+            errorMsg = document.createElement('p');
+            errorMsg.className = 'upload-error-msg type-p-small';
+            errorMsg.style.color = 'var(--color-error, var(--color-red, #d22d2d))';
+            errorMsg.style.marginTop = '0.5rem';
+            errorMsg.textContent = 'Please upload a file to continue.';
+            const inner = fs.querySelector('.rolls-form-card__inner');
+            if (inner) inner.appendChild(errorMsg);
+          }
+        }
+      } else {
+        fs.classList.remove('rolls-form-card--error');
+        if (groupNameAttr.trim().toLowerCase() === 'upload') {
+          const errorMsg = fs.querySelector('.upload-error-msg');
+          if (errorMsg) errorMsg.remove();
+        }
+      }
+    });
+    return { errors };
+  };
+
+  // Utility: normalize keys/values so JSON keys like "Film Format", "film_format" match radio.name "film-format"
+  const normKey = (s) =>
+    (s || '')
+      .toString()
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, '-') // spaces -> hyphen
+      .replace(/_+/g, '-') // underscores -> hyphen
+      .replace(/-+/g, '-'); // normalize multiple hyphens to single hyphen
+
+  const normVal = (s) => (s || '').toString().trim().toLowerCase();
+
+  // Helper to get value from selected map with multiple key variations
+  const getSelectedValue = (key, selected) => {
+    // Try original key (lowercased) first
+    const originalLower = (key || '').toString().trim().toLowerCase();
+    if (selected[originalLower] !== undefined) return selected[originalLower];
+
+    // Try normalized key
+    const normalized = normKey(key);
+    if (selected[normalized] !== undefined) return selected[normalized];
+
+    // Try with underscores
+    const withUnderscores = normalized.replace(/-/g, '_');
+    if (selected[withUnderscores] !== undefined) return selected[withUnderscores];
+
+    // Try with multiple hyphens (for cases like "Add Ons - Contact Sheet" -> "add-ons---contact-sheet")
+    const withMultiHyphens = originalLower.replace(/\s+/g, '---').replace(/_+/g, '---');
+    if (selected[withMultiHyphens] !== undefined) return selected[withMultiHyphens];
+
+    // Try original with spaces replaced by single hyphens
+    const withSingleHyphens = originalLower.replace(/\s+/g, '-');
+    if (selected[withSingleHyphens] !== undefined) return selected[withSingleHyphens];
+
+    return null;
+  };
+
+  // --- Handle service change (show only selected service block) ---
+  serviceRadios.forEach((radio) => {
+    radio.addEventListener('change', (e) => {
+      const selectedService = e.target.value;
+      // Hide all service blocks first
+      serviceBlocks.forEach((block) => {
+        block.style.display = 'none';
+      });
+
+      // Show active block for selected service
+      const activeBlock = form.querySelector(`.service-groups-wrapper[data-for-service="${selectedService}"]`);
+      if (activeBlock) activeBlock.style.display = 'flex';
+
+      // Uncheck radios in all non-active service blocks to prevent stale selections affecting totals
+      serviceBlocks.forEach((block) => {
+        if (block !== activeBlock) {
+          block.querySelectorAll('input[type="radio"]:checked').forEach((input) => {
+            input.checked = false;
+          });
+        }
+      });
+
+      // Apply JSON-configured defaults for the now-active service block
+      if (activeBlock) {
+        applyDefaultsInContainer(activeBlock);
+      }
+
+      applyConditions();
+    });
+  });
+
+  // // Optionally auto-select first service block (keep if you want)
+  // if (serviceRadios.length > 0 && !form.querySelector('input[name="service"]:checked')) {
+  //   serviceRadios[0].checked = true;
+  //   serviceRadios[0].dispatchEvent(new Event('change'));
+  // }
+
+  const updateOrderSummaryVisibilityState = () => {
+    if (!orderSummary) return;
+    // Check if a location is selected first
+    const locationSelected = !!form.querySelector('input[name="location"]:checked');
+    const anyChecked = !!form.querySelector('input[type="radio"]:checked');
+
+    // Only show if a location is selected AND at least one radio is checked (which is redundant if location is checked, but good for safety)
+    const shouldShow = locationSelected && anyChecked;
+
+    if (shouldShow) {
+      orderSummary.style.display = '';
+      if (bottomOrderSummary) bottomOrderSummary.style.display = 'block';
+      // Small delay to allow display block to apply before adding visible class for transition
+      setTimeout(() => {
+        orderSummary.classList.add('is-visible');
+      }, 10);
+    } else {
+      orderSummary.classList.remove('is-visible');
+      orderSummary.classList.remove('is-expanded');
+      setTimeout(() => {
+        if (!orderSummary.classList.contains('is-visible')) {
+          orderSummary.style.display = 'none';
+          // Don't forcefully hide the bottom summary here if it's meant to be managed by CSS/other state
+          // if (bottomOrderSummary) bottomOrderSummary.style.display = 'none';
+        }
+      }, 400); // match CSS transition duration
+    }
+  };
+
+  // Add click listener for mobile support to expand the summary
+  if (orderSummary) {
+    const osHeader = orderSummary.querySelector('.order-summary__header');
+    if (osHeader) {
+      osHeader.style.cursor = 'pointer';
+      osHeader.addEventListener('click', () => {
+        orderSummary.classList.toggle('is-expanded');
+      });
+    }
+  }
+
+  // --- UI helpers for Order Summary ---
+  const formatMoney = (num) => `$${Number(num || 0).toFixed(2)}`;
+
+  const createRow = (listEl, labelText, valueText, priceNum) => {
+    if (!listEl) return;
+    const row = document.createElement('div');
+    row.className = 'order-summary__row';
+
+    const dt = document.createElement('dt');
+    dt.className = 'order-summary__label type-p';
+    dt.textContent = labelText;
+
+    const dd = document.createElement('dd');
+    dd.className = 'order-summary__value-wrap';
+
+    const value = document.createElement('span');
+    value.className = 'order-summary__value type-p';
+    value.textContent = valueText;
+
+    dd.appendChild(value);
+    if (OS_SHOW_PRICES && Number(priceNum) > 0) {
+      const price = document.createElement('span');
+      price.className = 'order-summary__price type-p';
+      price.textContent = formatMoney(priceNum);
+      dd.appendChild(price);
+    }
+    row.appendChild(dt);
+    row.appendChild(dd);
+    listEl.appendChild(row);
+  };
+
+  const renderSummary = () => {
+    if (osList) osList.innerHTML = '';
+    if (bottomOsList) bottomOsList.innerHTML = '';
+
+    // Fieldsets in DOM order with checked radios
+    form.querySelectorAll('fieldset.rolls-form-card').forEach((fs) => {
+      // Special handling for grouped "Add Ons" fieldset
+      if (fs.dataset.group === 'Add Ons') {
+        const checkedRadios = fs.querySelectorAll('input[type="radio"]:checked');
+        checkedRadios.forEach((radio) => {
+          const val = (radio.value || '').trim();
+          // Skip "No" or empty values for Add Ons in summary
+          if (!val || val.toLowerCase() === 'no') return;
+
+          // Derive label from name: "add-ons-contact-sheet" -> "Contact Sheet"
+          let label = radio.name || 'Add On';
+          label = label.replace(/^add-ons-/, '').replace(/-/g, ' ');
+          // Title Case
+          label = label.replace(/\b\w/g, (c) => c.toUpperCase());
+
+          const priceNum = Number(radio.dataset.price || 0);
+          createRow(osList, label, val, priceNum);
+          createRow(bottomOsList, label, val, priceNum);
+        });
+        return;
+      }
+
+      // Special handling for Delivery Options fieldset which has multiple questions
+      if (fs.dataset.group === 'Delivery Options') {
+        const checkedRadios = fs.querySelectorAll('input[type="radio"]:checked');
+        checkedRadios.forEach((radio) => {
+          let label = radio.name || 'Delivery Option';
+          // Extract text inside brackets, e.g. properties[Return Delivery] -> Return Delivery
+          const match = label.match(/\[(.*?)\]/);
+          if (match && match[1]) label = match[1];
+
+          let valueText = (radio.value || '').trim();
+          // Skip default standard options if we don't want to clutter the summary, or keep them.
+          // Since it's a core choice, we'll keep them.
+
+          let priceNum = Number(radio.dataset.price || 0);
+
+          // If this is Turnaround, calculate the dynamic price modifier
+          if (label === 'Turnaround') {
+            // Calculate base total before multiplier to find the added cost
+            let preTotal = basePrice;
+            form.querySelectorAll('input[type="radio"]:checked').forEach((input) => {
+              preTotal += Number(input.dataset.price || 0);
+            });
+            const turnaroundValue = valueText.toLowerCase();
+            if (turnaroundValue.includes('rush')) {
+              priceNum = preTotal * 1; // (Total * 2 means it adds preTotal * 1)
+            } else if (turnaroundValue.includes('speedy')) {
+              priceNum = preTotal * 0.5; // (Total * 1.5 means it adds preTotal * 0.5)
+            }
+          }
+
+          createRow(osList, label, valueText, priceNum);
+          createRow(bottomOsList, label, valueText, priceNum);
+        });
+        return;
+      }
+
+      const checked = fs.querySelector('input[type="radio"]:checked');
+      if (!checked) return;
+      // Skip neutral/base selections in the summary
+      if ((checked.value || '').toString().trim().toLowerCase() === 'base') return;
+      const heading = fs.querySelector('.rolls-form-card__heading');
+      // Prefer explicit short heading attribute when provided
+      const attrFromFs = fs.getAttribute('order-summary-heading') || fs.dataset.orderSummaryHeading;
+      const attrFromHeading = heading
+        ? heading.getAttribute('order-summary-heading') || heading.dataset.orderSummaryHeading
+        : null;
+      const labelText = (
+        attrFromFs ||
+        attrFromHeading ||
+        (heading ? heading.textContent.trim() : '') ||
+        fs.dataset.group ||
+        'Option'
+      ).trim();
+      const labelEl = checked.closest('label');
+      const valueEl = labelEl ? labelEl.querySelector('.bubble-option__label') : null;
+      // Extract only the option label text, explicitly excluding any .opt-price span
+      let valueText = '';
+      if (valueEl) {
+        const copy = valueEl.cloneNode(true);
+        copy.querySelectorAll('.opt-price').forEach((n) => n.remove());
+        valueText = (copy.textContent || '').trim();
+      } else {
+        valueText = (checked.value || '').trim();
+      }
+      const priceNum = Number(checked.dataset.price || 0);
+      createRow(osList, labelText, valueText, priceNum);
+      createRow(bottomOsList, labelText, valueText, priceNum);
+    });
+
+    const customValidation = getCustomSizeValidation({ showErrors: false });
+    if (customValidation.active && customValidation.valid) {
+      const valueText = `${customValidation.width}" × ${customValidation.height}"`;
+      createRow(osList, 'Custom Dimensions', valueText, 0);
+      createRow(bottomOsList, 'Custom Dimensions', valueText, 0);
+    }
+
+    // --- Totals area (consider quantity) ---
+    const qty = getQuantity();
+    const fileCount = getUploadedFilesCount();
+    const multiplier = qty * fileCount;
+    const perRoll = Number(total || 0);
+    const grand = perRoll * multiplier;
+
+    if (multiplier > 1) {
+      if (fileCount > 1) {
+        createRow(osList, 'Files Uploaded', String(fileCount), 0);
+        createRow(bottomOsList, 'Files Uploaded', String(fileCount), 0);
+      }
+      if (qty > 1) {
+        createRow(osList, 'Copies per file', String(qty), 0);
+        createRow(bottomOsList, 'Copies per file', String(qty), 0);
+      }
+      createRow(osList, 'Subtotal', `${multiplier} × ${formatMoney(perRoll)}`, grand);
+      createRow(osList, 'Total', formatMoney(grand), 0);
+
+      createRow(bottomOsList, 'Subtotal', `${multiplier} × ${formatMoney(perRoll)}`, grand);
+      createRow(bottomOsList, 'Total', formatMoney(grand), 0);
+    } else {
+      createRow(osList, 'Total', formatMoney(perRoll), 0);
+      createRow(bottomOsList, 'Total', formatMoney(perRoll), 0);
+    }
+  };
+
+  // Toggle behavior
+  if (osToggle && osDetails) {
+    osToggle.addEventListener('click', () => {
+      const expanded = osToggle.getAttribute('aria-expanded') === 'true';
+      osToggle.setAttribute('aria-expanded', String(!expanded));
+      osDetails.hidden = expanded;
+      const first = osToggle.querySelector('span:first-child');
+      const second = osToggle.querySelector('span:last-child');
+      if (first) first.textContent = expanded ? 'Show Details' : 'Hide Details';
+      if (second) second.textContent = expanded ? '(+)' : '(-)';
+    });
+  }
+
+  // --- Total calc ---
+  function calculateTotal() {
+    syncCustomSizePrice(false);
+
+    total = basePrice;
+    form.querySelectorAll('input[type="radio"]:checked').forEach((input) => {
+      total += Number(input.dataset.price || 0);
+    });
+
+    // Apply multiplier based on Turnaround selection
+    const turnaroundRadio = form.querySelector('input[name="properties[Turnaround]"]:checked');
+    if (turnaroundRadio) {
+      const turnaroundValue = (turnaroundRadio.value || '').toLowerCase();
+      if (turnaroundValue.includes('rush')) {
+        total *= 2;
+      } else if (turnaroundValue.includes('speedy')) {
+        total *= 1.5;
+      }
+    }
+
+    const qty = getQuantity();
+    const fileCount = getUploadedFilesCount();
+    const multiplier = qty * fileCount;
+    const displayTotal = total * multiplier;
+
+    if (totalDisplay) totalDisplay.textContent = formatMoney(displayTotal);
+    if (bottomTotalDisplay) bottomTotalDisplay.textContent = formatMoney(displayTotal);
+    // Clear any previous high-price error when recalculating
+    setErrorMessage('');
+    renderSummary();
+    updateOrderSummaryVisibilityState();
+    updateOrderSummaryVisibility();
+  }
+
+  // --- Conditions (show-if + price-overrides) with normalized keys ---
+  function applyConditions() {
+    // Build selected map with multiple aliases for robustness
+    const selected = {};
+    form.querySelectorAll('input[type="radio"]:checked').forEach((r) => {
+      const keyHyphen = normKey(r.name); // e.g., film-format (normalized)
+      const keyUnder = keyHyphen.replace(/-/g, '_'); // e.g., film_format
+      const keyMultiHyphen = r.name.toLowerCase().replace(/\s+/g, '-'); // original with spaces->hyphens (may have multiple hyphens)
+      selected[keyHyphen] = r.value;
+      selected[keyUnder] = r.value;
+      // Also store the original name variations for matching
+      if (keyMultiHyphen !== keyHyphen) {
+        selected[keyMultiHyphen] = r.value;
+      }
+      // Store original name as-is (lowercased)
+      selected[r.name.toLowerCase()] = r.value;
+    });
+
+    // We no longer disable the submit button live; submission is blocked by custom validation
+
+    form.querySelectorAll('input[type="radio"]').forEach((radio) => {
+      const label = radio.closest('label');
+      if (!label) return;
+
+      // Safe parse helpers
+      const parseJSON = (raw) => {
+        if (!raw || raw === 'null' || raw === '{}' || raw === 'undefined') return null;
+        try {
+          // Decode Shopify's escaped quotes first
+          const decoded = raw
+            .replace(/&quot;/g, '"')
+            .replace(/&#39;/g, "'")
+            .replace(/&amp;/g, '&');
+          return JSON.parse(decoded);
+        } catch (err) {
+          console.warn('Invalid JSON in data attribute:', raw);
+          return null;
+        }
+      };
+
+      const showIfRaw = radio.dataset.showIf;
+      const priceOverridesRaw = radio.dataset.priceOverrides;
+      const defaultIfRaw = radio.dataset.defaultIf;
+
+      const showIf = parseJSON(showIfRaw);
+      const priceOverrides = parseJSON(priceOverridesRaw);
+      const defaultIf = parseJSON(defaultIfRaw);
+
+      // --- Visibility
+      let shouldShow = true;
+      if (showIf) {
+        // Require ALL show-if groups to match (change to .some if you want "any")
+        shouldShow = Object.entries(showIf).every(([k, allowed]) => {
+          const sel = getSelectedValue(k, selected);
+          if (!Array.isArray(allowed) || !allowed.length) return true;
+          const allowedNorm = allowed.map(normVal);
+          return sel ? allowedNorm.includes(normVal(sel)) : false;
+        });
+      }
+
+      // Fade out unavailable options instead of hiding them completely
+      if (shouldShow) {
+        label.classList.remove('is-unavailable');
+      } else {
+        label.classList.add('is-unavailable');
+        if (radio.checked) radio.checked = false;
+      }
+
+      // --- Dynamic price override
+      let newPrice = Number(radio.dataset.basePrice || radio.dataset.price || 0);
+      if (priceOverrides) {
+        for (const [k, map] of Object.entries(priceOverrides)) {
+          const key = normKey(k);
+          const sel = selected[key] || selected[key.replace(/-/g, '_')];
+          if (sel != null && map && Object.prototype.hasOwnProperty.call(map, sel)) {
+            newPrice = map[sel];
+          } else if (sel != null) {
+            // Try case-insensitive match on values if needed
+            const found = Object.entries(map || {}).find(([valKey]) => normVal(valKey) === normVal(sel));
+            if (found) newPrice = found[1];
+          }
+        }
+      }
+      radio.dataset.price = newPrice;
+
+      // --- Conditional defaults (default_if in JSON) ---
+      // Preserve any static defaults coming from Liquid (`opt.default`)
+      const isStaticDefault = radio.dataset.defaultStatic === 'true';
+      let matchesDefaultIf = false;
+
+      if (defaultIf) {
+        // Require ALL default_if groups to match, same logic as show_if
+        matchesDefaultIf = Object.entries(defaultIf).every(([k, allowed]) => {
+          const sel = getSelectedValue(k, selected);
+          if (!Array.isArray(allowed) || !allowed.length) return true;
+          const allowedNorm = allowed.map(normVal);
+          return sel ? allowedNorm.includes(normVal(sel)) : false;
+        });
+      }
+
+      if (matchesDefaultIf) {
+        radio.dataset.defaultOption = 'true';
+        radio.dataset.defaultIfActive = 'true';
+      } else {
+        // Clear flag that this option is being forced by default_if
+        delete radio.dataset.defaultIfActive;
+        // Clear conditional default flag when conditions no longer match
+        if (!isStaticDefault) {
+          delete radio.dataset.defaultOption;
+        }
+      }
+
+      // Update visible price text
+      const priceEl = label.querySelector('.opt-price');
+      if (priceEl) priceEl.textContent = newPrice > 0 ? `$${newPrice}` : 'Free';
+    });
+
+    // --- default_if vs default priority per radio group (by name) ---
+    // If any option in a group has an active default_if, that option wins over static defaults
+    // and becomes the sole checked option in that group (others are unselected but still visible).
+    const groupsByName = new Map();
+    form.querySelectorAll('input[type="radio"]').forEach((r) => {
+      if (!r.name) return;
+      if (!groupsByName.has(r.name)) groupsByName.set(r.name, []);
+      groupsByName.get(r.name).push(r);
+    });
+
+    groupsByName.forEach((radios) => {
+      if (!radios.length) return;
+
+      const activeDefaults = radios.filter((r) => r.dataset.defaultIfActive === 'true');
+      const primary = activeDefaults[0];
+
+      if (primary) {
+        // default_if wins: this option is the only selectable choice in the group
+        radios.forEach((r) => {
+          const label = r.closest('label');
+          if (r === primary) {
+            // Don't override visibility here - let show_if control it
+            // We only guarantee the primary is enabled and checked if it's visible
+            r.disabled = false;
+            r.checked = true;
+            // Remove unavailable class if it was previously locked
+            if (label) label.classList.remove('is-unavailable');
+          } else {
+            // Don't override visibility here - let show_if control it
+            // Only uncheck and disable non-primary options, and mark as unavailable
+            r.checked = false;
+            r.disabled = true;
+            r.dataset.lockedByDefaultIf = 'true';
+            // Mark as unavailable so it's visually faded
+            if (label) label.classList.add('is-unavailable');
+          }
+        });
+      } else {
+        // No active default_if: restore radios previously locked by default_if
+        radios.forEach((r) => {
+          if (r.dataset.lockedByDefaultIf === 'true') {
+            const label = r.closest('label');
+            r.disabled = false;
+            delete r.dataset.lockedByDefaultIf;
+            // Don't remove unavailable class here - let show_if logic control it
+            // The show_if re-evaluation below will set the correct state
+          }
+        });
+      }
+    });
+
+    // Re-evaluate show_if visibility for all radios after default_if logic
+    // This ensures visibility is correct even after default_if may have changed selections
+    form.querySelectorAll('input[type="radio"]').forEach((radio) => {
+      const label = radio.closest('label');
+      if (!label) return;
+
+      // Skip radios that are currently locked by default_if (they should stay unavailable)
+      if (radio.dataset.lockedByDefaultIf === 'true') {
+        return;
+      }
+
+      const parseJSON = (raw) => {
+        if (!raw || raw === 'null' || raw === '{}' || raw === 'undefined') return null;
+        try {
+          const decoded = raw
+            .replace(/&quot;/g, '"')
+            .replace(/&#39;/g, "'")
+            .replace(/&amp;/g, '&');
+          return JSON.parse(decoded);
+        } catch (err) {
+          console.warn('Invalid JSON in data attribute:', raw);
+          return null;
+        }
+      };
+
+      const showIfRaw = radio.dataset.showIf;
+      const showIf = parseJSON(showIfRaw);
+      let shouldShow = true;
+
+      if (showIf) {
+        // Require ALL show-if groups to match
+        shouldShow = Object.entries(showIf).every(([k, allowed]) => {
+          const sel = getSelectedValue(k, selected);
+          if (!Array.isArray(allowed) || !allowed.length) return true;
+          const allowedNorm = allowed.map(normVal);
+          return sel ? allowedNorm.includes(normVal(sel)) : false;
+        });
+      }
+
+      // Fade out unavailable options instead of hiding them completely
+      if (shouldShow) {
+        label.classList.remove('is-unavailable');
+      } else {
+        label.classList.add('is-unavailable');
+        if (radio.checked) radio.checked = false;
+      }
+    });
+
+    // --- Handle section-level show-if (for Add Ons sections) ---
+    form.querySelectorAll('[data-show-if]').forEach((section) => {
+      // Skip radio buttons (already handled above)
+      if (section.tagName === 'INPUT') return;
+
+      const showIfRaw = section.dataset.showIf;
+      if (!showIfRaw) return;
+
+      const parseJSON = (raw) => {
+        if (!raw || raw === 'null' || raw === '{}' || raw === 'undefined') return null;
+        try {
+          const decoded = raw
+            .replace(/&quot;/g, '"')
+            .replace(/&#39;/g, "'")
+            .replace(/&amp;/g, '&');
+          return JSON.parse(decoded);
+        } catch (err) {
+          console.warn('Invalid JSON in data attribute:', raw);
+          return null;
+        }
+      };
+
+      const showIf = parseJSON(showIfRaw);
+      let shouldShow = true;
+
+      if (showIf) {
+        // Require ALL show-if groups to match
+        shouldShow = Object.entries(showIf).every(([k, allowed]) => {
+          const sel = getSelectedValue(k, selected);
+          if (!Array.isArray(allowed) || !allowed.length) return true;
+          const allowedNorm = allowed.map(normVal);
+          return sel ? allowedNorm.includes(normVal(sel)) : false;
+        });
+      }
+
+      // Hide entire fieldsets/sections completely when unavailable (only fade individual options)
+      if (shouldShow) {
+        section.style.display = '';
+        section.classList.remove('is-unavailable');
+      } else {
+        section.style.display = 'none';
+        section.classList.remove('is-unavailable');
+        // Uncheck all radios in section if it becomes hidden
+        section.querySelectorAll('input[type="radio"]:checked').forEach((radio) => {
+          radio.checked = false;
+        });
+      }
+    });
+
+    // Clear any lingering error states on hidden sections
+    clearErrorsOnHidden();
+
+    // Apply defaults (including conditional defaults) to any visible fieldsets
+    applyDefaultsInContainer(form);
+
+    calculateTotal();
+  }
+
+  // React to any radio change
+  form.addEventListener('change', (e) => {
+    if (e.target.matches('input[type="radio"]')) {
+      applyConditions();
+
+      const fs = e.target.closest('fieldset.rolls-form-card');
+      if (fs) {
+        const visibleRadios = getVisibleRadiosInFieldset(fs);
+        const anyChecked = visibleRadios.some((r) => r.checked);
+        if (anyChecked) fs.classList.remove('rolls-form-card--error');
+      }
+
+      let handledScroll = false;
+
+      // If Disposable is selected in any Film Format group, scroll to Delivery
+      const changedRadio = e.target;
+      if (changedRadio.checked) {
+        const groupKey = normKey(changedRadio.name);
+        const valueNorm = normVal(changedRadio.value);
+        if (groupKey === 'film-format' && valueNorm === 'disposable') {
+          const quantityFs = form.querySelector('fieldset[data-group="Add Ons"]');
+          if (quantityFs) {
+            scrollToFieldset(quantityFs, 100);
+            handledScroll = true;
+          }
+        } else if (groupKey === 'sizes' && valueNorm === 'custom') {
+          // Keep focus in Sizes so users can fill custom width/height immediately.
+          handledScroll = true;
+        }
+      }
+
+      // Update delivery info (Mail In vs Drop Off copy) when delivery changes
+      if (e.target.name === 'delivery') {
+        updateDeliveryInfoVisibility();
+      }
+
+      // Auto-scroll to the next visible section for real user interactions,
+      // except when we've already handled a special-case scroll (e.g. Disposable).
+      if (!handledScroll && e.isTrusted) {
+        scrollToNextVisibleFieldset(fs, 100);
+      }
+
+      updateOrderSummaryVisibilityState();
+      updateOrderSummaryVisibility();
+    } else if (e.target.matches('input[name="quantity"]')) {
+      // React to quantity changes
+      calculateTotal();
+    } else if (e.target.matches('[data-custom-size-input]')) {
+      // React to custom width/height changes
+      getCustomSizeValidation({ showErrors: true });
+      calculateTotal();
+    }
+  });
+
+  form.addEventListener('input', (e) => {
+    if (e.target.matches('[data-custom-size-input]')) {
+      getCustomSizeValidation({ showErrors: true });
+      calculateTotal();
+    }
+  });
+
+  form.addEventListener('focusout', (e) => {
+    if (e.target === customSizeWidthInput) {
+      customSizeTouched.width = true;
+      getCustomSizeValidation({ showErrors: true });
+    } else if (e.target === customSizeHeightInput) {
+      customSizeTouched.height = true;
+      getCustomSizeValidation({ showErrors: true });
+    }
+  });
+
+  // Match variant by price on the main form product only (single product with up to 2048 variants)
+  // Async to allow fetching missing variants if needed
+  async function findVariantByPrice(priceDollars) {
+    // For prices under $1, the format is usually 0.X. E.g. $0.40 -> 40 cents.
+    // The variant title should be "0.40" (string representation of the price) or "40" if you name it in cents.
+    // Standard setup: title matches string of price dollars e.g. "0.4"
+    const cents = Math.round(priceDollars * 100);
+
+    let variants = Array.isArray(window.filmServiceVariants) ? window.filmServiceVariants : [];
+
+    // Helper to find in list
+    const find = (list) => list.find((v) => Number(v.price) === cents);
+
+    let variant = find(variants);
+
+    // Fallback: If exact price match fails, try matching Title == PriceDollars (e.g. Title "21" or "0.4")
+    if (!variant) {
+      // Create variations to check against
+      const asString = String(priceDollars);
+      const asFixed = Number(priceDollars).toFixed(2);
+      const asCents = String(cents);
+      const withoutLeadingZero = asString.startsWith('0.') ? asString.substring(1) : asString;
+      const withoutLeadingZeroFixed = asFixed.startsWith('0.') ? asFixed.substring(1) : asFixed;
+      // Additionally check for formats like "0.40" vs ".40"
+      const withoutLeadingZeroCents = asFixed.replace(/^0\./, '.');
+
+      const titleMatch = variants.find((v) => {
+        const t = v.title;
+        // Only allow matching raw cents string if the price is $1 or more, to avoid 0.40 ($0.40) matching the "40" ($40.00) variant
+        const isCentsMatch = priceDollars >= 1 ? t === asCents : false;
+
+        return (
+          t === asString ||
+          t === asFixed ||
+          isCentsMatch ||
+          t === withoutLeadingZero ||
+          t === withoutLeadingZeroFixed ||
+          t === withoutLeadingZeroCents
+        );
+      });
+
+      if (titleMatch) {
+        variant = titleMatch;
+      }
+    }
+
+    // If not found, and we suspect truncation (or just missing), try fetching full JSON
+    // Only attempt if not previously rate limited
+    if (!variant && window.filmServiceProductHandle && !window.rateLimitFilmVariants) {
+      try {
+        // Use custom view to get ALL variants (bypassing default 250 limit)
+        const ts = Date.now();
+        const res = await fetch(`/products/${window.filmServiceProductHandle}?view=film-service-variants&t=${ts}`);
+        if (res.ok) {
+          const productData = await res.json();
+          const vars = (productData.variants || []).filter((v) => v !== null);
+
+          if (vars.length > 0) {
+            window.filmServiceVariants = vars; // Update global cache
+            variants = vars;
+            variant = find(variants);
+
+            // Re-check title match if still not found
+            if (!variant) {
+              const asString = String(priceDollars);
+              const asFixed = Number(priceDollars).toFixed(2);
+              const asCents = String(cents);
+              const withoutLeadingZero = asString.startsWith('0.') ? asString.substring(1) : asString;
+              const withoutLeadingZeroFixed = asFixed.startsWith('0.') ? asFixed.substring(1) : asFixed;
+
+              // Additionally check for formats like "0.40" vs ".40"
+              const withoutLeadingZeroCents = asFixed.replace(/^0\./, '.');
+
+              const titleMatchRetry = variants.find((v) => {
+                const t = v.title;
+                const isCentsMatch = priceDollars >= 1 ? t === asCents : false;
+                return (
+                  t === asString ||
+                  t === asFixed ||
+                  isCentsMatch ||
+                  t === withoutLeadingZero ||
+                  t === withoutLeadingZeroFixed ||
+                  t === withoutLeadingZeroCents
+                );
+              });
+
+              if (titleMatchRetry) variant = titleMatchRetry;
+            }
+          }
+        } else if (res.status === 429) {
+          window.rateLimitFilmVariants = true;
+        }
+      } catch (e) {}
+    }
+
+    // If still not found, try the Search API as a last resort (for variants > 250)
+    // Only attempt if not previously rate limited
+    if (!variant && window.filmServiceProductHandle && !window.rateLimitSearchVariants) {
+      try {
+        // Search for the variant Title (which we assume matches the priceDollars, e.g., "21")
+        const searchRes = await fetch(`/search?q=${priceDollars}&view=variant-id&type=product`);
+        if (searchRes.ok) {
+          const searchData = await searchRes.json();
+          // Find exact match for price
+          const found = searchData.find((v) => v.price === cents);
+          if (found) {
+            return {
+              id: found.id,
+              price: found.price,
+              title: found.title,
+              available: true,
+            };
+          }
+        } else if (searchRes.status === 429) {
+          window.rateLimitSearchVariants = true;
+        }
+      } catch (e) {}
+    }
+
+    if (!variant) {
+      console.warn('No variant found at exact price on main film service product.', {
+        priceDollars,
+        cents,
+        variantsCount: variants.length,
+      });
+    }
+
+    return variant;
+  }
+
+  function prefillAddressFields() {
+    try {
+      const stored = localStorage.getItem('bellows_delivery_address');
+      if (!stored) return;
+      const addressData = JSON.parse(stored);
+
+      form
+        .querySelectorAll(
+          'fieldset[data-group="Delivery Address"] input, fieldset[data-group="Delivery Address"] select'
+        )
+        .forEach((input) => {
+          if (!input.name || !input.name.includes('properties[')) return;
+          const key = input.name.match(/properties\[(.*?)\]/)?.[1];
+          if (key && addressData[key]) {
+            input.value = addressData[key];
+          }
+        });
+    } catch (e) {
+      console.error('Error loading address', e);
+    }
+  }
+
+  function clearFormAndScrollTop() {
+    try {
+      form.reset();
+    } catch (_) {}
+    // Hide all service groups after reset
+    serviceBlocks.forEach((block) => (block.style.display = 'none'));
+    // Reset totals and summary
+    if (totalDisplay) totalDisplay.textContent = formatMoney(basePrice);
+    if (osList) osList.innerHTML = '';
+
+    // Restore address if present
+    prefillAddressFields();
+
+    applyConditions();
+    updateOrderSummaryVisibilityState();
+    updateOrderSummaryVisibility();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Submit
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Validate all currently open/visible fields
+    const { errors } = validateOpenFields();
+    if (errors.length > 0) {
+      // Scroll to first error section (100px above)
+      const first = errors
+        .map((fs) => ({ fs, top: fs.getBoundingClientRect().top + window.scrollY }))
+        .sort((a, b) => a.top - b.top)[0].fs;
+      const targetY = Math.max(0, first.getBoundingClientRect().top + window.scrollY - 250);
+      window.scrollTo({ top: targetY, behavior: 'smooth' });
+      const focusTarget = first.querySelector('input[type="radio"], input, select, textarea');
+      if (focusTarget) focusTarget.focus({ preventScroll: true });
+      return;
+    }
+
+    const customValidation = getCustomSizeValidation({ showErrors: true, forceAll: true });
+    if (customValidation.active && !customValidation.valid) {
+      const scrollTarget = customSizeContainer || customSizeFieldset;
+      if (scrollTarget) {
+        const targetY = Math.max(0, scrollTarget.getBoundingClientRect().top + window.scrollY - 250);
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+      }
+      return;
+    }
+
+    // With Cart Transform API, we no longer need to find a variant by price.
+    // We just pass the custom price and use the base variant ID.
+    const HARD_LIMIT_DOLLARS = 2000;
+    if (total > HARD_LIMIT_DOLLARS) {
+      setErrorMessage('Please contact us for single orders over $2000.');
+      const target = errorEl || form;
+      if (target && typeof target.scrollIntoView === 'function') {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      return;
+    }
+
+    // Use the variant ID from the hidden input on the form, or the global window var
+    const baseVariantInput = form.querySelector('input[name="id"]');
+    const baseVariantId = baseVariantInput ? parseInt(baseVariantInput.value, 10) : window.filmServiceBaseVariantId;
+
+    if (!baseVariantId) {
+      setErrorMessage('Something went wrong finding the base product. Please refresh the page or contact us.');
+      const target = errorEl || form;
+      if (target && typeof target.scrollIntoView === 'function') {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      return;
+    }
+
+    // --- Check if we need to add separate Return Shipping product ---
+    // The group name in JSON is "Add Ons - Do you want your negatives shipped back to you?"
+    // Liquid 'handle' filter usually converts this to "add-ons-do-you-want-your-negatives-shipped-back-to-you"
+    const returnShippingRadio = Array.from(form.querySelectorAll('input[type="radio"]:checked')).find((r) =>
+      r.name.includes('negatives-shipped-back')
+    );
+
+    const shippingId = window.globalReturnShippingVariantId || window.returnShippingVariantId;
+    const selectedQty = Math.max(1, parseInt(qtyInput?.value || '1', 10) || 1);
+    const fileCount = getUploadedFilesCount();
+    const finalQty = selectedQty * fileCount;
+    const itemsToAdd = [];
+
+    // 1. Check if we need to add Return Shipping
+    if (returnShippingRadio && (returnShippingRadio.value || '').toLowerCase() === 'yes' && shippingId) {
+      try {
+        const cartRes = await fetch('/cart.js');
+        if (cartRes.ok) {
+          const cart = await cartRes.json();
+          const hasShipping = cart.items.some((item) => item.id === shippingId || item.variant_id === shippingId);
+
+          if (!hasShipping) {
+            // Get location from form
+            const locationRadio = form.querySelector('input[name="location"]:checked');
+            const locationValue = locationRadio ? locationRadio.value : null;
+
+            const returnShippingProperties = { _role: 'return_shipping' };
+            if (locationValue) {
+              returnShippingProperties['Location'] = locationValue;
+            }
+
+            // console.log('Queuing Return Shipping product:', shippingId);
+            itemsToAdd.push({
+              id: parseInt(shippingId, 10),
+              quantity: 1,
+              properties: returnShippingProperties,
+            });
+          }
+        }
+      } catch (err) {
+        console.error('Error checking cart for shipping item:', err);
+      }
+    }
+
+    // 2. Add the Main Film Service Item
+    const mainItem = {
+      id: baseVariantId,
+      quantity: finalQty,
+      properties: {
+        _custom_price_cents: Math.round(total * 100).toString(),
+        // Add a fallback public property just in case Shopify strips hidden ones in Cart Transform
+        _fallback_price_cents: Math.round(total * 100).toString()
+      },
+    };
+
+    // Collect properties from fieldsets
+    const serviceRadio = form.querySelector('input[name="service"]:checked');
+    const isDarkroom = serviceRadio && serviceRadio.value === 'Darkroom Prints';
+
+    form.querySelectorAll('fieldset').forEach((fs) => {
+      // Skip hidden/unavailable fieldsets
+      if (!isVisible(fs)) return;
+
+      // 1. Radio properties
+      if (fs.dataset.group === 'Add Ons') {
+        const checkedRadios = fs.querySelectorAll('input[type="radio"]:checked');
+        checkedRadios.forEach((radio) => {
+          const val = (radio.value || '').trim();
+          if (!val || val.toLowerCase() === 'no') return;
+
+          let key = radio.name || 'Add On';
+          key = key.replace(/^add-ons-/, '').replace(/-/g, ' ');
+          key = key.replace(/\b\w/g, (c) => c.toUpperCase());
+
+          mainItem.properties[key] = val;
+        });
+      } else {
+        const checked = fs.querySelector('input[type="radio"]:checked');
+        if (checked) mainItem.properties[fs.dataset.group] = checked.value;
+      }
+
+      // 2. Text/Select properties (e.g. Address fields)
+      const addressParts = [];
+      // Check if this is the specific Delivery Address group
+      const isAddressGroup = fs.dataset.group === 'Delivery Address';
+
+      fs
+        .querySelectorAll('input[type="text"], input[type="email"], input[type="number"], input[type="hidden"], select, textarea')
+        .forEach(
+        (input) => {
+          if (!input.name || !input.name.startsWith('properties[') || input.disabled) return;
+          const match = input.name.match(/properties\[(.*?)\]/);
+          // Only add if we have a key and a value
+          if (match && match[1] && input.value.trim() !== '') {
+            if (isAddressGroup) {
+              addressParts.push(input.value.trim());
+            } else {
+              mainItem.properties[match[1]] = input.value.trim();
+            }
+          }
+        }
+      );
+
+      if (isAddressGroup && addressParts.length > 0) {
+        mainItem.properties['Delivery Address'] = addressParts.join(', ');
+      }
+    });
+
+    if (customValidation.active && customValidation.valid) {
+      mainItem.properties['Custom Width'] = `${customValidation.width}"`;
+      mainItem.properties['Custom Height'] = `${customValidation.height}"`;
+      mainItem.properties['Custom Size'] = `${customValidation.width}" × ${customValidation.height}"`;
+    }
+
+    if (!isDarkroom) {
+      // Look for uploady elements to add as property (fallback to ensure uploadly link gets added)
+      const uploadlyHiddenInputs = document.querySelectorAll('input[type="hidden"]');
+      uploadlyHiddenInputs.forEach((input) => {
+        if (input.name && input.name.startsWith('properties[') && input.value && input.value.trim() !== '') {
+          const match = input.name.match(/properties\[(.*?)\]/);
+          if (match && match[1]) {
+            // Only add if not already present to avoid overriding legitimate fieldset inputs
+            if (!mainItem.properties[match[1]]) {
+              mainItem.properties[match[1]] = input.value;
+            }
+          }
+        }
+      });
+
+      // Also grab form properties from outside the fieldset (e.g. Uploady inputs appended to body)
+      const extraUploadInputs = document.querySelectorAll(
+        'input[type="hidden"][name*="properties"], input[type="text"][name*="properties"]'
+      );
+      extraUploadInputs.forEach((input) => {
+        // Skip known properties that are not uploadly specific, avoid overriding things
+        const nameStr = input.name.toLowerCase();
+        if (
+          nameStr.includes('[return delivery]') ||
+          nameStr.includes('[turnaround]') ||
+          nameStr.includes('[message]') ||
+          nameStr.includes('[total price]') ||
+          nameStr.includes('[_timestamp]')
+        ) {
+          return;
+        }
+
+        const match = input.name.match(/properties\[(.*?)\]/);
+        if (match && match[1] && input.value && input.value.trim() !== '') {
+          // Only add if not already present
+          if (!mainItem.properties[match[1]]) {
+            mainItem.properties[match[1]] = input.value;
+          }
+        }
+      });
+    }
+
+    // Save address details to localStorage for convenience
+    try {
+      // Find all address inputs that have a value
+      const addressInputs = form.querySelectorAll(
+        'fieldset[data-group="Delivery Address"] input, fieldset[data-group="Delivery Address"] select'
+      );
+      const addressData = {};
+      let hasAddress = false;
+      addressInputs.forEach((input) => {
+        if (!input.name || !input.name.includes('properties[')) return;
+        const key = input.name.match(/properties\[(.*?)\]/)?.[1];
+        if (key && input.value.trim()) {
+          addressData[key] = input.value.trim();
+          hasAddress = true;
+        }
+      });
+      if (hasAddress) {
+        localStorage.setItem('bellows_delivery_address', JSON.stringify(addressData));
+      }
+    } catch (e) {
+      console.error('Error saving address', e);
+    }
+
+    // Add hidden flag for robust cart guard tracking
+    if (returnShippingRadio && (returnShippingRadio.value || '').toLowerCase() === 'yes') {
+      mainItem.properties['_return_shipping_required'] = 'true';
+    }
+
+    // Add special properties
+    mainItem.properties['Total Price'] = `$${total.toFixed(2)}`;
+    if (fileCount > 1) {
+      mainItem.properties['Files Uploaded'] = String(fileCount);
+    }
+    mainItem.properties['_timestamp'] = Date.now();
+
+    // 3. Add the Size Shipping Product Item
+    // We add a hidden $0 product that maps the selected size to a variant with a physical weight.
+    // This allows shipping apps like Parcelify to calculate shipping cost.
+    let sizeItem = null;
+    const selectedSize = mainItem.properties['Sizes'];
+    if (selectedSize && window.sizeShippingVariants && window.sizeShippingVariants.length > 0) {
+      // Normalize label sizes like `8” × 10”` => `8x10`
+      const normSize = (s) => (s || '').replace(/[^0-9xX×.]/g, '').replace(/[×X]/g, 'x').toLowerCase();
+
+      // Parse dimensions from variant titles like `11x14`, `11 × 14`, `11" x 14"`, etc.
+      const parseDims = (value) => {
+        const text = (value || '').toString();
+        const match = text.match(/(\d+(?:\.\d+)?)\s*[x×]\s*(\d+(?:\.\d+)?)/i);
+        if (!match) return null;
+        const a = Number(match[1]);
+        const b = Number(match[2]);
+        if (!Number.isFinite(a) || !Number.isFinite(b)) return null;
+        const shortSide = Math.min(a, b);
+        const longSide = Math.max(a, b);
+        return { shortSide, longSide, area: shortSide * longSide };
+      };
+
+      let match = null;
+
+      // Preset sizes keep exact title matching behavior.
+      if (!customValidation.active || !customValidation.valid) {
+        match = window.sizeShippingVariants.find((v) => normSize(v.title) === normSize(selectedSize));
+      } else {
+        const customShort = Math.min(customValidation.width, customValidation.height);
+        const customLong = Math.max(customValidation.width, customValidation.height);
+
+        const parsedVariants = window.sizeShippingVariants
+          .map((variant) => ({ variant, dims: parseDims(variant.title) }))
+          .filter((entry) => !!entry.dims);
+
+        const fitting = parsedVariants
+          .filter(
+            (entry) => entry.dims.shortSide >= customShort && entry.dims.longSide >= customLong
+          )
+          .sort((a, b) => {
+            // Pick the smallest bucket that still fits the custom size.
+            if (a.dims.area !== b.dims.area) return a.dims.area - b.dims.area;
+            if (a.dims.longSide !== b.dims.longSide) return a.dims.longSide - b.dims.longSide;
+            return a.dims.shortSide - b.dims.shortSide;
+          });
+
+        if (fitting.length > 0) {
+          match = fitting[0].variant;
+        } else if (parsedVariants.length > 0) {
+          // If no bucket fully fits, fall back to the largest configured bucket.
+          parsedVariants.sort((a, b) => {
+            if (a.dims.area !== b.dims.area) return b.dims.area - a.dims.area;
+            if (a.dims.longSide !== b.dims.longSide) return b.dims.longSide - a.dims.longSide;
+            return b.dims.shortSide - a.dims.shortSide;
+          });
+          match = parsedVariants[0].variant;
+        }
+      }
+
+      if (match) {
+        sizeItem = {
+          id: match.id,
+          quantity: finalQty,
+          properties: {
+            '_role': 'shipping_size',
+            '_parent_timestamp': mainItem.properties['_timestamp']
+          }
+        };
+      }
+    }
+
+    itemsToAdd.push(mainItem);
+    if (sizeItem) {
+      itemsToAdd.push(sizeItem);
+    }
+
+    const resetButtonState = () => {
+      if (!submitBtn) return;
+      submitBtn.disabled = false;
+      submitBtn.removeAttribute('aria-disabled');
+      submitBtn.classList.remove('is-loading');
+    };
+
+    const setLoadingState = () => {
+      if (!submitBtn) return;
+      submitBtn.disabled = true;
+      submitBtn.setAttribute('aria-disabled', 'true');
+      submitBtn.classList.add('is-loading');
+    };
+
+    setLoadingState();
+
+    try {
+      if (window.CartDrawerAPI && typeof window.CartDrawerAPI.addToCart === 'function') {
+        // Warning: CartDrawerAPI might not support bulk add easily if it expects FormData
+        // We will fallback to standard fetch for bundled items to ensure atomicity
+      }
+
+      const endpoint =
+        (window.Shopify && window.Shopify.routes && window.Shopify.routes.root + 'cart/add.js') || '/cart/add.js';
+
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+        body: JSON.stringify({
+          items: itemsToAdd,
+          sections: 'cart-drawer,cart-icon-bubble',
+          sections_url: window.location.pathname,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || data.status === 'error' || data.description) {
+        const message = data.description || data.message || 'Error adding to cart.';
+        console.error('Add to cart error:', data);
+        setErrorMessage(message);
+        const target = errorEl || form;
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        resetButtonState();
+        return;
+      }
+
+      // Clear and scroll on success
+      clearFormAndScrollTop();
+
+      if (cartDrawer && typeof cartDrawer.renderContents === 'function') {
+        // Pass the data (which now includes 'sections') to the drawer to render
+        cartDrawer.renderContents(data);
+
+        // Trigger global update for other components (like header bubble) if needed
+        if (window.publish && window.PUB_SUB_EVENTS) {
+          // We can pass the same data, or minimal data. cart-items often refetches if needed.
+          // But renderContents usually handles the drawer itself.
+          window.publish(window.PUB_SUB_EVENTS.cartUpdate, { source: 'film-service', cartData: data });
+        }
+      } else {
+        window.location.href = '/cart';
+      }
+
+      resetButtonState();
+    } catch (err) {
+      console.error(err);
+      setErrorMessage('Unexpected error. Please contact us.');
+      resetButtonState();
+    }
+  });
+
+  // Init
+  prefillAddressFields();
+  applyConditions();
+  updateDeliveryInfoVisibility();
+  updateOrderSummaryVisibility();
+  syncUploadlyFallbackVisibility();
+
+  // In theme preview / staging, app blocks can fail to mount immediately.
+  // Re-check for a short period so the fallback button reliably appears.
+  setTimeout(syncUploadlyFallbackVisibility, 300);
+  setTimeout(syncUploadlyFallbackVisibility, 1200);
+  setTimeout(syncUploadlyFallbackVisibility, 2500);
+
+  if (uploadlyFallbackButton) {
+    uploadlyFallbackButton.addEventListener('click', () => {
+      if (uploadlyHasAppBlock) return;
+      // Re-check immediately in case Uploady mounted after our last poll.
+      syncUploadlyFallbackVisibility();
+      const opened = openUploadlyFromFallback();
+      if (!opened) {
+        setErrorMessage(
+          'Upload tool did not load in this preview. Please refresh preview or open this theme in the customizer/live view.'
+        );
+      }
+    });
+  }
+
+  // Add an observer to clear Upload error if hidden inputs are added by Uploadly, and to re-trigger total calculation
+  const uploadFs = form.querySelector('fieldset[data-group="Upload"]');
+  if (uploadFs) {
+    let checkTimeout = null;
+    let lastKnownFileCount = getActualFilesCount();
+    
+    const observer = new MutationObserver((mutations) => {
+      let shouldCheck = false;
+      for (const mutation of mutations) {
+        if (mutation.addedNodes.length > 0 || mutation.type === 'attributes') {
+          shouldCheck = true;
+          break;
+        }
+      }
+      if (shouldCheck) {
+        if (checkTimeout) clearTimeout(checkTimeout);
+        checkTimeout = setTimeout(() => {
+          const currentCount = getActualFilesCount();
+          
+          const uploadInputs = Array.from(document.querySelectorAll('input[name*="properties"]')).filter((el) => {
+            const nameStr = el.name.toLowerCase();
+            if (
+              nameStr.includes('[return delivery]') ||
+              nameStr.includes('[turnaround]') ||
+              nameStr.includes('[message]') ||
+              nameStr.includes('[total price]') ||
+              nameStr.includes('[_timestamp]')
+            ) {
+              return false;
+            }
+            return true;
+          });
+
+          const uploadlyItems = document.querySelectorAll(
+            '.uploadly-item, .uploadly-file, .uploadly-list-item, .uploadly-preview, .uploady-item, .uploady-list-item, .uploady-preview, [data-uploadly-id], [class*="uploadly-"], [class*="uploady-"]'
+          );
+          const hasUploadedFile =
+            uploadInputs.some((el) => el.value && el.value.trim() !== '') || uploadlyItems.length > 0;
+
+          // As a fallback, check if there's any file input with a file selected
+          const fileInputs = Array.from(document.querySelectorAll('input[type="file"]'));
+          const hasNativeFile = fileInputs.some((el) => el.files && el.files.length > 0);
+
+          if (hasUploadedFile || hasNativeFile || currentCount > 0) {
+            uploadFs.classList.remove('rolls-form-card--error');
+            const errorMsg = uploadFs.querySelector('.upload-error-msg');
+            if (errorMsg) errorMsg.remove();
+          }
+
+          if (currentCount !== lastKnownFileCount) {
+            lastKnownFileCount = currentCount;
+            calculateTotal();
+          }
+          syncUploadlyFallbackVisibility();
+        }, 250);
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['value'] });
+  }
+});

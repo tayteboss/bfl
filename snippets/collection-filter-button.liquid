@@ -1,0 +1,256 @@
+{% comment %}
+  Reusable collection filters trigger + modal
+
+  - Uses Search & Discovery `collection.filters` when a `collection` object is in scope
+  - Always shows quick links (All, New Arrivals, Sale) and a list of all collections
+  - Designed to be rendered from multiple sections; JS targets via data attributes
+{% endcomment %}
+
+<!-- Filter Trigger -->
+<div class="filters-wrapper" id="active-filters">
+  <div class="filter-trigger" data-hover-shake="small">
+    <button
+      type="button"
+      class="primary-button primary-button--small"
+      data-filters-open
+      aria-haspopup="dialog"
+      aria-controls="filters-modal-{{ section.id }}"
+      data-filters-loading="false"
+    >
+      <span class="filters-button__label">+ Filters</span>
+      <span class="filters-button__spinner" aria-hidden="true"></span>
+    </button>
+  </div>
+  {% comment %}
+    Active filters summary outside the modal
+    Shows currently active filters as removable pills next to the trigger.
+  {% endcomment %}
+  {% if collection and collection.filters != empty %}
+    <div class="filters-active-list">
+      {% for filter in collection.filters %}
+        {% case filter.type %}
+          {% when 'boolean', 'list' %}
+            {% for value in filter.values %}
+              {% if value.active %}
+                <a
+                  href="{{ value.url_to_remove }}"
+                  class="filter-group__item primary-button primary-button--small is-active"
+                >
+                  <span class="active-filter-remove">×</span>
+                  {{ value.label }}
+                </a>
+              {% endif %}
+            {% endfor %}
+          {% when 'price_range' %}
+            {% assign min = filter.min_value.value %}
+            {% assign max = filter.max_value.value %}
+            {% if min != null or max != null %}
+              <a
+                href="{{ filter.url_to_remove }}"
+                class="filter-group__item primary-button primary-button--modal-filter is-active"
+              >
+                <span class="active-filter-remove">×</span>
+                {{ min | default: 0 | money }} - {{ max | default: filter.range_max | money }}
+              </a>
+            {% endif %}
+        {% endcase %}
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+{% comment %}
+  Modal
+{% endcomment %}
+<div
+  id="filters-modal-{{ section.id }}"
+  class="filters-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-hidden="true"
+  aria-labelledby="filters-modal-title-{{ section.id }}"
+  data-filters-modal
+>
+  <div class="filters-modal__dialog" role="document">
+    {% comment %}
+      Quick links: All, New Arrivals, Sale
+    {% endcomment %}
+    {% capture quick_links_html %}
+      {% assign all_products_count = 0 %}
+      {% if collections['all'] %}
+        {% assign all_products_count = collections['all'].products_count | plus: 0 %}
+      {% endif %}
+      <a
+        href="{{ routes.all_products_collection_url }}"
+        class="primary-button primary-button--modal-filter"
+      >
+        All{% if all_products_count > 0 %} <span>{{ all_products_count }}</span>{% endif %}
+      </a>
+
+      {% assign new_arrivals_count = 0 %}
+      {% if collections['new-arrivals'] %}
+        {% assign new_arrivals_count = collections['new-arrivals'].products_count | plus: 0 %}
+        {% if new_arrivals_count > 0 %}
+          <a
+            href="{{ collections['new-arrivals'].url }}"
+            class="primary-button primary-button--modal-filter"
+          >
+            New Arrivals <span>{{ new_arrivals_count }}</span>
+          </a>
+        {% endif %}
+      {% endif %}
+
+      {% assign sale_count = 0 %}
+      {% if collections['sale'] %}
+        {% assign sale_count = collections['sale'].products_count | plus: 0 %}
+        {% if sale_count > 0 %}
+          <a
+            href="{{ collections['sale'].url }}"
+            class="primary-button primary-button--modal-filter primary-button--red"
+          >
+            Sale <span>{{ sale_count }}</span>
+          </a>
+        {% endif %}
+      {% endif %}
+    {% endcapture %}
+    {% render 'filter-link-group', title: 'Shop by', content_html: quick_links_html %}
+
+    {% comment %}
+      All collections list
+    {% endcomment %}
+    {% capture collections_links_html %}
+      {% for collection_item in collections %}
+        {% if collection_item.handle != 'news-events' and collection_item.title != 'Home page' %}
+          <a
+            href="{{ collection_item.url }}"
+            class="primary-button primary-button--modal-filter"
+          >
+            {{ collection_item.title }}
+            {% if collection_item.products_count and collection_item.products_count > 0 %}
+              <span>{{ collection_item.products_count }}</span>
+            {% endif %}
+          </a>
+        {% endif %}
+      {% endfor %}
+    {% endcapture %}
+    {% unless collections_links_html == blank %}
+      {% render 'filter-link-group', title: 'Collections', content_html: collections_links_html %}
+    {% endunless %}
+
+    {% comment %}
+      Search & Discovery filters for current collection
+      Only render when a `collection` context with filters is available.
+      All filters are grouped under a single \"Filters\" heading.
+    {% endcomment %}
+    {% if collection and collection.filters != empty %}
+      <form
+        id="CollectionFiltersForm-{{ section.id }}"
+        method="get"
+        class="filters-modal__form"
+        data-filters-form
+      >
+        {% assign filters_group_html = '' %}
+        {% for filter in collection.filters %}
+          {% liquid
+            assign default_presentation = 'text'
+            assign presentation = filter.presentation | default: default_presentation
+          %}
+          {% capture filter_content_html %}
+            {% case filter.type %}
+              {% when 'boolean', 'list' %}
+                {% liquid
+                  assign sorted_values = filter.values
+                  if filter.operator == 'AND'
+                    assign active_filter_values = filter.values | where: 'active', true
+                    assign inactive_filter_values = filter.values | where: 'active', false
+                    assign sorted_values = active_filter_values | concat: inactive_filter_values
+                  endif
+                %}
+                {% for value in sorted_values %}
+                  {% liquid
+                    assign input_id = 'Filter-' | append: filter.param_name | escape | append: '-' | append: forloop.index
+                    assign is_disabled = false
+                    if value.count == 0 and value.active == false
+                      assign is_disabled = true
+                    endif
+                  %}
+                  <label
+                    class="filter-group__item primary-button primary-button--modal-filter{% if is_disabled %} filter-group__item--disabled{% endif %}{% if value.active %} filter-group__item--active{% endif %}"
+                    for="{{ input_id }}"
+                  >
+                    <input
+                      type="checkbox"
+                      id="{{ input_id }}"
+                      class="filter-option"
+                      name="{{ value.param_name }}"
+                      value="{{ value.value | escape }}"
+                      {% if value.active %}
+                        checked
+                      {% endif %}
+                      {% if is_disabled %}
+                        disabled
+                      {% endif %}
+                    >
+                    <span class="active-filter-remove">×</span>
+                    {{ value.label }}
+                    <span>{{ value.count }}</span>
+                  </label>
+                {% endfor %}
+              {% when 'price_range' %}
+                <div class="filters-price-group">
+                  <price-range class="facets__price">
+                    {% render 'price-facet', filter: filter, id_prefix: 'Filter-' %}
+                  </price-range>
+                </div>
+            {% endcase %}
+          {% endcapture %}
+
+          {% unless filter_content_html == blank %}
+            {% capture filters_group_html %}
+              {{ filters_group_html }}
+              {{ filter_content_html }}
+            {% endcapture %}
+          {% endunless %}
+        {% endfor %}
+
+        {% unless filters_group_html == blank %}
+          {% render 'filter-link-group', title: 'Filters', content_html: filters_group_html %}
+        {% endunless %}
+
+        {% assign clear_url = collection.url | default: routes.all_products_collection_url %}
+        <div class="filters-modal__actions">
+          <button
+            type="submit"
+            class="primary-button primary-button--modal-filter rounded"
+          >
+            Apply
+          </button>
+          <a
+            href="{{ clear_url }}"
+            class="primary-button primary-button--modal-filter primary-button--outline-white"
+            data-clear-filters
+          >
+            Clear
+          </a>
+          <button
+            type="button"
+            class="primary-button primary-button--modal-filter primary-button--outline-white"
+            data-filters-close
+          >
+            Close
+          </button>
+        </div>
+      </form>
+    {% else %}
+      <div class="filters-modal__actions">
+        <button
+          type="button"
+          class="primary-button primary-button--modal-filter primary-button--outline-white"
+          data-filters-close
+        >
+          Close
+        </button>
+      </div>
+    {% endif %}
+  </div>
+</div>

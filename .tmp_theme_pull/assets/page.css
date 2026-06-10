@@ -1,0 +1,9 @@
+.page__inner {
+	grid-column: 4 / -4;
+	max-width: 750px;
+	margin: 0 auto;
+
+	@media (max-width: 768px) {
+		grid-column: 1 / -1;
+	}
+}

@@ -1,0 +1,225 @@
+{% comment %}
+  Global Store Selector modal. Shows on first session for home/collection/shop pages.
+  Stores selection in sessionStorage as 'preferred_store_location'.
+  Publishes 'store:selected' via pubsub for downstream listeners.
+{% endcomment %}
+
+{{ 'store-search-modal.css' | asset_url | stylesheet_tag }}
+
+<div id="StoreSearchFloating" class="store-search-floating {{ class }}">
+  <form
+    id="StoreSearchForm"
+    class="store-search-floating__form"
+    action="{{ routes.search_url }}"
+    method="get"
+    role="search"
+    aria-label="Search products"
+  >
+    <div class="store-search-floating__wrapper">
+      <div class="store-search-floating__icon">
+        <svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8.24974 8.24998L6.44141 6.44165" stroke="#D5F4FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M4.08333 7.41667C5.92428 7.41667 7.41667 5.92428 7.41667 4.08333C7.41667 2.24238 5.92428 0.75 4.08333 0.75C2.24238 0.75 0.75 2.24238 0.75 4.08333C0.75 5.92428 2.24238 7.41667 4.08333 7.41667Z" stroke="#D5F4FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <input
+        type="search"
+        id="StoreSearchInput"
+        name="q"
+        class="store-search-floating__input"
+        placeholder="Search..."
+        autocapitalize="off"
+        autocomplete="off"
+        autocorrect="off"
+        spellcheck="false"
+        aria-label="Search products"
+      >
+      <button
+        type="submit"
+        class="store-search-floating__submit type-p-large"
+        aria-label="Search"
+        data-hover-shake
+      >
+        →
+      </button>
+      <input type="hidden" name="type" value="product">
+    </div>
+  </form>
+</div>
+
+<script>
+  (function () {
+    var FLOAT_ID = '.store-search-floating--desktop';
+    var SELECTOR = '[data-search-selector]';
+    var HIDE_DELAY_MS = 0;
+    var SCROLL_THROTTLE_MS = 100;
+    var hideTimeoutId = null;
+    var targets = [];
+
+    function ensureFloatingUi() {
+      var node = document.querySelector(FLOAT_ID);
+      if (!node) return null;
+
+      return node;
+    }
+
+    function hasTargets() {
+      try {
+        return !!document.querySelector(SELECTOR);
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function collectTargets() {
+      try {
+        targets = Array.prototype.slice.call(document.querySelectorAll(SELECTOR));
+      } catch (e) {
+        targets = [];
+      }
+    }
+
+    function setFloatingVisible(visible) {
+      var node = document.querySelector(FLOAT_ID);
+      if (!node) return;
+      node.classList.toggle('store-search-floating--visible', !!visible);
+    }
+
+    function anyTargetInView() {
+      if (!targets || !targets.length) return false;
+      var viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+      var anyVisible = false;
+      for (var i = 0; i < targets.length; i++) {
+        var t = targets[i];
+        if (!t || typeof t.getBoundingClientRect !== 'function') continue;
+        var rect = t.getBoundingClientRect();
+        // Simple overlap check: element intersects viewport vertically
+        if (rect.bottom > 0 && rect.top < viewportHeight) {
+          anyVisible = true;
+          break;
+        }
+      }
+      return anyVisible;
+    }
+
+    function updateVisibilityFromScroll(source) {
+      // Always refresh targets in case sections were added later (AJAX, theme editor, etc.)
+      collectTargets();
+      if (!targets.length) {
+        setFloatingVisible(false);
+        return;
+      }
+
+      var visible = anyTargetInView();
+      if (visible) {
+        if (hideTimeoutId) {
+          clearTimeout(hideTimeoutId);
+          hideTimeoutId = null;
+        }
+        setFloatingVisible(true);
+      } else {
+        if (hideTimeoutId) clearTimeout(hideTimeoutId);
+        hideTimeoutId = setTimeout(function () {
+          setFloatingVisible(false);
+          hideTimeoutId = null;
+        }, HIDE_DELAY_MS);
+      }
+    }
+
+    function setupScrollTracking() {
+      collectTargets();
+      ensureFloatingUi();
+
+      // Initial computation
+      updateVisibilityFromScroll('init');
+
+      // Extra delayed checks in case sections mount after initial load
+      setTimeout(function () {
+        updateVisibilityFromScroll('timeout-500');
+      }, 500);
+      setTimeout(function () {
+        updateVisibilityFromScroll('timeout-1500');
+      }, 1500);
+
+      var ticking = false;
+      var lastScrollUpdate = 0;
+      function onScrollOrResize(evt) {
+        var now = Date.now();
+        // Simple time-based throttle so we don't recompute visibility too often
+        if (now - lastScrollUpdate < SCROLL_THROTTLE_MS) {
+          return;
+        }
+        lastScrollUpdate = now;
+
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(function () {
+          updateVisibilityFromScroll(evt && evt.type);
+          ticking = false;
+        });
+      }
+
+      window.addEventListener('scroll', onScrollOrResize, { passive: true });
+      window.addEventListener('resize', onScrollOrResize);
+      // Expose for logging
+      window.__storeSearchUpdate = function () {
+        updateVisibilityFromScroll('manual');
+      };
+      window.__storeSearchCollect = collectTargets;
+    }
+
+    function setupLocationObserver() {
+      // Backwards-compatible entry point – now uses scroll-based tracking
+      setupScrollTracking();
+    }
+
+    function init() {
+      // Initialize floating search visibility when product areas are in view
+      setupLocationObserver();
+
+      // If nothing matched initially, watch for future DOM changes (pagination/sections)
+      if (!hasTargets()) {
+        try {
+          if (window.__storeSearchMo && typeof window.__storeSearchMo.disconnect === 'function') {
+            window.__storeSearchMo.disconnect();
+          }
+          var mo = new MutationObserver(function () {
+            if (document.querySelector(SELECTOR)) {
+              setupLocationObserver();
+              try {
+                mo.disconnect();
+              } catch (e) {}
+            }
+          });
+          mo.observe(document.documentElement || document.body, { childList: true, subtree: true });
+          window.__storeSearchMo = mo;
+        } catch (e) {}
+      }
+
+      // Re-evaluate when Shopify dynamically loads sections
+      document.addEventListener('shopify:section:load', function () {
+        setupLocationObserver();
+      });
+      document.addEventListener('shopify:section:unload', function () {
+        setupLocationObserver();
+      });
+
+      // Guard-submit: prevent empty submits
+      var form = document.getElementById('StoreSearchForm');
+      var input = document.getElementById('StoreSearchInput');
+      if (form && input) {
+        form.addEventListener('submit', function (e) {
+          if (!input.value || !input.value.trim()) {
+            e.preventDefault();
+          }
+        });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+</script>

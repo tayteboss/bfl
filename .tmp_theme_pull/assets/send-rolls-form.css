@@ -1,0 +1,801 @@
+#base-price {
+  display: none;
+}
+
+.opt-price {
+  display: none;
+}
+
+/* #film-service-form {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 24px;
+} */
+
+.send-rolls-title-wrapper {
+  margin: 0 auto 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    margin: 0 auto 40px;
+  }
+}
+
+.send-rolls-title {
+  opacity: 0.25;
+  text-align: center;
+}
+
+.send-rolls-subtitle {
+  text-align: center;
+}
+
+.rolls-form-cards-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  margin: 0 auto;
+  max-width: 780px;
+  position: relative;
+}
+
+.rolls-form-cards-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.rolls-form-cards-wrapper fieldset {
+  border: 2px solid transparent;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+  min-inline-size: min-content;
+}
+
+.rolls-form-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  background: var(--color-grey-light);
+  padding: 24px;
+  border-radius: 24px;
+
+  @media (max-width: 768px) {
+    padding: 24px 8px 16px 8px;
+  }
+}
+
+.rolls-form-card--error {
+  border: 2px solid lightcoral !important;
+}
+
+.rolls-form-card__heading {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.rolls-form-card__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  width: 100%;
+  background: var(--color-white);
+  padding: 24px;
+  border-radius: 24px;
+
+  @media (max-width: 768px) {
+    padding: 24px 16px 16px 16px;
+    gap: 32px;
+  }
+}
+
+.rolls-form-card__inner--delivery {
+  background: none;
+  gap: 8px;
+}
+
+.rolls-form-card__inner--addon {
+  background: none;
+  gap: 8px;
+
+  @media (max-width: 768px) {
+    padding: 24px 0 16px 0;
+  }
+}
+
+.rolls-form-card__input-wrapper {
+  background: var(--color-white);
+    width: 100%;
+    padding: 24px;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+}
+
+.rolls-form-card__input-wrapper .input-text {
+  padding: 16px;
+  background: var(--color-grey-light);
+  border-radius: 16px;
+  border: none;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: var(--font-gt-standard-mono-regular);
+  color: var(--color-black);
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+.rolls-form-card__input-wrapper .input-text::placeholder {
+  opacity: 0.5;
+}
+
+.rolls-form-card__inner-content {
+  background: var(--color-white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  border-radius: 24px;
+  width: 100%;
+}
+
+.rolls-form-card__inner--content {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.rolls-form-card__subheading {
+  text-align: center;
+}
+
+.rolls-form-card__options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.rolls-form-card__options--addon {
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+.rolls-form-card__options--custom-size {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding: 24px 0;
+}
+
+.rolls-form-card__options--custom-size .rolls-form-card__input-wrapper {
+  padding: 0;
+  width: 115px;
+}
+
+.custom-size-input-field {
+  position: relative;
+  width: 100%;
+}
+
+.custom-size-input-field .input-text {
+  width: 100%;
+  padding-right: 1.75rem;
+}
+
+.custom-size-input-suffix {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0.6;
+  font-family: var(--font-gt-standard-mono-regular);
+  line-height: 1;
+}
+
+.rolls-form-card__options--custom-size input[type="number"] {
+  /* Hide number input spinners/arrows in most browsers */
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+.rolls-form-card__options--custom-size input[type="number"]::-webkit-outer-spin-button,
+.rolls-form-card__options--custom-size input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.rolls-form-card__options-separator {
+  text-align: center;
+  font-family: var(--font-gt-standard-mono-regular);
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.rolls-form-card .quantity-popover-container {
+  max-width: 25rem;
+  width: 120px;
+}
+
+.rolls-form-card .cart-quantity {
+  height: 44px;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.service-groups-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  max-width: 780px;
+  width: 780px;
+  margin: 0 auto;
+
+  @media (max-width: 900px) {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+.rolls-form-card-content {
+  background: var(--color-highlight);
+  width: 100%;
+  padding: 24px;
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+  position: relative;
+
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
+}
+
+.rolls-form-card-content-inner {
+  @media (max-width: 768px) {
+    padding-bottom: 16px;
+  }
+}
+
+.rolls-form-card-content__header-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.rolls-form-card-content__header-btn:hover .rolls-form-card-content-trigger-btn {
+  opacity: 1;
+}
+
+.rolls-form-card-content__header-btn[aria-expanded="true"] .rolls-form-card-content-trigger-btn {
+  transform: rotate(45deg);
+}
+
+.rolls-form-card-content-trigger-btn {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  background: var(--color-black);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.25;
+  transition: all var(--transition-speed-default) var(--transition-ease);
+}
+
+.rolls-form-card-content-trigger-btn::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 1px;
+  background: var(--color-highlight);
+  border-radius: 1px;
+  transform: translate(-50%, -50%);
+}
+
+.rolls-form-card-content-trigger-btn::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1px;
+  height: 12px;
+  background: var(--color-highlight);
+  border-radius: 1px;
+  transform: translate(-50%, -50%);
+}
+
+.rolls-form-card-content--drop-off {
+  padding: 0;
+  padding-bottom: 24px;
+}
+
+.rolls-form-card-content__heading {
+  text-align: left;
+  margin: 0;
+}
+
+.rolls-form-card-content__subheading {
+  opacity: 0.5;
+  padding-top: 16px;
+  text-align: left;
+}
+
+.rolls-form-card-content__drop-off-map {
+  position: relative;
+  z-index: 2;
+  padding-top: 24px;
+}
+
+.rolls-form-card-content__drop-off-map .drop-off {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.rolls-form-card-content-options {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 24px;
+  padding-top: 24px;
+
+  @media (max-width: 768px) {
+    gap: 24px;
+  }
+}
+
+.rolls-form-card-content-options--column {
+  flex-direction: column;
+}
+
+.rolls-form-card-content-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  flex: 1;
+  min-width: calc(50% - 12px);
+  max-width: calc(50% - 12px);
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    min-width: 100%;
+    max-width: 100%;
+  }
+}
+
+.rolls-form-card-content-options--column .rolls-form-card-content-option {
+  max-width: 100%;
+}
+
+.rolls-form-card-content-option__content {
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+.rolls-form-card-content-option__label {
+  text-align: left;
+}
+
+.rolls-form-card-content-option__image {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rolls-form-card-content-option__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.rolls-form-card-content-option__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rolls-form-card-content-option__description {
+  opacity: 0.5;
+}
+
+.rolls-form-card__addon-section {
+  background: var(--color-white);
+  padding: 16px;
+  border-radius: 24px;
+  width: 100%;
+}
+
+.rolls-form-card__addon-option {
+  flex: 1;
+}
+
+.rolls-form-card__addon-heading {
+  flex: 2;
+  text-align: center;
+}
+
+.rolls-form-card__addon-subheading {
+  opacity: 0.5;
+  text-align: center;
+  max-width: 500px;
+  padding-top: 4px;
+}
+
+.rolls-form-card [data-ph-fieldname="Upload your prints here!"] {
+  margin: 0 !important;
+}
+
+.rolls-form-card [data-ph-fieldname="Upload your prints here!"] p {
+  display: none !important;
+}
+
+.rolls-form-card #uploadly-button-container {
+  margin: 0 !important;
+}
+
+@media (max-width: 768px) {
+  .rolls-form-card__addon-option:first-child {
+    order: 2;
+    flex: unset;
+  }
+
+  .rolls-form-card__addon-option:last-child {
+    order: 3;
+    flex: unset;
+  }
+
+  .rolls-form-card__addon-heading {
+    order: 1;
+    min-width: 100%;
+  }
+}
+
+.rolls-form-card__addon-option:last-child {
+  text-align: right;
+}
+
+.rolls-form-card__addon-option .bubble-option {
+  display: inline-flex;
+}
+
+.rolls-form-card-content__feature-image {
+  margin-bottom: 16px;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  overflow: hidden;
+  padding-top: 24px;
+}
+
+.rolls-form-card-content__feature-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rolls-form-card-content__drop-off-map  {
+  width: 100%;
+  overflow: hidden;
+}
+
+.rolls-form-card-content__drop-off-map .drop-off-map__map {
+  height: 350px !important;
+  min-height: 350px !important;
+
+  @media (max-width: 900px) {
+    height: 350px !important;
+    min-height: 350px !important;
+  }
+}
+
+.rolls-form-card-content__drop-off-map .drop-off-map__inner {
+  border-radius: 0;
+}
+
+.rolls-form-card-content__columns {
+  display: flex;
+  gap: 16px;
+  padding-top: 24px;
+}
+
+.rolls-form-card-content__columns--three {
+  flex-direction: column;
+  gap: 16px;
+}
+
+.rolls-form-card-content--mail-in {
+  padding: 24px 24px 0 24px;
+}
+
+.rolls-form-card-content .faq-card-or-divider::before {
+  background: var(--color-highlight);
+}
+
+.rolls-form-card-content__column-one,
+.rolls-form-card-content__column-two {
+  flex: 1;
+}
+
+.send-rolls-form-submit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.send-rolls-form-submit button {
+  width: 100%;
+  color: var(--color-yellow);
+  border: 2px solid var(--color-black);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.send-rolls-form-submit button:hover {
+  background: var(--color-yellow);
+  color: var(--color-black);
+  border-color: var(--color-black);
+}
+
+.order-summary-wrapper {
+  position: fixed;
+  bottom: -50px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100%);
+  opacity: 0;
+  z-index: 100;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+  will-change: transform, opacity;
+  padding-bottom: 74px;
+}
+
+@media (max-width: 480px) {
+  .order-summary-wrapper {
+    width: calc(100% - 32px);
+  }
+}
+
+.order-summary-wrapper.is-visible {
+  transform: translateX(-50%) translateY(calc(100% - 126px));
+  opacity: 1;
+}
+
+.order-summary-wrapper.is-visible:hover,
+.order-summary-wrapper.is-visible:focus-within,
+.order-summary-wrapper.is-visible.is-expanded {
+  transform: translateX(-50%) translateY(0);
+}
+
+.order-summary-wrapper.is-hidden-by-scroll {
+  transform: translateX(-50%) translateY(100%) !important;
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+.order-summary {
+  background: var(--color-yellow);
+  border-radius: 24px;
+  padding: 24px;
+  min-width: 350px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+
+/* Hide scrollbar for cleaner look */
+.order-summary::-webkit-scrollbar {
+  display: none;
+}
+.order-summary {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.order-summary.bottom-order-summary {
+  position: static;
+  transform: none;
+  opacity: 1;
+  max-height: none;
+  overflow: visible;
+  transition: opacity 0.4s ease;
+}
+
+.bottom-order-summary {
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto 60px;
+  box-shadow: none;
+}
+
+@media (max-width: 480px) {
+  .order-summary {
+    width: 100%;
+    min-width: unset;
+  }
+}
+
+.order-summary__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.order-summary__title {
+  text-align: left;
+  white-space: nowrap;
+}
+
+.order-summary__total {
+  display: block;
+  text-align: right;
+  font-family: var(--font-gt-standard-mono-regular);
+  width: 100%;
+  color: var(--color-black);
+}
+
+.order-summary__toggle {
+  display: block;
+  margin: 0 auto;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.order-summary__toggle span:first-child {
+  text-decoration: underline;
+}
+
+.order-summary__list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 24px 0;
+}
+
+.order-summary__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  width: 100%;
+  gap: 40px;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  padding-bottom: 4px;
+
+  @media (max-width: 768px) {
+    gap: 16px;
+  }
+}
+
+.order-summary__row:last-child {
+  border-bottom: none;
+}
+.order-summary__label {
+  margin: 0;
+}
+
+.order-summary__value-wrap {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+  gap: 8px;
+  margin: 0;
+}
+
+.order-summary__value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.order-summary__price {
+  opacity: 0.5;
+}
+
+.order-summary__details {
+  margin-bottom: 24px;
+}
+
+.rolls-form-card .dropoff-map-popup {
+  padding: 0.8rem;
+  right: 0.5rem;
+  bottom: 0.5rem;
+}
+
+.rolls-form-card .dropoff-popup__title {
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+
+.rolls-form-card .dropoff-popup__address {
+  opacity: 0.75;
+}
+
+.rolls-form-card .dropoff-popup__media {
+  display: none;
+}
+
+.send-rolls-form-error {
+  text-align: center;
+  max-width: 80%;
+  margin: 0 auto;
+  padding-top: 16px;
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+
+.form-note {
+  max-width: 550px;
+  padding: 40px 16px 0;
+  opacity: 0.5;
+}
+
+.form-note__content {
+  text-align: center;
+}
+
+.rolls-form-card [data-ph-fieldname="Upload your prints here!"] {
+  text-align: center !important;
+}
+
+.rolls-form-card [data-ph-fieldname="Upload your prints here!"] > div {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  gap: 16px !important;
+}
+
+.rolls-form-card [data-ph-fieldname="Upload your prints here!"] > div:last-child {
+  justify-content: center !important;
+}
+
+/* // "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/image-2.png?v=1774316122",
+// "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/image-3.png?v=1774338614", */
+
+

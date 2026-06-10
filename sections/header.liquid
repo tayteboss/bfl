@@ -1,0 +1,676 @@
+{{ 'header.css' | asset_url | stylesheet_tag }}
+
+<header>
+  <div class="menu-list-wrapper">
+    <nav class="menu-list">
+      {% for link in section.settings.navigation.links %}
+        <a
+          class="menu-list__item{% if link.active %} menu-list__item--active{% endif %} menu-animation-item"
+          href="{{ link.url }}"
+          data-hover-shake="left"
+        >
+          <span class="menu-list__item__icon"></span>
+          <span>
+            {{- link.title -}}
+          </span>
+        </a>
+      {% endfor %}
+      <div class="menu-list__accounts menu-animation-item">
+        {% if shop.customer_accounts_enabled %}
+          <a
+            class="menu-list__item{% if routes.account_url == request.path %} menu-list__item--active{% endif %}"
+            href="{{ routes.account_url }}"
+            data-hover-shake="left"
+          >
+            <span class="menu-list__item__icon"></span>
+            <span> My Account </span>
+          </a>
+        {% endif %}
+        <a
+          class="menu-list__item cart-button cart-button--mobile menu-bubble"
+          href="{{ routes.cart_url }}"
+          data-cart-drawer-trigger
+          aria-label="Shopping cart with {{ cart.item_count }} item{% if cart.item_count != 1 %}s{% endif %}"
+        >
+          {% if cart.item_count > 0 %}
+            <span class="menu-toggle__number" aria-hidden="true">{{ cart.item_count }}</span>
+          {% endif %}
+          <span class="menu-list__item__icon" aria-hidden="true"></span>
+          <span>Bag</span>
+        </a>
+      </div>
+      <div class="menu-store-search-wrapper store-search-wrapper--mobile menu-animation-item">
+        {% render 'store-search-modal' %}
+      </div>
+    </nav>
+    <div data-hover-shake="left">
+      <button class="menu-toggle menu-bubble" aria-label="Open Menu" data-text="Menu">
+        <div class="menu-toggle__icon"></div>
+        <span>Menu</span>
+        {% if cart.item_count > 0 %}
+          <span class="menu-toggle__number menu-toggle__number--menu-toggle" aria-hidden="true">
+            {{- cart.item_count -}}
+          </span>
+        {% endif %}
+      </button>
+    </div>
+  </div>
+
+  <div data-hover-shake="right">
+    <a
+      id="cart-icon-bubble"
+      class="cart-button cart-button--desktop menu-bubble"
+      href="{{ routes.cart_url }}"
+      aria-label="Shopping cart with {{ cart.item_count }} item{% if cart.item_count != 1 %}s{% endif %}"
+    >
+      <span>Bag</span>
+      <div class="cart-button__bubble" aria-hidden="true">
+        <span class="cart-button__number">{{ cart.item_count }}</span>
+      </div>
+    </a>
+  </div>
+</header>
+
+{% liquid
+  assign should_minimise_header = false
+  if request.page_type == 'product'
+    assign should_minimise_header = true
+  elsif request.path contains '/pages/gear-rental/' or request.path contains 'gear-rental-single' or request.path contains 'tape-digitization'
+    assign should_minimise_header = true
+  endif
+%}
+
+<script>
+
+  // Mark fonts-ready to avoid logo shift when variable fonts load
+  (function waitForFonts() {
+    try {
+      // Check if fonts are already loaded synchronously
+      // if (document && document.fonts && document.fonts.status === 'loaded') {
+      //   document.documentElement.classList.add('fonts-ready');
+      //   return;
+      // }
+
+      if (document && document.fonts && typeof document.fonts.ready?.then === 'function') {
+        // Use fonts.ready API (doesn't wait for videos/images)
+        document.fonts.ready.then(() => {
+          document.documentElement.classList.add('fonts-ready');
+        });
+
+        // Timeout fallback: show logo after 3000ms even if fonts aren't ready
+        // This prevents the logo from being blocked indefinitely if fonts fail to load
+        setTimeout(() => {
+          if (!document.documentElement.classList.contains('fonts-ready')) {
+            document.documentElement.classList.add('fonts-ready');
+          }
+        }, 3000);
+      } else {
+        // Fallback: use DOMContentLoaded instead of window.load
+        // DOMContentLoaded fires when HTML is parsed, before images/videos load
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', () => {
+            document.documentElement.classList.add('fonts-ready');
+          }, { once: true });
+        } else {
+          // Already loaded
+          document.documentElement.classList.add('fonts-ready');
+        }
+      }
+    } catch (e) {
+      // Defensive: ensure logo is shown even if fonts API fails
+      document.documentElement.classList.add('fonts-ready');
+    }
+  })();
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const header = document.querySelector('header');
+    const menuToggle = document.querySelector('.menu-toggle');
+    const body = document.body;
+    const footer = document.querySelector('.footer');
+    const logoEl = document.querySelector('.header__logo');
+    const menuOverlay = document.getElementById('menu-overlay');
+    const menuListWrapper = document.querySelector('.menu-list-wrapper');
+    const windowHeight = window.innerHeight;
+    const DESKTOP_MIN_WIDTH = 768;
+    const isDesktopViewport = window.innerWidth >= DESKTOP_MIN_WIDTH;
+
+    // Use 100px threshold for non-home pages, windowHeight / 2 for home page
+    {% if request.page_type == 'index' %}
+    const MAX_RANGE_PX = windowHeight / 2;
+    {% else %}
+    const MAX_RANGE_PX = 50;
+    {% endif %}
+    const MIN_WGHT = 20;
+    const MAX_WGHT = 190;
+    const SHOULD_MINIMISE_ON_LOAD = {{ should_minimise_header | json }};
+    let forceInitialMinimise = SHOULD_MINIMISE_ON_LOAD;
+
+    if (SHOULD_MINIMISE_ON_LOAD) {
+      body.classList.add('minimise-header');
+    }
+
+    // Track scroll direction to hide/show the menu toggle button
+    let lastScrollY = window.scrollY || window.pageYOffset || 0;
+    const SCROLL_DIR_THRESHOLD = 5; // debounce small scroll jitters
+    const MENU_TOGGLE_HIDDEN_CLASS = 'header--hidden';
+
+    // Hysteresis: after header reappears on upward scroll, require 1/4 window height
+    // of downward scrolling before minimising (hiding) it again. Also run a blink
+    // animation during this grace period.
+    let reMinimiseBlocked = false;
+    let unminimiseAnchorY = 0;
+    let reMinimiseDistancePx = 50;
+    const updateReMinimiseDistance = () => {
+      reMinimiseDistancePx = 50;
+    };
+
+    let footerHeight = footer ? footer.offsetHeight : 500;
+
+    const updateFooterHeight = () => {
+      if (footer) {
+        footerHeight = footer.offsetHeight + 200;
+      }
+    };
+
+    const updateHideHeader = () => {
+      const doc = document.documentElement;
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = doc.scrollHeight;
+      const scrollThreshold = windowHeight / 2;
+      const footerThreshold = footerHeight / 4;
+
+      const distanceToBottom = documentHeight - scrollY - windowHeight;
+      const isPastScrollThreshold = scrollY > scrollThreshold;
+      const isNearFooter = distanceToBottom <= footerThreshold;
+
+      const shouldHide = isPastScrollThreshold && isNearFooter;
+      body.classList.toggle('hide-header', shouldHide);
+    };
+
+    // Toggle minimise-header based on threshold and scroll direction
+    // Remove functionality to make header visible when scrolling up.
+    // The header will only minimise when scrolling past the threshold,
+    // and will stay minimised unless the top is reached.
+    const updateMinimiseHeader = (y, diff) => {
+      const currentY = typeof y === 'number' ? y : window.scrollY || window.pageYOffset || 0;
+
+      // On pages flagged via should_minimise_header (product, gear rental variants, etc.),
+      // keep the header permanently minimised on all viewports so the logo never appears.
+      if (SHOULD_MINIMISE_ON_LOAD) {
+        body.classList.add('minimise-header');
+        return;
+      }
+
+      const isPast = currentY > MAX_RANGE_PX;
+      if (!isPast) {
+        body.classList.remove('minimise-header');
+        return;
+      }
+      body.classList.add('minimise-header');
+    };
+
+    function closeMenu() {
+      if (!header.classList.contains('menu-open')) return;
+      header.classList.remove('menu-open');
+      const menuTextSpan = menuToggle.querySelector('span:not(.menu-toggle__number)');
+      if (menuTextSpan) menuTextSpan.textContent = 'Menu';
+      menuToggle.setAttribute('aria-label', 'Open Menu');
+      body.classList.remove('overflow-hidden');
+      body.classList.remove('menu-open');
+      document.removeEventListener('click', onDocumentClick, true);
+    }
+
+    function onDocumentClick(e) {
+      if (!header.classList.contains('menu-open')) return;
+      const target = e.target;
+      // Ignore clicks on the toggle itself
+      if (menuToggle && (target === menuToggle || menuToggle.contains(target))) return;
+      // If wrapper exists and the click is inside it, ignore
+      if (menuListWrapper && menuListWrapper.contains(target)) return;
+      // Fallback: if no wrapper, allow clicks inside the menu list to pass
+      if (!menuListWrapper && menuOverlay) {
+        const list = menuOverlay.querySelector('.menu-list');
+        if (list && list.contains(target)) return;
+      }
+      closeMenu();
+    }
+
+    menuToggle.addEventListener('click', (ev) => {
+      header.classList.toggle('menu-open');
+      const isOpen = header.classList.contains('menu-open');
+      const menuTextSpan = menuToggle.querySelector('span:not(.menu-toggle__number)');
+      if (menuTextSpan) menuTextSpan.textContent = isOpen ? 'Close' : 'Menu';
+      menuToggle.setAttribute('aria-label', isOpen ? 'Close Menu' : 'Open Menu');
+
+      // Ensure the toggle remains visible while the menu is open
+      if (isOpen) header.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
+
+      // Toggle overflow hidden on body to prevent scrolling
+      body.classList.toggle('overflow-hidden', isOpen);
+      body.classList.toggle('menu-open', isOpen);
+
+      // Click-outside listener lifecycle
+      if (isOpen) {
+        document.addEventListener('click', onDocumentClick, true);
+      } else {
+        document.removeEventListener('click', onDocumentClick, true);
+      }
+    });
+
+    // Toggle `scrolled` and `minimise-header` on header when beyond threshold and hide near page bottom.
+    // Run scroll listeners on all viewports so body.minimise-header / body.hide-header
+    // stay in sync for both desktop and mobile, but only auto-hide the menu toggle on desktop.
+    if (window.ScrollUtils && typeof window.ScrollUtils.onScroll === 'function') {
+      const threshold = MAX_RANGE_PX;
+      const onScrollUpdate = (y) => {
+        const currentY = typeof y === 'number' ? y : window.scrollY || window.pageYOffset || 0;
+        const diff = currentY - lastScrollY;
+        header.classList.toggle('scrolled', currentY > threshold);
+        updateMinimiseHeader(currentY, diff);
+        updateHideHeader();
+
+        // Hide the menu toggle when scrolling down, show when scrolling up (desktop only)
+        if (isDesktopViewport) {
+          if (header.classList.contains('menu-open')) {
+            header.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
+          } else {
+            if (diff > SCROLL_DIR_THRESHOLD) {
+              header.classList.add(MENU_TOGGLE_HIDDEN_CLASS);
+            } else if (diff < -SCROLL_DIR_THRESHOLD) {
+              header.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
+            }
+          }
+        }
+        lastScrollY = currentY;
+      };
+      const unsubscribe = window.ScrollUtils.onScroll(onScrollUpdate);
+
+      // Optional: clean up if this section is dynamically replaced
+      document.addEventListener('shopify:section:unload', () => {
+        if (typeof unsubscribe === 'function') unsubscribe();
+      });
+    } else {
+      const onScrollFallback = () => {
+        const currentY = window.scrollY || window.pageYOffset || 0;
+        const diff = currentY - lastScrollY;
+        header.classList.toggle('scrolled', currentY > MAX_RANGE_PX);
+        updateMinimiseHeader(currentY, diff);
+        updateHideHeader();
+
+        // Hide the menu toggle when scrolling down, show when scrolling up (desktop only)
+        if (isDesktopViewport) {
+          if (header.classList.contains('menu-open')) {
+            header.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
+          } else {
+            if (diff > SCROLL_DIR_THRESHOLD) {
+              header.classList.add(MENU_TOGGLE_HIDDEN_CLASS);
+            } else if (diff < -SCROLL_DIR_THRESHOLD) {
+              header.classList.remove(MENU_TOGGLE_HIDDEN_CLASS);
+            }
+          }
+        }
+        lastScrollY = currentY;
+      };
+      window.addEventListener('scroll', onScrollFallback, { passive: true });
+      document.addEventListener('shopify:section:unload', () => {
+        window.removeEventListener('scroll', onScrollFallback);
+        document.removeEventListener('click', onDocumentClick, true);
+      });
+    }
+
+    window.addEventListener('resize', () => {
+      updateFooterHeight();
+      updateHideHeader();
+      updateReMinimiseDistance();
+    });
+
+    updateFooterHeight();
+    updateHideHeader();
+    updateMinimiseHeader();
+
+    // Step-based random weight for header logo + collapse via wdth after 500px.
+    // Originally this only ran on desktop; now we let it drive the shared
+    // --font-weight-header variable on all viewports so mobile matches desktop.
+    if (logoEl && SHOULD_MINIMISE_ON_LOAD && isDesktopViewport) {
+      const currentHeaderWeight = parseInt(
+        getComputedStyle(document.documentElement).getPropertyValue('--font-weight-header'),
+        10
+      );
+      if (Number.isNaN(currentHeaderWeight) || currentHeaderWeight <= 0) {
+        document.documentElement.style.setProperty('--font-weight-header', '80');
+      }
+      logoEl.style.display = 'none';
+      logoEl.style.fontVariationSettings = '';
+    } else if (logoEl) {
+      const STEP_PX = 40;
+
+      let lastStep = -1;
+      let lastWeight = 0;
+      let lastYForWght = window.scrollY || window.pageYOffset || 0;
+      let initialBlinkTimer = null; // legacy timeout handle
+      let initialBlinkInterval = null; // new dedicated interval for startup blink
+      let initialBlinkActive = false;
+
+      let weightDirection = 1;
+      const WGHT_STEP = 25;
+      function nextSteppedWeight() {
+        const current = lastWeight || 80;
+        let next = current + weightDirection * WGHT_STEP;
+        if (next >= MAX_WGHT) {
+          next = MAX_WGHT;
+          weightDirection = -1;
+        } else if (next <= MIN_WGHT) {
+          next = MIN_WGHT;
+          weightDirection = 1;
+        }
+        return next;
+      }
+
+      // Seed from current CSS variable to avoid resetting on first scroll
+      function getCurrentVarWeight() {
+        const raw = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--font-weight-header'), 10);
+        if (Number.isNaN(raw)) return null;
+        return raw < MIN_WGHT ? MIN_WGHT : raw > MAX_WGHT ? MAX_WGHT : raw;
+      }
+      const seeded = getCurrentVarWeight();
+      if (seeded !== null) {
+        lastWeight = seeded;
+        if (lastWeight >= MAX_WGHT) weightDirection = -1;
+        else if (lastWeight <= MIN_WGHT) weightDirection = 1;
+      }
+
+      function applyForY(y) {
+        const clampedY = y < 0 ? 0 : y;
+        const isScrollingUp = clampedY < lastYForWght;
+        if (clampedY > MAX_RANGE_PX) {
+          // Collapse width to 0; keep weight driven by CSS variable
+          logoEl.style.fontVariationSettings = `"wght" var(--font-weight-header), "wdth" 0`;
+          // Do not return; continue stepping weight while scrolling down past threshold
+        }
+        // Keep current weight for first 50px from top; do not reset
+        if (clampedY < 50) {
+          lastStep = Math.floor(clampedY / STEP_PX);
+          if (!lastWeight) {
+            const seededNow = getCurrentVarWeight();
+            if (seededNow !== null) lastWeight = seededNow;
+          }
+          // Clear inline overrides so stylesheet uses the variable
+          logoEl.style.fontVariationSettings = '';
+          lastYForWght = clampedY;
+          return;
+        }
+        const step = Math.floor(clampedY / STEP_PX);
+        if (step !== lastStep) {
+          // Suppress weight changes when scrolling up within the threshold
+          if (isScrollingUp) {
+            lastYForWght = clampedY;
+            return;
+          }
+          lastStep = step;
+          lastWeight = nextSteppedWeight();
+          document.documentElement.style.setProperty('--font-weight-header', String(lastWeight));
+          // Only clear inline override below threshold so width collapse remains past threshold
+          if (clampedY <= MAX_RANGE_PX && logoEl.style.fontVariationSettings) logoEl.style.fontVariationSettings = '';
+        }
+        lastYForWght = clampedY;
+      }
+
+      // Initialize with current position
+      applyForY(window.scrollY || window.pageYOffset || 0);
+
+      let unsubscribeLogo;
+      if (window.ScrollUtils && typeof window.ScrollUtils.onScroll === 'function') {
+        unsubscribeLogo = window.ScrollUtils.onScroll(applyForY);
+      } else {
+        const onScroll = () => applyForY(window.scrollY || window.pageYOffset || 0);
+        window.addEventListener('scroll', onScroll, { passive: true });
+        unsubscribeLogo = () => window.removeEventListener('scroll', onScroll);
+      }
+
+      // Cleanup when section is unloaded in the theme editor
+      document.addEventListener('shopify:section:unload', () => {
+        if (typeof unsubscribeLogo === 'function') unsubscribeLogo();
+      });
+
+      const HOVER_INTERVAL_MS = 120;
+      const INITIAL_TIMER_LENGTH_MS = 1000;
+      let hoverTimer = null;
+      let isHovering = false;
+
+      function getCurrentWeight() {
+        // Use lastWeight from scroll logic to keep continuity
+        return lastWeight || 80;
+      }
+
+      function startHoverRandomizer() {
+        if (hoverTimer) return;
+        const headerEl = document.querySelector('header');
+        if (headerEl.classList.contains('menu-open')) return;
+        hoverTimer = setInterval(() => {
+          const yPos = window.scrollY || window.pageYOffset || 0;
+          lastWeight = nextSteppedWeight();
+          document.documentElement.style.setProperty('--font-weight-header', String(lastWeight));
+          // Only clear inline override below threshold so width collapse remains past threshold
+          if (yPos <= MAX_RANGE_PX && logoEl.style.fontVariationSettings) logoEl.style.fontVariationSettings = '';
+        }, HOVER_INTERVAL_MS);
+      }
+
+      function stopHoverRandomizer() {
+        if (hoverTimer) {
+          clearInterval(hoverTimer);
+          hoverTimer = null;
+        }
+        isHovering = false;
+        // Do not restore inline style; root variable persists the last weight
+      }
+
+      // Re-minimise grace-period blink (used while header is revealed after upward scroll)
+      let reMinimiseBlinkInterval = null;
+      function startReMinimiseBlink() {
+        if (reMinimiseBlinkInterval) return;
+        reMinimiseBlinkInterval = setInterval(() => {
+          lastWeight = nextSteppedWeight();
+          document.documentElement.style.setProperty('--font-weight-header', String(lastWeight));
+        }, HOVER_INTERVAL_MS);
+      }
+      function stopReMinimiseBlink() {
+        if (reMinimiseBlinkInterval) {
+          clearInterval(reMinimiseBlinkInterval);
+          reMinimiseBlinkInterval = null;
+        }
+      }
+      window.HeaderLogoBlink = { startReMinimiseBlink, stopReMinimiseBlink };
+
+      // Enable hover-triggered randomizer for weight changes
+      logoEl.addEventListener('mouseenter', () => {
+        isHovering = true;
+        startHoverRandomizer();
+      });
+      logoEl.addEventListener('mouseleave', stopHoverRandomizer);
+
+      // 1) Initial blink on load for 2s using a dedicated interval (separate from hover)
+      function runInitialBlink() {
+        if (initialBlinkInterval) {
+          clearInterval(initialBlinkInterval);
+          initialBlinkInterval = null;
+        }
+        initialBlinkActive = true;
+        initialBlinkInterval = setInterval(() => {
+          lastWeight = nextSteppedWeight();
+          document.documentElement.style.setProperty('--font-weight-header', String(lastWeight));
+        }, HOVER_INTERVAL_MS);
+        setTimeout(() => {
+          initialBlinkActive = false;
+          if (initialBlinkInterval) {
+            clearInterval(initialBlinkInterval);
+            initialBlinkInterval = null;
+          }
+        }, INITIAL_TIMER_LENGTH_MS);
+      }
+
+      runInitialBlink();
+
+      document.addEventListener('shopify:section:unload', () => {
+        stopHoverRandomizer();
+        if (window.HeaderLogoBlink && typeof window.HeaderLogoBlink.stopReMinimiseBlink === 'function') {
+          window.HeaderLogoBlink.stopReMinimiseBlink();
+        }
+        if (initialBlinkTimer) clearTimeout(initialBlinkTimer);
+        if (initialBlinkInterval) {
+          clearInterval(initialBlinkInterval);
+          initialBlinkInterval = null;
+        }
+      });
+
+      // Re-run the 2s blink when restored from bfcache (e.g., back/forward nav)
+      window.addEventListener('pageshow', (event) => {
+        if (event && event.persisted) {
+          runInitialBlink();
+        }
+      });
+    }
+
+    // Keep header cart count in sync without page refresh
+    if (typeof subscribe === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
+      const setHeaderCartCount = (count) => {
+        const desktopEl = document.querySelector('.cart-button--desktop .cart-button__number');
+        let mobileEl = document.querySelector('.cart-button--mobile .menu-toggle__number');
+        const menuToggle = document.querySelector('.menu-toggle');
+        let menuEl = menuToggle ? menuToggle.querySelector('.menu-toggle__number') : null;
+
+        // Ensure the mobile cart badge element exists (it may not be rendered when count is 0 on page load)
+        if (!mobileEl) {
+          const mobileCartButton = document.querySelector('.cart-button--mobile');
+          if (mobileCartButton) {
+            mobileEl = document.createElement('span');
+            mobileEl.className = 'menu-toggle__number';
+            // Insert before the icon so it appears in the expected position
+            const iconEl = mobileCartButton.querySelector('.menu-list__item__icon');
+            if (iconEl && iconEl.parentNode) {
+              iconEl.parentNode.insertBefore(mobileEl, iconEl);
+            } else {
+              mobileCartButton.appendChild(mobileEl);
+            }
+          }
+        }
+
+        // Create menu-toggle__number if it doesn't exist
+        if (!menuEl) {
+          const menuToggle = document.querySelector('.menu-toggle');
+          if (menuToggle) {
+            // Find the "Menu" text span (the one with text content "Menu")
+            const menuTextSpan = Array.from(menuToggle.querySelectorAll('span')).find(
+              (span) => span.textContent.trim() === 'Menu' && !span.classList.contains('menu-toggle__number')
+            );
+
+            if (menuTextSpan) {
+              menuEl = document.createElement('span');
+              menuEl.className = 'menu-toggle__number';
+              // Insert right after the Menu text span
+              menuTextSpan.parentNode.insertBefore(menuEl, menuTextSpan.nextSibling);
+            } else {
+              // Fallback: find any span and insert after it, or just append
+              const firstSpan = menuToggle.querySelector('span:not(.menu-toggle__number)');
+              if (firstSpan) {
+                menuEl = document.createElement('span');
+                menuEl.className = 'menu-toggle__number';
+                firstSpan.parentNode.insertBefore(menuEl, firstSpan.nextSibling);
+              } else {
+                // Last resort: append to button
+                menuEl = document.createElement('span');
+                menuEl.className = 'menu-toggle__number';
+                menuToggle.appendChild(menuEl);
+              }
+            }
+          }
+        }
+
+        // Update all elements
+        [desktopEl, mobileEl, menuEl].forEach((el) => {
+          if (!el) {
+            return;
+          }
+          el.textContent = String(count);
+          el.classList.toggle('is-zero', count === 0);
+
+          // Hide/show menu number on the menu toggle button based on count
+          if (el === menuEl) {
+            if (count === 0) {
+              el.style.display = 'none';
+              el.textContent = '';
+            } else {
+              el.style.display = '';
+              // Ensure it's visible
+              el.style.visibility = 'visible';
+              el.style.opacity = '1';
+            }
+          }
+        });
+      };
+
+      const onCartUpdate = (event) => {
+        // Try multiple ways to get the count
+        let count = null;
+        
+        if (event && event.cartData) {
+          // Try item_count first (standard Shopify cart API response)
+          if (typeof event.cartData.item_count === 'number') {
+            count = event.cartData.item_count;
+          }
+          // Try items.length as fallback
+          else if (event.cartData.items && Array.isArray(event.cartData.items)) {
+            count = event.cartData.items.length;
+          }
+          // Try total_quantity as another fallback (sum of all quantities)
+          else if (typeof event.cartData.total_quantity === 'number') {
+            count = event.cartData.total_quantity;
+          }
+        }
+        
+        if (count === null) {
+          return;
+        }
+        
+        setHeaderCartCount(count);
+      };
+
+      // Subscribe to cart updates
+      const unsubscribeCartUpdate = subscribe(PUB_SUB_EVENTS.cartUpdate, onCartUpdate);
+      
+      document.addEventListener('shopify:section:unload', () => {
+        if (typeof unsubscribeCartUpdate === 'function') unsubscribeCartUpdate();
+      });
+    }
+
+    // Handle mobile cart button to open cart drawer
+    const mobileCartButton = document.querySelector('[data-cart-drawer-trigger]');
+    if (mobileCartButton) {
+      mobileCartButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        const cartDrawer = document.querySelector('cart-drawer');
+        if (cartDrawer) {
+          cartDrawer.open(mobileCartButton);
+        }
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "navigation",
+      "label": "t:labels.menu"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "logo"
+    }
+  ]
+}
+{% endschema %}

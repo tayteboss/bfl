@@ -1,0 +1,374 @@
+{%- assign size_option_index = null -%}
+{%- assign selected_size_value = null -%}
+{%- for option in product.options_with_values -%}
+  {%- assign option_name_normalized = option.name | downcase | strip -%}
+  {%- assign option_tokens = option_name_normalized | split: ' ' -%}
+  {%- assign option_first = option_tokens[0] -%}
+  {%- if option_first == 'size' or option_first == 'sizes' -%}
+    {%- assign size_option_index = forloop.index0 -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if size_option_index != null -%}
+  {%- if size_option_index == 0 -%}
+    {%- assign selected_size_value = product.selected_or_first_available_variant.option1 -%}
+  {%- elsif size_option_index == 1 -%}
+    {%- assign selected_size_value = product.selected_or_first_available_variant.option2 -%}
+  {%- else -%}
+    {%- assign selected_size_value = product.selected_or_first_available_variant.option3 -%}
+  {%- endif -%}
+
+  <div
+    class="variant-selector"
+    data-variant-index="{{ size_option_index }}"
+    data-form-id="{{ product_form_id }}"
+    data-section-id="{{ section_id }}"
+  >
+    <fieldset class="variant-options">
+      <div class="variant-selector__options">
+        {%- for option in product.options_with_values -%}
+          {%- if forloop.index0 == size_option_index -%}
+            {%- for value in option.values -%}
+              {%- assign available_for_value = false -%}
+              {%- for v in product.variants -%}
+                {%- if size_option_index == 0 and v.option1 == value and v.available -%}
+                  {%- assign available_for_value = true -%}
+                  {%- break -%}
+                {%- elsif size_option_index == 1 and v.option2 == value and v.available -%}
+                  {%- assign available_for_value = true -%}
+                  {%- break -%}
+                {%- elsif size_option_index == 2 and v.option3 == value and v.available -%}
+                  {%- assign available_for_value = true -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+              <label
+                for="Size-{{ section_id }}-{{ value | handle }}"
+                class="variant-selector__option{% if value == selected_size_value %} is-active{% endif %}{% unless available_for_value %} is-unavailable{% endunless %}"
+              >
+                <div class="product-film-features__hint-value product-film-features__hint-value--bottom">Sold Out</div>
+                <input
+                  type="radio"
+                  id="Size-{{ section_id }}-{{ value | handle }}"
+                  name="size-choice"
+                  value="{{ value | escape }}"
+                  {% if value == selected_size_value %}
+                    checked
+                  {% endif %}
+                  {% unless available_for_value %}
+                    disabled
+                  {% endunless %}
+                >
+                <span class="variant-selector__option-label type-h1-small">{{ value }}</span>
+                <div class="variant-selector__option-icon">SIZE</div>
+              </label>
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </fieldset>
+  </div>
+
+  {%- assign has_exposure_option = false -%}
+  {%- assign has_color_option = false -%}
+  {%- for opt in product.options -%}
+    {%- assign opt_down = opt | downcase -%}
+    {%- if opt_down == 'exposures' or opt_down == 'exposure' -%}
+      {%- assign has_exposure_option = true -%}
+    {%- endif -%}
+    {%- if opt_down == 'color' -%}
+      {%- assign has_color_option = true -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- unless has_exposure_option or has_color_option -%}
+    <script type="application/json" id="ProductVariants-{{ section_id }}">
+      {{ product.variants | json }}
+    </script>
+  {%- endunless -%}
+
+  <script>
+    (function () {
+      function init() {
+        const root = document.getElementById('MainProduct-{{ section_id }}');
+        if (!root) return;
+        // Find the specific variant selector for sizes by looking for the size-choice input
+        const sizeInput = root.querySelector('input[name="size-choice"]');
+        const wrap = sizeInput ? sizeInput.closest('.variant-selector') : null;
+        if (!wrap) return;
+        const form = document.getElementById('{{ product_form_id }}');
+        if (!form) return;
+        const idInput = form.querySelector('input[name="id"]');
+        if (!idInput) return;
+        const variantsEl = document.getElementById('ProductVariants-{{ section_id }}');
+        let variants = [];
+        try {
+          variants = JSON.parse(variantsEl?.textContent || '[]');
+        } catch (e) {}
+        const sizeIndex = parseInt(wrap.getAttribute('data-variant-index') || '0', 10);
+        const optionNames = {{ product.options | json }};
+
+        function getSelectedOptions() {
+          return optionNames.map((_, idx) => {
+            if (idx === sizeIndex) {
+              const r = wrap.querySelector('input[name="size-choice"]:checked');
+              return r ? r.value : null;
+            }
+            // Check for other variant selectors (exposure, color)
+            const exposureRadio = root.querySelector('input[name="exposure-choice"]:checked');
+            if (exposureRadio) {
+              const exposureWrap = root.querySelector('.variant-selector input[name="exposure-choice"]');
+              if (exposureWrap) {
+                const exposureWrapParent = exposureWrap.closest('.variant-selector');
+                const exposureIndex = parseInt(exposureWrapParent?.getAttribute('data-variant-index') || '-1', 10);
+                if (idx === exposureIndex) {
+                  return exposureRadio.value;
+                }
+              }
+            }
+            const colorRadio = root.querySelector('input[name="color-choice"]:checked');
+            if (colorRadio) {
+              const colorWrap = root.querySelector('.variant-selector input[name="color-choice"]');
+              if (colorWrap) {
+                const colorWrapParent = colorWrap.closest('.variant-selector');
+                const colorIndex = parseInt(colorWrapParent?.getAttribute('data-variant-index') || '-1', 10);
+                if (idx === colorIndex) {
+                  return colorRadio.value;
+                }
+              }
+            }
+            const sel = root.querySelector(`#Option-{{ section_id }}-${idx}`);
+            return sel ? sel.value : null;
+          });
+        }
+
+        function findVariantByOptions(selected) {
+          if (!Array.isArray(selected) || selected.includes(null)) return null;
+          
+          // First try to find an available variant that matches all options
+          const availableVariant = variants.find((v) => 
+            v.available && 
+            Array.isArray(v.options) && 
+            v.options.every((opt, i) => opt === selected[i])
+          );
+          
+          if (availableVariant) {
+            return availableVariant;
+          }
+          
+          // If no available variant, find any matching variant (for display purposes)
+          const anyVariant = variants.find((v) => 
+            Array.isArray(v.options) && 
+            v.options.every((opt, i) => opt === selected[i])
+          );
+          
+          return anyVariant || null;
+        }
+
+        function formatCents(cents) {
+          const value = (cents || 0) / 100;
+          try {
+            return new Intl.NumberFormat(undefined, {
+              style: 'currency',
+              currency: '{{ cart.currency.iso_code }}',
+              currencyDisplay: 'symbol',
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            }).format(value);
+          } catch (e) {
+            return `${'{{ cart.currency.symbol }}'}${value.toFixed(2)}`;
+          }
+        }
+
+        function updateActiveState() {
+          wrap.querySelectorAll('.variant-selector__option').forEach((opt) => opt.classList.remove('is-active'));
+          const checked = wrap.querySelector('input[name="size-choice"]:checked');
+          if (checked) checked.closest('.variant-selector__option')?.classList.add('is-active');
+        }
+        
+        function updateAvailabilityState() {
+          // Update availability state for all size options based on current variants
+          wrap.querySelectorAll('.variant-selector__option').forEach((optionEl) => {
+            const radio = optionEl.querySelector('input[type="radio"]');
+            if (!radio) return;
+            
+            const sizeValue = radio.value;
+            
+            // Check if there's any available variant with this size
+            const hasAvailableVariant = variants.some((v) => {
+              if (!v.available) return false;
+              if (!Array.isArray(v.options)) return false;
+              return v.options[sizeIndex] === sizeValue;
+            });
+            
+            if (hasAvailableVariant) {
+              optionEl.classList.remove('is-unavailable');
+              radio.disabled = false;
+            } else {
+              optionEl.classList.add('is-unavailable');
+              radio.disabled = true;
+              // If this option is checked but unavailable, uncheck it
+              if (radio.checked) {
+                radio.checked = false;
+                // Find and select the first available option
+                const firstAvailable = wrap.querySelector('.variant-selector__option:not(.is-unavailable) input[type="radio"]');
+                if (firstAvailable) {
+                  firstAvailable.checked = true;
+                  firstAvailable.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+              }
+            }
+          });
+        }
+
+        function handleVariantChange() {
+          updateActiveState();
+          const selected = getSelectedOptions();
+          
+          const matched = findVariantByOptions(selected);
+          
+          // If no match OR if matched variant is unavailable, try to find an available variant
+          if (!matched || !matched.available) {
+            const sizeValue = selected[sizeIndex];
+            if (sizeValue) {
+              // Find any available variant with the selected size
+              const availableWithSize = variants.find((v) => {
+                if (!v.available) return false;
+                if (!Array.isArray(v.options)) return false;
+                return v.options[sizeIndex] === sizeValue;
+              });
+              
+              if (availableWithSize) {
+                // Update other option selects to match this available variant
+                let optionsUpdated = false;
+                optionNames.forEach((name, idx) => {
+                  if (idx !== sizeIndex && availableWithSize.options[idx]) {
+                    const sel = root.querySelector(`#Option-{{ section_id }}-${idx}`);
+                    if (sel && sel.value !== availableWithSize.options[idx]) {
+                      sel.value = availableWithSize.options[idx];
+                      optionsUpdated = true;
+                    }
+                  }
+                });
+                
+                // If we updated options, retry matching
+                if (optionsUpdated) {
+                  const updatedSelected = getSelectedOptions();
+                  const retryMatched = findVariantByOptions(updatedSelected);
+                  if (retryMatched && retryMatched.available) {
+                    updateVariantUI(retryMatched);
+                    return;
+                  }
+                } else {
+                  // Options didn't need updating, use the available variant directly
+                  updateVariantUI(availableWithSize);
+                  return;
+                }
+              } else {
+                // Still no available variant - disable button
+                if (matched && !matched.available) {
+                  updateVariantUI(matched); // Still update UI to show it's unavailable
+                  return;
+                }
+              }
+            }
+            
+            // No match at all - disable button
+            if (!matched) {
+              const submit = document.getElementById('ProductSubmitButton-{{ section_id }}');
+              if (submit) {
+                submit.setAttribute('disabled', 'disabled');
+                submit.setAttribute('aria-disabled', 'true');
+              }
+              return;
+            }
+          }
+          
+          // Matched variant is available - use it
+          updateVariantUI(matched);
+        }
+        
+        function updateVariantUI(matched) {
+          // Update ALL variant ID inputs to handle duplicates (e.g. from apps)
+          const idInputs = form.querySelectorAll('input[name="id"]');
+          idInputs.forEach(input => {
+            input.value = matched.id;
+            // Never disable the input - just disable the button if unavailable
+            input.removeAttribute('disabled');
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+          });
+
+          // Update price in-place (fallback)
+          const priceNodes = root.querySelectorAll('.product-content__price .type-p-large');
+          const priceEl = priceNodes && priceNodes[priceNodes.length - 1];
+          if (priceEl) priceEl.textContent = formatCents(matched.price);
+
+          // Toggle submit button disabled state for UX
+          const submit = document.getElementById('ProductSubmitButton-{{ section_id }}');
+          if (submit) {
+            if (matched.available) {
+              submit.removeAttribute('disabled');
+              submit.removeAttribute('aria-disabled');
+            } else {
+              submit.setAttribute('disabled', 'disabled');
+              submit.setAttribute('aria-disabled', 'true');
+            }
+          }
+          
+          // Ensure form is properly initialized after variant change
+          // Check if product-form element exists and re-initialize if needed
+          const productForm = form.closest('product-form');
+          if (productForm && typeof productForm.initialize === 'function') {
+            // Just verify form is still initialized, don't re-init unnecessarily
+            if (!productForm._initialized) {
+              productForm.initialize();
+            }
+          }
+        }
+
+        // Click the entire option to select
+        wrap.querySelectorAll('.variant-selector__option').forEach((opt) => {
+          opt.addEventListener('click', (e) => {
+            const input = opt.querySelector('input[type="radio"]');
+            if (!input || input.disabled) return;
+            if (!input.checked) {
+              input.checked = true;
+              input.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+          });
+        });
+
+        // Bind to radio changes
+        wrap.querySelectorAll('input[type="radio"][name="size-choice"]').forEach((radio) => {
+          radio.addEventListener('change', handleVariantChange);
+        });
+
+        // Also react to changes on other option selects
+        root.querySelectorAll('select[id^="Option-{{ section_id }}-"]').forEach((sel) => {
+          sel.addEventListener('change', () => {
+            updateAvailabilityState();
+            handleVariantChange();
+          });
+        });
+
+        // React to changes in other variant selectors (exposure, color)
+        root.querySelectorAll('input[name="exposure-choice"], input[name="color-choice"]').forEach((radio) => {
+          radio.addEventListener('change', () => {
+            updateAvailabilityState();
+            handleVariantChange();
+          });
+        });
+
+        // Initialize
+        updateAvailabilityState();
+        handleVariantChange();
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init, { once: true });
+      } else {
+        init();
+      }
+    })();
+  </script>
+{%- endif -%}

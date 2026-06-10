@@ -1,0 +1,376 @@
+
+.services__header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 10rem;
+
+  @media (max-width: 768px) {
+    margin-bottom: 4rem;
+  }
+}
+
+.services__heading {
+  text-align: center;
+}
+
+.services-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  row-gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    gap: 0.125rem;
+    row-gap: 0.25rem;
+  }
+}
+
+.services-intro__subheading {
+  grid-column: 3 / -3;
+  margin-bottom: 4rem;
+
+  @media (max-width: 1024px) {
+    grid-column: 2 / -2;
+    margin-bottom: 2.5rem;
+  }
+
+  @media (max-width: 768px) {
+    grid-column: 1 / -1;
+  }
+}
+
+.services-intro__paragraph-1 {
+  grid-column: 4 / -4;
+  margin-bottom: 9.375rem;
+
+  @media (max-width: 1024px) {
+    grid-column: 3 / -3;
+    margin-bottom: 5rem;
+  }
+
+  @media (max-width: 768px) {
+    grid-column: 1 / -1;
+  }
+}
+
+.services-intro__image-wrapper {
+  grid-column: 3 / -3;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 2rem;
+  max-height: 43.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 1024px) {
+    grid-column: 2 / -2;
+  }
+
+  @media (max-width: 768px) {
+    grid-column: 1 / -1;
+    border-radius: 1rem;
+  }
+
+  @media (max-width: 480px) {
+    max-height: 18.75rem;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.service-card {
+  position: relative;
+}
+
+.service-card::before {
+  content: '';
+  display: block;
+  height: 120px;
+  margin-top: -120px;
+  visibility: hidden;
+}
+
+.service-card .layout-grid {
+  row-gap: 4rem;
+
+  @media (max-width: 768px) {
+    row-gap: 2.5rem;
+  }
+}
+
+.service-card__content {
+  grid-column: 4 / -4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+
+  @media (max-width: 1024px) {
+    grid-column: 3 / -3;
+  }
+
+  @media (max-width: 768px) {
+    grid-column: 1 / -1;
+  }
+}
+
+.service-card__heading-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.service-card__heading {
+  text-align: center;
+  width: 100%;
+}
+
+.service-card__badge {
+  color: var(--color-black);
+  background: var(--color-green);
+}
+
+.service-card__paragraph {
+  text-align: left;
+  width: 100%;
+}
+
+.service-card__notes {
+  width: 100%;
+
+  ul {
+    padding-left: 2rem;
+  }
+
+  li {
+    list-style-type: disc;
+  }
+}
+
+.service-card__button-wrapper {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    * {
+      width: 100%;
+    }
+  }
+}
+
+.service-card__image-wrapper {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 35vw;
+  height: auto;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+  }
+}
+
+.service-card__image-wrapper--left {
+  left: -15%;
+}
+
+.service-card__image-wrapper--right {
+  right: -15%;
+}
+
+.service-card__table-wrapper {
+  grid-column: 2 / -2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+
+  @media (max-width: 1024px) {
+    grid-column: 1 / -1;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+}
+
+.service-card__table-figure {
+}
+
+.service-table {
+  border-collapse: collapse;
+}
+
+.service-table thead th {
+  text-align: left;
+  font-family: var(--font-gt-standard-mono-light);
+  font-weight: 300;
+  font-size: 0.75rem; /* 12px */
+  line-height: 1rem; /* 16px */
+  text-transform: uppercase;
+  padding: 1rem 0;
+
+  @media (max-width: 768px) {
+    font-size: 0.625rem; /* 10px */
+    line-height: 1rem; /* 16px */
+    letter-spacing: 0;
+  }
+}
+
+.service-table thead th {
+  border-color: var(--color-black) !important;
+}
+
+.service-table tbody td {
+  border-color:  rgba(0, 0, 0, 0.15) !important;
+
+}
+
+.service-table th,
+.service-table td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid currentColor;
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+  min-width: 250px;
+  width: 25%;
+}
+
+.service-table td {
+  font-family: var(--font-gt-standard-mono-regular);
+  font-weight: 400;
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.25rem; /* 20px */
+  padding: 1rem 0.5rem 1rem 0;
+
+  @media (max-width: 768px) {
+    font-size: 0.8125rem; /* 13px */
+    line-height: 1.4; /* 140% */
+    letter-spacing: 0;
+  }
+}
+
+.service-card__table-caption {
+  padding: 1rem 0;
+  text-align: center;
+  font-family: var(--font-gt-standard-mono-regular);
+  font-weight: 400;
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.25rem; /* 20px */
+  opacity: 0.5;
+
+  @media (max-width: 768px) {
+    font-size: 0.8125rem; /* 13px */
+    line-height: 1.4; /* 140% */
+    letter-spacing: 0;
+    text-align: left;
+  }
+}
+
+.service-card__table-desktop {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 480px) {
+    display: none;
+  }
+}
+
+.service-card__table-mobile {
+  width: 100%;
+  height: auto;
+  display: none;
+
+  @media (max-width: 480px) {
+    display: block;
+  }
+}
+
+/* Horizontal scroll for tables on small screens */
+.service-card__table-wrapper {
+  position: relative; /* for gradient overlay positioning */
+
+  @media (max-width: 1024px) {
+    display: block;
+  }
+}
+
+.service-card__table-scroller {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  padding-bottom: 0.5rem; /* space for scrollbar */
+}
+
+.service-card__table-figure {
+  width: auto;
+  
+  @media (max-width: 1024px) {
+    width: max-content;
+    min-width: 100%;
+  }
+}
+
+.service-table {
+  width: max-content;
+  min-width: 100%;
+  white-space: nowrap;
+}
+
+@media (min-width: 769px) {
+  /* allow wrapping on larger screens if desired */
+  .service-table {
+    white-space: normal;
+  }
+}
+
+/* Right feather gradient when content overflows to the right */
+.service-card__table-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: var(--table-fade-width, 3rem);
+  pointer-events: none;
+  background: linear-gradient(to left, var(--table-fade-color, #fff), rgba(255, 255, 255, 0));
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.service-card__table-wrapper.show-right-gradient::after {
+  opacity: 1;
+}
+
+.service-card__key {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+
+  @media (max-width: 768px) {
+    justify-content: flex-start;
+  }
+}

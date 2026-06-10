@@ -1,0 +1,51 @@
+<div class="footer-links footer-links--stores">
+  <h2 class="footer-links__title type-h6">{{ title }}</h2>
+  <nav aria-label="Store locations">
+    <ul role="list" class="footer-address-list" data-locations-list>
+      {%- comment -%} Locations will be populated via JavaScript from locations.json {%- endcomment -%}
+    </ul>
+  </nav>
+</div>
+
+<script>
+  (function () {
+    const locationsList = document.querySelector('[data-locations-list]');
+    if (!locationsList) return;
+
+    const jsonUrl =
+      window.Shopify && window.Shopify.assetUrl
+        ? window.Shopify.assetUrl('locations.json')
+        : '{{ "locations.json" | asset_url }}';
+
+    fetch(jsonUrl, { credentials: 'same-origin' })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((locations) => {
+        if (!locations || !Array.isArray(locations)) return;
+
+        locations.forEach((location) => {
+          const li = document.createElement('li');
+          li.className = 'footer-links__item';
+
+          li.innerHTML = `
+            <h3 class="type-p-small">${location.name}</h3>
+            <div class="footer-links__address type-p-small">
+              <a
+                href="${location.addressUrl}"
+                target="_blank"
+                rel="noopener"
+                class="type-p-small"
+              >${location.address}</a>
+              <a 
+                class="type-p-small" 
+                href="tel:${location.phoneFormatted}" 
+                aria-label="${location.ariaLabel}"
+              >${location.phone}</a>
+            </div>
+          `;
+
+          locationsList.appendChild(li);
+        });
+      })
+      .catch(() => {});
+  })();
+</script>

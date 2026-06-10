@@ -1,0 +1,211 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "services_fwfpCD": {
+      "type": "services-page",
+      "blocks": {
+        "service_link_3LN3tm": {
+          "type": "service-link",
+          "settings": {
+            "link_text": "Film Development",
+            "anchor_id": "film-development"
+          }
+        },
+        "service_link_nEy4qw": {
+          "type": "service-link",
+          "settings": {
+            "link_text": "Scanning",
+            "anchor_id": "scanning"
+          }
+        },
+        "service_link_ebp9pd": {
+          "type": "service-link",
+          "settings": {
+            "link_text": "Printing",
+            "anchor_id": "printing"
+          }
+        },
+        "service_link_6zTiGJ": {
+          "type": "service-link",
+          "settings": {
+            "link_text": "Tape Digitizing",
+            "anchor_id": "tape-digitizing"
+          }
+        },
+        "service_link_DeeQgG": {
+          "type": "service-link",
+          "settings": {
+            "link_text": "Flextight X5",
+            "anchor_id": "flextight"
+          }
+        },
+        "service_link_iJ3R64": {
+          "type": "service-link",
+          "settings": {
+            "link_text": "Darkroom Rental",
+            "anchor_id": "darkroom"
+          }
+        },
+        "service_link_w9GGdF": {
+          "type": "service-link",
+          "settings": {
+            "link_text": "Camera Rental",
+            "anchor_id": "camera-rental"
+          }
+        }
+      },
+      "block_order": [
+        "service_link_3LN3tm",
+        "service_link_nEy4qw",
+        "service_link_ebp9pd",
+        "service_link_6zTiGJ",
+        "service_link_DeeQgG",
+        "service_link_iJ3R64",
+        "service_link_w9GGdF"
+      ],
+      "name": "Services Details",
+      "settings": {
+        "heading": "Our Services",
+        "subheading": "Bellows began as a single pro lab in Miami and has since grown into a network of labs—Miami, Chicago, and beyond—trusted by photographers nationwide.",
+        "services-paragraph-1": "We handle every part of the process with care: precise film development, expert scanning, and hands-on printing. Whether it’s C-41, B&W, E-6, ECN-2.  or tape digitizing, Bellows is built to serve photographers who want consistent results, honest color, and real craft in a digital-first world. Photographers who want to stand out.",
+        "servicesimage": "shopify://shop_images/IMG_0354_2.jpg"
+      }
+    },
+    "service_jehEyF": {
+      "type": "service",
+      "name": "Film Development",
+      "settings": {
+        "anchor_id": "film-development",
+        "heading": "Film Development",
+        "badge": "",
+        "paragraph": "Your film hits chemistry less than 24 hours after it arrives—no back-log pallets, no mystery stains. Color (C-41) is souped in seasoned Noritsu racks; B&W is hand-tanked in Ilford archival chemistry; E-6 and ECN-2 run in dedicated lines to keep colors honest. \n\nPush/pull and cross-process requests are logged on every hanger, then checked by a second tech before rinsing. Expect 24 hour turn turnaround for all your processing needs, and a text/email when your film is ready for viewing and sharing.",
+        "notes": "<p>Notes:</p><ul><li>Formats accepted: 35mm, 120/220, 126, 110, APS, 4×5 sheets, 8x10 and more.</li><li>Archival sleeves and contact sheets available on request.</li><li>Eco-friendly fixer disposal and water-recirculation in every location.</li></ul>",
+        "table-caption": "*Times quoted for the Miami lab; other locations may differ.",
+        "button": "Send Us Your Rolls",
+        "cta": "shopify://pages/send-us-your-rolls",
+        "buttonA": "",
+        "ctaA": ""
+      }
+    },
+    "service_zXRfUN": {
+      "type": "service",
+      "name": "Scanning",
+      "settings": {
+        "anchor_id": "scanning",
+        "heading": "Scanning",
+        "badge": "",
+        "paragraph": "All Bellows Locations run Noritsu HS-1800 and Frontier SP-3000 units for roll scanning—both profiled weekly with in-house IT8 targets—so skin tones stay consistent across stocks. Choose Medium JPGs for socials, Hi-Res JPGs for print spreads, or full 14-bit TIFFs when you need every grain. A human operator frames every shot (no auto-crop) and flags overlaps or scratches for a gratis re-scan.\n\nOur Flextight X5 and Epson 13000XL scanners can handle the highest of quality scanning, up to 8000DPI Per Frame.",
+        "notes": "",
+        "table-caption": "",
+        "button": "Scan My Film",
+        "cta": "shopify://pages/send-us-your-rolls",
+        "buttonA": "",
+        "ctaA": ""
+      }
+    },
+    "service_GBPgiH": {
+      "type": "service",
+      "name": "Printing",
+      "settings": {
+        "anchor_id": "printing",
+        "heading": "Printing",
+        "badge": "",
+        "paragraph": "At Bellows, we treat printing as an extension of your art. Every detail—tone, texture, color, and depth—is preserved with intention.\n\nOur studio specializes in large-format fine art prints up to 44\" × 60\", crafted with archival papers and pigment-based inks for museum-quality longevity. Choose from matte, gloss, luster, metallic, or premium fine-art stocks to match the mood of your work.\n\nEach print is hand-inspected, color-checked, and packaged with care so it arrives ready to frame, display, or share.\n\nBellows Film Lab is dedicated to supporting artists—bringing your images to life with the same craft and precision we bring to every part of our process.",
+        "notes": "<p><strong>Paper We Use:</strong></p><ul><li>Arista-II RC Lustre Inkjet Paper </li><li>Canson Infinity Baryta Prestige II Paper</li><li>Canson Infinity Plattine Fibre Rag Inkjet Paper</li><li>Canson Rag Photographique Inkjet Paper</li></ul><p></p><p>Questions about printing? </p><p>Email contact@bellowsfilmlab.com</p><p></p>",
+        "table-caption": "",
+        "button": "Print my Film",
+        "cta": "shopify://pages/film-printing",
+        "buttonA": "",
+        "ctaA": ""
+      }
+    },
+    "service_3Qnrpd": {
+      "type": "service",
+      "name": "Flextight",
+      "settings": {
+        "anchor_id": "flextight",
+        "heading": "Flextight X5 Drum-Quality Scans",
+        "badge": "",
+        "paragraph": "Virtual-drum mounting means zero Newton rings and up to 6300 dpi without wet mounting. Perfect for gallery editions or photobooks. Files arrive as untouched 3F raws or colour-graded TIFFs—your choice.",
+        "notes": "<p>Notes:</p><ul><li>Max file size: ~200 MB per frame.</li><li>Dust removal pass and 48-bit output available.</li><li>Price: $35 per frame (discounts 10+).</li></ul>",
+        "table-caption": "",
+        "button": "Reserve the X5",
+        "cta": "shopify://products/flextight-x5-rental-atlanta",
+        "buttonA": "",
+        "ctaA": ""
+      }
+    },
+    "service_dEWPfw": {
+      "type": "service",
+      "name": "Darkroom Rental",
+      "settings": {
+        "anchor_id": "darkroom",
+        "heading": "Darkroom Rental (Atlanta & Miami)",
+        "badge": "New",
+        "paragraph": "Go beyond scanning and discover the hands-on magic of analog printing. Bellows Miami, Atlanta and Chicago location now offering a community + private darkroom rental—everything you need to develop and print up to 20×24″ black & white and 16x20 color. By Appointment.",
+        "notes": "<p>What's included:</p><ul><li>In-house chemistry, color processors, trays, and a sink.</li><li>Various enlargers for B&W and RA-4.</li><li>Negative holders from 35mm up to 4×5” sheet film.</li></ul>",
+        "table-caption": "",
+        "button": "Atlanta Darkroom",
+        "cta": "shopify://products/darkroom-rental",
+        "buttonA": "Miami Darkroom",
+        "ctaA": "https://https://bellowsfilmlab.com/products/darkroom-rental-miami"
+      }
+    },
+    "service_DwyEKt": {
+      "type": "service",
+      "name": "Camera Rental",
+      "settings": {
+        "anchor_id": "camera-rental",
+        "heading": "Camera Rental",
+        "badge": "",
+        "paragraph": "Test-drive the classics before you commit. Every body is CLA’d, shot-tested, and leaves with fresh batteries. From point-and-shoot Contax T3s to a Hasselblad 503CM kit, the shelf rotates weekly. Try the classics before you own them.",
+        "notes": "",
+        "table-caption": "",
+        "button": "Browse Rental Gear",
+        "cta": "shopify://pages/gear-rental",
+        "buttonA": "",
+        "ctaA": ""
+      }
+    },
+    "service_aHeRqQ": {
+      "type": "service",
+      "name": "Tape Digitizing",
+      "settings": {
+        "anchor_id": "tape-digitizing",
+        "heading": "Tape Digitizing",
+        "badge": "",
+        "paragraph": "Mini DV, VHS-C, Hi8—if it’s magnetic, we can rescue it. Footage is captured at 10-bit 4:2:2 ProRes, de-interlaced with motion-adaptive hardware, and delivered as an edit-ready MP4 or on a USB-C SSD. Time-base errors are stabilised, audio normalised, and tapes are returned (or recycled) alongside your negatives.",
+        "notes": "<p>Available formats </p><p>8mm </p><p>Hi-8</p><p>VHS</p><p>BetaSP</p><p>MiniDV</p><p>Standard DV </p><p>And More. </p>",
+        "table-caption": "",
+        "button": "Digitize My Tapes",
+        "cta": "shopify://products/tape-digitization",
+        "buttonA": "",
+        "ctaA": ""
+      }
+    },
+    "drop_off_Gwk6Tz": {
+      "type": "drop-off",
+      "name": "Drop-off",
+      "settings": {}
+    }
+  },
+  "order": [
+    "services_fwfpCD",
+    "service_jehEyF",
+    "service_zXRfUN",
+    "service_GBPgiH",
+    "service_3Qnrpd",
+    "service_dEWPfw",
+    "service_DwyEKt",
+    "service_aHeRqQ",
+    "drop_off_Gwk6Tz"
+  ]
+}

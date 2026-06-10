@@ -1,0 +1,110 @@
+.wall-of-fame__header-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+  max-width: 840px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+
+  @media (max-width: 768px) {
+    margin-bottom: 2rem;
+  }
+}
+
+.wall-of-fame__header-wrapper .form-field {
+  width: auto;
+}
+
+.wall-of-fame__header-wrapper .form-field select {
+  padding: 1.5rem 3.5rem 1.5rem 1.5rem;
+}
+
+.swiper-slide {
+  width: auto !important;
+}
+
+.swiper-slide:first-child {
+  margin-left: calc(100vw / 12);
+
+  @media (max-width: 768px) {
+    margin-left: 1rem;
+  }
+}
+
+.swiper-slide:last-child {
+  margin-right: calc(100vw / 12);
+
+  @media (max-width: 768px) {
+    margin-right: 1rem;
+  }
+}
+
+
+.image-carousel__image-ratio {
+  position: relative;
+  display: inline-block;
+  width: auto;
+  height: 80vh;
+
+  @media (max-width: 768px) {
+    height: 40vh;
+  }
+}
+
+.image-carousel__image-inner {
+  position: relative;
+  display: inline-block;
+  width: auto;
+  height: 100%;
+  overflow: visible;
+}
+
+.image-carousel__image-inner:hover img {
+  transform: scale(1.02);
+}
+
+.image-carousel-item img {
+  display: block;
+  width: auto;
+  height: 100%;
+  border-radius: 1rem;
+
+  transition: all 200ms var(--transition-ease);
+}
+
+.wall-of-fame__ig-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 1rem;
+  color: var(--color-black);
+  background: var(--color-grey-light);
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
+  
+  @media (max-width: 768px) {
+    top: 85%;
+    max-width: 90%;
+    margin: 0 auto;
+  }
+}
+
+.wall-of-fame__ig-button:hover {
+  background: var(--color-yellow);
+  color: var(--color-black);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+}
+
+.wall-of-fame__ig-button a {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}

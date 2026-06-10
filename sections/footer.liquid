@@ -1,0 +1,209 @@
+{{ 'footer.css' | asset_url | stylesheet_tag }}
+
+<footer class="footer cursor-animation-off" role="contentinfo">
+  <div class="footer-socials">
+    <a
+      href="{{ settings.social_instagram_link }}"
+      target="_blank"
+      class="type-p hover-blinking uppercase"
+      rel="noopener noreferrer"
+      aria-label="Instagram - Opens in new tab"
+    >
+      Instagram
+    </a>
+    <a
+      href="{{ settings.social_tiktok_link }}"
+      target="_blank"
+      class="type-p hover-blinking uppercase"
+      rel="noopener noreferrer"
+      aria-label="TikTok - Opens in new tab"
+    >
+      TikTok
+    </a>
+  </div>
+  <div class="layout-grid">
+    {% render 'footer-links-list', title: 'Quick Links', links: section.settings.menu.links %}
+    {% render 'footer-links-list', title: 'Customer Care', links: section.settings['second-menu'].links %}
+    {% render 'footer-stores-list', title: 'Stores', links: section.settings['third-menu'].links %}
+    {% render 'newsletter' %}
+    <div class="footer-bottom">
+      <div class="footer-bottom__top-bar">
+        <div class="footer-credits">
+          <a
+            href="https://bienstudio.com.au"
+            target="_blank"
+            class="type-h6 hover-blinking"
+            rel="noopener noreferrer"
+            aria-label="Bien Studio Design - Opens in new tab"
+          >
+            Bien Studio <sup>Design</sup>
+          </a>
+          <a
+            href="https://tayte.co"
+            target="_blank"
+            class="type-h6 hover-blinking"
+            rel="noopener noreferrer"
+            aria-label="Tayte.co Development - Opens in new tab"
+          >
+            Tayte.co <sup>Dev</sup>
+          </a>
+        </div>
+        <button
+          class="footer-top-button type-h6 hover-blinking"
+          aria-label="Scroll back to top of page"
+        >
+          Back to Top ▲
+        </button>
+      </div>
+      {% render 'footer-logo' %}
+    </div>
+  </div>
+  {% comment %}
+    <div class="footer-image-wrapper">
+      <img
+        src="{{ section.settings.photo | image_url }}"
+        width="auto"
+        height="auto"
+        alt=""
+        role="presentation"
+      >
+    </div>
+  {% endcomment %}
+</footer>
+
+<script>
+  (function () {
+    var footerTopButton = document.querySelector('.footer-top-button');
+    if (!footerTopButton) return;
+
+    footerTopButton.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    });
+  })();
+
+  // Cursor position maps Y -> weight for footer logo (active only when footer is in view)
+  (function () {
+    const footer = document.querySelector('.footer');
+    const footerLogo = document.querySelector('.footer__logo');
+    if (!footer || !footerLogo) return;
+
+    // Allow disabling via class on the footer
+    if (footer.classList.contains('cursor-animation-off')) {
+      return;
+    }
+
+    // Disable animation on mobile/touch devices; keep footer wght using --font-weight-header
+    const disableAnimation =
+      (window.matchMedia &&
+        (window.matchMedia('(hover: none) and (pointer: coarse)').matches ||
+          window.matchMedia('(max-width: 768px)').matches)) ||
+      false;
+    if (disableAnimation) {
+      return;
+    }
+
+    const MIN_WGHT = 10;
+    const MAX_WGHT = 250;
+    const CHANGE_THRESHOLD = 400;
+
+    function clamp(n, min, max) {
+      return n < min ? min : n > max ? max : n;
+    }
+
+    function setRandomWeight() {
+      const w = Math.floor(Math.random() * (MAX_WGHT - MIN_WGHT + 1)) + MIN_WGHT;
+      document.documentElement.style.setProperty('--font-weight-header', String(w));
+    }
+
+    let unsubscribe = null;
+    let observing = false;
+    let observer;
+    let hasReceivedInitial = false;
+    let lastChangeX = 0;
+
+    function subscribeCursor() {
+      if (unsubscribe || !window.CursorUtils || typeof window.CursorUtils.onMove !== 'function') return;
+      unsubscribe = window.CursorUtils.onMove(({ x }) => {
+        if (!hasReceivedInitial) {
+          hasReceivedInitial = true; // ignore CursorUtils' immediate initial call
+          lastChangeX = x;
+          return;
+        }
+        if (Math.abs(x - lastChangeX) >= CHANGE_THRESHOLD) {
+          setRandomWeight();
+          lastChangeX = x;
+        }
+      });
+    }
+
+    function unsubscribeCursor() {
+      if (typeof unsubscribe === 'function') {
+        unsubscribe();
+        unsubscribe = null;
+      }
+      hasReceivedInitial = false;
+      lastChangeX = 0;
+    }
+
+    function initObserver() {
+      if (!('IntersectionObserver' in window)) {
+        subscribeCursor();
+        return;
+      }
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.target !== footer) return;
+            if (entry.isIntersecting) {
+              subscribeCursor();
+            } else {
+              unsubscribeCursor();
+            }
+          });
+        },
+        { root: null, threshold: 0 }
+      );
+      observer.observe(footer);
+      observing = true;
+    }
+
+    initObserver();
+
+    // Cleanup when this section is removed/updated in the theme editor
+    document.addEventListener('shopify:section:unload', () => {
+      unsubscribeCursor();
+      if (observing && observer) observer.disconnect();
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "footer",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "t:labels.menu"
+    },
+    {
+      "type": "link_list",
+      "id": "second-menu",
+      "label": "t:labels.menu"
+    },
+    {
+      "type": "image_picker",
+      "id": "photo",
+      "label": "Floating image"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Footer Logo"
+    }
+  ]
+}
+{% endschema %}

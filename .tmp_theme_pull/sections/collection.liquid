@@ -1,0 +1,109 @@
+{% comment %}
+  This section is used in the collection template to render collection page
+  listing all products within a collection.
+
+  https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
+{% endcomment %}
+
+{{ 'collection.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="main-collection"
+  aria-labelledby="main-collection-heading"
+  data-collection-section
+  data-section-id="{{ section.id }}"
+  data-collection-handle="{{ collection.handle }}"
+  data-search-selector
+>
+  <div class="layout-wrapper">
+    <section class="main-collection__header">
+      <h2
+        id="main-collection-heading"
+        class="main-collection__heading type-h1-large"
+      >
+        Shop {{ collection.title }}
+      </h2>
+      {% render 'collection-filter-button' %}
+    </section>
+  </div>
+  {% paginate collection.products by 30 %}
+    <section
+      class="collection-list layout-grid layout-wrapper"
+      role="region"
+      aria-label="Featured products"
+      data-collection-list
+      data-search-selector
+    >
+      {% assign any_products = false %}
+      {% assign visible_count = 0 %}
+      {% for product in collection.products %}
+        {% if visible_count >= 24 %}
+          {% break %}
+        {% endif %}
+        {% assign hidden = false %}
+        {% for tag in product.tags %}
+          {% if tag == 'Hidden' %}
+            {% assign hidden = true %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+        {% unless product.template_suffix == 'news-events'
+          or product.collections contains collections['news-events']
+          or hidden
+        %}
+          {% render 'product-card', product: product %}
+          {% assign any_products = true %}
+          {% assign visible_count = visible_count | plus: 1 %}
+        {% endunless %}
+      {% endfor %}
+      {% if any_products == false %}
+        <div class="collection-empty-message" role="status" aria-live="polite">
+          <p class="collection-empty-message__title type-h1-x-small">No products to show.</p>
+          <div class="collection-empty-message__button-wrapper">
+            <a
+              href="{{ routes.all_products_collection_url }}"
+              class="primary-button primary-button--small"
+              aria-label="View all products"
+            >
+              View All Products
+            </a>
+          </div>
+        </div>
+      {% endif %}
+    </section>
+    {% if paginate.pages > 1 and paginate.next %}
+      <div class="pagination-button">
+        <div data-hover-shake>
+          <a
+            href="{{ paginate.next.url }}"
+            class="primary-button"
+            data-collection-load-more
+            aria-label="Load more products"
+            >Load More</a
+          >
+        </div>
+      </div>
+    {% endif %}
+  {% endpaginate %}
+</section>
+
+<script src="{{ 'collection.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "collection-image-text",
+      "label": "Banner text",
+      "default": "SS25 BELLOWS MERCH COLLECTION"
+    },
+    {
+      "type": "image_picker",
+      "id": "collection-image",
+      "label": "Collection Image Banner"
+    }
+  ]
+}
+{% endschema %}

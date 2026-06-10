@@ -1,0 +1,20 @@
+{% comment %}
+  Renders a filter button
+
+  Usage:
+  {% render 'filter-button', title: 'Filter', id: '123', url: 'https://www.google.com' %}
+{% endcomment %}
+
+{% if title and url %}
+  <div data-hover-shake="small">
+    <a
+      href="{{ url }}"
+      target="_self"
+      class="filter-button type-p {% if request.path contains url %} filter-button--active{% endif %}"
+      {% if request.path contains url %}aria-current="page"{% endif %}
+      aria-label="Filter by {{ title }}"
+    >
+      {{- title -}}
+    </a>
+  </div>
+{% endif %}

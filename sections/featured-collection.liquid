@@ -1,0 +1,121 @@
+{{ 'collection.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="featured-collection"
+  aria-labelledby="featured-collection-heading"
+  data-collection-section
+  data-section-id="{{ section.id }}"
+  data-search-selector
+>
+  <div class="layout-wrapper">
+    <section class="featured-collection__header">
+      <h1
+        id="featured-collection-heading"
+        class="featured-collection__heading type-h1-large"
+      >
+        {{ section.settings.heading }}
+      </h1>
+      <div
+        class="collection-filters"
+        role="navigation"
+        aria-label="Collection filters"
+      >
+        {% if request.page_type == 'index' %}
+          {% render 'filter-button',
+            title: 'Send us your rolls',
+            id: 'send-us-your-rolls',
+            url: '/pages/send-us-your-rolls'
+          %}
+        {% endif %}
+        {% for block in section.blocks %}
+          {% assign collection = collections[block.settings.collection] %}
+          {% if collection %}
+            {% render 'filter-button', title: collection.title, id: collection.id, url: collection.url %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+
+  {% paginate collections.frontpage.products by 30 %}
+    <section
+      class="collection-list layout-grid layout-wrapper"
+      role="region"
+      aria-label="Featured products"
+      data-collection-list
+    >
+      {% assign has_visible_products = false %}
+      {% assign visible_count = 0 %}
+      {% for product in collections.frontpage.products %}
+        {% if visible_count >= 24 %}
+          {% break %}
+        {% endif %}
+        {% assign hidden = false %}
+        {% for tag in product.tags %}
+          {% if tag == 'Hidden' %}
+            {% assign hidden = true %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+        {% unless hidden or product.template_suffix == 'news-events' %}
+          {% assign has_visible_products = true %}
+          {% render 'product-card', product: product %}
+          {% assign visible_count = visible_count | plus: 1 %}
+        {% endunless %}
+      {% endfor %}
+
+      {% unless has_visible_products %}
+        <div class="collection-empty-message" role="status" aria-live="polite">
+          <h2 class="collection-empty-message__title">No products found</h2>
+        </div>
+      {% endunless %}
+    </section>
+    {% if paginate.pages > 1 and paginate.next %}
+      <div class="pagination-button">
+        <div data-hover-shake>
+          <a
+            href="{{ paginate.next.url }}"
+            class="primary-button"
+            data-collection-load-more
+            aria-label="Load more products"
+            >Load More</a
+          >
+        </div>
+      </div>
+    {% endif %}
+  {% endpaginate %}
+</section>
+
+{% schema %}
+{
+  "name": "featured-collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop Products"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Select collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection",
+      "category": "Homepage",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

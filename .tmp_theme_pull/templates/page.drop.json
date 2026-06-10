@@ -1,0 +1,258 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "drop-off",
+      "blocks": {
+        "location_PEaJaM": {
+          "type": "location",
+          "name": "Meadowlark Coffee",
+          "settings": {
+            "id": "Meadowlark",
+            "name": "Meadowlark Coffee",
+            "address": "109 Bradford St NE, Gainesville, GA 30501",
+            "lat": "34.300011",
+            "lng": "-83.826958",
+            "phone": "",
+            "website": "",
+            "google_maps_url": "https://share.google/PYlm9GjDmoBhdze9f"
+          }
+        },
+        "location_CfQrFE": {
+          "type": "location",
+          "name": "Daydreamer Cafe",
+          "settings": {
+            "id": "Daydreamer",
+            "name": "Daydreamer Cafe",
+            "address": "174 N Finley St, Athens, GA 30601",
+            "lat": "33.957062",
+            "lng": "-83.382950",
+            "phone": "",
+            "website": "",
+            "google_maps_url": "https://share.google/glUA5s1az4wn9VkqZ"
+          }
+        },
+        "location_8mE6KA": {
+          "type": "location",
+          "name": "Studio Boise",
+          "settings": {
+            "id": "studio-boise",
+            "name": "Studio Boise",
+            "address": "4619 W Emerald St Suite 106, Boise, ID 83706",
+            "lat": "43.61159896850586",
+            "lng": "-116.23944091796875",
+            "phone": "(208) 917-7427",
+            "website": "https://studioboise.org/",
+            "google_maps_url": "https://www.google.com/maps/search/studio+boise/@43.6112503,-116.2397195,12z?entry=s&sa=X&ved=1t%3A199789"
+          }
+        },
+        "location_VYX89q": {
+          "type": "location",
+          "name": "Bellows Film Lab Orlando",
+          "settings": {
+            "id": "bellows-film-lab-orlando",
+            "name": "Bellows Film Lab Orlando",
+            "address": "2426 E Robinson St, Orlando, FL 32803",
+            "lat": "28.5458673",
+            "lng": "-81.35156",
+            "phone": "+1 407-704-1100",
+            "website": "",
+            "google_maps_url": "https://www.google.com/maps/place/Bellows+Film+Lab+Orlando/@28.545853,-81.353263,17z/data=!3m1!4b1!4m6!3m5!1s0x88e77bdcc220c33d:0xa9d17f8696e2026f!8m2!3d28.545853!4d-81.3506827!16s%2Fg%2F11y8zmw3ss?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D"
+          }
+        },
+        "location_G4CVT6": {
+          "type": "location",
+          "name": "Bellows Film Lab Atlanta",
+          "settings": {
+            "id": "Bellows-Film-Lab-Atlanta",
+            "name": "Bellows Film Lab Atlanta",
+            "address": "1140 Euclid Ave NE, Atlanta, GA 30307",
+            "lat": "33.755811",
+            "lng": "-84.359871",
+            "phone": "4049074191",
+            "website": "https://www.bellowsfilmlab.com",
+            "google_maps_url": "https://share.google/IU94jIanPTIoi6Vvu"
+          }
+        },
+        "location_TxFwkb": {
+          "type": "location",
+          "name": "Bellows Film Lab Chicago",
+          "settings": {
+            "id": "bellows-film-lab-chicago",
+            "name": "Bellows Film Lab Chicago",
+            "address": "1359 N Milwaukee Ave, Chicago, IL 60622",
+            "lat": "41.9067107",
+            "lng": "-87.6712412",
+            "phone": "+1 773-904-7434",
+            "website": "https://www.bellowsfilmlab.com/",
+            "google_maps_url": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x880fd3b66f626319:0xfa76adf078f918fd?sa=X&ved=1t:8290&ictx=111",
+            "thumbnail": "shopify://shop_images/bellow-chicago.png"
+          }
+        },
+        "location_nRxVet": {
+          "type": "location",
+          "name": "Bellows Film Lab Miami",
+          "settings": {
+            "id": "bellows-film-lab-miami",
+            "name": "Bellows Film Lab Miami",
+            "address": "2051 NW 2nd Ave, Miami, FL 33127",
+            "lat": "25.7962534",
+            "lng": "-80.1990123",
+            "phone": "+1 305-456-4006",
+            "website": "https://www.bellowsfilmlab.com/",
+            "google_maps_url": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x88d9b6b1d8772e43:0x39645be5459ca515?sa=X&ved=1t:8290&ictx=111",
+            "thumbnail": "shopify://shop_images/bello-miami.png"
+          }
+        },
+        "location_QPQewT": {
+          "type": "location",
+          "name": "Layla & Ringo's",
+          "settings": {
+            "id": "layla-ringo",
+            "name": "Layla & Ringo's",
+            "address": "914 N Wells St, Chicago, IL 60610",
+            "lat": "41.8995242",
+            "lng": "-87.6345586",
+            "phone": "(312) 763-3703",
+            "website": "https://www.layla-ringos.com/",
+            "google_maps_url": "https://www.google.com/maps/place/Layla+%26+Ringo's/@41.899479,-87.6372263,17z/data=!3m1!4b1!4m6!3m5!1s0x880fd35d1284226b:0x7055229d5f0f9a9c!8m2!3d41.899479!4d-87.634646!16s%2Fg%2F11m5fvdbjf?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D",
+            "thumbnail": "shopify://shop_images/54549DJs-MainDining.jpg"
+          }
+        },
+        "location_tMbyPU": {
+          "type": "location",
+          "name": "Picked",
+          "settings": {
+            "id": "picked",
+            "name": "Picked",
+            "address": "742 W Madison St Unit 113, Tallahassee, FL 32304",
+            "lat": "30.43659592",
+            "lng": "-84.29329681",
+            "phone": "+1 850-308-5363",
+            "website": "https://pickedtlh.com/",
+            "google_maps_url": "https://www.google.com/maps/place/Picked/@30.4368378,-84.2946691,17z/data=!4m14!1m7!3m6!1s0x88ecf5126966d997:0xea3bf3c531c5a56e!2sEclipse+on+Madison!8m2!3d30.4368378!4d-84.2946691!16s%2Fg%2F11c3q4q1f6!3m5!1s0x88ecf574d734b40f:0xe94aee7e5e89eb52!8m2!3d30.4368517!4d-84.2946161!16s%2Fg%2F11rckyntn2?entry=ttu&g_ep=EgoyMDI1MTAwOC4wIKXMDSoASAFQAw%3D%3D",
+            "thumbnail": "shopify://shop_images/picked.png"
+          }
+        },
+        "location_czJ3wQ": {
+          "type": "location",
+          "name": "Kismet Village",
+          "settings": {
+            "id": "kismet-villlage",
+            "name": "Kismet Village",
+            "address": "540 Clematis St, West Palm Beach, FL 33401",
+            "lat": "26.7133439",
+            "lng": "-80.0560214",
+            "phone": "+1 561-865-7895",
+            "website": "https://www.kismetvintage.com/",
+            "google_maps_url": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x88d8dfc370d8837b:0xdade8e7db0459977?sa=X&ved=1t:8290&ictx=111",
+            "thumbnail": "shopify://shop_images/kismet-village.jpg"
+          }
+        },
+        "location_4BAqwh": {
+          "type": "location",
+          "name": "Easy Luck Coffee",
+          "settings": {
+            "id": "easy-luck-coffee",
+            "name": "Easy Luck Coffee",
+            "address": "2425 E South St. Orlando, FL 32803",
+            "lat": "28.538763",
+            "lng": "-81.3514885",
+            "phone": "",
+            "website": "https://www.easyluckorlando.com/",
+            "google_maps_url": "https://www.google.com/maps/place/Easy+Luck+Coffee+%26+Bodega/@28.538849,-81.3506509,17z/data=!3m1!4b1!4m6!3m5!1s0x88e77ad821129da3:0xd6e6b4bf2bf1f1cf!8m2!3d28.538849!4d-81.3506509!16s%2Fg%2F11f5h21mg_?entry=ttu&g_ep=EgoyMDI1MTAwOC4wIKXMDSoASAFQAw%3D%3D",
+            "thumbnail": "shopify://shop_images/easy-luck.png"
+          }
+        },
+        "location_cKTDPw": {
+          "type": "location",
+          "name": "The Auk Market",
+          "settings": {
+            "id": "the-auk-market",
+            "name": "The Auk Market",
+            "address": "2031 NW Sixth St Gainesville, FL 32609",
+            "lat": "29.6712181",
+            "lng": "-82.3307626",
+            "phone": "",
+            "website": "https://www.theaukmarket.com/",
+            "google_maps_url": "https://www.google.com/maps/place/THE+AUK+MARKET/@29.6717756,-82.3301774,17z/data=!3m1!4b1!4m6!3m5!1s0x88e8a5650b063205:0xda6ca4d59e4e45b9!8m2!3d29.6717756!4d-82.3301774!16s%2Fg%2F11h0jn0q_k?entry=ttu&g_ep=EgoyMDI1MTAwOC4wIKXMDSoASAFQAw%3D%3D",
+            "thumbnail": "shopify://shop_images/auk-market.png"
+          }
+        },
+        "location_Tq3CcX": {
+          "type": "location",
+          "name": "Seattle Doll Parts",
+          "settings": {
+            "id": "seattle-doll-parts",
+            "name": "Seattle Doll Parts",
+            "address": "4832 California Ave SW Seattle WA, 98116",
+            "lat": "47.5583068",
+            "lng": "-122.3866543",
+            "phone": "+1 585-900-1598",
+            "website": "https://wearedollparts.com/",
+            "google_maps_url": "https://www.google.com/maps/place/Doll+Parts+Collective/@47.5584256,-122.386739,17z/data=!3m1!4b1!4m6!3m5!1s0x549041946ff2f6c5:0xe0dad1d1c647efe5!8m2!3d47.5584256!4d-122.386739!16s%2Fg%2F11jwdn5rkf?entry=ttu&g_ep=EgoyMDI1MTAwOC4wIKXMDSoASAFQAw%3D%3D",
+            "thumbnail": "shopify://shop_images/Seattle_Doll_Parts.png"
+          }
+        },
+        "location_zDWeJr": {
+          "type": "location",
+          "name": "Durham YOURS",
+          "settings": {
+            "id": "durham-yours",
+            "name": "Durham YOURS",
+            "address": "209 N. Gregson St. Durham, NC 27701",
+            "lat": "36.0012613",
+            "lng": "-78.9084662",
+            "phone": "+1 919-695-3910",
+            "website": "https://www.yoursdurham.com/",
+            "google_maps_url": "https://www.google.com/maps/place/Yours+Durham/@36.0012957,-78.9084618,17z/data=!3m1!4b1!4m6!3m5!1s0x89ace5b612f783f1:0x30a3052c3143ac4a!8m2!3d36.0012957!4d-78.9084618!16s%2Fg%2F11t5kr108l?entry=ttu&g_ep=EgoyMDI1MTAwOC4wIKXMDSoASAFQAw%3D%3D",
+            "thumbnail": "shopify://shop_images/durham.png"
+          }
+        },
+        "location_A9mppP": {
+          "type": "location",
+          "name": "CollectedATL",
+          "settings": {
+            "id": "marietta-dropbox",
+            "name": "Marietta Dropbox",
+            "address": "10 Powder Springs St SW, Marietta, GA 30064",
+            "lat": "33.940902",
+            "lng": "-84.553156",
+            "phone": "4049074191",
+            "website": "",
+            "google_maps_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "location_PEaJaM",
+        "location_CfQrFE",
+        "location_8mE6KA",
+        "location_VYX89q",
+        "location_G4CVT6",
+        "location_TxFwkb",
+        "location_nRxVet",
+        "location_QPQewT",
+        "location_tMbyPU",
+        "location_czJ3wQ",
+        "location_4BAqwh",
+        "location_cKTDPw",
+        "location_Tq3CcX",
+        "location_zDWeJr",
+        "location_A9mppP"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

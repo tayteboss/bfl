@@ -1,0 +1,147 @@
+{{ 'faq.css' | asset_url | stylesheet_tag }}
+
+<section class="faqs-page" aria-labelledby="faqs-page-heading">
+  <div class="layout-wrapper">
+    <div class="faqs-page__header">
+      <h1
+        id="faqs-page-heading"
+        class="faqs-page__heading type-h1-large"
+      >
+        FAQ's
+      </h1>
+      {% if section.blocks.size > 0 %}
+        <nav
+          class="faqs-page-nav"
+          aria-label="FAQ navigation"
+        >
+          {% for block in section.blocks %}
+            {% if block.type == 'faq_heading' %}
+              {% assign current_heading_id = block.settings.heading | handleize %}
+              {% if block.settings.heading != blank %}
+                <div class="faq-button">
+                  {% render 'anchor-button', title: block.settings.heading, id: current_heading_id %}
+                </div>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </nav>
+      {% endif %}
+    </div>
+
+    <div class="faq-page-list-wrapper" data-faq-list>
+      {% assign current_heading_id = '' %}
+      {% assign current_heading = '' %}
+      {% for block in section.blocks %}
+        {% if block.type == 'faq_heading' %}
+          {% if current_heading != '' %}
+            </div>
+            </div>
+          {% endif %}
+          {% assign current_heading_id = block.settings.heading | handleize %}
+          {% assign current_heading = block.settings.heading %}
+          {% if current_heading != blank %}
+            <div class="faq-page-list-item" id="{{ current_heading_id }}" data-in-view>
+              <div class="faq-heading">
+                <h2 class="type-h2">{{ current_heading }}</h2>
+              </div>
+              <div class="faq-list" role="region" aria-labelledby="{{ current_heading_id }}">
+          {% endif %}
+        {% elsif block.type == 'faq_item' %}
+          {% if block.settings.question != blank %}
+            {% render 'faq-card',
+              block: block,
+              question: block.settings.question,
+              answer: block.settings.answer,
+              heading_id: current_heading_id
+            %}
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+      {% if current_heading != '' %}
+        </div>
+        </div>
+      {% endif %}
+    </div>
+
+    {% if section.settings.need_help_heading != blank or section.settings.need_help_message != blank %}
+      <div class="need-help type-p-x-large" data-in-view>
+        {% if section.settings.need_help_heading != blank %}
+          <p class="need-help__heading">{{ section.settings.need_help_heading }}</p>
+        {% endif %}
+        {% if section.settings.need_help_message != blank %}
+          <div class="need-help__message">{{ section.settings.need_help_message }}</div>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% comment %} THIS THING IS CAUSING ISSUES!!! {% endcomment %}
+{% if section.settings.stamp_image != blank %}
+  <div class="faq-page__stamp-image">
+    <img src="{{ section.settings.stamp_image | image_url }}" alt="" role="presentation" width="auto" height="auto">
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "FAQ-Page",
+  "settings": [
+    {
+      "type": "text",
+      "id": "need_help_heading",
+      "label": "Need Help Heading",
+      "default": "NEED HELP?"
+    },
+    {
+      "type": "richtext",
+      "id": "need_help_message",
+      "label": "Need Help Message",
+      "default": "<p>CALL US ON <a href=\"tel:+13054564006\">+1 (305) 456 4006</a> OR EMAIL <a href=\"mailto:lab@bellowsfilm.com\">LAB@BELLOWSFILM.COM</a> — A REAL HUMAN WILL REPLY WITHIN ONE BUSINESS DAY.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "stamp_image",
+      "label": "Stamp Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_heading",
+      "name": "Section Heading",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Hours & Location"
+        }
+      ]
+    },
+    {
+      "type": "faq_item",
+      "name": "Question & Answer",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Example Question?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Example Answer.</p>"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 50,
+  "presets": [
+    {
+      "name": "FAQ-Page",
+      "category": "FAQ Page"
+    }
+  ]
+}
+{% endschema %}

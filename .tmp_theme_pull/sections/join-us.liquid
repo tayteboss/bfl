@@ -1,0 +1,56 @@
+{{ 'join-us.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="join-us"
+  aria-labelledby="join-us-heading"
+>
+  <div class="layout-wrapper">
+    <div class="join-us__inner">
+      <div class="join-us__header">
+        <div class="join-us__header-wrapper">
+          {% if section.settings.heading != blank %}
+            <h1
+              id="join-us-heading"
+              class="join-us__heading type-h2-medium"
+            >
+              {{ section.settings.heading }}
+            </h1>
+          {% endif %}
+          {% if section.settings.subheading != blank %}
+            <h2 class="join-us__subheading type-h2-medium">{{ section.settings.subheading }}</h2>
+          {% endif %}
+        </div>
+      </div>
+      <div class="join-us-form">
+        {% render 'join-us-form' %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Join us",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join our team"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "We’re always looking for great people. Use the form below to introduce yourself."
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "Join us",
+      "category": "Pages"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,133 @@
+{{ 'imagecarousel.css' | asset_url | stylesheet_tag }}
+
+<section
+  id="image-carousel-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+  aria-label="Image carousel"
+  role="region"
+  data-in-view
+  class="image-carousel"
+>
+  <div class="image-carousel__inner">
+    <div
+      class="swiper js-image-carousel image-carousel"
+      aria-roledescription="carousel"
+    >
+      <div
+        class="swiper-wrapper"
+        aria-live="polite"
+        aria-atomic="false"
+      >
+        {% for block in section.blocks %}
+          <div
+            class="swiper-slide image-carousel-item"
+            {{ block.shopify_attributes }}
+            role="group"
+            aria-roledescription="slide"
+            aria-label="Slide {{ forloop.index }} of {{ section.blocks.size }}"
+          >
+            {% if block.settings.image != blank %}
+              <div class="image-carousel__image-ratio">
+                <div class="image-carousel__image-inner">
+                  <img
+                    src="{{ block.settings.image | image_url }}"
+                    alt="{{ block.settings.alt | escape | default: 'Carousel image ' | append: forloop.index }}"
+                    loading="lazy"
+                    width="auto"
+                    height="auto"
+                  >
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initImageCarousels() {
+    var carousels = document.querySelectorAll('.js-image-carousel');
+    if (!carousels || carousels.length === 0) return;
+
+    var autoplayEnabled = {{ section.settings.autoplay | json }};
+
+    carousels.forEach(function (carouselEl) {
+      if (typeof window.Swiper !== 'function') return;
+
+      var options = {
+        slidesPerView: 'auto',
+        breakpoints: {
+          0: {
+            spaceBetween: 8,
+          },
+          768: {
+            spaceBetween: 16,
+          },
+        },
+        loop: false,
+        freeMode: true,
+        grabCursor: true,
+      };
+
+      if (autoplayEnabled) {
+        options.loop = false;
+        options.freeMode = true;
+        options.allowTouchMove = true;
+        options.autoplay = {
+          disableOnInteraction: true,
+          reverseDirection: true,
+        };
+        options.speed = 10000; // continuous ticker speed
+      }
+
+      new window.Swiper(carouselEl, options);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initImageCarousels);
+  } else {
+    initImageCarousels();
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Image Carousel",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Carousel Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Alt text",
+          "default": "Carousel image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image Carousel",
+      "category": "Homepage"
+    }
+  ]
+}
+{% endschema %}

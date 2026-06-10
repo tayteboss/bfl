@@ -1,0 +1,118 @@
+{{ 'contact.css' | asset_url | stylesheet_tag }}
+
+<div class="contact" role="main" aria-labelledby="contact-page-heading">
+  <div class="layout-wrapper">
+    <div class="contact__inner">
+      <section class="contact-page__header" data-in-view>
+        {% if section.settings.heading != blank %}
+          <h1
+            id="contact-page-heading"
+            class="contact-page__heading type-h1-large"
+          >
+            {{ section.settings.heading }}
+          </h1>
+        {% endif %}
+        {% if section.blocks.size > 0 %}
+          <nav
+            class="contact-page-nav"
+            aria-label="Contact navigation"
+          >
+            {% for block in section.blocks %}
+              {% if block.type == 'info' and block.settings.heading != blank %}
+                {% assign current_heading_id = block.settings.heading | handleize %}
+                <div class="contact-button">
+                  {% render 'anchor-button', title: block.settings.heading, id: current_heading_id %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          </nav>
+        {% endif %}
+      </section>
+      {% if section.settings.paragraph != blank %}
+        <section class="contact-paragraph type-p-large" aria-label="Contact information" data-in-view>
+          {{ section.settings.paragraph }}
+        </section>
+      {% endif %}
+      <section class="contact-page-list-wrapper" aria-label="Contact details" data-in-view>
+        {% for block in section.blocks %}
+          {% if block.settings.heading != blank %}
+            {% assign current_heading_id = block.settings.heading | handleize %}
+            <div id="{{ current_heading_id }}" class="contact-card">
+              <h3 class="contact-card__heading type-p-large">{{ block.settings.heading }}</h3>
+              {% if block.settings.paragraph != blank %}
+                <div class="contact-card__content type-p">
+                  {{ block.settings.paragraph }}
+                </div>
+              {% endif %}
+              {% comment %}
+                {% if block.settings.email != blank %}
+                  <div class="contact-card__email">
+                    {% if block.settings.email_icon != blank %}
+                      <span class="contact-card__email-icon type-p" aria-hidden="true">
+                        {{- block.settings.email_icon -}}
+                      </span>
+                    {% endif %}
+                    <a
+                      class="contact-card__email-text type-p"
+                      href="mailto:{{ block.settings.email }}"
+                      aria-label="Email {{ block.settings.email }}"
+                    >
+                      {{- block.settings.email -}}
+                    </a>
+                  </div>
+                {% endif %}
+              {% endcomment %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </section>
+    </div>
+  </div>
+  {% render 'contact-form' %}
+</div>
+
+{% schema %}
+{
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Get in touch"
+    },
+    {
+      "type": "richtext",
+      "id": "paragraph",
+      "label": "Contact blurb"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "info",
+      "name": "Contact Info",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading for contact item"
+        },
+        {
+          "type": "richtext",
+          "id": "paragraph",
+          "label": "Text (hold shift and press enter for a line break if not working)"
+        },
+        {
+          "type": "text",
+          "id": "email_icon",
+          "label": "Email icon"
+        },
+        {
+          "type": "text",
+          "id": "email",
+          "label": "Email"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

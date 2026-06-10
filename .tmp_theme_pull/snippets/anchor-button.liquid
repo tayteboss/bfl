@@ -1,0 +1,17 @@
+{% comment %}
+  Renders a anchor button
+
+  Usage:
+  {% render 'anchor-button', title: 'Anchor', id: '123' %}
+{% endcomment %}
+
+<div data-hover-shake="small">
+  <a
+    href="{{ request.path }}#{{ id }}"
+    target="_self"
+    class="anchor-button type-p"
+    aria-label="Scroll to {{ title }}"
+  >
+    {{- title -}}
+  </a>
+</div>

@@ -1,0 +1,39 @@
+{% comment %}
+  Renders a single FAQ accordion item
+
+  Expected params from section:
+  - question: string
+  - answer: richtext
+  - block: block object (for id + shopify_attributes)
+{% endcomment %}
+
+{% assign faq_uid = block.id | default: question | handleize %}
+
+<button
+  class="faq-card"
+  type="button"
+  aria-expanded="false"
+  aria-controls="faq-content-{{ faq_uid }}"
+  id="{{ faq_uid }}"
+  data-faq-trigger
+  {{ block.shopify_attributes }}
+>
+  <div class="faq-card__indicator" aria-hidden="true"></div>
+  <span class="faq-card__question type-p">
+    {{ question }}
+  </span>
+  <div
+    class="faq-card__content"
+    id="faq-content-{{ faq_uid }}"
+    role="region"
+    aria-labelledby="{{ faq_uid }}"
+    hidden
+    data-faq-content
+  >
+    <div class="faq-card__inner">
+      <div class="faq-answer type-p rich-text">
+        {{ answer }}
+      </div>
+    </div>
+  </div>
+</button>

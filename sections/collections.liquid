@@ -1,0 +1,62 @@
+{% comment %}
+  This section is used in the list-collections template to render a list of
+  collections.
+
+  https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
+{% endcomment %}
+
+{{ 'collection.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="all-collection"
+  aria-labelledby="all-collection-heading"
+  data-search-selector
+>
+  <div class="layout-wrapper">
+    <section class="all-collection__header">
+      <h1
+        id="all-collection-heading"
+        class="all-collection__heading type-h1-large"
+      >
+        Collections
+      </h1>
+      <div
+        class="collection-filters"
+        role="navigation"
+        aria-label="Collection filters"
+      >
+        {% render 'collection-filter-button' %}
+      </div>
+    </section>
+  </div>
+</div>
+
+<script src="{{ 'collection.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "collections_grid",
+  "settings": [
+    {
+      "type": "select",
+      "id": "grid_item_width",
+      "label": "t:labels.grid_item_width",
+      "options": [
+        { "value": "collections--compact", "label": "t:options.size.small" },
+        { "value": "collections--full", "label": "t:options.size.large" }
+      ],
+      "default": "collections--full"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "t:labels.grid_gap",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 10
+    }
+  ]
+}
+{% endschema %}

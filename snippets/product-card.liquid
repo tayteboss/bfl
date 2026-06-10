@@ -1,0 +1,187 @@
+{% comment %}
+  Renders a product card
+
+  Usage:
+  {% render 'product-card', product: product %}
+{% endcomment %}
+
+{{ 'product-card.css' | asset_url | stylesheet_tag }}
+
+<a
+  class="product-card"
+  href="{{ product.url }}"
+  target="_self"
+  aria-label="{{ product.title }} by {{ product.vendor }} - {{ product.price | money }}"
+  data-product-id="{{ product.id }}"
+  data-product-tags="{{ product.tags | join: ',' | escape }}"
+  data-product-vendor="{{ product.vendor | escape }}"
+  data-product-collections="{% for coll in product.collections %}{{ coll.title | escape }}{% unless forloop.last %},{% endunless %}{% endfor %}"
+  data-product-price="{{ product.price | money_without_currency }}"
+  data-product-colors="
+    {% for option in product.options_with_values %}
+      {% if option.name == 'Color' %}
+        {{ option.values | join: ',' }}
+      {% endif %}
+    {% endfor %}
+  "
+>
+  {% assign background_image = product.metafields.custom.background_image %}
+  {% assign product_image = product.media | first %}
+
+  <div
+    class="product-card__image-wrapper"
+    data-has-foreground-image="{% if product_image and background_image %}true{% else %}false{% endif %}"
+    data-mobile-inview-bg="{% if background_image %}true{% else %}false{% endif %}"
+  >
+    {% if product.metafields.custom.product_badge %}
+      <div
+        class="badge-button product-card__badge"
+        aria-label="Product badge: {{ product.metafields.custom.product_badge }}"
+      >
+        {{ product.metafields.custom.product_badge | metafield_tag }}
+      </div>
+    {% endif %}
+
+    <div class="product-card__image-ratio">
+      {% if background_image %}
+        <div
+          class="product-card__bg-image-inner"
+          role="presentation"
+          aria-hidden="true"
+        >
+          <img
+            src="{{ background_image | image_url }}"
+            alt=""
+            class="product-card__bg-image"
+            width="auto"
+            height="auto"
+            role="presentation"
+          >
+        </div>
+      {% endif %}
+      {% if product_image %}
+        <div
+          class="product-card__product-image"
+          role="presentation"
+          aria-hidden="true"
+        >
+          <img
+            src="{{ product_image.src | image_url }}"
+            alt="{{ product.title | escape }}"
+            class="product-card__image product-card__image--primary"
+            width="auto"
+            height="auto"
+          >
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="product-card-content">
+    <p class="product-card-content__brand type-h4"><span class="visually-hidden">Brand: </span>{{ product.vendor }}</p>
+    <p class="product-card-content__title type-p">
+      {{ product.title }}
+    </p>
+    {% if product.price > 0 %}
+      <div class="product-card-content__price type-p-small">
+        <span class="visually-hidden">Price: </span>
+        <span aria-hidden="true">{{ cart.currency.iso_code }}</span>
+        <span>{{ product.price | money }}</span>
+      </div>
+    {% endif %}
+  </div>
+</a>
+
+<script>
+  (() => {
+    if (window.__bflProductCardMobileInViewInit) return;
+    window.__bflProductCardMobileInViewInit = true;
+
+    /** @type {const} */
+    const MOBILE_QUERY = '(max-width: 768px)';
+    /** @type {const} */
+    const WRAPPER_SELECTOR = '.product-card__image-wrapper[data-mobile-inview-bg="true"]';
+    /** @type {const} */
+    const IN_VIEW_CLASS = 'is-in-view';
+
+    /** @type {IntersectionObserver | null} */
+    let observer = null;
+    /** @type {MutationObserver | null} */
+    let mutationObserver = null;
+    /** @type {number | null} */
+    let resizeTimer = null;
+
+    /** @param {() => void} fn */
+    const debounce = (fn) => {
+      return () => {
+        if (resizeTimer) window.clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(fn, 150);
+      };
+    };
+
+    const clearInViewStates = () => {
+      document.querySelectorAll(`.${IN_VIEW_CLASS}${WRAPPER_SELECTOR}`).forEach((el) => {
+        el.classList.remove(IN_VIEW_CLASS);
+      });
+      // The selector above is strict; also clear any lingering class just in case.
+      document.querySelectorAll(`.product-card__image-wrapper.${IN_VIEW_CLASS}`).forEach((el) => {
+        el.classList.remove(IN_VIEW_CLASS);
+      });
+    };
+
+    const setup = () => {
+      const isMobile = window.matchMedia(MOBILE_QUERY).matches;
+
+      if (observer) {
+        observer.disconnect();
+        observer = null;
+      }
+
+      if (mutationObserver) {
+        mutationObserver.disconnect();
+        mutationObserver = null;
+      }
+
+      clearInViewStates();
+
+      if (!isMobile) return;
+
+      const wrappers = Array.from(document.querySelectorAll(WRAPPER_SELECTOR));
+      if (!wrappers.length) return;
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            const el = /** @type {HTMLElement} */ (entry.target);
+            if (entry.isIntersecting) el.classList.add(IN_VIEW_CLASS);
+            else el.classList.remove(IN_VIEW_CLASS);
+          }
+        },
+        {
+          // 20% offset top and bottom so the background can "add" and then "remove"
+          // before the card fully leaves the viewport.
+          root: null,
+          rootMargin: '-40% 0px -40% 0px',
+          threshold: 0.01,
+        }
+      );
+
+      for (const el of wrappers) observer.observe(el);
+
+      // If product cards are injected later (load-more, section re-render), re-scan.
+      const scheduleSetup = debounce(setup);
+      mutationObserver = new MutationObserver(() => scheduleSetup());
+      mutationObserver.observe(document.body, { childList: true, subtree: true });
+    };
+
+    const scheduleSetup = debounce(setup);
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setup, { once: true });
+    } else {
+      setup();
+    }
+
+    window.addEventListener('resize', scheduleSetup, { passive: true });
+    document.addEventListener('shopify:section:load', scheduleSetup);
+  })();
+</script>

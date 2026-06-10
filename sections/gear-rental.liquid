@@ -1,0 +1,203 @@
+{{ 'gear-rental.css' | asset_url | stylesheet_tag }}
+
+<div class="gear-rental">
+  <div class="layout-wrapper">
+    <div class="layout-grid">
+      <section class="gear-rental__header-wrapper" aria-labelledby="gear-rental-heading" data-in-view>
+        {% if section.settings.heading != blank %}
+          <h1 id="gear-rental-heading" class="type-h1-large">{{ section.settings.heading }}</h1>
+        {% endif %}
+        {% if section.settings.subheading != blank %}
+          <h2 class="type-h1-small">{{ section.settings.subheading }}</h2>
+        {% endif %}
+        {% if section.settings.subparagraph != blank %}
+          <p class="type-p-x-large">{{ section.settings.subparagraph }}</p>
+        {% endif %}
+      </section>
+    </div>
+
+    <section class="gear-list" aria-labelledby="gear-list-title">
+      <h3 id="gear-list-title" class="gear-list__title type-p-large">Our selection</h3>
+      <p class="gear-list__subtitle type-p-large badge-button">Currently only available in Miami</p>
+      <div class="gear-list__inner" data-gear-list>
+        {% assign all_rentals = shop.metaobjects.gear_rental.values %}
+        {% assign rentals_count = all_rentals.size %}
+        {% for rental in all_rentals %}
+          {% assign item_index = forloop.index0 %}
+          <div
+            class="gear-card{% if item_index >= 5 %} gear-card--hidden{% endif %}"
+            data-in-view
+            data-gear-item
+            data-gear-index="{{ item_index }}"
+          >
+            <div class="gear-card__content">
+              <div class="gear-card__title-wrapper">
+                {% if rental.brand_name %}
+                  <h4 class="type-h1-small">{{ rental.brand_name }}</h4>
+                {% endif %}
+                {% if rental.title %}
+                  <h5 class="type-h1-small">{{ rental.title }}</h5>
+                {% endif %}
+              </div>
+              <div class="gear-card__price-wrapper">
+                {% if rental.price_per_day %}
+                  <div class="gear-card__price-card">
+                    <p class="type-p-large">{{ rental.price_per_day }}</p>
+                    <p class="type-p">/day or weekend</p>
+                  </div>
+                {% endif %}
+                {% if rental.price_per_week %}
+                  <div class="gear-card__price-card">
+                    <p class="type-p-large">{{ rental.price_per_week }}</p>
+                    <p class="type-p">/week</p>
+                  </div>
+                {% endif %}
+              </div>
+              {% if rental.description %}
+                <div class="gear-card__description">
+                  <p class="type-p">
+                    <span class="hide-on-desktop">{{ rental.description | strip_html | truncatewords: 50 }}</span>
+                    <span class="hide-on-mobile">{{ rental.description | strip_html | truncatewords: 50 }}</span>
+                  </p>
+                </div>
+              {% endif %}
+              <div class="gear-card-accordions-list" data-gear-accordion-list>
+                {% if rental.accordion_1_title %}
+                  {% assign accordion_uid = rental.id | append: '-accordion-1' %}
+                  <button
+                    class="gear-card-accordion"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls="gear-accordion-content-{{ accordion_uid }}"
+                    data-gear-accordion-trigger
+                  >
+                    <div class="gear-card-accordion__header">
+                      <div class="gear-card-accordion__indicator" aria-hidden="true"></div>
+                      <p class="type-p">{{ rental.accordion_1_title }}</p>
+                    </div>
+                    <div
+                      class="gear-card-accordion__content"
+                      id="gear-accordion-content-{{ accordion_uid }}"
+                      role="region"
+                      aria-labelledby="gear-accordion-{{ accordion_uid }}"
+                      hidden
+                      data-gear-accordion-content
+                    >
+                      <div class="gear-card-accordion__inner">
+                        <p class="type-p" aria-hidden="true">—</p>
+                        <div class="type-p">{{ rental.accordion_1_content | metafield_tag }}</div>
+                      </div>
+                    </div>
+                  </button>
+                {% endif %}
+                {% if rental.accordion_2_title %}
+                  {% assign accordion_uid_b = rental.id | append: '-accordion-2' %}
+                  <button
+                    class="gear-card-accordion"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls="gear-accordion-content-{{ accordion_uid_b }}"
+                    data-gear-accordion-trigger
+                  >
+                    <div class="gear-card-accordion__header">
+                      <div class="gear-card-accordion__indicator" aria-hidden="true"></div>
+                      <p class="type-p">{{ rental.accordion_2_title }}</p>
+                    </div>
+                    <div
+                      class="gear-card-accordion__content"
+                      id="gear-accordion-content-{{ accordion_uid_b }}"
+                      role="region"
+                      aria-labelledby="gear-accordion-{{ accordion_uid_b }}"
+                      hidden
+                      data-gear-accordion-content
+                    >
+                      <div class="gear-card-accordion__inner">
+                        <p class="type-p" aria-hidden="true">—</p>
+                        <div class="type-p">{{ rental.accordion_1_content | metafield_tag }}</div>
+                      </div>
+                    </div>
+                  </button>
+                {% endif %}
+              </div>
+              {% assign path_prefix = routes.root_url | append: '/gear-rental/' %}
+              {% if rental.system.handle %}
+                {% assign fallback_url = path_prefix
+                  | append: rental.system.handle
+                  | replace: '///', '/'
+                  | replace: '//', '/'
+                %}
+              {% endif %}
+              {% if rental.online_store_url or rental.system.handle %}
+                <div class="gear-card__button-wrapper gear-card__button-wrapper--mobile">
+                  <a
+                    href="/pages{{ rental.online_store_url | default: fallback_url }}"
+                    class="primary-button primary-button--black"
+                    >View details</a
+                  >
+                </div>
+              {% endif %}
+            </div>
+            <div class="gear-card__image-wrapper">
+              {% if rental.image %}
+                <div class="gear-card__image-inner">
+                  <img
+                    src="{{ rental.image | image_url }}"
+                    width="auto"
+                    height="auto"
+                    alt="{{ rental.brand_name }} {{ rental.title }}"
+                  >
+                </div>
+              {% endif %}
+              {% if rental.online_store_url or rental.system.handle %}
+                <div class="gear-card__button-wrapper gear-card__button-wrapper--desktop">
+                  <div data-hover-shake>
+                    <a
+                      href="/pages{{ rental.online_store_url | default: fallback_url }}"
+                      class="primary-button primary-button--black primary-button--black-hover-outline"
+                      >View details</a
+                    >
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      {% if rentals_count > 5 %}
+        <div class="pagination-button">
+          <div data-hover-shake>
+            <button type="button" class="primary-button" data-gear-load-more>Load More</button>
+          </div>
+        </div>
+      {% endif %}
+    </section>
+  </div>
+</div>
+
+<script src="{{ 'gear-rental.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "gear-rental",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Page title",
+      "default": "Gear Rental"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "From cult point-and-shoots to medium format legends — every camera is tested and includes a free dev + scan voucher."
+    },
+    {
+      "type": "textarea",
+      "id": "subparagraph",
+      "label": "Intro paragraph",
+      "default": "Test-drive the classics before you commit. Every body is CLA’d, shot-tested, and leaves with fresh batteries—and a free dev-and-scan voucher to sweeten the weekend. From point-and-shoot Contax T2s to a Hasselblad 500 CM kit, the shelf rotates weekly. Try the classics before you own them."
+    }
+  ]
+}
+{% endschema %}

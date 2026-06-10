@@ -1,0 +1,13 @@
+{% comment %}
+  Reusable link-based filter group
+  Props:
+  - title: string (legend)
+  - content_html: pre-rendered HTML for links/buttons
+{% endcomment %}
+
+<fieldset class="filter-group">
+  <legend class="filter-group__title type-button-large">{{ title }}</legend>
+  <div class="filter-group__items">
+    {{ content_html }}
+  </div>
+</fieldset>

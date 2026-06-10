@@ -1,0 +1,118 @@
+{{ 'faq.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="faq"
+  role="region"
+  aria-labelledby="faq-heading"
+  data-in-view
+>
+  <div class="layout-wrapper">
+    <div class="faq__inner">
+      {% if section.settings.heading != blank %}
+        <h2 id="faq-heading" class="type-h1-small faq__heading">{{ section.settings.heading }}</h2>
+      {% endif %}
+
+      <div
+        class="faq-list"
+        data-faq-list
+        aria-label="Frequently Asked Questions"
+      >
+        {% for block in section.blocks %}
+          {% render 'faq-card', block: block, question: block.settings.question, answer: block.settings.answer %}
+        {% endfor %}
+      </div>
+
+      {% if section.settings.show_view_all %}
+        <div class="faq__button-wrapper">
+          <div data-hover-shake>
+            <a
+              href="{{ section.settings.view_all_link }}"
+              class="faq-link secondary-button"
+              aria-label="{{ section.settings.view_all_text }}"
+            >
+              {{ section.settings.view_all_text }}
+            </a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+    <div class="faq__image-wrapper">
+      <div data-parallax>
+        <img
+          src="{{ section.settings.photo | image_url }}"
+          height="auto"
+          width="auto"
+          alt="{% if section.settings.heading != blank %}{{ section.settings.heading }} decorative image{% else %}FAQ decorative image{% endif %}"
+          loading="lazy"
+        >
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'View all FAQs' button",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "Link for 'View all FAQs'"
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View all button text",
+      "default": "View all FAQs"
+    },
+    {
+      "type": "image_picker",
+      "id": "photo",
+      "label": "FAQ Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "faq-heading",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "What is your turnaround time?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Our standard turnaround is 2-3 business days.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "category": "FAQ Homepage"
+    }
+  ]
+}
+{% endschema %}

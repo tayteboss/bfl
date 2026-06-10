@@ -1,0 +1,38 @@
+<div class="order-summary-wrapper">
+  <div id="order-summary" class="order-summary">
+    <h3>{{ section.settings.summary_label }}</h3>
+    <p>Subtotal: <span id="subtotal">$0.00</span></p>
+    <p>Discounts: <span id="discounts">-$0.00</span></p>
+    <p>Total: <span id="total">$0.00</span></p>
+
+    <button type="submit"><span id="total">$0.00</span></button>
+
+    {%- render 'buy-buttons',
+      product: product,
+      product_form_id: product_form_id,
+      section_id: section.id,
+      show_pickup_availability: true
+    -%}
+  </div>
+
+  <details>
+    <summary>Hide Details</summary>
+
+    {% render 'summary-detail', label: 'Store', id: 'store' %}
+    {% render 'summary-detail', label: 'Service', id: 'service' %}
+    {% render 'summary-detail', label: 'Film', id: 'film' %}
+    {% render 'summary-detail', label: 'Process', id: 'process' %}
+    {% render 'summary-detail', label: 'Number of rolls', id: 'rolls' %}
+    {% render 'summary-detail', label: 'Scanner', id: 'scanner' %}
+    {% render 'summary-detail', label: 'Resolution', id: 'resolution' %}
+
+    {% for block in section.blocks %}
+      {% if block.type == 'addon' %}
+        {% render 'summary-detail', label: block.settings.label, id: 'addon-' | append: block.id %}
+      {% endif %}
+    {% endfor %}
+
+    {% render 'summary-detail', label: 'Prints?', id: 'prints' %}
+    {% render 'summary-detail', label: 'Delivery method', id: 'delivery' %}
+  </details>
+</div>

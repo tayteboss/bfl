@@ -1,0 +1,1045 @@
+{
+  "Develop and Scan": {
+    "description": "Film processing and digital copies of your images. Get your images via an easy download link to your email.",
+    "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/develop_scan.png?v=1763627397",
+    "Film Format": {
+      "accordion_title": "What film format do I have?",
+      "accordion_sub_title": "Film comes in different shapes and sizes. Match your film to the kinds listed below when ordering.",
+      "sub_title": "Film comes in different shapes and sizes. Match your film to the kinds listed below when ordering.",
+      "options": [
+        {
+          "label": "Disposable",
+          "price": 8,
+          "description": "Your classic single use cam. We recycle them!",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/disposable_b60fec53-bb66-4e78-8424-0b139bbdf6b1.png?v=1763709720"
+        },
+        {
+          "label": "35mm",
+          "price": 8,
+          "description": "The most common roll film, in a metal canister.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/35mm_f57dd403-597f-4215-a38a-850c09394c15.png?v=1763627397"
+        },
+        {
+          "label": "120",
+          "price": 9,
+          "description": "Medium format film, known for taller size and paper backing.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/120.png?v=1763627397"
+        },
+        {
+          "label": "110",
+          "price": 8,
+          "description": "A smaller film size, inside of a black plastic cartridge.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/110.png?v=1763709721"
+        },
+        {
+          "label": "4x5 (Sheet)",
+          "price": 8,
+          "description": "A large-format single sheet offering high resolution, precise tonal control, and wide dynamic range.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/4x5_b798d627-7ec2-4010-9e3f-5ef0461f0a31.png?v=1763709720"
+        },
+        {
+          "label": "8x10 (Sheet)",
+          "price": 12,
+          "description": "Ultra-large format sheet film delivering exceptional detail, smooth tonal gradation, and maximum enlargement quality.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/8x10_369105e6-ba36-40ed-8d88-e1f6184218bc.png?v=1763709721"
+        }
+      ]
+    },
+    "Process": {
+      "accordion_title": "What process should you select?",
+      "accordion_sub_title": "There is a process required to develop each film type. Check your film roll or camera for the following markings to order the best option for your images.",
+      "sub_title": "There is a process required to develop each film type. Check your film roll or camera for the following markings to order the best option for your images.",
+      "options": [
+        {
+          "label": "Color (C-41)",
+          "price": 0,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          },
+          "description": "A process that results in a color negative. (Sometimes labeled as CN-16).",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/c41.png?v=1762432639"
+        },
+        {
+          "label": "Black & White",
+          "price": 0,
+          "price_overrides": {
+            "film_format": {
+              "120": 2,
+              "8x10 (Sheet)": 2
+            }
+          },
+          "description": "A classic process that results in a black and white negative.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/b-w.png?v=1762432638"
+        },
+        {
+          "label": "Color Positive (E-6 Slide)",
+          "price": 4,
+          "show_if": {
+            "film_format": [
+              "35mm",
+              "120",
+              "8x10 (Sheet)"
+            ]
+          },
+          "price_overrides": {
+            "film_format": {
+              "35mm": 4,
+              "120": 3,
+              "8x10 (Sheet)": 3
+            }
+          },
+          "description": "Reversal process that yields color-positive transparencies with high contrast and accurate color.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/e-6.png?v=1763709721"
+        },
+        {
+          "label": "CINE (ECN-2)",
+          "price": 4,
+          "show_if": {
+            "film_format": [
+              "35mm",
+              "120",
+              "8x10 (Sheet)"
+            ]
+          },
+          "price_overrides": {
+            "film_format": {
+              "35mm": 4,
+              "120": 3,
+              "8x10 (Sheet)": 3
+            }
+          },
+          "description": "Motion-picture negative process using a rem-jet backing for smoother grain, wide dynamic range, and cinematic color.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/ecn-2.png?v=1763709720"
+        }
+      ]
+    },
+    "Push or Pull": {
+      "accordion_title": "Understanding Push or Pull",
+      "sub_title": "Pushing/Pulling film changes the development time to make photos brighter or darker. We recommend selecting ‘Normal’.",
+      "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/push-pull-feature.png?v=1763709722",
+      "column_one_richtext": "<strong>What is Push/Pull and how it works?</strong><br><br><p>All films behave differently depending on how much light they received during exposure. Therefore, each film profile in Dehancer Film in fact consists of 3 separate profiles. Each profile is defined by its own sampling conditions:</p><ul><li>Normal exposure</li><li>Underexposed: Push/Pull = -2</li><li>Overexposed: Push/Pull = +2</li></ul><p>Changes in the Push/Pull setting result in darker or lighter image, changing color and contrast – just like with real film. Film type defines the character of changes.</p><p>For expired film, we recommend Push +1 for each decade of expiration.</p>",
+      "options": [
+        {
+          "label": "Pull -2",
+          "price": 4
+        },
+        {
+          "label": "Pull -1",
+          "price": 2
+        },
+        {
+          "label": "Normal",
+          "price": 0,
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
+        },
+        {
+          "label": "Push +1",
+          "price": 2
+        },
+        {
+          "label": "Push +2",
+          "price": 4
+        },
+        {
+          "label": "Push +3",
+          "price": 6
+        }
+      ]
+    },
+    "Scanning": {
+      "accordion_title": "Which scanner is right for me?",
+      "accordion_sub_title": "Both scanners create beautiful results, but each has unique strengths. See below for details and visual examples so you can select the best fit for your needs.",
+      "sub_title": "Select a scanner",
+      "column_one_richtext": "<p>Noritsu HS-1800</p><ul><li><strong>Look &amp; feel:</strong> Crisp, sharp detail with a slightly more neutral/modern colour profile.</li><li><strong>Best for:</strong> When you want maximum fine detail, subtle tones, or need flexibility for editing.</li><li><strong>Great with:</strong> Colour negative film, B&amp;W film, and high-contrast scenes.</li></ul>",
+      "column_two_richtext": "<p>Fuji Frontier SP-3000</p><ul><li><strong>Look &amp; feel:</strong> Smooth, rich colour with a softer, more filmic aesthetic straight out of the scan.</li><li><strong>Best for:</strong> Natural skin tones, warm highlights, and that classic Frontier “glow.”</li><li><strong>Great with:</strong> Portraits, wedding photography, and any film you want to look timeless.</li></ul>",
+      "column_three_richtext": "<p>Epson 12000XL (4x5 Sheet and 8x10 Sheet only)</p> <ul> <li><strong>Look &amp; feel:</strong> Ultra-clean, high-fidelity scans with accurate, neutral colour and exceptional detail across shadows and highlights thanks to 48-bit colour depth, high optical resolution, and a wide Dmax.</li> <li><strong>Best for:</strong> Large-format originals, fine art, archival material and mixed media where colour accuracy, tonal range and high resolution are critical.</li> <li><strong>Great with:</strong> Artwork reproduction, museum/archival scanning, graphic-arts prepress, and any project that needs precise, museum-quality digitisation of prints, transparencies or documents.</li> </ul>",
+      "options": [
+        {
+          "label": "Noritsu",
+          "price": 0,
+          "show_if": {
+            "film_format": [
+              "Disposable",
+              "35mm",
+              "120"
+            ]
+          }
+        },
+        {
+          "label": "Fuji Frontier",
+          "price": 0,
+          "show_if": {
+            "film_format": [
+              "Disposable",
+              "35mm",
+              "110",
+              "120"
+            ]
+          },
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
+        },
+        {
+          "label": "Epson 12000XL",
+          "price": 0,
+          "show_if": {
+            "film_format": [
+              "4x5 (Sheet)",
+              "8x10 (Sheet)"
+            ]
+          }
+        }
+      ]
+    },
+    "Scanning Resolution": {
+      "accordion_title": "What scan size is right for me?",
+      "accordion_sub_title": "Scans are high-quality digital copies of your film. Different resolutions affect how you can use your images — from quick sharing to large-format printing. Choose the option that fits your project best.",
+      "sub_title": "Scans are high-quality digital copies of your film.",
+      "options": [
+        {
+          "label": "Medium (JPEG)",
+          "price": 9,
+          "price_overrides": {
+            "scanner": {
+              "Epson 12000XL": 10
+            }
+          },
+          "description": "Great for most uses. Delivers print-ready images suitable for sharing online and small to medium-size prints.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/low-res.png?v=1763627397",
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
+        },
+        {
+          "label": "High (JPEG)",
+          "price": 13,
+          "price_overrides": {
+            "scanner": {
+              "Epson 12000XL": 15
+            }
+          },
+          "description": "Higher resolution files with more detail, ideal for larger prints or additional cropping.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/mid-res.png?v=1763627397"
+        },
+        {
+          "label": "High (TIFF)",
+          "price": 13,
+          "price_overrides": {
+            "scanner": {
+              "Epson 12000XL": 15
+            }
+          },
+          "description": "Maximum available resolution for critical work, archiving, or professional needs.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/high-res.png?v=1763627397"
+        }
+      ]
+    },
+    "Border Options": {
+      "accordion_title": "What border options are available?",
+      "accordion_sub_title": "Choose how you want your scans to be framed. We offer both white borders and sprocket-style borders for 35mm film.",
+      "sub_title": "Select your border style",
+      "options": [
+				{
+					"label": "None",
+					"price": 0,
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
+				},
+        {
+          "label": "White Border",
+          "price": 5,
+          "description": "Slight white gap between paper edge and photo.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/white-border_42ed375a-7dae-440b-bc66-c786b35029ac.png?v=1763627397"
+        },
+        {
+          "label": "Overscan (Sprockets)",
+          "price": 5,
+          "show_if": {
+            "film_format": [
+              "35mm",
+              "110",
+              "Disposable"
+            ]
+          },
+          "description": "Full bleed (no white border) for maximum frame coverage.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/edge-to-edge.png?v=1763627397"
+        }
+      ]
+    },
+    "Add Ons - Do you want your negatives shipped back to you?": {
+      "options": [
+        {
+          "label": "Yes",
+          "price": 0
+        },
+        {
+          "label": "No",
+          "price": 0
+        }
+      ]
+    },
+    "Add Ons - Contact Sheet": {
+      "options": [
+        {
+          "label": "Yes",
+          "price": 15
+        },
+        {
+          "label": "No",
+          "price": 0,
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
+        }
+      ]
+    },
+    "Add Ons - Archival Sleeves": {
+      "options": [
+        {
+          "label": "Yes",
+          "price": 5
+        },
+        {
+          "label": "No",
+          "price": 0,
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
+        }
+      ]
+    },
+    "Add Ons - Contact Sheet Resolution": {
+      "accordion_title": "What resolution do you want for your contact sheet?",
+      "accordion_sub_title": "Contact sheets are a great way to share your images with friends and family. Choose the resolution that fits your needs.",
+      "show_if": {
+        "add_ons_contact_sheet": ["Yes"]
+      },
+      "options": [
+        {
+          "label": "Small DPI (200)",
+          "price": 15,
+          "description": "Small resolution contact sheet, great for simple sharing.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/low-res.png?v=1763627397"
+        },
+        {
+          "label": "Medium DPI (600)",
+          "price": 25,
+          "description": "Medium resolution contact sheet, good for more detailed views.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/mid-res.png?v=1763627397"
+        },
+        {
+          "label": "High DPI (1000)",
+          "price": 35,
+          "description": "High resolution contact sheet, best for archiving and zooming.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/high-res.png?v=1763627397"
+        }
+      ]
+    }
+  },
+  "Develop Only": {
+    "description": "Film processing, without digital copies. For those that scan at home and are just looking for their negatives back.",
+    "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/develop-only_e60927ba-b5c5-448d-b2d9-e314d63384c6.png?v=1763627397",
+    "Film Format": {
+      "accordion_title": "What film format do I have?",
+      "accordion_sub_title": "Film comes in different shapes and sizes. Match your film to the kinds listed below when ordering.",
+      "sub_title": "Film comes in different shapes and sizes. Match your film to the kinds listed below when ordering.",
+      "options": [
+        {
+          "label": "Disposable",
+          "price": 8,
+          "description": "Your classic single use cam. We recycle them!",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/disposable_b60fec53-bb66-4e78-8424-0b139bbdf6b1.png?v=1763709720"
+        },
+        {
+          "label": "35mm",
+          "price": 8,
+          "description": "The most common roll film, in a metal canister.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/35mm_f57dd403-597f-4215-a38a-850c09394c15.png?v=1763627397"
+        },
+        {
+          "label": "120",
+          "price": 9,
+          "description": "Medium format film, known for taller size and paper backing.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/120.png?v=1763627397"
+        },
+        {
+          "label": "110",
+          "price": 8,
+          "description": "A smaller film size, inside of a black plastic cartridge.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/110.png?v=1763709721"
+        },
+        {
+          "label": "4x5 (Sheet)",
+          "price": 8,
+          "description": "A large-format single sheet offering high resolution, precise tonal control, and wide dynamic range.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/4x5_b798d627-7ec2-4010-9e3f-5ef0461f0a31.png?v=1763709720"
+        },
+        {
+          "label": "8x10 (Sheet)",
+          "price": 12,
+          "description": "Ultra-large format sheet film delivering exceptional detail, smooth tonal gradation, and maximum enlargement quality.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/8x10_369105e6-ba36-40ed-8d88-e1f6184218bc.png?v=1763709721"
+        }
+      ]
+    },
+    "Process": {
+      "accordion_title": "What process should you select?",
+      "accordion_sub_title": "There is a process required to develop each film type. Check your film roll or camera for the following markings to order the best option for your images.",
+      "sub_title": "There is a process required to develop each film type. Check your film roll or camera for the following markings to order the best option for your images.",
+      "options": [
+        {
+          "label": "Color (C-41)",
+          "price": 0,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          },
+          "description": "A process that results in a color negative. (Sometimes labeled as CN-16).",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/c41.png?v=1762432639"
+        },
+        {
+          "label": "Black & White",
+          "price": 0,
+          "price_overrides": {
+            "film_format": {
+              "120": 2,
+              "8x10 (Sheet)": 2
+            }
+          },
+          "description": "A classic process that results in a black and white negative.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/b-w.png?v=1762432638"
+        },
+        {
+          "label": "Color Positive (E-6 Slide)",
+          "price": 4,
+          "show_if": {
+            "film_format": [
+              "35mm",
+              "120",
+              "8x10 (Sheet)"
+            ]
+          },
+          "price_overrides": {
+            "film_format": {
+              "35mm": 4,
+              "120": 3,
+              "8x10 (Sheet)": 3
+            }
+          },
+          "description": "Reversal process that yields color-positive transparencies with high contrast and accurate color.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/e-6.png?v=1763709721"
+        },
+        {
+          "label": "CINE (ECN-2)",
+          "price": 4,
+          "show_if": {
+            "film_format": [
+              "35mm",
+              "120",
+              "8x10 (Sheet)"
+            ]
+          },
+          "price_overrides": {
+            "film_format": {
+              "35mm": 4,
+              "120": 3,
+              "8x10 (Sheet)": 3
+            }
+          },
+          "description": "Motion-picture negative process using a rem-jet backing for smoother grain, wide dynamic range, and cinematic color.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/ecn-2.png?v=1763709720"
+        }
+      ]
+    },
+    "Push or Pull": {
+      "accordion_title": "Understanding Push or Pull",
+      "sub_title": "Pushing/Pulling film changes the development time to make photos brighter or darker. We recommend selecting ‘Normal’.",
+      "feature_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/push-pull-feature.png?v=1763709722",
+      "column_one_richtext": "<strong>What is Push/Pull and how it works?</strong><br><br><p>All films behave differently depending on how much light they received during exposure. Therefore, each film profile in Dehancer Film in fact consists of 3 separate profiles. Each profile is defined by its own sampling conditions:</p><ul><li>Normal exposure</li><li>Underexposed: Push/Pull = -2</li><li>Overexposed: Push/Pull = +2</li></ul><p>Changes in the Push/Pull setting result in darker or lighter image, changing color and contrast – just like with real film. Film type defines the character of changes.</p><p>For expired film, we recommend Push +1 for each decade of expiration.</p>",
+      "options": [
+        {
+          "label": "Pull -2",
+          "price": 4
+        },
+        {
+          "label": "Pull -1",
+          "price": 2
+        },
+        {
+          "label": "Normal",
+          "price": 0,
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
+        },
+        {
+          "label": "Push +1",
+          "price": 2
+        },
+        {
+          "label": "Push +2",
+          "price": 4
+        },
+        {
+          "label": "Push +3",
+          "price": 6
+        }
+      ]
+    },
+    "Add Ons - Do you want your negatives shipped back to you?": {
+      "options": [
+        {
+          "label": "Yes",
+          "price": 0
+        },
+        {
+          "label": "No",
+          "price": 0
+        }
+      ]
+    },
+    "Add Ons - Contact Sheet": {
+      "options": [
+        {
+          "label": "Yes",
+          "price": 15
+        },
+        {
+          "label": "No",
+          "price": 0,
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
+        }
+      ]
+    },
+    "Add Ons - Archival Sleeves": {
+      "options": [
+        {
+          "label": "Yes",
+          "price": 5
+        },
+        {
+          "label": "No",
+          "price": 0,
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
+        }
+      ]
+    },
+    "Add Ons - Contact Sheet Resolution": {
+      "accordion_title": "What resolution do you want for your contact sheet?",
+      "accordion_sub_title": "Contact sheets are a great way to share your images with friends and family. Choose the resolution that fits your needs.",
+      "show_if": {
+        "add_ons_contact_sheet": ["Yes"]
+      },
+      "options": [
+        {
+          "label": "Small DPI (200)",
+          "price": 15,
+          "description": "Small resolution contact sheet, great for simple sharing.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/low-res.png?v=1763627397"
+        },
+        {
+          "label": "Medium DPI (600)",
+          "price": 25,
+          "description": "Medium resolution contact sheet, good for more detailed views.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/mid-res.png?v=1763627397"
+        },
+        {
+          "label": "High DPI (1000)",
+          "price": 35,
+          "description": "High resolution contact sheet, best for archiving and zooming.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/high-res.png?v=1763627397"
+        }
+      ]
+    }
+  },
+	"Scan Only": {
+    "description": "Digital copies of your already processed film. For those that want rescans of previously developed film from their archive.",
+    "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/scan-only_7579160a-4f6b-41b1-bf30-1977e8621395.png?v=1763627397",
+    "Film Format": {
+      "accordion_title": "What film format do I have?",
+      "accordion_sub_title": "Film comes in different shapes and sizes. Match your film to the kinds listed below when ordering.",
+      "sub_title": "Film comes in different shapes and sizes. Match your film to the kinds listed below when ordering.",
+      "options": [
+        {
+          "label": "Disposable",
+          "price": 8,
+          "description": "Your classic single use cam. We recycle them!",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/disposable_b60fec53-bb66-4e78-8424-0b139bbdf6b1.png?v=1763709720"
+        },
+        {
+          "label": "35mm",
+          "price": 8,
+          "description": "The most common roll film, in a metal canister.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/35mm_f57dd403-597f-4215-a38a-850c09394c15.png?v=1763627397"
+        },
+        {
+          "label": "120",
+          "price": 9,
+          "description": "Medium format film, known for taller size and paper backing.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/120.png?v=1763627397"
+        },
+        {
+          "label": "110",
+          "price": 8,
+          "description": "A smaller film size, inside of a black plastic cartridge.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/110.png?v=1763709721"
+        },
+        {
+          "label": "4x5 (Sheet)",
+          "price": 8,
+          "description": "A large-format single sheet offering high resolution, precise tonal control, and wide dynamic range.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/4x5_b798d627-7ec2-4010-9e3f-5ef0461f0a31.png?v=1763709720"
+        },
+        {
+          "label": "8x10 (Sheet)",
+          "price": 12,
+          "description": "Ultra-large format sheet film delivering exceptional detail, smooth tonal gradation, and maximum enlargement quality.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/8x10_369105e6-ba36-40ed-8d88-e1f6184218bc.png?v=1763709721"
+        }
+      ]
+    },
+    "Process": {
+      "accordion_title": "What process should you select?",
+      "accordion_sub_title": "There is a process required to develop each film type. Check your film roll or camera for the following markings to order the best option for your images.",
+      "sub_title": "There is a process required to develop each film type. Check your film roll or camera for the following markings to order the best option for your images.",
+      "options": [
+        {
+          "label": "Color (C-41)",
+          "price": 0,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          },
+          "description": "A process that results in a color negative. (Sometimes labeled as CN-16).",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/c41.png?v=1762432639"
+        },
+        {
+          "label": "Black & White",
+          "price": 0,
+          "price_overrides": {
+            "film_format": {
+              "120": 2,
+              "8x10 (Sheet)": 2
+            }
+          },
+          "description": "A classic process that results in a black and white negative.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/b-w.png?v=1762432638"
+        },
+        {
+          "label": "Color Positive (E-6 Slide)",
+          "price": 4,
+          "show_if": {
+            "film_format": [
+              "35mm",
+              "120",
+              "8x10 (Sheet)"
+            ]
+          },
+          "price_overrides": {
+            "film_format": {
+              "35mm": 4,
+              "120": 3,
+              "8x10 (Sheet)": 3
+            }
+          },
+          "description": "Reversal process that yields color-positive transparencies with high contrast and accurate color.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/e-6.png?v=1763709721"
+        },
+        {
+          "label": "CINE (ECN-2)",
+          "price": 4,
+          "show_if": {
+            "film_format": [
+              "35mm",
+              "120",
+              "8x10 (Sheet)"
+            ]
+          },
+          "price_overrides": {
+            "film_format": {
+              "35mm": 4,
+              "120": 3,
+              "8x10 (Sheet)": 3
+            }
+          },
+          "description": "Motion-picture negative process using a rem-jet backing for smoother grain, wide dynamic range, and cinematic color.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/ecn-2.png?v=1763709720"
+        }
+      ]
+    },
+    "Scanning": {
+      "accordion_title": "Which scanner is right for me?",
+      "accordion_sub_title": "Both scanners create beautiful results, but each has unique strengths. See below for details and visual examples so you can select the best fit for your needs.",
+      "sub_title": "Select a scanner",
+      "column_one_richtext": "<p>Noritsu HS-1800</p><ul><li><strong>Look &amp; feel:</strong> Crisp, sharp detail with a slightly more neutral/modern colour profile.</li><li><strong>Best for:</strong> When you want maximum fine detail, subtle tones, or need flexibility for editing.</li><li><strong>Great with:</strong> Colour negative film, B&amp;W film, and high-contrast scenes.</li></ul>",
+      "column_two_richtext": "<p>Fuji Frontier SP-3000</p><ul><li><strong>Look &amp; feel:</strong> Smooth, rich colour with a softer, more filmic aesthetic straight out of the scan.</li><li><strong>Best for:</strong> Natural skin tones, warm highlights, and that classic Frontier “glow.”</li><li><strong>Great with:</strong> Portraits, wedding photography, and any film you want to look timeless.</li></ul>",
+      "column_three_richtext": "<p>Epson 12000XL</p> <ul> <li><strong>Look &amp; feel:</strong> Ultra-clean, high-fidelity scans with accurate, neutral colour and exceptional detail across shadows and highlights thanks to 48-bit colour depth, high optical resolution, and a wide Dmax.</li> <li><strong>Best for:</strong> Large-format originals, fine art, archival material and mixed media where colour accuracy, tonal range and high resolution are critical.</li> <li><strong>Great with:</strong> Artwork reproduction, museum/archival scanning, graphic-arts prepress, and any project that needs precise, museum-quality digitisation of prints, transparencies or documents.</li> </ul>",
+      "options": [
+        {
+          "label": "Noritsu",
+          "price": 0,
+          "show_if": {
+            "film_format": [
+              "Disposable",
+              "35mm",
+              "120"
+            ]
+          }
+        },
+        {
+          "label": "Fuji Frontier",
+          "price": 0,
+          "show_if": {
+            "film_format": [
+              "Disposable",
+              "35mm",
+              "110",
+              "120"
+            ]
+          },
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
+        },
+        {
+          "label": "Epson 12000XL",
+          "price": 0,
+          "show_if": {
+            "film_format": [
+              "4x5 (Sheet)",
+              "8x10 (Sheet)"
+            ]
+          }
+        }
+      ]
+    },
+    "Scanning Resolution": {
+      "accordion_title": "What scan size is right for me?",
+      "accordion_sub_title": "Scans are high-quality digital copies of your film. Different resolutions affect how you can use your images — from quick sharing to large-format printing. Choose the option that fits your project best.",
+      "sub_title": "Scans are high-quality digital copies of your film.",
+      "options": [
+        {
+          "label": "Medium (JPEG)",
+          "price": 9,
+          "price_overrides": {
+            "scanner": {
+              "Epson 12000XL": 10
+            }
+          },
+          "description": "Great for most uses. Delivers print-ready images suitable for sharing online and small to medium-size prints.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/low-res.png?v=1763627397",
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
+        },
+        {
+          "label": "High (JPEG)",
+          "price": 13,
+          "price_overrides": {
+            "scanner": {
+              "Epson 12000XL": 15
+            }
+          },
+          "description": "Higher resolution files with more detail, ideal for larger prints or additional cropping.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/mid-res.png?v=1763627397"
+        },
+        {
+          "label": "High (TIFF)",
+          "price": 13,
+          "price_overrides": {
+            "scanner": {
+              "Epson 12000XL": 15
+            }
+          },
+          "description": "Maximum available resolution for critical work, archiving, or professional needs.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/high-res.png?v=1763627397"
+        }
+      ]
+    },
+    "Border Options": {
+      "accordion_title": "What border options are available?",
+      "accordion_sub_title": "Choose how you want your scans to be framed. We offer both white borders and sprocket-style borders for 35mm film.",
+      "sub_title": "Select your border style",
+      "options": [
+				{
+					"label": "None",
+					"price": 0,
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
+				},
+        {
+          "label": "White Border",
+          "price": 5,
+          "description": "Slight white gap between paper edge and photo.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/white-border_42ed375a-7dae-440b-bc66-c786b35029ac.png?v=1763627397"
+        },
+        {
+          "label": "Overscan (Sprockets)",
+          "price": 5,
+          "show_if": {
+            "film_format": [
+              "35mm",
+              "110"
+            ]
+          },
+          "description": "Full bleed (no white border) for maximum frame coverage.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/edge-to-edge.png?v=1763627397"
+        }
+      ]
+    },
+    "Add Ons - Do you want your negatives shipped back to you?": {
+      "options": [
+        {
+          "label": "Yes",
+          "price": 0
+        },
+        {
+          "label": "No",
+          "price": 0
+        }
+      ]
+    },
+    "Add Ons - Contact Sheet": {
+      "options": [
+        {
+          "label": "Yes",
+          "price": 15
+        },
+        {
+          "label": "No",
+          "price": 0,
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
+        }
+      ]
+    },
+    "Add Ons - Archival Sleeves": {
+      "options": [
+        {
+          "label": "Yes",
+          "price": 5
+        },
+        {
+          "label": "No",
+          "price": 0,
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
+        }
+      ]
+    },
+    "Add Ons - Contact Sheet Resolution": {
+      "accordion_title": "What resolution do you want for your contact sheet?",
+      "accordion_sub_title": "Contact sheets are a great way to share your images with friends and family. Choose the resolution that fits your needs.",
+      "show_if": {
+        "add_ons_contact_sheet": ["Yes"]
+      },
+      "options": [
+        {
+          "label": "Small DPI (200)",
+          "price": 15,
+          "description": "Small resolution contact sheet, great for simple sharing.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/low-res.png?v=1763627397"
+        },
+        {
+          "label": "Medium DPI (600)",
+          "price": 25,
+          "description": "Medium resolution contact sheet, good for more detailed views.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/mid-res.png?v=1763627397"
+        },
+        {
+          "label": "High DPI (1000)",
+          "price": 35,
+          "description": "High resolution contact sheet, best for archiving and zooming.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/high-res.png?v=1763627397"
+        }
+      ]
+    }
+  },
+  "Flextight Drum Scan": {
+    "description": "Ultra-sharp, high-resolution scans of your film for top-tier archival or print quality (only available in Atlanta).",
+    "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/flextight-drum-scan.png?v=1763627397",
+    "show_if": {
+      "location": [
+        "Atlanta"
+      ]
+    },
+		"Film Format": {
+      "accordion_title": "What film format do I have?",
+      "accordion_sub_title": "Film comes in different shapes and sizes. Match your film to the kinds listed below when ordering.",
+      "sub_title": "Film comes in different shapes and sizes. Match your film to the kinds listed below when ordering.",
+      "options": [
+        {
+          "label": "35mm",
+          "price": 8,
+          "description": "The most common roll film, in a metal canister.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/35mm_f57dd403-597f-4215-a38a-850c09394c15.png?v=1763627397"
+        },
+        {
+          "label": "120",
+          "price": 9,
+          "description": "Medium format film, known for taller size and paper backing.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/120.png?v=1763627397"
+        },
+        {
+          "label": "4x5 (Sheet)",
+          "price": 10,
+          "default": true,
+          "description": "A large-format single sheet offering high resolution, precise tonal control, and wide dynamic range.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/4x5_b798d627-7ec2-4010-9e3f-5ef0461f0a31.png?v=1763709720"
+        }
+      ]
+    },
+		"Resolution": {
+			"accordion_title": "Which resolution is right for me?",
+			"accordion_sub_title": "Scans are high-quality digital copies of your film. Different resolutions affect how you can use your images — from quick sharing to large-format printing. Choose the option that fits your project best.",
+			"options": [
+				{
+					"label": "Regular",
+					"price": 30,
+					"description": "Standard full-optical scan (100mb) — great for general use.",
+					"description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/low-res.png?v=1763627397"
+				},
+				{
+					"label": "High",
+					"price": 70,
+					"description": "High-detail scan at the upper optical limit (200mb) — ideal for large prints or archival-quality work.",
+					"description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/mid-res.png?v=1763627397"
+				},
+				{
+					"label": "Ultra High",
+					"price": 90,
+					"description": "Maximum resolution + bit depth (600mb) with 3F raw-style scan — perfect for preservation or re-editable scans.",
+					"description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/high-res.png?v=1763627397"
+				}
+			]
+		},
+    "Add Ons - Do you want your negatives shipped back to you?": {
+      "options": [
+        {
+          "label": "Yes",
+          "price": 0
+        },
+        {
+          "label": "No",
+          "price": 0
+        }
+      ]
+    },
+		"Add Ons - Contact Sheet": {
+      "options": [
+        {
+          "label": "Yes",
+          "price": 15
+        },
+        {
+          "label": "No",
+          "price": 0,
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
+        }
+      ]
+    },
+    "Add Ons - Archival Sleeves": {
+      "options": [
+        {
+          "label": "Yes",
+          "price": 5
+        },
+        {
+          "label": "No",
+          "price": 0,
+          "default": true,
+          "default_if": {
+            "film_format": [
+              "Disposable"
+            ]
+          }
+        }
+      ]
+    },
+    "Add Ons - Contact Sheet Resolution": {
+      "accordion_title": "What resolution do you want for your contact sheet?",
+      "accordion_sub_title": "Contact sheets are a great way to share your images with friends and family. Choose the resolution that fits your needs.",
+      "show_if": {
+        "add_ons_contact_sheet": ["Yes"]
+      },
+      "options": [
+        {
+          "label": "Small DPI (200)",
+          "price": 15,
+          "description": "Small resolution contact sheet, great for simple sharing.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/low-res.png?v=1763627397"
+        },
+        {
+          "label": "Medium DPI (600)",
+          "price": 25,
+          "description": "Medium resolution contact sheet, good for more detailed views.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/mid-res.png?v=1763627397"
+        },
+        {
+          "label": "High DPI (1000)",
+          "price": 35,
+          "description": "High resolution contact sheet, best for archiving and zooming.",
+          "description_image": "https://cdn.shopify.com/s/files/1/0776/3129/1647/files/high-res.png?v=1763627397"
+        }
+      ]
+    }
+  }
+}

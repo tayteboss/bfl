@@ -1,0 +1,28 @@
+.join-us-form-section {
+	padding-bottom: 5rem;
+}
+
+.join-us__inner {
+	display: flex;
+	flex-direction: column;
+	gap: 4rem;
+
+	@media (max-width: 768px) {
+		gap: 2.5rem;
+	}
+}
+
+.join-us__heading {
+	text-align: center;
+}
+
+.join-us__header-wrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.join-us__heading {
+	opacity: 0.25;
+}
