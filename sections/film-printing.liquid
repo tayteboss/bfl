@@ -6,8 +6,7 @@
 
 {%- if target_product == null -%}
   <p><strong>No main product assigned.</strong> Choose a “Main Film Service Product” in the section settings.</p>
-  {% break %}
-{%- endif -%}
+{%- else -%}
 
 {%- assign form_data = target_product.metafields.custom.film_services_json.value -%}
 
@@ -256,6 +255,7 @@
                               name="{{ group_name | handle }}"
                               value="{{ opt.label | escape }}"
                               data-price="{{ opt.price | default: 0 }}"
+                              data-base-price="{{ opt.price | default: 0 }}"
                               data-show-if="{{ opt.show_if | json | escape }}"
                               data-default-if="{{ opt.default_if | json | escape }}"
                               data-price-overrides="{{ opt.price_overrides | json | escape }}"
@@ -962,6 +962,8 @@
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" defer></script>
 <script defer src="{{ 'drop-off-map.js' | asset_url }}"></script>
 <script src="{{ 'film-service.js' | asset_url }}" defer="defer"></script>
+
+{%- endif -%}
 
 {% schema %}
 {

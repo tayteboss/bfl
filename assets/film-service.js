@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const totalDisplay = document.querySelector('#film-total-display');
   const osList = document.querySelector('[data-os-list]');
-  const osToggle = document.querySelector('[data-os-toggle]');
   const bottomTotalDisplay = document.querySelector('#bottom-film-total-display');
   const bottomOsList = document.querySelector('#bottom-os-list');
   const bottomOrderSummary = document.querySelector('#bottom-order-summary');
@@ -31,6 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
     ? String(uploadlyContainer.dataset.uploadlyHasAppBlock || '').toLowerCase() === 'true'
     : false;
   const uploadlyStatusEl = uploadlyContainer ? uploadlyContainer.querySelector('[data-uploadly-status]') : null;
+  // Visible-fallback state. Set once in-page recovery has clearly failed so the
+  // fallback button can appear; `triggerUploadlyRecovery` is wired up inside
+  // monitorUploadyMount so the button can re-run the recovery sequence on tap.
+  let uploadlyRecoveryFailed = false;
+  let triggerUploadlyRecovery = null;
   const serviceRadios = form.querySelectorAll('input[name="service"]');
   const serviceBlocks = form.querySelectorAll('.service-groups-wrapper');
   let total = basePrice;
@@ -132,6 +136,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (genericInteractive) return true;
 
     const selectors = [
+      // Uploadly renders via an Uploadcare widget; these are the real mounted markers.
+      '.uploadcare--widget',
+      '.uploadcare--widget__button',
+      '[data-ph-wrap]',
+      '[id^="selBtn_"]',
       '.uploadly-button',
       '.uploady-button',
       '.uploadly-drop-zone',
@@ -161,12 +170,33 @@ document.addEventListener('DOMContentLoaded', () => {
     return isThemePreviewContext() && uploadlyHasAppBlock && !hasUploadyWidgetMounted();
   };
 
+  // One-time cache-busting reload for the stale-cache case. Automatic calls are
+  // loop-guarded via ?_uph and never run in the theme editor. A manual,
+  // user-initiated reload passes force=true to always get a fresh load.
+  const cacheBustingReload = (force) => {
+    if (isThemePreviewContext()) return;
+    let params;
+    try {
+      params = new URLSearchParams(window.location.search || '');
+    } catch (_) {
+      return;
+    }
+    if (!force && params.has('_uph')) return;
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.set('_uph', force ? String(Date.now()) : '1');
+      window.location.replace(url.toString());
+    } catch (_) {}
+  };
+
   const syncUploadlyFallbackVisibility = () => {
     if (!uploadlyContainer || !uploadlyFallbackButton) return;
-    // If an Uploady app block is configured, never show our fallback button.
-    // This avoids showing a dead button in preview environments where app scripts fail to mount.
     if (uploadlyHasAppBlock) {
-      uploadlyFallbackButton.style.display = 'none';
+      // With an app block, keep the fallback hidden while we wait/recover. It
+      // only appears once recovery has clearly failed and nothing mounted, so
+      // the customer gets a visible control instead of an endless loader.
+      const shouldShow = uploadlyRecoveryFailed && !hasUploadyWidgetMounted();
+      uploadlyFallbackButton.style.display = shouldShow ? '' : 'none';
       return;
     }
     uploadlyFallbackButton.style.display = hasUploadyWidgetMounted() ? 'none' : '';
@@ -185,42 +215,245 @@ document.addEventListener('DOMContentLoaded', () => {
   const monitorUploadyMount = () => {
     if (!uploadlyHasAppBlock) return;
 
-    // If it mounts, hide the loading status.
     let settled = false;
-    const settleIfMounted = () => {
-      if (settled) return;
+
+    const appBlockPlaceholder = () =>
+      (uploadlyContainer || document).querySelector('[data-photouploadapp-product-json]');
+
+    const checkNow = () => {
+      if (settled) return true;
       if (hasUploadyWidgetMounted()) {
         settled = true;
         syncUploadlyStatusVisibility();
+        syncUploadlyFallbackVisibility();
+        return true;
+      }
+      // Keep the loader in sync while we wait.
+      syncUploadlyStatusVisibility();
+      return false;
+    };
+
+    checkNow();
+
+    const mountObserver = new MutationObserver(() => {
+      if (checkNow()) mountObserver.disconnect();
+    });
+    mountObserver.observe(uploadlyContainer || document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class', 'id'],
+    });
+
+    // Safety-net polling in case a mutation is missed.
+    const startedAt = Date.now();
+    const poll = setInterval(() => {
+      if (checkNow() || Date.now() - startedAt > 30000) {
+        clearInterval(poll);
+        mountObserver.disconnect();
+      }
+    }, 400);
+
+    // ROOT-CAUSE RECOVERY.
+    // The Uploadly app embed injects two independent scripts: uploadly.js and
+    // (the Uploadcare library) uploadcarev2.js. They load unordered, so when
+    // Uploadcare loses the race and isn't ready as Uploadly runs, Uploadly bails
+    // and never builds the upload widget — leaving "Loading upload tool…"
+    // forever. (This is why it works on some loads / hard refreshes but not
+    // others, e.g. navigating in from another page.)
+    //
+    // When the placeholder is present but the widget hasn't mounted after a short
+    // grace period, re-run the mount ourselves: make sure Uploadcare is loaded,
+    // (re)load Uploadly so its mount routine exists, then invoke it. Verified
+    // against the live storefront, including the failing race condition.
+    const findScriptSrc = (needle, fallback) => {
+      const tag = Array.from(document.scripts).find((s) => s.src && s.src.indexOf(needle) !== -1);
+      return tag ? tag.src : fallback;
+    };
+
+    // Load a script once, keyed on window[key]. Resolves true on load, false on
+    // error. A FAILED load is never cached: window[key] is cleared so a later
+    // attempt re-injects. (Used for Uploadcare, where a load failure is a real
+    // network failure we want to retry.)
+    const loadScriptOnce = (src, key) => {
+      if (window[key]) return window[key];
+      window[key] = new Promise((resolve) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.onload = () => resolve(true);
+        s.onerror = () => {
+          window[key] = null;
+          resolve(false);
+        };
+        document.head.appendChild(s);
+      });
+      return window[key];
+    };
+
+    // Inject a script unconditionally (a fresh tag each call). Used for
+    // uploadly.js: a successful script load does NOT guarantee it defined
+    // window.ph_product_script — if uploadly.js ran before window.uploadcare
+    // existed it bails WITHOUT defining its mount routine (yet onload still
+    // fires). So once Uploadcare is present we must re-run uploadly.js, which a
+    // load-once cache would wrongly skip.
+    const injectScript = (src) =>
+      new Promise((resolve) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.onload = () => resolve(true);
+        s.onerror = () => resolve(false);
+        document.head.appendChild(s);
+      });
+
+    const waitFor = (cond, timeout) =>
+      new Promise((resolve) => {
+        if (cond()) return resolve(true);
+        const start = Date.now();
+        const t = setInterval(() => {
+          if (cond() || Date.now() - start > timeout) {
+            clearInterval(t);
+            resolve(cond());
+          }
+        }, 100);
+      });
+
+    // Uploadly exposes two mount routines: ph_home_script (builds the
+    // .photouploadapp widget on non-product pages) and ph_product_script
+    // (product pages only — it reads product data and throws
+    // "reading 'product'" on a /pages/ URL). This widget lives on
+    // /pages/film-printing, so we mount via ph_home_script; ph_product_script
+    // is only used as a fallback on an actual /products/ URL.
+    const runUploadlyMount = () => {
+      try {
+        if (typeof window.ph_home_script === 'function') {
+          window.ph_home_script();
+          return true;
+        }
+        if (
+          typeof window.ph_product_script === 'function' &&
+          /\/products\//.test(window.location.pathname)
+        ) {
+          window.ph_product_script();
+          return true;
+        }
+      } catch (_) {}
+      return false;
+    };
+
+    const uploadlyMountReady = () =>
+      typeof window.ph_home_script === 'function' ||
+      typeof window.ph_product_script === 'function';
+
+    let recovering = false;
+    let uploadlyInjected = false;
+    const recoverUpload = async () => {
+      if (recovering || settled || hasUploadyWidgetMounted()) return;
+      // Nothing to mount in-page if the app block rendered empty — that's the
+      // separate stale-cache case handled by the reload fallback below.
+      if (!appBlockPlaceholder()) return;
+      recovering = true;
+      try {
+        // 1) Ensure Uploadcare is actually present (not just its tag loaded).
+        if (typeof window.uploadcare === 'undefined') {
+          await loadScriptOnce(
+            findScriptSrc(
+              'uploadcarev2',
+              'https://cdn.shopify.com/s/files/1/0515/2384/6340/files/uploadcarev2.js'
+            ),
+            '__bflUploadcarePromise'
+          );
+          await waitFor(() => typeof window.uploadcare !== 'undefined', 4000);
+        }
+        // Without Uploadcare we can't build the widget; bail and retry next tick.
+        if (typeof window.uploadcare === 'undefined') return;
+
+        // 2) Ensure Uploadly's mount routines exist. If they're missing it
+        //    bailed earlier (ran before Uploadcare) — re-inject uploadly.js
+        //    ONCE so it re-runs and defines them.
+        if (!uploadlyMountReady()) {
+          if (!uploadlyInjected) {
+            uploadlyInjected = true;
+            await injectScript(findScriptSrc('uploadly.js', 'https://uploadly-cdn.com/uploadly.js'));
+          }
+          await waitFor(uploadlyMountReady, 4000);
+        }
+
+        // 3) Build the widget via the page-appropriate mount routine, then give
+        //    it a moment to appear before the next attempt.
+        if (!hasUploadyWidgetMounted() && uploadlyMountReady()) {
+          runUploadlyMount();
+          await waitFor(() => hasUploadyWidgetMounted(), 2000);
+        }
+      } finally {
+        recovering = false;
+        checkNow();
       }
     };
 
-    // Quick initial + a few retries to cover delayed app script injection.
-    syncUploadlyStatusVisibility();
-    setTimeout(() => {
-      settleIfMounted();
-      syncUploadlyStatusVisibility();
-    }, 400);
-    setTimeout(() => {
-      settleIfMounted();
-      syncUploadlyStatusVisibility();
-    }, 1500);
-    setTimeout(() => {
-      settleIfMounted();
-      syncUploadlyStatusVisibility();
-    }, 3500);
+    // Expose recovery so the visible fallback button can re-run it on demand.
+    triggerUploadlyRecovery = recoverUpload;
 
-    // If we’re in a preview/design context and it still didn't mount, show a clear message.
-    setTimeout(() => {
-      if (settled) return;
-      if (isThemePreviewContext() && !hasUploadyWidgetMounted()) {
-        if (uploadlyStatusEl) {
-          uploadlyStatusEl.textContent =
-            'Upload tool did not load in this preview. Open this theme in the customizer or view it live.';
-          uploadlyStatusEl.style.display = '';
-        }
+    // When recovery has clearly failed to mount the widget, surface a visible
+    // control instead of an endless "Loading upload tool…".
+    const markRecoveryFailed = () => {
+      if (settled || hasUploadyWidgetMounted()) return;
+      uploadlyRecoveryFailed = true;
+      if (uploadlyStatusEl) {
+        uploadlyStatusEl.textContent = "Upload tool didn't load.";
+        uploadlyStatusEl.style.display = '';
       }
-    }, 4500);
+      if (uploadlyFallbackButton && !isThemePreviewContext()) {
+        uploadlyFallbackButton.textContent = 'Retry upload tool';
+      }
+      syncUploadlyFallbackVisibility();
+    };
+
+    // Recover sooner and keep retrying on a short interval until the widget
+    // mounts. The app's own (working) path may still win the race first; we
+    // stop immediately once anything mounts.
+    setTimeout(() => {
+      if (!settled && !hasUploadyWidgetMounted()) recoverUpload();
+    }, 1200);
+    const recoveryStartedAt = Date.now();
+    const recoveryTimer = setInterval(() => {
+      if (settled || hasUploadyWidgetMounted()) {
+        clearInterval(recoveryTimer);
+        return;
+      }
+      if (Date.now() - recoveryStartedAt > 22000) {
+        clearInterval(recoveryTimer);
+        return;
+      }
+      recoverUpload();
+    }, 1500);
+
+    // After a clear timeout with no widget, reveal the visible fallback control.
+    setTimeout(markRecoveryFailed, 13000);
+
+    // Last-resort fallback: if the app block rendered EMPTY (placeholder missing,
+    // e.g. a stale full-page-cache hit) there is nothing to recover in-page, so
+    // force a one-time cache-busting reload. Guarded against loops; never in the
+    // theme editor.
+    const selfHealUpload = () => {
+      if (settled || hasUploadyWidgetMounted()) return;
+      cacheBustingReload(false);
+    };
+
+    setTimeout(() => {
+      if (settled || hasUploadyWidgetMounted()) return;
+      if (!appBlockPlaceholder()) selfHealUpload();
+    }, 6000);
+
+    // In a preview/design context, surface a clear message (we never auto-reload
+    // the editor).
+    setTimeout(() => {
+      if (settled || hasUploadyWidgetMounted()) return;
+      if (isThemePreviewContext() && uploadlyStatusEl) {
+        uploadlyStatusEl.textContent =
+          'Upload tool did not load in this preview. Open this theme in the customizer or view it live.';
+        uploadlyStatusEl.style.display = '';
+      }
+    }, 15000);
   };
 
   const openUploadlyFromFallback = () => {
@@ -445,7 +678,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Check if the form is empty
     const noSelections = basePrice === total;
-    if (noSelections && !getQuantity() > 1) {
+    if (noSelections && !(getQuantity() > 1)) {
       osWrapper.style.display = 'none';
       if (bottomOrderSummary) bottomOrderSummary.style.display = 'none';
       return;
@@ -1005,19 +1238,6 @@ document.addEventListener('DOMContentLoaded', () => {
       createRow(bottomOsList, 'Total', formatMoney(perRoll), 0);
     }
   };
-
-  // Toggle behavior
-  if (osToggle && osDetails) {
-    osToggle.addEventListener('click', () => {
-      const expanded = osToggle.getAttribute('aria-expanded') === 'true';
-      osToggle.setAttribute('aria-expanded', String(!expanded));
-      osDetails.hidden = expanded;
-      const first = osToggle.querySelector('span:first-child');
-      const second = osToggle.querySelector('span:last-child');
-      if (first) first.textContent = expanded ? 'Show Details' : 'Hide Details';
-      if (second) second.textContent = expanded ? '(+)' : '(-)';
-    });
-  }
 
   // --- Total calc ---
   function calculateTotal() {
@@ -2027,10 +2247,49 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(syncUploadlyFallbackVisibility, 2500);
 
   if (uploadlyFallbackButton) {
+    let fallbackRetryCount = 0;
     uploadlyFallbackButton.addEventListener('click', () => {
-      if (uploadlyHasAppBlock) return;
-      // Re-check immediately in case Uploady mounted after our last poll.
+      // Re-check immediately in case the widget mounted after our last poll.
       syncUploadlyFallbackVisibility();
+      if (hasUploadyWidgetMounted()) {
+        openUploadlyFromFallback();
+        return;
+      }
+
+      if (uploadlyHasAppBlock) {
+        // Live context: re-run the in-page recovery. After a couple of failed
+        // retries, escalate the button to a one-time cache-busting reload.
+        if (fallbackRetryCount >= 2) {
+          uploadlyFallbackButton.textContent = 'Reloading…';
+          cacheBustingReload(true);
+          return;
+        }
+        fallbackRetryCount += 1;
+        uploadlyFallbackButton.disabled = true;
+        uploadlyFallbackButton.textContent = 'Retrying…';
+        if (uploadlyStatusEl) {
+          uploadlyStatusEl.textContent = 'Retrying…';
+          uploadlyStatusEl.style.display = '';
+        }
+        if (typeof triggerUploadlyRecovery === 'function') triggerUploadlyRecovery();
+        // Re-check after a short window; restore the control if still unmounted.
+        setTimeout(() => {
+          if (hasUploadyWidgetMounted()) {
+            uploadlyRecoveryFailed = false;
+            syncUploadlyStatusVisibility();
+            syncUploadlyFallbackVisibility();
+            return;
+          }
+          uploadlyFallbackButton.disabled = false;
+          uploadlyFallbackButton.textContent =
+            fallbackRetryCount >= 2 ? 'Reload page' : 'Retry upload tool';
+          if (uploadlyStatusEl) uploadlyStatusEl.textContent = "Upload tool didn't load.";
+        }, 6000);
+        return;
+      }
+
+      // Non-app-block context (e.g. preview without app block): open whatever
+      // interactive control exists, or surface a clear message.
       const opened = openUploadlyFromFallback();
       if (!opened) {
         setErrorMessage(
@@ -2094,6 +2353,7 @@ document.addEventListener('DOMContentLoaded', () => {
             calculateTotal();
           }
           syncUploadlyFallbackVisibility();
+          syncUploadlyStatusVisibility();
         }, 250);
       }
     });
