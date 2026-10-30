@@ -1,0 +1,21 @@
+{
+  "store": "bellows-film-printing-staging.myshopify.com",
+  "currency": "USD",
+  "rows": [
+    {
+      "enabled": true,
+      "physical": true,
+      "variant_id": "67852705202287",
+      "service": "photo",
+      "size": "4x6",
+      "paper": "engineering-f06p-paper",
+      "lab": "miami",
+      "options": {
+        "Turnaround": "Standard (4-5 days)"
+      },
+      "per_file_cents": 40,
+      "paper_input": null,
+      "lab_input": "Miami"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "002722c8effe5d2e3243467181b45833"
+name = "bellows-film-shipping-staging"
+application_url = "https://shopify.dev/apps/default-app-home"
+embedded = true
+
+[webhooks]
+api_version = "2026-10"
+
+# Cart-write scope approved 2026-10-23 for one note diagnostic; config-only release 1178111508481.
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_cart_transforms,write_validations,write_fulfillment_constraint_rules,write_shipping,read_products,read_publications,read_locations,write_inventory,write_locations,write_delivery_customizations,write_metaobject_definitions,write_metaobjects,write_app_proxy,unauthenticated_read_checkouts,unauthenticated_read_product_listings,unauthenticated_read_customers,unauthenticated_read_selling_plans,unauthenticated_write_checkouts"
+optional_scopes = [ ]
+use_legacy_install_flow = false
+
+[auth]
+redirect_urls = [ ]
+
+[build]
+dev_store_url = "bellows-film-printing-staging.myshopify.com"
+
+[app_proxy]
+url = "https://film-printing-staging.bellowsfilmlab.com/proxy"
+subpath = "bfl-staging"
+prefix = "apps"

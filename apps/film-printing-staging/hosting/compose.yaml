@@ -1,0 +1,51 @@
+# One private local SQLite runtime. No rolling overlap or automatic lock release.
+name: bfl-staging
+services:
+  runtime:
+    image: ${BFL_RUNTIME_IMAGE:?Use the reviewed AMD64 image ID}
+    platform: linux/amd64
+    container_name: bfl-staging-runtime
+    env_file: /etc/bfl-staging/runtime.env
+    environment:
+      BFL_BIND: 0.0.0.0
+    volumes:
+      - /var/lib/bfl-staging/data:/data
+      - /etc/bfl-staging/secrets:/run/secrets:ro
+    read_only: true
+    tmpfs: ['/tmp:size=16m,mode=1777']
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 128
+    mem_limit: 768m
+    stop_grace_period: 35s
+    restart: 'no'
+    logging:
+      driver: local
+      options: {max-size: 5m, max-file: '2'}
+  caddy:
+    image: ${BFL_CADDY_IMAGE:?Use the reviewed Caddy digest}
+    platform: linux/amd64
+    container_name: bfl-staging-caddy
+    environment:
+      BFL_HOSTNAME: ${BFL_HOSTNAME:?Approved DNS hostname required}
+    ports: ['80:80', '443:443']
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - /var/lib/bfl-staging/caddy-data:/data
+      - /var/lib/bfl-staging/caddy-config:/config
+    read_only: true
+    tmpfs: ['/tmp:size=16m,mode=1777']
+    cap_drop: [ALL]
+    cap_add: [NET_BIND_SERVICE]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 256m
+    restart: unless-stopped
+    networks:
+      default:
+        ipv4_address: 172.18.0.3
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
+          gateway: 172.18.0.1

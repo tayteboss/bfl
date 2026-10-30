@@ -1,0 +1,21 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "002722c8effe5d2e3243467181b45833"
+name = "bellows-film-shipping-staging"
+application_url = "https://shopify.dev/apps/default-app-home"
+embedded = true
+
+[webhooks]
+api_version = "2026-10"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_cart_transforms,write_validations,write_fulfillment_constraint_rules,write_shipping,read_products,read_locations,write_inventory,write_locations,write_delivery_customizations,write_metaobject_definitions,write_metaobjects"
+optional_scopes = [ ]
+use_legacy_install_flow = false
+
+[auth]
+redirect_urls = [ ]
+
+[build]
+dev_store_url = "bellows-film-printing-staging.myshopify.com"

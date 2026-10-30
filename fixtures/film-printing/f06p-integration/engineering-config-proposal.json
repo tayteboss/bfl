@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "store": "bellows-film-printing-staging.myshopify.com",
+  "packages": [
+    {
+      "id": "f06p-test-mailer",
+      "label": "F06P TEST ONLY mailer",
+      "enabled": true,
+      "provenance": {
+        "source": "F06P generated engineering proposal, 2026-10-26",
+        "evidence": "Nonpersonal test values only; not verified merchant physical facts or approved catalog pricing."
+      },
+      "kind": "mailer",
+      "length_in": 13,
+      "width_in": 10,
+      "height_in": 2,
+      "empty_weight_oz": 3.4,
+      "dimensions_status": "observed",
+      "weight_status": "observed"
+    }
+  ],
+  "rules": [
+    {
+      "id": "f06p-test-4x6",
+      "label": "F06P TEST ONLY 4x6",
+      "enabled": true,
+      "provenance": {
+        "source": "F06P generated engineering proposal, 2026-10-26",
+        "evidence": "Nonpersonal test values only; not verified merchant physical facts or approved catalog pricing."
+      },
+      "service": "photo",
+      "size_key": "4x6",
+      "lab": "miami",
+      "package_id": "f06p-test-mailer",
+      "capacity": 12,
+      "print_weight_oz": 0.1,
+      "capacity_status": "observed",
+      "weight_status": "observed",
+      "paper": "engineering-f06p-paper"
+    }
+  ],
+  "labs": [
+    {
+      "id": "miami",
+      "label": "Miami",
+      "enabled": true,
+      "provenance": {
+        "source": "F06P generated engineering proposal, 2026-10-26",
+        "evidence": "Nonpersonal test values only; not verified merchant physical facts or approved catalog pricing."
+      },
+      "location_id": "gid://shopify/Location/92443803759",
+      "origin": {
+        "address1": "2051 NW 2nd Ave",
+        "address2": "",
+        "city": "Miami",
+        "province_code": "FL",
+        "country_code": "US",
+        "postal_code": "33127"
+      },
+      "origin_status": "staging_address_only"
+    }
+  ],
+  "policies": [
+    {
+      "id": "film-printing",
+      "label": "Film Printing — FedEx 2Day",
+      "enabled": false,
+      "disabled_reason": "Policy approved; actual own-account rate access and packing/origins remain unverified.",
+      "provenance": {
+        "source": "docs/film-printing-shipping-tracker.md",
+        "evidence": "Tayte 2026-10-19 approved plan and staging reconstruction; D05/D09/D10 settled. Production print-policy inspection recorded in F01."
+      },
+      "provider": "fedex",
+      "service": "FEDEX_2_DAY",
+      "rate_source": "bellows_own_account",
+      "currency": "USD",
+      "markup_basis_points": 0,
+      "markup_cents": 0,
+      "coverage": "existing_us_62_regions_subject_to_carrier_eligibility",
+      "failure": "shipping_unavailable",
+      "pickup": "native_free",
+      "sharing": "unavailable",
+      "rate_access": "unverified"
+    }
+  ]
+}

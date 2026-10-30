@@ -1,0 +1,3 @@
+query CartDeliveryOptionsTransformRunInput {
+ cart { deliveryGroups { cartLines { merchandise { ... on ProductVariant { id } } } deliveryOptions { handle code deliveryMethodType } } }
+}

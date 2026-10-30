@@ -71,7 +71,7 @@
                 <div class="drawer__cart-items-wrapper">
                   <ul class="cart-items-list" role="list" style="display:flex; flex-direction:column; gap:16px;">
                     {%- for item in cart.items -%}
-                      {% render 'product-cart-card', item: item, index: item.index | plus: 1, context: 'drawer' %}
+                      {% render 'product-cart-card', item: item, index: item.index, plus: 1, context: 'drawer' %}
                     {%- endfor -%}
                   </ul>
                 </div>
@@ -126,7 +126,7 @@
 
               <div class="totals" role="status">
                 <h2 class="totals__total type-p">{{ 'sections.cart.estimated_total' | t }}</h2>
-                <p class="totals__total-value type-p">{{ cart.total_price | money_with_currency }}</p>
+                <p class="totals__total-value type-p" data-cart-total="{{ cart.total_price }}">{{ cart.total_price | money_with_currency }}</p>
               </div>
 
               <small class="tax-note type-p-small">
@@ -205,3 +205,15 @@
     </div>
   </div>
 </cart-drawer>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'product-cart-card', item: item, index: item.index | plus: 1, context:
+    'drawer' %}"
+  to: "{% render 'product-cart-card', item: item, index: item.index, plus: 1, context:
+    'drawer' %}"
+  position: 2784..2875
+{% endcomment %}

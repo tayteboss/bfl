@@ -1,0 +1,62 @@
+{% comment %}
+Helper SHA256: 8d9b126a9ef95f5813918b0c7285fbd2ccd59f8e8490528e5e379255dd837ebc
+Native helper SHA256: 03c7b842def96ded3a132e8e602b3662684ca5a36c2fa614a9b331faa982466e
+LOCAL DISABLED PROPOSAL. Review exact enable/deadline pins before installation.
+Initial navigation requires exactly one bfl_f06p_run=f06p-integrated-v1 and one
+bfl_f06p_role=A or B. These public markers select input only, never authority.
+Keep the same document/controller through cleanup; no fallback or reset.
+{% endcomment %}
+{% if shop.permanent_domain == 'bellows-film-printing-staging.myshopify.com' and theme.id == 189196533871 %}
+<script type="module">
+  const ENABLED = false, UNTIL = 0, CONTROL_CONTRACT_SHA256 = '826856e32a8ced0b09962bcea1c090c52c7f1e658b33022ca11a3d03a196dd08';
+  // Only reviewed source configuration can select A keyboard; URL parameters cannot.
+  const ROLE_A_KEYBOARD = false, PREFLIGHT_ONLY = false;
+  const target = () => location.origin === 'https://bellows-film-printing-staging.myshopify.com' &&
+    globalThis.Shopify?.theme?.id === 189196533871 && globalThis.Shopify?.theme?.role === 'unpublished';
+  if (ENABLED && target() && Number.isSafeInteger(UNTIL) && UNTIL > Date.now() && UNTIL <= Date.now() + 1200000 &&
+      document.head && !document.getElementById('bfl-f06p-registration')) {
+    const params = new URLSearchParams(location.search), roles = params.getAll('bfl_f06p_role'), runs = params.getAll('bfl_f06p_run');
+    const valid = roles.length === 1 && ['A', 'B'].includes(roles[0]) && runs.length === 1 && runs[0] === 'f06p-integrated-v1';
+    const selection = Object.freeze({run: 'f06p-integrated-v1', role: valid ? roles[0] : null,
+      input: valid ? (roles[0] === 'A' && !ROLE_A_KEYBOARD ? 'webmcp' : 'keyboard') : null});
+    const node = document.createElement('script');
+    node.id = 'bfl-f06p-registration'; node.type = 'application/json'; document.head.append(node);
+    let disposed = false, controller, timer, implementation = null;
+    const write = (status, reason = null) => {
+      if (node.isConnected) node.textContent = JSON.stringify({...selection, status, reason, implementation,
+        cart_verified: false, checkout_ready: false});
+    };
+    const invalidate = () => {
+      if (disposed) return;
+      disposed = true; clearTimeout(timer); globalThis.removeEventListener('pagehide', invalidate);
+      // Retain an inert closed tombstone: a second bootstrap cannot reset this document.
+      write('closed'); void controller?.close().catch(() => {});
+    };
+    globalThis.addEventListener('pagehide', invalidate, {once: true});
+    timer = setTimeout(invalidate, Math.max(1, UNTIL + 630000 - Date.now()));
+    write(valid ? 'pending' : 'failed', valid ? null : 'invalid_selection');
+    if (valid) {
+      let stage = 'module_unavailable';
+      try {
+        const moduleUrl = new URL({{ 'checkout-diagnostic.js' | asset_url | json }}, location.origin);
+        moduleUrl.searchParams.set('bfl_sha256', '8d9b126a9ef95f5813918b0c7285fbd2ccd59f8e8490528e5e379255dd837ebc');
+        const {registerCheckoutDiagnostic, DIAGNOSTIC_REVISION, NATIVE_REVISION} = await import(moduleUrl.href);
+        stage = 'implementation_mismatch';
+        if (DIAGNOSTIC_REVISION !== 'f06p-diagnostic-v4' || NATIVE_REVISION !== 'f06p-native-preflight-v3') throw Error('DIAGNOSTIC_IMPLEMENTATION');
+        // Fixed compatibility evidence; not SRI, cart success or authority.
+        implementation = Object.freeze({diagnostic: DIAGNOSTIC_REVISION, native: NATIVE_REVISION});
+        if (!disposed) {
+          stage = 'registration_failed';
+          controller = await registerCheckoutDiagnostic({until: UNTIL, cleanupUntil: UNTIL + 630000,
+            runId: selection.run, role: selection.role, input: selection.input, preflightOnly: PREFLIGHT_ONLY,
+            controlContractSha256: CONTROL_CONTRACT_SHA256, onClose: () => write('closed')});
+          if (disposed) await controller.close();
+          else write('ready');
+        }
+      } catch {
+        if (!disposed) write('failed', stage);
+      }
+    }
+  }
+</script>
+{% endif %}

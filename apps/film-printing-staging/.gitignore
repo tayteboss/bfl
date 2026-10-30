@@ -1,0 +1,6 @@
+node_modules/
+.shopify/
+runtime/
+**/dist/
+**/generated/
+.env*

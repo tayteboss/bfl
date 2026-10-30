@@ -1,0 +1,3681 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "observed_workbook_snapshot",
+  "retrieved_at_utc": "2026-10-19T00:06:40Z",
+  "timestamp_precision_note": "Initial range read completed by 2026-10-19T00:06:40Z; Packaging A1:P61 expanded read followed in this session. Source dates are separate from retrieval time.",
+  "spreadsheet_id": "1-tzAL_vjR9nbGfo2d2ARZxnoklbNa459I2LddVynaos",
+  "url": "https://docs.google.com/spreadsheets/d/1-tzAL_vjR9nbGfo2d2ARZxnoklbNa459I2LddVynaos/edit?ouid=114350851061815821437",
+  "properties": {
+    "title": "Bellows Print Packaging Specs",
+    "locale": "en_US",
+    "timeZone": "America/Los_Angeles"
+  },
+  "read_ranges": [
+    "'How to Use'!A1:N40",
+    "Packaging!A1:P61",
+    "'Order Check'!A1:N30"
+  ],
+  "sheets": [
+    {
+      "properties": {
+        "sheetId": 988252872,
+        "title": "How to Use",
+        "index": 0,
+        "sheetType": "GRID",
+        "gridProperties": {
+          "rowCount": 1000,
+          "columnCount": 26,
+          "rowGroupControlAfter": true,
+          "columnGroupControlAfter": true
+        }
+      },
+      "data": [
+        {
+          "rowData": [
+            {
+              "values": [
+                {
+                  "formattedValue": "Bellows Print Packaging Specs",
+                  "userEnteredValue": {
+                    "stringValue": "Bellows Print Packaging Specs"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Bellows Print Packaging Specs"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "Purpose: one place for every print size's package, max prints per package, and packaging weight, so the order form can calculate shipping weight itself and we can drop the separate packaging line item.",
+                  "userEnteredValue": {
+                    "stringValue": "Purpose: one place for every print size's package, max prints per package, and packaging weight, so the order form can calculate shipping weight itself and we can drop the separate packaging line item."
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Purpose: one place for every print size's package, max prints per package, and packaging weight, so the order form can calculate shipping weight itself and we can drop the separate packaging line item."
+                  }
+                }
+              ]
+            },
+            {},
+            {
+              "values": [
+                {
+                  "formattedValue": "How to fill it in",
+                  "userEnteredValue": {
+                    "stringValue": "How to fill it in"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "How to fill it in"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "1. Go to the 'Packaging' tab. Each print size we sell on Shopify already has a row.",
+                  "userEnteredValue": {
+                    "stringValue": "1. Go to the 'Packaging' tab. Each print size we sell on Shopify already has a row."
+                  },
+                  "effectiveValue": {
+                    "stringValue": "1. Go to the 'Packaging' tab. Each print size we sell on Shopify already has a row."
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "2. Fill in every YELLOW cell for your size: package type, package dimensions, max prints per package, empty package weight, and weight of one print.",
+                  "userEnteredValue": {
+                    "stringValue": "2. Fill in every YELLOW cell for your size: package type, package dimensions, max prints per package, empty package weight, and weight of one print."
+                  },
+                  "effectiveValue": {
+                    "stringValue": "2. Fill in every YELLOW cell for your size: package type, package dimensions, max prints per package, empty package weight, and weight of one print."
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "3. Weigh on the lab scale in ounces. Weigh the empty package with all inserts/backing board/tape it ships with.",
+                  "userEnteredValue": {
+                    "stringValue": "3. Weigh on the lab scale in ounces. Weigh the empty package with all inserts/backing board/tape it ships with."
+                  },
+                  "effectiveValue": {
+                    "stringValue": "3. Weigh on the lab scale in ounces. Weigh the empty package with all inserts/backing board/tape it ships with."
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "4. BLUE cells calculate themselves. Don't type in them.",
+                  "userEnteredValue": {
+                    "stringValue": "4. BLUE cells calculate themselves. Don't type in them."
+                  },
+                  "effectiveValue": {
+                    "stringValue": "4. BLUE cells calculate themselves. Don't type in them."
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "5. If your lab uses different packaging than another lab for the same size, add a new row and pick your lab in the Location column.",
+                  "userEnteredValue": {
+                    "stringValue": "5. If your lab uses different packaging than another lab for the same size, add a new row and pick your lab in the Location column."
+                  },
+                  "effectiveValue": {
+                    "stringValue": "5. If your lab uses different packaging than another lab for the same size, add a new row and pick your lab in the Location column."
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "6. Put your name and the date you checked it so we know the number is current.",
+                  "userEnteredValue": {
+                    "stringValue": "6. Put your name and the date you checked it so we know the number is current."
+                  },
+                  "effectiveValue": {
+                    "stringValue": "6. Put your name and the date you checked it so we know the number is current."
+                  }
+                }
+              ]
+            },
+            {},
+            {
+              "values": [
+                {
+                  "formattedValue": "Example row (format only, not real numbers)",
+                  "userEnteredValue": {
+                    "stringValue": "Example row (format only, not real numbers)"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Example row (format only, not real numbers)"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "Print Size",
+                  "userEnteredValue": {
+                    "stringValue": "Print Size"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Print Size"
+                  }
+                },
+                {
+                  "formattedValue": "Package Type",
+                  "userEnteredValue": {
+                    "stringValue": "Package Type"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Package Type"
+                  }
+                },
+                {
+                  "formattedValue": "L x W x H (in)",
+                  "userEnteredValue": {
+                    "stringValue": "L x W x H (in)"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "L x W x H (in)"
+                  }
+                },
+                {
+                  "formattedValue": "Max Prints",
+                  "userEnteredValue": {
+                    "stringValue": "Max Prints"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Max Prints"
+                  }
+                },
+                {
+                  "formattedValue": "Empty Pkg (oz)",
+                  "userEnteredValue": {
+                    "stringValue": "Empty Pkg (oz)"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Empty Pkg (oz)"
+                  }
+                },
+                {
+                  "formattedValue": "1 Print (oz)",
+                  "userEnteredValue": {
+                    "stringValue": "1 Print (oz)"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "1 Print (oz)"
+                  }
+                },
+                {
+                  "formattedValue": "Full Pkg (oz)",
+                  "userEnteredValue": {
+                    "stringValue": "Full Pkg (oz)"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Full Pkg (oz)"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "5\" x 7\"",
+                  "userEnteredValue": {
+                    "stringValue": "5\" x 7\""
+                  },
+                  "effectiveValue": {
+                    "stringValue": "5\" x 7\""
+                  }
+                },
+                {
+                  "formattedValue": "Rigid Mailer",
+                  "userEnteredValue": {
+                    "stringValue": "Rigid Mailer"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Rigid Mailer"
+                  }
+                },
+                {
+                  "formattedValue": "9 x 11.5 x 0.25",
+                  "userEnteredValue": {
+                    "stringValue": "9 x 11.5 x 0.25"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "9 x 11.5 x 0.25"
+                  }
+                },
+                {
+                  "formattedValue": "25",
+                  "userEnteredValue": {
+                    "stringValue": "25"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "25"
+                  }
+                },
+                {
+                  "formattedValue": "5.0",
+                  "userEnteredValue": {
+                    "stringValue": "5.0"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "5.0"
+                  }
+                },
+                {
+                  "formattedValue": "0.4",
+                  "userEnteredValue": {
+                    "stringValue": "0.4"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "0.4"
+                  }
+                },
+                {
+                  "formattedValue": "15.0",
+                  "userEnteredValue": {
+                    "stringValue": "15.0"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "15.0"
+                  }
+                }
+              ]
+            },
+            {},
+            {
+              "values": [
+                {
+                  "formattedValue": "Color key",
+                  "userEnteredValue": {
+                    "stringValue": "Color key"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Color key"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "Yellow = manager input",
+                  "userEnteredValue": {
+                    "stringValue": "Yellow = manager input"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Yellow = manager input"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "Blue = formula, auto-calculated",
+                  "userEnteredValue": {
+                    "stringValue": "Blue = formula, auto-calculated"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Blue = formula, auto-calculated"
+                  }
+                }
+              ]
+            },
+            {},
+            {
+              "values": [
+                {
+                  "formattedValue": "Order Check tab: pick a size and quantity to see how many packages an order needs and its total shipping weight — the same math the form will use.",
+                  "userEnteredValue": {
+                    "stringValue": "Order Check tab: pick a size and quantity to see how many packages an order needs and its total shipping weight — the same math the form will use."
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Order Check tab: pick a size and quantity to see how many packages an order needs and its total shipping weight — the same math the form will use."
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "properties": {
+        "sheetId": 1396884531,
+        "title": "Packaging",
+        "index": 1,
+        "sheetType": "GRID",
+        "gridProperties": {
+          "rowCount": 1000,
+          "columnCount": 26,
+          "frozenRowCount": 1,
+          "frozenColumnCount": 1,
+          "rowGroupControlAfter": true,
+          "columnGroupControlAfter": true
+        }
+      },
+      "data": [
+        {
+          "rowData": [
+            {
+              "values": [
+                {
+                  "formattedValue": "Print Size",
+                  "userEnteredValue": {
+                    "stringValue": "Print Size"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Print Size"
+                  }
+                },
+                {
+                  "formattedValue": "Product",
+                  "userEnteredValue": {
+                    "stringValue": "Product"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Product"
+                  }
+                },
+                {
+                  "formattedValue": "Location",
+                  "userEnteredValue": {
+                    "stringValue": "Location"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Location"
+                  }
+                },
+                {
+                  "formattedValue": "Package Type",
+                  "userEnteredValue": {
+                    "stringValue": "Package Type"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Package Type"
+                  }
+                },
+                {
+                  "formattedValue": "Package L (in)",
+                  "userEnteredValue": {
+                    "stringValue": "Package L (in)"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Package L (in)"
+                  }
+                },
+                {
+                  "formattedValue": "Package W (in)",
+                  "userEnteredValue": {
+                    "stringValue": "Package W (in)"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Package W (in)"
+                  }
+                },
+                {
+                  "formattedValue": "Package H (in)",
+                  "userEnteredValue": {
+                    "stringValue": "Package H (in)"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Package H (in)"
+                  }
+                },
+                {
+                  "formattedValue": "Max Prints per Package",
+                  "userEnteredValue": {
+                    "stringValue": "Max Prints per Package"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Max Prints per Package"
+                  }
+                },
+                {
+                  "formattedValue": "Empty Package Weight (oz)",
+                  "userEnteredValue": {
+                    "stringValue": "Empty Package Weight (oz)"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Empty Package Weight (oz)"
+                  },
+                  "note": "Weigh the empty package with all inserts, backing boards and tape it ships with."
+                },
+                {
+                  "formattedValue": "Weight of 1 Print (oz)",
+                  "userEnteredValue": {
+                    "stringValue": "Weight of 1 Print (oz)"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Weight of 1 Print (oz)"
+                  }
+                },
+                {
+                  "formattedValue": "Full Package Weight (oz)",
+                  "userEnteredValue": {
+                    "stringValue": "Full Package Weight (oz)"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Full Package Weight (oz)"
+                  },
+                  "note": "Empty package + (max prints x weight of 1 print). Auto-calculated."
+                },
+                {
+                  "formattedValue": "Full Package Weight (lb)",
+                  "userEnteredValue": {
+                    "stringValue": "Full Package Weight (lb)"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Full Package Weight (lb)"
+                  }
+                },
+                {
+                  "formattedValue": "Filled In By",
+                  "userEnteredValue": {
+                    "stringValue": "Filled In By"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Filled In By"
+                  }
+                },
+                {
+                  "formattedValue": "Date Checked",
+                  "userEnteredValue": {
+                    "stringValue": "Date Checked"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Date Checked"
+                  }
+                },
+                {
+                  "formattedValue": "Notes",
+                  "userEnteredValue": {
+                    "stringValue": "Notes"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Notes"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "3.5\" x 5\"",
+                  "userEnteredValue": {
+                    "stringValue": "3.5\" x 5\""
+                  },
+                  "effectiveValue": {
+                    "stringValue": "3.5\" x 5\""
+                  }
+                },
+                {
+                  "formattedValue": "Photo Printing",
+                  "userEnteredValue": {
+                    "stringValue": "Photo Printing"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Photo Printing"
+                  }
+                },
+                {
+                  "formattedValue": "All Labs",
+                  "userEnteredValue": {
+                    "stringValue": "All Labs"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "All Labs"
+                  }
+                },
+                {
+                  "formattedValue": "Bubble Mailer",
+                  "userEnteredValue": {
+                    "stringValue": "Bubble Mailer"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Bubble Mailer"
+                  }
+                },
+                {
+                  "formattedValue": "11.00",
+                  "userEnteredValue": {
+                    "numberValue": 11
+                  },
+                  "effectiveValue": {
+                    "numberValue": 11
+                  }
+                },
+                {
+                  "formattedValue": "8.50",
+                  "userEnteredValue": {
+                    "numberValue": 8.5
+                  },
+                  "effectiveValue": {
+                    "numberValue": 8.5
+                  }
+                },
+                {
+                  "formattedValue": "0.50",
+                  "userEnteredValue": {
+                    "numberValue": 0.5
+                  },
+                  "effectiveValue": {
+                    "numberValue": 0.5
+                  }
+                },
+                {
+                  "formattedValue": "40",
+                  "userEnteredValue": {
+                    "numberValue": 40
+                  },
+                  "effectiveValue": {
+                    "numberValue": 40
+                  }
+                },
+                {
+                  "formattedValue": "1.00",
+                  "userEnteredValue": {
+                    "numberValue": 1
+                  },
+                  "effectiveValue": {
+                    "numberValue": 1
+                  }
+                },
+                {
+                  "formattedValue": "0.10",
+                  "userEnteredValue": {
+                    "numberValue": 0.1
+                  },
+                  "effectiveValue": {
+                    "numberValue": 0.1
+                  }
+                },
+                {
+                  "formattedValue": "5.00",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H2=\"\",I2=\"\",J2=\"\"),\"\",I2+H2*J2)"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 5
+                  }
+                },
+                {
+                  "formattedValue": "0.31",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K2=\"\",\"\",ROUND(K2/16,2))"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 0.31
+                  }
+                },
+                {
+                  "formattedValue": "Kyle",
+                  "userEnteredValue": {
+                    "stringValue": "Kyle"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Kyle"
+                  }
+                },
+                {
+                  "formattedValue": "10/12/2026",
+                  "userEnteredValue": {
+                    "numberValue": 46307
+                  },
+                  "effectiveValue": {
+                    "numberValue": 46307
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "4\" x 6\"",
+                  "userEnteredValue": {
+                    "stringValue": "4\" x 6\""
+                  },
+                  "effectiveValue": {
+                    "stringValue": "4\" x 6\""
+                  }
+                },
+                {
+                  "formattedValue": "Photo Printing",
+                  "userEnteredValue": {
+                    "stringValue": "Photo Printing"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Photo Printing"
+                  }
+                },
+                {
+                  "formattedValue": "All Labs",
+                  "userEnteredValue": {
+                    "stringValue": "All Labs"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "All Labs"
+                  }
+                },
+                {
+                  "formattedValue": "Bubble Mailer",
+                  "userEnteredValue": {
+                    "stringValue": "Bubble Mailer"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Bubble Mailer"
+                  }
+                },
+                {
+                  "formattedValue": "11.00",
+                  "userEnteredValue": {
+                    "numberValue": 11
+                  },
+                  "effectiveValue": {
+                    "numberValue": 11
+                  }
+                },
+                {
+                  "formattedValue": "8.50",
+                  "userEnteredValue": {
+                    "numberValue": 8.5
+                  },
+                  "effectiveValue": {
+                    "numberValue": 8.5
+                  }
+                },
+                {
+                  "formattedValue": "0.50",
+                  "userEnteredValue": {
+                    "numberValue": 0.5
+                  },
+                  "effectiveValue": {
+                    "numberValue": 0.5
+                  }
+                },
+                {
+                  "formattedValue": "40",
+                  "userEnteredValue": {
+                    "numberValue": 40
+                  },
+                  "effectiveValue": {
+                    "numberValue": 40
+                  }
+                },
+                {
+                  "formattedValue": "1.00",
+                  "userEnteredValue": {
+                    "numberValue": 1
+                  },
+                  "effectiveValue": {
+                    "numberValue": 1
+                  }
+                },
+                {
+                  "formattedValue": "0.10",
+                  "userEnteredValue": {
+                    "numberValue": 0.1
+                  },
+                  "effectiveValue": {
+                    "numberValue": 0.1
+                  }
+                },
+                {
+                  "formattedValue": "5.00",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H3=\"\",I3=\"\",J3=\"\"),\"\",I3+H3*J3)"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 5
+                  }
+                },
+                {
+                  "formattedValue": "0.31",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K3=\"\",\"\",ROUND(K3/16,2))"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 0.31
+                  }
+                },
+                {
+                  "formattedValue": "Kyle",
+                  "userEnteredValue": {
+                    "stringValue": "Kyle"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Kyle"
+                  }
+                },
+                {
+                  "formattedValue": "10/12/2026",
+                  "userEnteredValue": {
+                    "numberValue": 46307
+                  },
+                  "effectiveValue": {
+                    "numberValue": 46307
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "5\" x 7\"",
+                  "userEnteredValue": {
+                    "stringValue": "5\" x 7\""
+                  },
+                  "effectiveValue": {
+                    "stringValue": "5\" x 7\""
+                  }
+                },
+                {
+                  "formattedValue": "Photo Printing",
+                  "userEnteredValue": {
+                    "stringValue": "Photo Printing"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Photo Printing"
+                  }
+                },
+                {
+                  "formattedValue": "All Labs",
+                  "userEnteredValue": {
+                    "stringValue": "All Labs"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "All Labs"
+                  }
+                },
+                {
+                  "formattedValue": "Bubble Mailer",
+                  "userEnteredValue": {
+                    "stringValue": "Bubble Mailer"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Bubble Mailer"
+                  }
+                },
+                {
+                  "formattedValue": "11.00",
+                  "userEnteredValue": {
+                    "numberValue": 11
+                  },
+                  "effectiveValue": {
+                    "numberValue": 11
+                  }
+                },
+                {
+                  "formattedValue": "8.50",
+                  "userEnteredValue": {
+                    "numberValue": 8.5
+                  },
+                  "effectiveValue": {
+                    "numberValue": 8.5
+                  }
+                },
+                {
+                  "formattedValue": "0.50",
+                  "userEnteredValue": {
+                    "numberValue": 0.5
+                  },
+                  "effectiveValue": {
+                    "numberValue": 0.5
+                  }
+                },
+                {
+                  "formattedValue": "40",
+                  "userEnteredValue": {
+                    "numberValue": 40
+                  },
+                  "effectiveValue": {
+                    "numberValue": 40
+                  }
+                },
+                {
+                  "formattedValue": "1.00",
+                  "userEnteredValue": {
+                    "numberValue": 1
+                  },
+                  "effectiveValue": {
+                    "numberValue": 1
+                  }
+                },
+                {
+                  "formattedValue": "0.30",
+                  "userEnteredValue": {
+                    "numberValue": 0.3
+                  },
+                  "effectiveValue": {
+                    "numberValue": 0.3
+                  }
+                },
+                {
+                  "formattedValue": "13.00",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H4=\"\",I4=\"\",J4=\"\"),\"\",I4+H4*J4)"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 13
+                  }
+                },
+                {
+                  "formattedValue": "0.81",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K4=\"\",\"\",ROUND(K4/16,2))"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 0.81
+                  }
+                },
+                {
+                  "formattedValue": "Kyle",
+                  "userEnteredValue": {
+                    "stringValue": "Kyle"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Kyle"
+                  }
+                },
+                {
+                  "formattedValue": "10/12/2026",
+                  "userEnteredValue": {
+                    "numberValue": 46307
+                  },
+                  "effectiveValue": {
+                    "numberValue": 46307
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "8\" x 10\"",
+                  "userEnteredValue": {
+                    "stringValue": "8\" x 10\""
+                  },
+                  "effectiveValue": {
+                    "stringValue": "8\" x 10\""
+                  }
+                },
+                {
+                  "formattedValue": "Photo Printing",
+                  "userEnteredValue": {
+                    "stringValue": "Photo Printing"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Photo Printing"
+                  }
+                },
+                {
+                  "formattedValue": "All Labs",
+                  "userEnteredValue": {
+                    "stringValue": "All Labs"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "All Labs"
+                  }
+                },
+                {
+                  "formattedValue": "Flat Box",
+                  "userEnteredValue": {
+                    "stringValue": "Flat Box"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Flat Box"
+                  }
+                },
+                {
+                  "formattedValue": "13.00",
+                  "userEnteredValue": {
+                    "numberValue": 13
+                  },
+                  "effectiveValue": {
+                    "numberValue": 13
+                  }
+                },
+                {
+                  "formattedValue": "10.00",
+                  "userEnteredValue": {
+                    "numberValue": 10
+                  },
+                  "effectiveValue": {
+                    "numberValue": 10
+                  }
+                },
+                {
+                  "formattedValue": "2.00",
+                  "userEnteredValue": {
+                    "numberValue": 2
+                  },
+                  "effectiveValue": {
+                    "numberValue": 2
+                  }
+                },
+                {
+                  "formattedValue": "20",
+                  "userEnteredValue": {
+                    "numberValue": 20
+                  },
+                  "effectiveValue": {
+                    "numberValue": 20
+                  }
+                },
+                {
+                  "formattedValue": "3.00",
+                  "userEnteredValue": {
+                    "numberValue": 3
+                  },
+                  "effectiveValue": {
+                    "numberValue": 3
+                  }
+                },
+                {
+                  "formattedValue": "0.40",
+                  "userEnteredValue": {
+                    "numberValue": 0.4
+                  },
+                  "effectiveValue": {
+                    "numberValue": 0.4
+                  }
+                },
+                {
+                  "formattedValue": "11.00",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H5=\"\",I5=\"\",J5=\"\"),\"\",I5+H5*J5)"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 11
+                  }
+                },
+                {
+                  "formattedValue": "0.69",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K5=\"\",\"\",ROUND(K5/16,2))"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 0.69
+                  }
+                },
+                {
+                  "formattedValue": "Kyle",
+                  "userEnteredValue": {
+                    "stringValue": "Kyle"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Kyle"
+                  }
+                },
+                {
+                  "formattedValue": "10/12/2026",
+                  "userEnteredValue": {
+                    "numberValue": 46307
+                  },
+                  "effectiveValue": {
+                    "numberValue": 46307
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "8\" x 12\"",
+                  "userEnteredValue": {
+                    "stringValue": "8\" x 12\""
+                  },
+                  "effectiveValue": {
+                    "stringValue": "8\" x 12\""
+                  }
+                },
+                {
+                  "formattedValue": "Photo Printing",
+                  "userEnteredValue": {
+                    "stringValue": "Photo Printing"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Photo Printing"
+                  }
+                },
+                {
+                  "formattedValue": "All Labs",
+                  "userEnteredValue": {
+                    "stringValue": "All Labs"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "All Labs"
+                  }
+                },
+                {
+                  "formattedValue": "Flat Box",
+                  "userEnteredValue": {
+                    "stringValue": "Flat Box"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Flat Box"
+                  }
+                },
+                {
+                  "formattedValue": "13.00",
+                  "userEnteredValue": {
+                    "numberValue": 13
+                  },
+                  "effectiveValue": {
+                    "numberValue": 13
+                  }
+                },
+                {
+                  "formattedValue": "10.00",
+                  "userEnteredValue": {
+                    "numberValue": 10
+                  },
+                  "effectiveValue": {
+                    "numberValue": 10
+                  }
+                },
+                {
+                  "formattedValue": "2.00",
+                  "userEnteredValue": {
+                    "numberValue": 2
+                  },
+                  "effectiveValue": {
+                    "numberValue": 2
+                  }
+                },
+                {
+                  "formattedValue": "20",
+                  "userEnteredValue": {
+                    "numberValue": 20
+                  },
+                  "effectiveValue": {
+                    "numberValue": 20
+                  }
+                },
+                {
+                  "formattedValue": "3.00",
+                  "userEnteredValue": {
+                    "numberValue": 3
+                  },
+                  "effectiveValue": {
+                    "numberValue": 3
+                  }
+                },
+                {
+                  "formattedValue": "0.50",
+                  "userEnteredValue": {
+                    "numberValue": 0.5
+                  },
+                  "effectiveValue": {
+                    "numberValue": 0.5
+                  }
+                },
+                {
+                  "formattedValue": "13.00",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H6=\"\",I6=\"\",J6=\"\"),\"\",I6+H6*J6)"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 13
+                  }
+                },
+                {
+                  "formattedValue": "0.81",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K6=\"\",\"\",ROUND(K6/16,2))"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 0.81
+                  }
+                },
+                {
+                  "formattedValue": "Kyle",
+                  "userEnteredValue": {
+                    "stringValue": "Kyle"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Kyle"
+                  }
+                },
+                {
+                  "formattedValue": "10/12/2026",
+                  "userEnteredValue": {
+                    "numberValue": 46307
+                  },
+                  "effectiveValue": {
+                    "numberValue": 46307
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "11\" x 14\"",
+                  "userEnteredValue": {
+                    "stringValue": "11\" x 14\""
+                  },
+                  "effectiveValue": {
+                    "stringValue": "11\" x 14\""
+                  }
+                },
+                {
+                  "formattedValue": "Fine Art Printing",
+                  "userEnteredValue": {
+                    "stringValue": "Fine Art Printing"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Fine Art Printing"
+                  }
+                },
+                {
+                  "formattedValue": "All Labs",
+                  "userEnteredValue": {
+                    "stringValue": "All Labs"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "All Labs"
+                  }
+                },
+                {
+                  "formattedValue": "Tube",
+                  "userEnteredValue": {
+                    "stringValue": "Tube"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Tube"
+                  }
+                },
+                {
+                  "formattedValue": "24.00",
+                  "userEnteredValue": {
+                    "numberValue": 24
+                  },
+                  "effectiveValue": {
+                    "numberValue": 24
+                  }
+                },
+                {
+                  "formattedValue": "2.00",
+                  "userEnteredValue": {
+                    "numberValue": 2
+                  },
+                  "effectiveValue": {
+                    "numberValue": 2
+                  }
+                },
+                {
+                  "formattedValue": "2.00",
+                  "userEnteredValue": {
+                    "numberValue": 2
+                  },
+                  "effectiveValue": {
+                    "numberValue": 2
+                  }
+                },
+                {
+                  "formattedValue": "3",
+                  "userEnteredValue": {
+                    "numberValue": 3
+                  },
+                  "effectiveValue": {
+                    "numberValue": 3
+                  }
+                },
+                {
+                  "formattedValue": "5.00",
+                  "userEnteredValue": {
+                    "numberValue": 5
+                  },
+                  "effectiveValue": {
+                    "numberValue": 5
+                  }
+                },
+                {
+                  "formattedValue": "1.50",
+                  "userEnteredValue": {
+                    "numberValue": 1.5
+                  },
+                  "effectiveValue": {
+                    "numberValue": 1.5
+                  }
+                },
+                {
+                  "formattedValue": "9.50",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H7=\"\",I7=\"\",J7=\"\"),\"\",I7+H7*J7)"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 9.5
+                  }
+                },
+                {
+                  "formattedValue": "0.59",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K7=\"\",\"\",ROUND(K7/16,2))"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 0.59
+                  }
+                },
+                {
+                  "formattedValue": "Kyle",
+                  "userEnteredValue": {
+                    "stringValue": "Kyle"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Kyle"
+                  }
+                },
+                {
+                  "formattedValue": "10/12/2026",
+                  "userEnteredValue": {
+                    "numberValue": 46307
+                  },
+                  "effectiveValue": {
+                    "numberValue": 46307
+                  }
+                },
+                {
+                  "formattedValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm",
+                  "userEnteredValue": {
+                    "stringValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "16\" x 20\"",
+                  "userEnteredValue": {
+                    "stringValue": "16\" x 20\""
+                  },
+                  "effectiveValue": {
+                    "stringValue": "16\" x 20\""
+                  }
+                },
+                {
+                  "formattedValue": "Fine Art Printing",
+                  "userEnteredValue": {
+                    "stringValue": "Fine Art Printing"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Fine Art Printing"
+                  }
+                },
+                {
+                  "formattedValue": "All Labs",
+                  "userEnteredValue": {
+                    "stringValue": "All Labs"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "All Labs"
+                  }
+                },
+                {
+                  "formattedValue": "Tube",
+                  "userEnteredValue": {
+                    "stringValue": "Tube"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Tube"
+                  }
+                },
+                {
+                  "formattedValue": "24.00",
+                  "userEnteredValue": {
+                    "numberValue": 24
+                  },
+                  "effectiveValue": {
+                    "numberValue": 24
+                  }
+                },
+                {
+                  "formattedValue": "3.00",
+                  "userEnteredValue": {
+                    "numberValue": 3
+                  },
+                  "effectiveValue": {
+                    "numberValue": 3
+                  }
+                },
+                {
+                  "formattedValue": "3.00",
+                  "userEnteredValue": {
+                    "numberValue": 3
+                  },
+                  "effectiveValue": {
+                    "numberValue": 3
+                  }
+                },
+                {
+                  "formattedValue": "3",
+                  "userEnteredValue": {
+                    "numberValue": 3
+                  },
+                  "effectiveValue": {
+                    "numberValue": 3
+                  }
+                },
+                {
+                  "formattedValue": "10.00",
+                  "userEnteredValue": {
+                    "numberValue": 10
+                  },
+                  "effectiveValue": {
+                    "numberValue": 10
+                  }
+                },
+                {
+                  "formattedValue": "2.00",
+                  "userEnteredValue": {
+                    "numberValue": 2
+                  },
+                  "effectiveValue": {
+                    "numberValue": 2
+                  }
+                },
+                {
+                  "formattedValue": "16.00",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H8=\"\",I8=\"\",J8=\"\"),\"\",I8+H8*J8)"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 16
+                  }
+                },
+                {
+                  "formattedValue": "1.00",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K8=\"\",\"\",ROUND(K8/16,2))"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 1
+                  }
+                },
+                {
+                  "formattedValue": "Kyle",
+                  "userEnteredValue": {
+                    "stringValue": "Kyle"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Kyle"
+                  }
+                },
+                {
+                  "formattedValue": "10/12/2026",
+                  "userEnteredValue": {
+                    "numberValue": 46307
+                  },
+                  "effectiveValue": {
+                    "numberValue": 46307
+                  }
+                },
+                {
+                  "formattedValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm",
+                  "userEnteredValue": {
+                    "stringValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "20\" x 24\"",
+                  "userEnteredValue": {
+                    "stringValue": "20\" x 24\""
+                  },
+                  "effectiveValue": {
+                    "stringValue": "20\" x 24\""
+                  }
+                },
+                {
+                  "formattedValue": "Fine Art Printing",
+                  "userEnteredValue": {
+                    "stringValue": "Fine Art Printing"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Fine Art Printing"
+                  }
+                },
+                {
+                  "formattedValue": "All Labs",
+                  "userEnteredValue": {
+                    "stringValue": "All Labs"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "All Labs"
+                  }
+                },
+                {
+                  "formattedValue": "Tube",
+                  "userEnteredValue": {
+                    "stringValue": "Tube"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Tube"
+                  }
+                },
+                {
+                  "formattedValue": "24.00",
+                  "userEnteredValue": {
+                    "numberValue": 24
+                  },
+                  "effectiveValue": {
+                    "numberValue": 24
+                  }
+                },
+                {
+                  "formattedValue": "3.00",
+                  "userEnteredValue": {
+                    "numberValue": 3
+                  },
+                  "effectiveValue": {
+                    "numberValue": 3
+                  }
+                },
+                {
+                  "formattedValue": "3.00",
+                  "userEnteredValue": {
+                    "numberValue": 3
+                  },
+                  "effectiveValue": {
+                    "numberValue": 3
+                  }
+                },
+                {
+                  "formattedValue": "3",
+                  "userEnteredValue": {
+                    "numberValue": 3
+                  },
+                  "effectiveValue": {
+                    "numberValue": 3
+                  }
+                },
+                {
+                  "formattedValue": "10.00",
+                  "userEnteredValue": {
+                    "numberValue": 10
+                  },
+                  "effectiveValue": {
+                    "numberValue": 10
+                  }
+                },
+                {
+                  "formattedValue": "3.00",
+                  "userEnteredValue": {
+                    "numberValue": 3
+                  },
+                  "effectiveValue": {
+                    "numberValue": 3
+                  }
+                },
+                {
+                  "formattedValue": "19.00",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H9=\"\",I9=\"\",J9=\"\"),\"\",I9+H9*J9)"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 19
+                  }
+                },
+                {
+                  "formattedValue": "1.19",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K9=\"\",\"\",ROUND(K9/16,2))"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 1.19
+                  }
+                },
+                {
+                  "formattedValue": "Kyle",
+                  "userEnteredValue": {
+                    "stringValue": "Kyle"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Kyle"
+                  }
+                },
+                {
+                  "formattedValue": "10/12/2026",
+                  "userEnteredValue": {
+                    "numberValue": 46307
+                  },
+                  "effectiveValue": {
+                    "numberValue": 46307
+                  }
+                },
+                {
+                  "formattedValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm",
+                  "userEnteredValue": {
+                    "stringValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "20\" x 30\"",
+                  "userEnteredValue": {
+                    "stringValue": "20\" x 30\""
+                  },
+                  "effectiveValue": {
+                    "stringValue": "20\" x 30\""
+                  }
+                },
+                {
+                  "formattedValue": "Fine Art Printing",
+                  "userEnteredValue": {
+                    "stringValue": "Fine Art Printing"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Fine Art Printing"
+                  }
+                },
+                {
+                  "formattedValue": "All Labs",
+                  "userEnteredValue": {
+                    "stringValue": "All Labs"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "All Labs"
+                  }
+                },
+                {
+                  "formattedValue": "Tube",
+                  "userEnteredValue": {
+                    "stringValue": "Tube"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Tube"
+                  }
+                },
+                {
+                  "formattedValue": "24.00",
+                  "userEnteredValue": {
+                    "numberValue": 24
+                  },
+                  "effectiveValue": {
+                    "numberValue": 24
+                  }
+                },
+                {
+                  "formattedValue": "3.00",
+                  "userEnteredValue": {
+                    "numberValue": 3
+                  },
+                  "effectiveValue": {
+                    "numberValue": 3
+                  }
+                },
+                {
+                  "formattedValue": "3.00",
+                  "userEnteredValue": {
+                    "numberValue": 3
+                  },
+                  "effectiveValue": {
+                    "numberValue": 3
+                  }
+                },
+                {
+                  "formattedValue": "3",
+                  "userEnteredValue": {
+                    "numberValue": 3
+                  },
+                  "effectiveValue": {
+                    "numberValue": 3
+                  }
+                },
+                {
+                  "formattedValue": "10.00",
+                  "userEnteredValue": {
+                    "numberValue": 10
+                  },
+                  "effectiveValue": {
+                    "numberValue": 10
+                  }
+                },
+                {
+                  "formattedValue": "4.00",
+                  "userEnteredValue": {
+                    "numberValue": 4
+                  },
+                  "effectiveValue": {
+                    "numberValue": 4
+                  }
+                },
+                {
+                  "formattedValue": "22.00",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H10=\"\",I10=\"\",J10=\"\"),\"\",I10+H10*J10)"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 22
+                  }
+                },
+                {
+                  "formattedValue": "1.38",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K10=\"\",\"\",ROUND(K10/16,2))"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 1.38
+                  }
+                },
+                {
+                  "formattedValue": "Kyle",
+                  "userEnteredValue": {
+                    "stringValue": "Kyle"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Kyle"
+                  }
+                },
+                {
+                  "formattedValue": "10/12/2026",
+                  "userEnteredValue": {
+                    "numberValue": 46307
+                  },
+                  "effectiveValue": {
+                    "numberValue": 46307
+                  }
+                },
+                {
+                  "formattedValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm",
+                  "userEnteredValue": {
+                    "stringValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "24\" x 30\"",
+                  "userEnteredValue": {
+                    "stringValue": "24\" x 30\""
+                  },
+                  "effectiveValue": {
+                    "stringValue": "24\" x 30\""
+                  }
+                },
+                {
+                  "formattedValue": "Fine Art Printing",
+                  "userEnteredValue": {
+                    "stringValue": "Fine Art Printing"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Fine Art Printing"
+                  }
+                },
+                {
+                  "formattedValue": "All Labs",
+                  "userEnteredValue": {
+                    "stringValue": "All Labs"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "All Labs"
+                  }
+                },
+                {
+                  "formattedValue": "Tube",
+                  "userEnteredValue": {
+                    "stringValue": "Tube"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Tube"
+                  }
+                },
+                {
+                  "formattedValue": "36.00",
+                  "userEnteredValue": {
+                    "numberValue": 36
+                  },
+                  "effectiveValue": {
+                    "numberValue": 36
+                  }
+                },
+                {
+                  "formattedValue": "3.00",
+                  "userEnteredValue": {
+                    "numberValue": 3
+                  },
+                  "effectiveValue": {
+                    "numberValue": 3
+                  }
+                },
+                {
+                  "formattedValue": "3.00",
+                  "userEnteredValue": {
+                    "numberValue": 3
+                  },
+                  "effectiveValue": {
+                    "numberValue": 3
+                  }
+                },
+                {
+                  "formattedValue": "3",
+                  "userEnteredValue": {
+                    "numberValue": 3
+                  },
+                  "effectiveValue": {
+                    "numberValue": 3
+                  }
+                },
+                {
+                  "formattedValue": "16.00",
+                  "userEnteredValue": {
+                    "numberValue": 16
+                  },
+                  "effectiveValue": {
+                    "numberValue": 16
+                  }
+                },
+                {
+                  "formattedValue": "4.50",
+                  "userEnteredValue": {
+                    "numberValue": 4.5
+                  },
+                  "effectiveValue": {
+                    "numberValue": 4.5
+                  }
+                },
+                {
+                  "formattedValue": "29.50",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H11=\"\",I11=\"\",J11=\"\"),\"\",I11+H11*J11)"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 29.5
+                  }
+                },
+                {
+                  "formattedValue": "1.84",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K11=\"\",\"\",ROUND(K11/16,2))"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 1.84
+                  }
+                },
+                {
+                  "formattedValue": "Kyle",
+                  "userEnteredValue": {
+                    "stringValue": "Kyle"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Kyle"
+                  }
+                },
+                {
+                  "formattedValue": "10/12/2026",
+                  "userEnteredValue": {
+                    "numberValue": 46307
+                  },
+                  "effectiveValue": {
+                    "numberValue": 46307
+                  }
+                },
+                {
+                  "formattedValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm",
+                  "userEnteredValue": {
+                    "stringValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "30\" x 40\"",
+                  "userEnteredValue": {
+                    "stringValue": "30\" x 40\""
+                  },
+                  "effectiveValue": {
+                    "stringValue": "30\" x 40\""
+                  }
+                },
+                {
+                  "formattedValue": "Fine Art Printing",
+                  "userEnteredValue": {
+                    "stringValue": "Fine Art Printing"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Fine Art Printing"
+                  }
+                },
+                {
+                  "formattedValue": "All Labs",
+                  "userEnteredValue": {
+                    "stringValue": "All Labs"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "All Labs"
+                  }
+                },
+                {
+                  "formattedValue": "Tube",
+                  "userEnteredValue": {
+                    "stringValue": "Tube"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Tube"
+                  }
+                },
+                {
+                  "formattedValue": "36.00",
+                  "userEnteredValue": {
+                    "numberValue": 36
+                  },
+                  "effectiveValue": {
+                    "numberValue": 36
+                  }
+                },
+                {
+                  "formattedValue": "3.00",
+                  "userEnteredValue": {
+                    "numberValue": 3
+                  },
+                  "effectiveValue": {
+                    "numberValue": 3
+                  }
+                },
+                {
+                  "formattedValue": "3.00",
+                  "userEnteredValue": {
+                    "numberValue": 3
+                  },
+                  "effectiveValue": {
+                    "numberValue": 3
+                  }
+                },
+                {
+                  "formattedValue": "3",
+                  "userEnteredValue": {
+                    "numberValue": 3
+                  },
+                  "effectiveValue": {
+                    "numberValue": 3
+                  }
+                },
+                {
+                  "formattedValue": "16.00",
+                  "userEnteredValue": {
+                    "numberValue": 16
+                  },
+                  "effectiveValue": {
+                    "numberValue": 16
+                  }
+                },
+                {
+                  "formattedValue": "6.00",
+                  "userEnteredValue": {
+                    "numberValue": 6
+                  },
+                  "effectiveValue": {
+                    "numberValue": 6
+                  }
+                },
+                {
+                  "formattedValue": "34.00",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H12=\"\",I12=\"\",J12=\"\"),\"\",I12+H12*J12)"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 34
+                  }
+                },
+                {
+                  "formattedValue": "2.13",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K12=\"\",\"\",ROUND(K12/16,2))"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 2.13
+                  }
+                },
+                {
+                  "formattedValue": "Kyle",
+                  "userEnteredValue": {
+                    "stringValue": "Kyle"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Kyle"
+                  }
+                },
+                {
+                  "formattedValue": "10/12/2026",
+                  "userEnteredValue": {
+                    "numberValue": 46307
+                  },
+                  "effectiveValue": {
+                    "numberValue": 46307
+                  }
+                },
+                {
+                  "formattedValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm",
+                  "userEnteredValue": {
+                    "stringValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "40\" x 50\"",
+                  "userEnteredValue": {
+                    "stringValue": "40\" x 50\""
+                  },
+                  "effectiveValue": {
+                    "stringValue": "40\" x 50\""
+                  }
+                },
+                {
+                  "formattedValue": "Fine Art Printing",
+                  "userEnteredValue": {
+                    "stringValue": "Fine Art Printing"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Fine Art Printing"
+                  }
+                },
+                {
+                  "formattedValue": "All Labs",
+                  "userEnteredValue": {
+                    "stringValue": "All Labs"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "All Labs"
+                  }
+                },
+                {
+                  "formattedValue": "Tube",
+                  "userEnteredValue": {
+                    "stringValue": "Tube"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Tube"
+                  }
+                },
+                {
+                  "formattedValue": "60.00",
+                  "userEnteredValue": {
+                    "numberValue": 60
+                  },
+                  "effectiveValue": {
+                    "numberValue": 60
+                  }
+                },
+                {
+                  "formattedValue": "5.00",
+                  "userEnteredValue": {
+                    "numberValue": 5
+                  },
+                  "effectiveValue": {
+                    "numberValue": 5
+                  }
+                },
+                {
+                  "formattedValue": "5.00",
+                  "userEnteredValue": {
+                    "numberValue": 5
+                  },
+                  "effectiveValue": {
+                    "numberValue": 5
+                  }
+                },
+                {
+                  "formattedValue": "4",
+                  "userEnteredValue": {
+                    "numberValue": 4
+                  },
+                  "effectiveValue": {
+                    "numberValue": 4
+                  }
+                },
+                {
+                  "formattedValue": "64.00",
+                  "userEnteredValue": {
+                    "numberValue": 64
+                  },
+                  "effectiveValue": {
+                    "numberValue": 64
+                  }
+                },
+                {
+                  "formattedValue": "12.00",
+                  "userEnteredValue": {
+                    "numberValue": 12
+                  },
+                  "effectiveValue": {
+                    "numberValue": 12
+                  }
+                },
+                {
+                  "formattedValue": "112.00",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H13=\"\",I13=\"\",J13=\"\"),\"\",I13+H13*J13)"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 112
+                  }
+                },
+                {
+                  "formattedValue": "7.00",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K13=\"\",\"\",ROUND(K13/16,2))"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 7
+                  }
+                },
+                {
+                  "formattedValue": "Kyle",
+                  "userEnteredValue": {
+                    "stringValue": "Kyle"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Kyle"
+                  }
+                },
+                {
+                  "formattedValue": "10/12/2026",
+                  "userEnteredValue": {
+                    "numberValue": 46307
+                  },
+                  "effectiveValue": {
+                    "numberValue": 46307
+                  }
+                },
+                {
+                  "formattedValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm",
+                  "userEnteredValue": {
+                    "stringValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "44\" x 60\"",
+                  "userEnteredValue": {
+                    "stringValue": "44\" x 60\""
+                  },
+                  "effectiveValue": {
+                    "stringValue": "44\" x 60\""
+                  }
+                },
+                {
+                  "formattedValue": "Fine Art Printing",
+                  "userEnteredValue": {
+                    "stringValue": "Fine Art Printing"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Fine Art Printing"
+                  }
+                },
+                {
+                  "formattedValue": "All Labs",
+                  "userEnteredValue": {
+                    "stringValue": "All Labs"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "All Labs"
+                  }
+                },
+                {
+                  "formattedValue": "Tube",
+                  "userEnteredValue": {
+                    "stringValue": "Tube"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Tube"
+                  }
+                },
+                {
+                  "formattedValue": "60.00",
+                  "userEnteredValue": {
+                    "numberValue": 60
+                  },
+                  "effectiveValue": {
+                    "numberValue": 60
+                  }
+                },
+                {
+                  "formattedValue": "5.00",
+                  "userEnteredValue": {
+                    "numberValue": 5
+                  },
+                  "effectiveValue": {
+                    "numberValue": 5
+                  }
+                },
+                {
+                  "formattedValue": "5.00",
+                  "userEnteredValue": {
+                    "numberValue": 5
+                  },
+                  "effectiveValue": {
+                    "numberValue": 5
+                  }
+                },
+                {
+                  "formattedValue": "4",
+                  "userEnteredValue": {
+                    "numberValue": 4
+                  },
+                  "effectiveValue": {
+                    "numberValue": 4
+                  }
+                },
+                {
+                  "formattedValue": "64.00",
+                  "userEnteredValue": {
+                    "numberValue": 64
+                  },
+                  "effectiveValue": {
+                    "numberValue": 64
+                  }
+                },
+                {
+                  "formattedValue": "16.00",
+                  "userEnteredValue": {
+                    "numberValue": 16
+                  },
+                  "effectiveValue": {
+                    "numberValue": 16
+                  }
+                },
+                {
+                  "formattedValue": "128.00",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H14=\"\",I14=\"\",J14=\"\"),\"\",I14+H14*J14)"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 128
+                  }
+                },
+                {
+                  "formattedValue": "8.00",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K14=\"\",\"\",ROUND(K14/16,2))"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 8
+                  }
+                },
+                {
+                  "formattedValue": "Kyle",
+                  "userEnteredValue": {
+                    "stringValue": "Kyle"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Kyle"
+                  }
+                },
+                {
+                  "formattedValue": "10/12/2026",
+                  "userEnteredValue": {
+                    "numberValue": 46307
+                  },
+                  "effectiveValue": {
+                    "numberValue": 46307
+                  }
+                },
+                {
+                  "formattedValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm",
+                  "userEnteredValue": {
+                    "stringValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "Custom Size",
+                  "userEnteredValue": {
+                    "stringValue": "Custom Size"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Custom Size"
+                  }
+                },
+                {
+                  "formattedValue": "Fine Art Printing",
+                  "userEnteredValue": {
+                    "stringValue": "Fine Art Printing"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Fine Art Printing"
+                  }
+                },
+                {
+                  "formattedValue": "All Labs",
+                  "userEnteredValue": {
+                    "stringValue": "All Labs"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "All Labs"
+                  }
+                },
+                {
+                  "formattedValue": "Tube",
+                  "userEnteredValue": {
+                    "stringValue": "Tube"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Tube"
+                  }
+                },
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H15=\"\",I15=\"\",J15=\"\"),\"\",I15+H15*J15)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K15=\"\",\"\",ROUND(K15/16,2))"
+                  }
+                },
+                {},
+                {},
+                {
+                  "formattedValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm",
+                  "userEnteredValue": {
+                    "stringValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Large prints ship in their own tube; 8 prints fit in a tube — confirm"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H16=\"\",I16=\"\",J16=\"\"),\"\",I16+H16*J16)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K16=\"\",\"\",ROUND(K16/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H17=\"\",I17=\"\",J17=\"\"),\"\",I17+H17*J17)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K17=\"\",\"\",ROUND(K17/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H18=\"\",I18=\"\",J18=\"\"),\"\",I18+H18*J18)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K18=\"\",\"\",ROUND(K18/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H19=\"\",I19=\"\",J19=\"\"),\"\",I19+H19*J19)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K19=\"\",\"\",ROUND(K19/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H20=\"\",I20=\"\",J20=\"\"),\"\",I20+H20*J20)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K20=\"\",\"\",ROUND(K20/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H21=\"\",I21=\"\",J21=\"\"),\"\",I21+H21*J21)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K21=\"\",\"\",ROUND(K21/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H22=\"\",I22=\"\",J22=\"\"),\"\",I22+H22*J22)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K22=\"\",\"\",ROUND(K22/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H23=\"\",I23=\"\",J23=\"\"),\"\",I23+H23*J23)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K23=\"\",\"\",ROUND(K23/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H24=\"\",I24=\"\",J24=\"\"),\"\",I24+H24*J24)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K24=\"\",\"\",ROUND(K24/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H25=\"\",I25=\"\",J25=\"\"),\"\",I25+H25*J25)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K25=\"\",\"\",ROUND(K25/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H26=\"\",I26=\"\",J26=\"\"),\"\",I26+H26*J26)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K26=\"\",\"\",ROUND(K26/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H27=\"\",I27=\"\",J27=\"\"),\"\",I27+H27*J27)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K27=\"\",\"\",ROUND(K27/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H28=\"\",I28=\"\",J28=\"\"),\"\",I28+H28*J28)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K28=\"\",\"\",ROUND(K28/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H29=\"\",I29=\"\",J29=\"\"),\"\",I29+H29*J29)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K29=\"\",\"\",ROUND(K29/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H30=\"\",I30=\"\",J30=\"\"),\"\",I30+H30*J30)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K30=\"\",\"\",ROUND(K30/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H31=\"\",I31=\"\",J31=\"\"),\"\",I31+H31*J31)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K31=\"\",\"\",ROUND(K31/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H32=\"\",I32=\"\",J32=\"\"),\"\",I32+H32*J32)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K32=\"\",\"\",ROUND(K32/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H33=\"\",I33=\"\",J33=\"\"),\"\",I33+H33*J33)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K33=\"\",\"\",ROUND(K33/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H34=\"\",I34=\"\",J34=\"\"),\"\",I34+H34*J34)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K34=\"\",\"\",ROUND(K34/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H35=\"\",I35=\"\",J35=\"\"),\"\",I35+H35*J35)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K35=\"\",\"\",ROUND(K35/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H36=\"\",I36=\"\",J36=\"\"),\"\",I36+H36*J36)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K36=\"\",\"\",ROUND(K36/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H37=\"\",I37=\"\",J37=\"\"),\"\",I37+H37*J37)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K37=\"\",\"\",ROUND(K37/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H38=\"\",I38=\"\",J38=\"\"),\"\",I38+H38*J38)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K38=\"\",\"\",ROUND(K38/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H39=\"\",I39=\"\",J39=\"\"),\"\",I39+H39*J39)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K39=\"\",\"\",ROUND(K39/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H40=\"\",I40=\"\",J40=\"\"),\"\",I40+H40*J40)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K40=\"\",\"\",ROUND(K40/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H41=\"\",I41=\"\",J41=\"\"),\"\",I41+H41*J41)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K41=\"\",\"\",ROUND(K41/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H42=\"\",I42=\"\",J42=\"\"),\"\",I42+H42*J42)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K42=\"\",\"\",ROUND(K42/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H43=\"\",I43=\"\",J43=\"\"),\"\",I43+H43*J43)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K43=\"\",\"\",ROUND(K43/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H44=\"\",I44=\"\",J44=\"\"),\"\",I44+H44*J44)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K44=\"\",\"\",ROUND(K44/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H45=\"\",I45=\"\",J45=\"\"),\"\",I45+H45*J45)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K45=\"\",\"\",ROUND(K45/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H46=\"\",I46=\"\",J46=\"\"),\"\",I46+H46*J46)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K46=\"\",\"\",ROUND(K46/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H47=\"\",I47=\"\",J47=\"\"),\"\",I47+H47*J47)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K47=\"\",\"\",ROUND(K47/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H48=\"\",I48=\"\",J48=\"\"),\"\",I48+H48*J48)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K48=\"\",\"\",ROUND(K48/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H49=\"\",I49=\"\",J49=\"\"),\"\",I49+H49*J49)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K49=\"\",\"\",ROUND(K49/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H50=\"\",I50=\"\",J50=\"\"),\"\",I50+H50*J50)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K50=\"\",\"\",ROUND(K50/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H51=\"\",I51=\"\",J51=\"\"),\"\",I51+H51*J51)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K51=\"\",\"\",ROUND(K51/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H52=\"\",I52=\"\",J52=\"\"),\"\",I52+H52*J52)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K52=\"\",\"\",ROUND(K52/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H53=\"\",I53=\"\",J53=\"\"),\"\",I53+H53*J53)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K53=\"\",\"\",ROUND(K53/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H54=\"\",I54=\"\",J54=\"\"),\"\",I54+H54*J54)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K54=\"\",\"\",ROUND(K54/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H55=\"\",I55=\"\",J55=\"\"),\"\",I55+H55*J55)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K55=\"\",\"\",ROUND(K55/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H56=\"\",I56=\"\",J56=\"\"),\"\",I56+H56*J56)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K56=\"\",\"\",ROUND(K56/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H57=\"\",I57=\"\",J57=\"\"),\"\",I57+H57*J57)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K57=\"\",\"\",ROUND(K57/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H58=\"\",I58=\"\",J58=\"\"),\"\",I58+H58*J58)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K58=\"\",\"\",ROUND(K58/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H59=\"\",I59=\"\",J59=\"\"),\"\",I59+H59*J59)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K59=\"\",\"\",ROUND(K59/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H60=\"\",I60=\"\",J60=\"\"),\"\",I60+H60*J60)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K60=\"\",\"\",ROUND(K60/16,2))"
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(H61=\"\",I61=\"\",J61=\"\"),\"\",I61+H61*J61)"
+                  }
+                },
+                {
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(K61=\"\",\"\",ROUND(K61/16,2))"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "properties": {
+        "sheetId": 1861660580,
+        "title": "Order Check",
+        "index": 2,
+        "sheetType": "GRID",
+        "gridProperties": {
+          "rowCount": 1000,
+          "columnCount": 26,
+          "rowGroupControlAfter": true,
+          "columnGroupControlAfter": true
+        }
+      },
+      "data": [
+        {
+          "rowData": [
+            {
+              "values": [
+                {
+                  "formattedValue": "Order Check — test an order",
+                  "userEnteredValue": {
+                    "stringValue": "Order Check — test an order"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Order Check — test an order"
+                  }
+                }
+              ]
+            },
+            {},
+            {
+              "values": [
+                {
+                  "formattedValue": "Print size",
+                  "userEnteredValue": {
+                    "stringValue": "Print size"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Print size"
+                  }
+                },
+                {
+                  "formattedValue": "4\" x 6\"",
+                  "userEnteredValue": {
+                    "stringValue": "4\" x 6\""
+                  },
+                  "effectiveValue": {
+                    "stringValue": "4\" x 6\""
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "Quantity of prints",
+                  "userEnteredValue": {
+                    "stringValue": "Quantity of prints"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Quantity of prints"
+                  }
+                },
+                {
+                  "formattedValue": "24",
+                  "userEnteredValue": {
+                    "numberValue": 24
+                  },
+                  "effectiveValue": {
+                    "numberValue": 24
+                  }
+                }
+              ]
+            },
+            {},
+            {
+              "values": [
+                {
+                  "formattedValue": "Max prints per package",
+                  "userEnteredValue": {
+                    "stringValue": "Max prints per package"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Max prints per package"
+                  }
+                },
+                {
+                  "formattedValue": "40",
+                  "userEnteredValue": {
+                    "formulaValue": "=IFERROR(INDEX(Packaging!$H$2:$H$61,MATCH($B$3,Packaging!$A$2:$A$61,0)),\"\")"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 40
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "Packages needed",
+                  "userEnteredValue": {
+                    "stringValue": "Packages needed"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Packages needed"
+                  }
+                },
+                {
+                  "formattedValue": "1",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(B6=\"\",B6=0,B4=\"\"),\"\",CEILING(B4/B6,1))"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 1
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "Empty package weight (oz)",
+                  "userEnteredValue": {
+                    "stringValue": "Empty package weight (oz)"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Empty package weight (oz)"
+                  }
+                },
+                {
+                  "formattedValue": "1.00",
+                  "userEnteredValue": {
+                    "formulaValue": "=IFERROR(INDEX(Packaging!$I$2:$I$61,MATCH($B$3,Packaging!$A$2:$A$61,0)),\"\")"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 1
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "Weight of 1 print (oz)",
+                  "userEnteredValue": {
+                    "stringValue": "Weight of 1 print (oz)"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Weight of 1 print (oz)"
+                  }
+                },
+                {
+                  "formattedValue": "0.10",
+                  "userEnteredValue": {
+                    "formulaValue": "=IFERROR(INDEX(Packaging!$J$2:$J$61,MATCH($B$3,Packaging!$A$2:$A$61,0)),\"\")"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 0.1
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "Total shipping weight (oz)",
+                  "userEnteredValue": {
+                    "stringValue": "Total shipping weight (oz)"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Total shipping weight (oz)"
+                  }
+                },
+                {
+                  "formattedValue": "3.4",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(OR(B7=\"\",B8=\"\",B9=\"\"),\"\",B7*B8+B4*B9)"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 3.4000000000000004
+                  }
+                }
+              ]
+            },
+            {
+              "values": [
+                {
+                  "formattedValue": "Total shipping weight (lb)",
+                  "userEnteredValue": {
+                    "stringValue": "Total shipping weight (lb)"
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Total shipping weight (lb)"
+                  }
+                },
+                {
+                  "formattedValue": "0.21",
+                  "userEnteredValue": {
+                    "formulaValue": "=IF(B10=\"\",\"\",ROUND(B10/16,2))"
+                  },
+                  "effectiveValue": {
+                    "numberValue": 0.21
+                  }
+                }
+              ]
+            },
+            {},
+            {
+              "values": [
+                {
+                  "formattedValue": "Packages needed = quantity ÷ max prints per package, rounded up. Total weight = (packages × empty package weight) + (quantity × weight of 1 print). Uses the first row on the Packaging tab that matches the size. Shows blank until that size's yellow cells are filled in.",
+                  "userEnteredValue": {
+                    "stringValue": "Packages needed = quantity ÷ max prints per package, rounded up. Total weight = (packages × empty package weight) + (quantity × weight of 1 print). Uses the first row on the Packaging tab that matches the size. Shows blank until that size's yellow cells are filled in."
+                  },
+                  "effectiveValue": {
+                    "stringValue": "Packages needed = quantity ÷ max prints per package, rounded up. Total weight = (packages × empty package weight) + (quantity × weight of 1 print). Uses the first row on the Packaging tab that matches the size. Shows blank until that size's yellow cells are filled in."
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

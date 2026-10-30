@@ -1,0 +1,16 @@
+api_version = "2026-07"
+
+[[extensions]]
+name = "F06B unreleased validation candidate"
+handle = "f06b-candidate-validation"
+type = "function"
+description = "Unreleased F06B authority candidate; local build verification only"
+
+  [[extensions.targeting]]
+  target = "cart.validations.generate.run"
+  input_query = "src/cart_validations_generate_run.graphql"
+  export = "cart_validations_generate_run"
+
+  [extensions.build]
+  command = "cp ../../checkout/rust/target/wasm32-unknown-unknown/release/bfl_checkout.wasm dist/function.wasm"
+  path = "dist/function.wasm"

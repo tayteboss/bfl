@@ -1,0 +1,28 @@
+# F06C proposed server read, pinned to Storefront 2026-07. NOT executed or
+# mounted. Requires authorized Storefront customer access + verified ownership.
+# Browser supplies only the exact locator returned by Shopify.actions.getCart.
+# Every error/null/omitted field, customer ambiguity, hasNextPage or >20 lines
+# must fail closed. Two equal reads are NOT an atomic lock against other tabs.
+query F06CBootstrapCart($id: ID!) {
+  cart(id: $id) {
+    id
+    updatedAt
+    totalQuantity
+    buyerIdentity { customer { id } }
+    lines(first: 21) {
+      pageInfo { hasNextPage }
+      nodes {
+        __typename
+        id
+        quantity
+        attributes { key value }
+        sellingPlanAllocation { sellingPlan { id } }
+        cost { subtotalAmount { amount currencyCode } }
+        merchandise {
+          __typename
+          ... on ProductVariant { id product { id } }
+        }
+      }
+    }
+  }
+}

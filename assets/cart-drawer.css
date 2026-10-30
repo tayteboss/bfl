@@ -2,6 +2,37 @@
 	visibility: hidden;
 }
 
+/* Use the existing loading status while verified print pricing is pending. */
+cart-drawer.is-updating #CartDrawer-LineItemStatus {
+	position: static !important;
+	width: auto;
+	height: auto;
+	margin: 24px 0;
+	clip: auto;
+	overflow: visible;
+	text-align: center;
+}
+
+cart-drawer.is-updating .drawer__inner-empty,
+cart-drawer.update-failed .drawer__inner-empty,
+cart-drawer.is-updating .drawer__footer,
+cart-drawer.update-failed .drawer__footer {
+	display: none;
+}
+
+cart-drawer.is-updating.is-empty .drawer__heading,
+cart-drawer.update-failed.is-empty .drawer__heading,
+cart-drawer.is-updating .cart-item__price-wrapper {
+	visibility: hidden;
+}
+
+cart-drawer.is-updating cart-drawer-items.is-empty,
+cart-drawer.is-updating cart-drawer-items .cart__contents,
+cart-drawer.update-failed cart-drawer-items.is-empty,
+cart-drawer.update-failed cart-drawer-items .cart__contents {
+	display: block;
+}
+
 cart-drawer-items {
 	margin-bottom: 32px;
 

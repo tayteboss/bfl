@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const OS_SHOW_PRICES = true;
   const basePrice = 0; // Removed base price as requested
   const variantInput = form.querySelector('input[name="id"]');
-  const submitBtn = form.querySelector('button[type="submit"]');
+  const submitBtns = form.querySelectorAll('button[type="submit"]');
   const cartDrawer = document.querySelector('cart-drawer');
   const uploadlyContainer = form.querySelector('[data-uploadly-container]');
   const uploadlyFallbackButton = uploadlyContainer
@@ -40,29 +40,44 @@ document.addEventListener('DOMContentLoaded', () => {
   let total = basePrice;
 
   const errorEl = form.querySelector('[data-film-service-error]');
+  const errorElBottom = form.querySelector('[data-film-service-error-bottom]');
 
   const setErrorMessage = (msg) => {
-    if (!errorEl) return;
     const message = msg || '';
-    errorEl.textContent = message;
-    errorEl.style.display = message ? '' : 'none';
+    if (errorEl) {
+      errorEl.textContent = message;
+      errorEl.style.display = message ? '' : 'none';
+    }
+    if (errorElBottom) {
+      errorElBottom.textContent = message;
+      errorElBottom.style.display = message ? '' : 'none';
+    }
   };
 
   const getQuantity = () =>
     Math.max(1, parseInt((form.querySelector('input[name="quantity"]') || {}).value || '1', 10) || 1);
 
+  // A registered Film Printing flow owns completion state. Send Rolls and the
+  // existing uploader remain unchanged until an explicit supported mount exists.
+  const printJobFlow = () => form.hasAttribute('data-film-printing-form')
+    ? window.BFLPrintJob?.forForm(form) : null;
+
   const getActualFilesCount = () => {
-    // If Darkroom Prints is selected, the upload section is hidden and files are not required
+    // Physical-negative orders never inherit the preceding digital upload count.
     const serviceRadio = form.querySelector('input[name="service"]:checked');
-    if (serviceRadio && serviceRadio.value === 'Darkroom Prints') {
-      return 0;
+    if (serviceRadio && serviceRadio.value === 'Darkroom Prints') return 0;
+    const flow = printJobFlow();
+    if (flow) {
+      const uploads = flow.snapshot();
+      return uploads.displayCompletedCount ?? uploads.completedAssetIds.length;
     }
+    // If Darkroom Prints is selected, the upload section is hidden and files are not required
 
     let domCount = 0;
-    
+
     // 1. Try to count Uploadly DOM list items
     const listItems = Array.from(document.querySelectorAll('.uploadly-list-item, .uploady-list-item, .uploadly-file, .uploady-file, .uploadly-item, .uploady-item'));
-    
+
     if (listItems.length > 0) {
       // Deduplicate nested elements (e.g. an item inside a list item wrapper)
       const validContainers = listItems.filter((el) => {
@@ -74,8 +89,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return true;
       });
       domCount = validContainers.length;
-    } 
-    
+    }
+
     // 2. Count the hidden inputs injected by Uploadly
     let inputCount = 0;
     const fileKeys = new Set();
@@ -96,13 +111,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       return el.value && el.value.trim() !== '';
     });
-    
+
     uploadInputs.forEach(el => {
       const match = el.name.match(/properties\[(.*?)\]/);
       if (match && match[1]) {
         const key = match[1];
         const val = el.value.trim();
-        
+
         // Only count properties that don't start with '_' (ignores internal thumbnails)
         if (!key.startsWith('_') && (val.includes('http') || val.includes('uploadly') || val.includes('uploady'))) {
           const urls = val.match(/https?:\/\/[^\s,]+/g);
@@ -115,16 +130,17 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
     inputCount = fileKeys.size;
-    
+
     // 3. Add native file inputs (if any)
     const nativeFileInputs = Array.from(document.querySelectorAll('input[type="file"]')).reduce((sum, el) => sum + (el.files ? el.files.length : 0), 0);
-    
+
     let count = Math.max(domCount, inputCount) + nativeFileInputs;
-    
+
     return count;
   };
 
-  const getUploadedFilesCount = () => Math.max(1, getActualFilesCount());
+  const usesPhysicalNegatives = () => form.querySelector('input[name="service"]:checked')?.value === 'Darkroom Prints';
+  const getUploadedFilesCount = () => printJobFlow() ? getActualFilesCount() : Math.max(1, getActualFilesCount());
 
   const hasUploadyWidgetMounted = () => {
     if (!uploadlyContainer) return false;
@@ -527,6 +543,20 @@ document.addEventListener('DOMContentLoaded', () => {
     return !!(el.offsetParent || style.position === 'fixed');
   };
 
+  const isActivePrintOption = (input) => {
+    if (!printJobFlow()) return true;
+    if (!input || input.disabled) return false;
+    const label = input.closest('label');
+    if (label?.classList.contains('is-unavailable') || !isVisible(label || input)) return false;
+    const fieldset = input.closest('fieldset');
+    if (fieldset && !isVisible(fieldset)) return false;
+    const block = input.closest('.service-groups-wrapper');
+    if (!block) return true;
+    const service = form.querySelector('input[name="service"]:checked');
+    return !!service && !service.disabled && !service.closest('label')?.classList.contains('is-unavailable') &&
+      block.dataset.forService === service.value && isVisible(block);
+  };
+
   const getVisibleFieldsets = () =>
     Array.from(form.querySelectorAll('fieldset.rolls-form-card')).filter((fs) => isVisible(fs));
 
@@ -582,7 +612,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const numericValue = Number(value);
-    if (!Number.isFinite(numericValue) || numericValue < 1) {
+    if (!Number.isSafeInteger(numericValue)) {
+      return { valid: false, message: `${label} is too large.` };
+    }
+
+    if (numericValue < 1) {
       return { valid: false, message: `${label} must be at least 1.` };
     }
 
@@ -606,7 +640,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!active) {
       customSizeTouched.width = false;
       customSizeTouched.height = false;
-      if (showErrors || forceAll) {
+      if (showErrors) {
         setInlineError(customSizeErrorEl, '');
       }
       return { active: false, valid: true, width: null, height: null };
@@ -616,7 +650,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const heightResult = validateCustomDimension(customSizeHeightInput.value, { label: 'Height' });
     const isValid = widthResult.valid && heightResult.valid;
 
-    if (showErrors || forceAll) {
+    if (showErrors) {
       const canShowWidth = forceAll || customSizeTouched.width;
       const canShowHeight = forceAll || customSizeTouched.height;
       let errorMessage = '';
@@ -659,7 +693,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (validation.active && validation.valid) {
       const selectedPaper = form.querySelector('input[name="paper"]:checked');
-      newPrice = getFineArtsCustomSizePrice(validation.width, validation.height, selectedPaper?.value || '');
+      // Owned Custom prints need an explicit, available Fibre Paper selection.
+      // Missing paper must not fall through to the legacy non-Fibre formula.
+      if (!printJobFlow() || selectedPaper?.value === 'Fibre Paper' && isActivePrintOption(selectedPaper)) {
+        newPrice = getFineArtsCustomSizePrice(validation.width, validation.height, selectedPaper?.value || '');
+      }
     }
 
     customSizeRadio.dataset.price = newPrice;
@@ -676,35 +714,38 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateOrderSummaryVisibility() {
     if (!osWrapper) return;
 
-    // Check if the form is empty
-    const noSelections = basePrice === total;
-    if (noSelections && !(getQuantity() > 1)) {
-      osWrapper.style.display = 'none';
-      if (bottomOrderSummary) bottomOrderSummary.style.display = 'none';
+    const locationSelected = !!form.querySelector('input[name="location"]:checked');
+
+    if (!locationSelected) {
+      osWrapper.classList.remove('is-visible');
+      osWrapper.classList.remove('is-expanded');
+      setTimeout(() => {
+        if (!osWrapper.classList.contains('is-visible')) {
+          osWrapper.style.display = 'none';
+          if (bottomOrderSummary) bottomOrderSummary.style.display = 'none';
+        }
+      }, 400);
       return;
     }
 
-    osWrapper.style.display = 'block';
-    if (bottomOrderSummary) {
-      bottomOrderSummary.style.display = '';
-    }
+    // It should be visible
+    osWrapper.style.display = '';
+    if (bottomOrderSummary) bottomOrderSummary.style.display = 'block';
 
-    const scrollPosition = window.scrollY + window.innerHeight;
-    const documentHeight = document.documentElement.scrollHeight;
-    const windowHeight = window.innerHeight;
+    setTimeout(() => {
+      osWrapper.classList.add('is-visible');
+    }, 10);
 
-    // Check if we are within 400px of the absolute bottom of the page OR
-    // if we've scrolled past the bottom order summary anchor
-    const isNearBottom = documentHeight - scrollPosition < windowHeight;
+    // Handle scroll-based hiding of the floating summary
     let isPastBottomAnchor = false;
 
     if (bottomAnchor) {
       const anchorRect = bottomAnchor.getBoundingClientRect();
-      // Hide if anchor is within 100px of entering viewport, or if we've scrolled past it completely
-      isPastBottomAnchor = anchorRect.top < window.innerHeight + 100;
+      // Hide floating summary when the static bottom summary enters the viewport
+      isPastBottomAnchor = anchorRect.top < window.innerHeight;
     }
 
-    if (isNearBottom || isPastBottomAnchor) {
+    if (isPastBottomAnchor) {
       osWrapper.classList.add('is-hidden-by-scroll');
     } else {
       osWrapper.classList.remove('is-hidden-by-scroll');
@@ -837,7 +878,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  const validateOpenFields = () => {
+  const validateOpenFields = ({ showErrors = true } = {}) => {
     const errors = [];
     getVisibleFieldsets().forEach((fs) => {
       let isInvalid = false;
@@ -880,7 +921,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // 2b. Custom size validation
       if (customSizeContainer && fs.contains(customSizeContainer)) {
-        const customValidation = getCustomSizeValidation({ showErrors: true, forceAll: true });
+        const customValidation = getCustomSizeValidation({ showErrors, forceAll: true });
         if (customValidation.active && !customValidation.valid) {
           isInvalid = true;
         }
@@ -893,7 +934,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // 3. Upload Validation (Uploadly)
       if (groupNameAttr.trim().toLowerCase() === 'upload') {
-        if (shouldBypassUploadRequirementForPreview()) {
+        const ownedUploads = printJobFlow()?.snapshot();
+        if (ownedUploads) {
+          isInvalid = !!(ownedUploads.pending || ownedUploads.failed || !ownedUploads.completedAssetIds.length);
+        } else if (shouldBypassUploadRequirementForPreview()) {
           isInvalid = false;
         } else {
         // Uploadly sometimes dynamically generates the fields, wait to check form fields specifically
@@ -937,8 +981,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (isInvalid) {
-        fs.classList.add('rolls-form-card--error');
         errors.push(fs);
+        if (!showErrors) return;
+        fs.classList.add('rolls-form-card--error');
 
         // Add explicit error message for Upload if not present
         if (groupNameAttr.trim().toLowerCase() === 'upload') {
@@ -953,7 +998,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (inner) inner.appendChild(errorMsg);
           }
         }
-      } else {
+      } else if (showErrors) {
         fs.classList.remove('rolls-form-card--error');
         if (groupNameAttr.trim().toLowerCase() === 'upload') {
           const errorMsg = fs.querySelector('.upload-error-msg');
@@ -963,6 +1008,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     return { errors };
   };
+  // Explicit form-local hook; background preparation never paints errors or
+  // introduces controls before the shopper submits the supplied form.
+  form.bflSelectionComplete = () => validateOpenFields({ showErrors: false }).errors.length === 0 &&
+    !(() => { const size = getCustomSizeValidation({ showErrors: false, forceAll: true }); return size.active && !size.valid; })() && total <= 2000;
 
   // Utility: normalize keys/values so JSON keys like "Film Format", "film_format" match radio.name "film-format"
   const normKey = (s) =>
@@ -1038,35 +1087,6 @@ document.addEventListener('DOMContentLoaded', () => {
   //   serviceRadios[0].dispatchEvent(new Event('change'));
   // }
 
-  const updateOrderSummaryVisibilityState = () => {
-    if (!orderSummary) return;
-    // Check if a location is selected first
-    const locationSelected = !!form.querySelector('input[name="location"]:checked');
-    const anyChecked = !!form.querySelector('input[type="radio"]:checked');
-
-    // Only show if a location is selected AND at least one radio is checked (which is redundant if location is checked, but good for safety)
-    const shouldShow = locationSelected && anyChecked;
-
-    if (shouldShow) {
-      orderSummary.style.display = '';
-      if (bottomOrderSummary) bottomOrderSummary.style.display = 'block';
-      // Small delay to allow display block to apply before adding visible class for transition
-      setTimeout(() => {
-        orderSummary.classList.add('is-visible');
-      }, 10);
-    } else {
-      orderSummary.classList.remove('is-visible');
-      orderSummary.classList.remove('is-expanded');
-      setTimeout(() => {
-        if (!orderSummary.classList.contains('is-visible')) {
-          orderSummary.style.display = 'none';
-          // Don't forcefully hide the bottom summary here if it's meant to be managed by CSS/other state
-          // if (bottomOrderSummary) bottomOrderSummary.style.display = 'none';
-        }
-      }, 400); // match CSS transition duration
-    }
-  };
-
   // Add click listener for mobile support to expand the summary
   if (orderSummary) {
     const osHeader = orderSummary.querySelector('.order-summary__header');
@@ -1115,10 +1135,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fieldsets in DOM order with checked radios
     form.querySelectorAll('fieldset.rolls-form-card').forEach((fs) => {
+      if (printJobFlow() && !isVisible(fs)) return;
       // Special handling for grouped "Add Ons" fieldset
       if (fs.dataset.group === 'Add Ons') {
         const checkedRadios = fs.querySelectorAll('input[type="radio"]:checked');
         checkedRadios.forEach((radio) => {
+          if (!isActivePrintOption(radio)) return;
           const val = (radio.value || '').trim();
           // Skip "No" or empty values for Add Ons in summary
           if (!val || val.toLowerCase() === 'no') return;
@@ -1140,6 +1162,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (fs.dataset.group === 'Delivery Options') {
         const checkedRadios = fs.querySelectorAll('input[type="radio"]:checked');
         checkedRadios.forEach((radio) => {
+          if (!isActivePrintOption(radio)) return;
           let label = radio.name || 'Delivery Option';
           // Extract text inside brackets, e.g. properties[Return Delivery] -> Return Delivery
           const match = label.match(/\[(.*?)\]/);
@@ -1156,6 +1179,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Calculate base total before multiplier to find the added cost
             let preTotal = basePrice;
             form.querySelectorAll('input[type="radio"]:checked').forEach((input) => {
+              if (!isActivePrintOption(input)) return;
               preTotal += Number(input.dataset.price || 0);
             });
             const turnaroundValue = valueText.toLowerCase();
@@ -1173,7 +1197,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       const checked = fs.querySelector('input[type="radio"]:checked');
-      if (!checked) return;
+      if (!checked || !isActivePrintOption(checked)) return;
       // Skip neutral/base selections in the summary
       if ((checked.value || '').toString().trim().toLowerCase() === 'base') return;
       const heading = fs.querySelector('.rolls-form-card__heading');
@@ -1215,9 +1239,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Totals area (consider quantity) ---
     const qty = getQuantity();
     const fileCount = getUploadedFilesCount();
-    const multiplier = qty * fileCount;
+    const multiplier = qty * (usesPhysicalNegatives() ? 1 : fileCount);
     const perRoll = Number(total || 0);
     const grand = perRoll * multiplier;
+
+    // Shipping estimate for this print line (Film Printing only). The real
+    // charge is calculated at checkout and is $0 with in-store pickup.
+    if (getSizeShippingHandle()) {
+      const shipPlan = planPrintShipping(getSelectedPrintDims(customValidation), multiplier);
+      const shipEst = estimatePrintShipping(shipPlan);
+      if (shipEst !== null) {
+        const shipText = `${formatMoney(shipEst)} est. (free with in-store pickup)`;
+        createRow(osList, 'Shipping', shipText, 0);
+        createRow(bottomOsList, 'Shipping', shipText, 0);
+      }
+    }
 
     if (multiplier > 1) {
       if (fileCount > 1) {
@@ -1225,8 +1261,8 @@ document.addEventListener('DOMContentLoaded', () => {
         createRow(bottomOsList, 'Files Uploaded', String(fileCount), 0);
       }
       if (qty > 1) {
-        createRow(osList, 'Copies per file', String(qty), 0);
-        createRow(bottomOsList, 'Copies per file', String(qty), 0);
+        createRow(osList, usesPhysicalNegatives() ? 'Copies' : 'Copies per file', String(qty), 0);
+        createRow(bottomOsList, usesPhysicalNegatives() ? 'Copies' : 'Copies per file', String(qty), 0);
       }
       createRow(osList, 'Subtotal', `${multiplier} × ${formatMoney(perRoll)}`, grand);
       createRow(osList, 'Total', formatMoney(grand), 0);
@@ -1234,8 +1270,8 @@ document.addEventListener('DOMContentLoaded', () => {
       createRow(bottomOsList, 'Subtotal', `${multiplier} × ${formatMoney(perRoll)}`, grand);
       createRow(bottomOsList, 'Total', formatMoney(grand), 0);
     } else {
-      createRow(osList, 'Total', formatMoney(perRoll), 0);
-      createRow(bottomOsList, 'Total', formatMoney(perRoll), 0);
+      createRow(osList, 'Total', formatMoney(grand), 0);
+      createRow(bottomOsList, 'Total', formatMoney(grand), 0);
     }
   };
 
@@ -1245,12 +1281,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     total = basePrice;
     form.querySelectorAll('input[type="radio"]:checked').forEach((input) => {
+      if (!isActivePrintOption(input)) return;
       total += Number(input.dataset.price || 0);
     });
 
     // Apply multiplier based on Turnaround selection
     const turnaroundRadio = form.querySelector('input[name="properties[Turnaround]"]:checked');
-    if (turnaroundRadio) {
+    if (turnaroundRadio && isActivePrintOption(turnaroundRadio)) {
       const turnaroundValue = (turnaroundRadio.value || '').toLowerCase();
       if (turnaroundValue.includes('rush')) {
         total *= 2;
@@ -1261,7 +1298,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const qty = getQuantity();
     const fileCount = getUploadedFilesCount();
-    const multiplier = qty * fileCount;
+    const multiplier = qty * (usesPhysicalNegatives() ? 1 : fileCount);
     const displayTotal = total * multiplier;
 
     if (totalDisplay) totalDisplay.textContent = formatMoney(displayTotal);
@@ -1269,7 +1306,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Clear any previous high-price error when recalculating
     setErrorMessage('');
     renderSummary();
-    updateOrderSummaryVisibilityState();
     updateOrderSummaryVisibility();
   }
 
@@ -1332,6 +1368,10 @@ document.addEventListener('DOMContentLoaded', () => {
           return sel ? allowedNorm.includes(normVal(sel)) : false;
         });
       }
+
+      // Keep unavailable Film Printing services and papers inert before native
+      // selection can displace a valid choice. Existing faded labels stay visible.
+      if (form.hasAttribute('data-film-printing-form') && ['service', 'paper'].includes(radio.name)) radio.disabled = !shouldShow;
 
       // Fade out unavailable options instead of hiding them completely
       if (shouldShow) {
@@ -1480,6 +1520,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
 
+      // A prior default_if lock may have been released in this pass.
+      if (form.hasAttribute('data-film-printing-form') && ['service', 'paper'].includes(radio.name)) radio.disabled = !shouldShow;
+
       // Fade out unavailable options instead of hiding them completely
       if (shouldShow) {
         label.classList.remove('is-unavailable');
@@ -1538,6 +1581,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    if (printJobFlow()) {
+      const service = form.querySelector('input[name="service"]:checked');
+      serviceBlocks.forEach((block) => {
+        block.style.display = service && !service.disabled && block.dataset.forService === service.value ? 'flex' : 'none';
+      });
+    }
+
     // Clear any lingering error states on hidden sections
     clearErrorsOnHidden();
 
@@ -1589,7 +1639,6 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollToNextVisibleFieldset(fs, 100);
       }
 
-      updateOrderSummaryVisibilityState();
       updateOrderSummaryVisibility();
     } else if (e.target.matches('input[name="quantity"]')) {
       // React to quantity changes
@@ -1602,7 +1651,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   form.addEventListener('input', (e) => {
-    if (e.target.matches('[data-custom-size-input]')) {
+    if (e.target.matches('input[name="quantity"]')) {
+      calculateTotal();
+    } else if (e.target.matches('[data-custom-size-input]')) {
       getCustomSizeValidation({ showErrors: true });
       calculateTotal();
     }
@@ -1776,6 +1827,12 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (_) {}
     // Hide all service groups after reset
     serviceBlocks.forEach((block) => (block.style.display = 'none'));
+    if (printJobFlow()) {
+      form.querySelectorAll('.rolls-form-card--error').forEach(node => node.classList.remove('rolls-form-card--error'));
+      form.querySelectorAll('.upload-error-msg').forEach(node => node.remove());
+      setInlineError(customSizeErrorEl, '');
+      setErrorMessage('');
+    }
     // Reset totals and summary
     if (totalDisplay) totalDisplay.textContent = formatMoney(basePrice);
     if (osList) osList.innerHTML = '';
@@ -1784,18 +1841,292 @@ document.addEventListener('DOMContentLoaded', () => {
     prefillAddressFields();
 
     applyConditions();
-    updateOrderSummaryVisibilityState();
     updateOrderSummaryVisibility();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ---------------------------------------------------------------------------
+  // Print Packaging companion (Film Printing only)
+  //
+  // Film Printing itself does not require shipping (its price is set by the
+  // Cart Transform). To make checkout collect an address and charge shipping,
+  // we add a $0 hidden "Print Packaging" product (handle: print-shipping)
+  // alongside every print line.
+  // Its variants carry *billing weights*, and the weight-based rate table in
+  // the "Film Printing Shipping" delivery profile converts those into the
+  // shipping charge:
+  //
+  //   Flat mailer (small)    1 lb  -> $10
+  //   Flat mailer (medium)   2 lb  -> $16
+  //   Flat mailer (large)    4 lb  -> $22
+  //   Shipping tube (small) 10 lb  -> $22   (prints up to 24x30, N per tube)
+  //   Shipping tube (large) 40 lb  -> $33   (prints over 24x30, N per tube)
+  //
+  // Variants are matched by title first and by billing weight as a fallback,
+  // so the customer-facing names can be changed in Admin without breaking this.
+  //
+  // Weights add across lines, and the rate table is additive, so mixed carts
+  // are priced correctly. Because it is a real shipping rate (not a product
+  // price), choosing in-store pickup at checkout removes it automatically.
+  // ---------------------------------------------------------------------------
+  const DEFAULT_SIZE_SHIPPING_HANDLE = 'print-shipping';
+  const DEFAULT_TUBE_CAPACITY = 8;
+  const PAPER_GSM = 300;
+
+  // Package classification limits (inches). Anything larger than a small tube
+  // goes in a large tube.
+  const FLAT_MAX_LONG = 16;
+  const FLAT_MAX_SHORT = 12;
+  const SMALL_TUBE_MAX_LONG = 30;
+  const SMALL_TUBE_MAX_SHORT = 24;
+
+  // Flat mailer tiers by total paper weight (lb) in the line.
+  const FLAT_A_MAX_LB = 0.75;
+  const FLAT_B_MAX_LB = 2.5;
+
+  // Rate table limit: the profile has rows for up to 3 small tubes (10 lb
+  // each); a 4th would weigh the same as one large tube, so overflow small
+  // tubes are billed as large tubes instead.
+  const MAX_SMALL_TUBES = 3;
+
+  // Companion variant names (as set on the "Print Packaging" product in Admin).
+  const PKG_FLAT_S = 'Flat mailer (small)';
+  const PKG_FLAT_M = 'Flat mailer (medium)';
+  const PKG_FLAT_L = 'Flat mailer (large)';
+  const PKG_TUBE_S = 'Shipping tube (small)';
+  const PKG_TUBE_L = 'Shipping tube (large)';
+
+  // Mirror of the delivery-profile prices, used only for the on-page estimate.
+  const SHIP_EST = {
+    [PKG_FLAT_S]: 10,
+    [PKG_FLAT_M]: 16,
+    [PKG_FLAT_L]: 22,
+    [PKG_TUBE_S]: 22,
+    [PKG_TUBE_L]: 33,
+    catchAll: 200,
+    catchAllWeightLb: 120,
+  };
+  // Billing weight (lb) of each companion variant; also used to match variants by weight.
+  const VARIANT_WEIGHTS = {
+    [PKG_FLAT_S]: 1,
+    [PKG_FLAT_M]: 2,
+    [PKG_FLAT_L]: 4,
+    [PKG_TUBE_S]: 10,
+    [PKG_TUBE_L]: 40,
+  };
+  const GRAMS_PER_LB = 453.592;
+
+  const getSizeShippingHandle = () => {
+    if (window.sizeShippingProductHandle) return window.sizeShippingProductHandle;
+    if (window.filmServiceProductHandle === 'film-printing') {
+      window.sizeShippingProductHandle = DEFAULT_SIZE_SHIPPING_HANDLE;
+      return window.sizeShippingProductHandle;
+    }
+    return '';
+  };
+
+  const getTubeCapacity = () => {
+    const n = parseInt(window.tubeCapacity, 10);
+    return Number.isFinite(n) && n > 0 ? n : DEFAULT_TUBE_CAPACITY;
+  };
+
+  const mapSizeShippingVariants = (variants) =>
+    (variants || []).map((variant) => ({
+      id: variant.id,
+      title: variant.title,
+      weight: variant.weight,
+    }));
+
+  const ensureSizeShippingVariants = async () => {
+    if (Array.isArray(window.sizeShippingVariants) && window.sizeShippingVariants.length > 0) {
+      return window.sizeShippingVariants;
+    }
+
+    const handle = getSizeShippingHandle();
+    if (!handle) return [];
+
+    try {
+      const response = await fetch(`/products/${encodeURIComponent(handle)}.js`);
+      if (!response.ok) return [];
+      const product = await response.json();
+      window.sizeShippingVariants = mapSizeShippingVariants(product.variants);
+      return window.sizeShippingVariants;
+    } catch (error) {
+      console.error('Error loading print shipping variants', error);
+      return [];
+    }
+  };
+
+  const normSizeLabel = (value) =>
+    (value || '').replace(/[^0-9xX×.]/g, '').replace(/[×X]/g, 'x').toLowerCase();
+
+  const parseSizeDims = (value) => {
+    const text = normSizeLabel(value);
+    const match = text.match(/(\d+(?:\.\d+)?)x(\d+(?:\.\d+)?)/i);
+    if (!match) return null;
+    const a = Number(match[1]);
+    const b = Number(match[2]);
+    if (!Number.isFinite(a) || !Number.isFinite(b)) return null;
+    const shortSide = Math.min(a, b);
+    const longSide = Math.max(a, b);
+    return { shortSide, longSide, area: shortSide * longSide };
+  };
+
+  // Dimensions of the print currently configured on the form.
+  const getSelectedPrintDims = (customValidation) => {
+    if (customValidation && customValidation.active && customValidation.valid) {
+      const a = Number(customValidation.width);
+      const b = Number(customValidation.height);
+      if (Number.isFinite(a) && Number.isFinite(b) && a > 0 && b > 0) {
+        return { shortSide: Math.min(a, b), longSide: Math.max(a, b) };
+      }
+    }
+    const sizeRadio = form.querySelector('fieldset[data-group="Sizes"] input[type="radio"]:checked');
+    const dims = parseSizeDims(sizeRadio ? sizeRadio.value : '');
+    return dims ? { shortSide: dims.shortSide, longSide: dims.longSide } : null;
+  };
+
+  const classifyPackage = (dims) => {
+    if (dims.longSide <= FLAT_MAX_LONG && dims.shortSide <= FLAT_MAX_SHORT) return 'flat';
+    if (dims.longSide <= SMALL_TUBE_MAX_LONG && dims.shortSide <= SMALL_TUBE_MAX_SHORT) return 'small_tube';
+    return 'large_tube';
+  };
+
+  // Weight of one sheet of 300gsm paper, in pounds.
+  const paperWeightLb = (dims) => ((dims.shortSide * dims.longSide) / 1550.0031) * (PAPER_GSM / 1000) * 2.20462;
+
+  // Decide which companion variant(s) and quantities a print line needs.
+  // Returns { package, lines: [{ title, quantity }] } or null.
+  const planPrintShipping = (dims, physicalCount) => {
+    if (!dims) return null;
+    const count = Math.max(1, parseInt(physicalCount, 10) || 1);
+    const pkg = classifyPackage(dims);
+
+    if (pkg === 'flat') {
+      const lb = paperWeightLb(dims) * count;
+      let title = PKG_FLAT_S;
+      if (lb > FLAT_B_MAX_LB) title = PKG_FLAT_L;
+      else if (lb > FLAT_A_MAX_LB) title = PKG_FLAT_M;
+      return { package: pkg, lines: [{ title, quantity: 1 }] };
+    }
+
+    const tubes = Math.ceil(count / getTubeCapacity());
+    if (pkg === 'small_tube') {
+      // The rate table covers up to MAX_SMALL_TUBES small tubes; any overflow
+      // is billed as large tubes so it never collides with a lighter row.
+      const small = Math.min(tubes, MAX_SMALL_TUBES);
+      const overflow = tubes - small;
+      const lines = [{ title: PKG_TUBE_S, quantity: small }];
+      if (overflow > 0) lines.push({ title: PKG_TUBE_L, quantity: overflow });
+      return { package: pkg, lines };
+    }
+
+    return { package: pkg, lines: [{ title: PKG_TUBE_L, quantity: tubes }] };
+  };
+
+  // On-page estimate for this print line (mirrors the delivery profile).
+  const estimatePrintShipping = (plan) => {
+    if (!plan || !plan.lines || plan.lines.length === 0) return null;
+    let weight = 0;
+    let price = 0;
+    plan.lines.forEach((line) => {
+      weight += (VARIANT_WEIGHTS[line.title] || 0) * line.quantity;
+      price += (SHIP_EST[line.title] || 0) * line.quantity;
+    });
+    if (weight >= SHIP_EST.catchAllWeightLb) return SHIP_EST.catchAll;
+    return price;
+  };
+
+  const findVariantByTitle = (variants, title) => {
+    const want = (title || '').trim().toLowerCase();
+    return (variants || []).find((variant) => (variant.title || '').trim().toLowerCase() === want) || null;
+  };
+
+  // Fallback: match by billing weight (variant weights come through in grams).
+  const findVariantByWeight = (variants, title) => {
+    const lb = VARIANT_WEIGHTS[title];
+    if (!lb) return null;
+    const wantGrams = lb * GRAMS_PER_LB;
+    return (
+      (variants || []).find((variant) => {
+        const grams = Number(variant.weight || 0);
+        return grams > 0 && Math.abs(grams - wantGrams) / wantGrams < 0.05;
+      }) || null
+    );
+  };
+
+  const pickFallbackSizeShippingVariant = (variants, pkg) => {
+    if (!variants || variants.length === 0) return null;
+    const sorted = variants.slice().sort((a, b) => Number(a.weight || 0) - Number(b.weight || 0));
+    // Flat prints fall back to the lightest variant, tubes to the heaviest,
+    // so a mismatch still collects an address and charges something sensible.
+    return pkg === 'flat' ? sorted[0] : sorted[sorted.length - 1];
+  };
+
+  // Build the cart line items for the companion product.
+  const buildPrintShippingItems = (variants, plan, parentTimestamp) => {
+    if (!plan || !variants || variants.length === 0) return [];
+    const items = [];
+    plan.lines.forEach((line) => {
+      if (!line.quantity || line.quantity < 1) return;
+      const variant =
+        findVariantByTitle(variants, line.title) ||
+        findVariantByWeight(variants, line.title) ||
+        pickFallbackSizeShippingVariant(variants, plan.package);
+      if (!variant) return;
+      items.push({
+        id: variant.id,
+        quantity: line.quantity,
+        properties: {
+          '_role': 'shipping_size',
+          '_parent_timestamp': parentTimestamp,
+          '_package': line.title,
+        },
+      });
+    });
+    return items;
+  };
+
+  if (getSizeShippingHandle()) {
+    ensureSizeShippingVariants();
   }
 
   // Submit
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    const ownedFlow = printJobFlow();
+    if (ownedFlow) {
+      if (cartDrawer?.getAttribute?.('aria-busy') === 'true') { cartDrawer?.open?.(document.activeElement); return; }
+      if (cartDrawer?.classList.contains('update-failed') && !ownedFlow.canRetry?.()) {
+        cartDrawer?.open?.(document.activeElement);
+        setErrorMessage('The cart could not be confirmed. Please contact us before trying again.');
+        return;
+      }
+      setErrorMessage('');
+      cartDrawer?.setPending?.(true);
+      cartDrawer?.open?.(document.activeElement);
+    }
+    const invalidSelection = () => {
+      if (ownedFlow) { cartDrawer?.setPending?.(false); cartDrawer?.close?.(); }
+    };
+
+    // Refresh known completed uploads before the page's existing validation.
+    // Expired display receipts are not a request to upload the bytes again.
+    try { await ownedFlow?.refresh?.(); }
+    catch (error) {
+      const retryable = ownedFlow?.canRetry?.() === true;
+      const message = ownedFlow?.errorMessage?.(error) || 'The images could not be confirmed. Please check the upload selection.';
+      cartDrawer?.setPending?.(false, { failed: !retryable, message });
+      if (retryable) cartDrawer?.close?.();
+      setErrorMessage(message);
+      return;
+    }
+
     // Validate all currently open/visible fields
     const { errors } = validateOpenFields();
     if (errors.length > 0) {
+      invalidSelection();
       // Scroll to first error section (100px above)
       const first = errors
         .map((fs) => ({ fs, top: fs.getBoundingClientRect().top + window.scrollY }))
@@ -1809,6 +2140,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const customValidation = getCustomSizeValidation({ showErrors: true, forceAll: true });
     if (customValidation.active && !customValidation.valid) {
+      invalidSelection();
       const scrollTarget = customSizeContainer || customSizeFieldset;
       if (scrollTarget) {
         const targetY = Math.max(0, scrollTarget.getBoundingClientRect().top + window.scrollY - 250);
@@ -1821,10 +2153,60 @@ document.addEventListener('DOMContentLoaded', () => {
     // We just pass the custom price and use the base variant ID.
     const HARD_LIMIT_DOLLARS = 2000;
     if (total > HARD_LIMIT_DOLLARS) {
+      invalidSelection();
       setErrorMessage('Please contact us for single orders over $2000.');
       const target = errorEl || form;
       if (target && typeof target.scrollIntoView === 'function') {
         target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      return;
+    }
+
+    if (ownedFlow) {
+      setErrorMessage('');
+      const result = await ownedFlow.submit();
+      if (result?.accepted) {
+        if (result.render) {
+          try {
+            await document.querySelector('cart-drawer-items').refreshOwnedCart(result.cart, result.render);
+            if (!ownedFlow.reset()) throw new Error('Form reset unavailable');
+            clearFormAndScrollTop();
+            cartDrawer?.setPending?.(false);
+          } catch (_) {
+            cartDrawer?.setPending?.(false, { failed: true });
+            setErrorMessage('The cart could not be confirmed. Please contact us before trying again.');
+          }
+          return;
+        }
+        if (!ownedFlow.reset()) throw new Error('Form reset unavailable');
+        clearFormAndScrollTop();
+        if (cartDrawer && typeof cartDrawer.renderContents === 'function') {
+          // Fetch rendered sections after the verified native mutation. This
+          // preserves the existing drawer and the in-memory shopper session.
+          try {
+            const response = await fetch(`${window.Shopify?.routes?.root || '/'}?sections=cart-drawer`, { credentials: 'same-origin' });
+            if (!response.ok) throw new Error('Cart sections unavailable');
+            const sections = await response.json();
+            if (!sections['cart-drawer']) throw new Error('Cart sections unavailable');
+            cartDrawer.renderContents({ sections });
+            cartDrawer.setPending?.(false);
+            const count = result.cart.items.reduce((sum, item) => sum + item.quantity, 0);
+            const cartLink = document.getElementById('cart-icon-bubble');
+            const badge = cartLink?.querySelector('.cart-button__number');
+            if (badge) badge.textContent = String(count);
+            if (cartLink) cartLink.setAttribute('aria-label', `Shopping cart with ${count} item${count === 1 ? '' : 's'}`);
+          } catch (_) {
+            window.location.href = '/cart';
+          }
+        } else {
+          window.location.href = '/cart';
+        }
+      } else {
+        const retryable = ownedFlow.canRetry?.() === true;
+        const message = ownedFlow.errorMessage?.() || 'The cart could not be confirmed. Please contact us before trying again.';
+        cartDrawer?.setPending?.(false, { failed: !retryable, message });
+        if (retryable) cartDrawer?.close?.();
+        setErrorMessage(message);
       }
       return;
     }
@@ -1852,13 +2234,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const shippingId = window.globalReturnShippingVariantId || window.returnShippingVariantId;
     const selectedQty = Math.max(1, parseInt(qtyInput?.value || '1', 10) || 1);
     const fileCount = getUploadedFilesCount();
-    
+
     // The cart quantity represents the 'Number of Copies'
-    const finalQty = selectedQty; 
-    
+    const finalQty = selectedQty;
+
     // The total physical items (for weight/shipping calculations)
     const totalPhysicalItems = selectedQty * fileCount;
-    
+
     // The unit price of this line item needs to cover all uploaded files for 1 copy
     const customUnitPrice = total * fileCount;
 
@@ -1924,7 +2306,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const existingList =
           typeof existing === 'string' && existing.trim() ? existing.split(',').map(s => s.trim()) : [];
         const merged = Array.from(new Set([...existingList, ...uploadValues]));
-        
+
         merged.forEach((url, index) => {
           properties[`Uploaded File ${index + 1}`] = url;
         });
@@ -2080,94 +2462,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     mainItem.properties['_timestamp'] = Date.now();
 
-    // 3. Add the Size Shipping Product Item
-    // We add a hidden $0 product that maps the selected size to a variant with a physical weight.
-    // This allows shipping apps like Parcelify to calculate shipping cost.
-    let sizeItem = null;
-    const selectedSize = mainItem.properties['Sizes'];
-    if (selectedSize && window.sizeShippingVariants && window.sizeShippingVariants.length > 0) {
-      // Normalize label sizes like `8” × 10”` => `8x10`
-      const normSize = (s) => (s || '').replace(/[^0-9xX×.]/g, '').replace(/[×X]/g, 'x').toLowerCase();
-
-      // Parse dimensions from variant titles like `11x14`, `11 × 14`, `11" x 14"`, etc.
-      const parseDims = (value) => {
-        const text = (value || '').toString();
-        const match = text.match(/(\d+(?:\.\d+)?)\s*[x×]\s*(\d+(?:\.\d+)?)/i);
-        if (!match) return null;
-        const a = Number(match[1]);
-        const b = Number(match[2]);
-        if (!Number.isFinite(a) || !Number.isFinite(b)) return null;
-        const shortSide = Math.min(a, b);
-        const longSide = Math.max(a, b);
-        return { shortSide, longSide, area: shortSide * longSide };
-      };
-
-      let match = null;
-
-      // Preset sizes keep exact title matching behavior.
-      if (!customValidation.active || !customValidation.valid) {
-        match = window.sizeShippingVariants.find((v) => normSize(v.title) === normSize(selectedSize));
-      } else {
-        const customShort = Math.min(customValidation.width, customValidation.height);
-        const customLong = Math.max(customValidation.width, customValidation.height);
-
-        const parsedVariants = window.sizeShippingVariants
-          .map((variant) => ({ variant, dims: parseDims(variant.title) }))
-          .filter((entry) => !!entry.dims);
-
-        const fitting = parsedVariants
-          .filter(
-            (entry) => entry.dims.shortSide >= customShort && entry.dims.longSide >= customLong
-          )
-          .sort((a, b) => {
-            // Pick the smallest bucket that still fits the custom size.
-            if (a.dims.area !== b.dims.area) return a.dims.area - b.dims.area;
-            if (a.dims.longSide !== b.dims.longSide) return a.dims.longSide - b.dims.longSide;
-            return a.dims.shortSide - b.dims.shortSide;
-          });
-
-        if (fitting.length > 0) {
-          match = fitting[0].variant;
-        } else if (parsedVariants.length > 0) {
-          // If no bucket fully fits, fall back to the largest configured bucket.
-          parsedVariants.sort((a, b) => {
-            if (a.dims.area !== b.dims.area) return b.dims.area - a.dims.area;
-            if (a.dims.longSide !== b.dims.longSide) return b.dims.longSide - a.dims.longSide;
-            return b.dims.shortSide - a.dims.shortSide;
-          });
-          match = parsedVariants[0].variant;
-        }
-      }
-
-      if (match) {
-        sizeItem = {
-          id: match.id,
-          quantity: totalPhysicalItems,
-          properties: {
-            '_role': 'shipping_size',
-            '_parent_timestamp': mainItem.properties['_timestamp']
-          }
-        };
+    // 3. Add the Print Shipping companion item(s) (Film Printing only).
+    // A $0 physical product whose variant weights drive the weight-based
+    // shipping rate at checkout (and make checkout collect an address).
+    // Pickup at checkout removes the charge automatically.
+    let printShippingItems = [];
+    const sizeShippingVariants = await ensureSizeShippingVariants();
+    if (getSizeShippingHandle() && sizeShippingVariants.length > 0) {
+      const printDims = getSelectedPrintDims(customValidation);
+      const plan = planPrintShipping(printDims, totalPhysicalItems);
+      printShippingItems = buildPrintShippingItems(sizeShippingVariants, plan, mainItem.properties['_timestamp']);
+      if (plan) {
+        mainItem.properties['_package'] = plan.lines.map((l) => `${l.quantity} × ${l.title}`).join(', ');
       }
     }
 
     itemsToAdd.push(mainItem);
-    if (sizeItem) {
-      itemsToAdd.push(sizeItem);
-    }
+    printShippingItems.forEach((item) => itemsToAdd.push(item));
 
     const resetButtonState = () => {
-      if (!submitBtn) return;
-      submitBtn.disabled = false;
-      submitBtn.removeAttribute('aria-disabled');
-      submitBtn.classList.remove('is-loading');
+      submitBtns.forEach(btn => {
+        btn.disabled = false;
+        btn.removeAttribute('aria-disabled');
+        btn.classList.remove('is-loading');
+      });
     };
 
     const setLoadingState = () => {
-      if (!submitBtn) return;
-      submitBtn.disabled = true;
-      submitBtn.setAttribute('aria-disabled', 'true');
-      submitBtn.classList.add('is-loading');
+      submitBtns.forEach(btn => {
+        btn.disabled = true;
+        btn.setAttribute('aria-disabled', 'true');
+        btn.classList.add('is-loading');
+      });
     };
 
     setLoadingState();
@@ -2232,6 +2558,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Init
+  form.addEventListener('bfl:uploads-changed', () => calculateTotal());
   prefillAddressFields();
   applyConditions();
   updateDeliveryInfoVisibility();
@@ -2304,7 +2631,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (uploadFs) {
     let checkTimeout = null;
     let lastKnownFileCount = getActualFilesCount();
-    
+
     const observer = new MutationObserver((mutations) => {
       let shouldCheck = false;
       for (const mutation of mutations) {
@@ -2317,7 +2644,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (checkTimeout) clearTimeout(checkTimeout);
         checkTimeout = setTimeout(() => {
           const currentCount = getActualFilesCount();
-          
+
           const uploadInputs = Array.from(document.querySelectorAll('input[name*="properties"]')).filter((el) => {
             const nameStr = el.name.toLowerCase();
             if (
@@ -2342,7 +2669,11 @@ document.addEventListener('DOMContentLoaded', () => {
           const fileInputs = Array.from(document.querySelectorAll('input[type="file"]'));
           const hasNativeFile = fileInputs.some((el) => el.files && el.files.length > 0);
 
-          if (hasUploadedFile || hasNativeFile || currentCount > 0) {
+          const ownedUploads = printJobFlow()?.snapshot();
+          const uploadReady = ownedUploads
+            ? !ownedUploads.pending && !ownedUploads.failed && currentCount > 0
+            : hasUploadedFile || hasNativeFile || currentCount > 0;
+          if (uploadReady) {
             uploadFs.classList.remove('rolls-form-card--error');
             const errorMsg = uploadFs.querySelector('.upload-error-msg');
             if (errorMsg) errorMsg.remove();

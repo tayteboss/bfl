@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "capture_method": "authenticated_shopify_admin_iab_and_cli_read_only",
+  "captured_at": "2026-10-21T03:11:22Z",
+  "store": "1jukgy-dc.myshopify.com",
+  "product": {
+    "id": "9425818484991",
+    "handle": "film-printing"
+  },
+  "metafield": {
+    "namespace": "custom",
+    "key": "film_services_json",
+    "type": "json",
+    "sha256": "9d3131ef27637a2031de72ab2c96d0d9570928ceb4aba24fe6fdeb1dae0056d1"
+  },
+  "theme": {
+    "id": "167745585407",
+    "role": "live",
+    "script_sha256": "154bd0fd1087fc10e102f9f6366b3a27affecfe200765d35f5437d761ccc4f27",
+    "section_sha256": "4b6d40fef89ce1dfee7109ed747bee3b8ccf4c02e81d8feb1e281bbf17c660cd"
+  }
+}

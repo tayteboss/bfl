@@ -1,0 +1,14 @@
+{
+  "payload": {
+    "export": "cart-transform-run",
+    "target": "cart.transform.run",
+    "input": {
+      "cart": {
+        "lines": []
+      }
+    },
+    "output": {
+      "operations": []
+    }
+  }
+}

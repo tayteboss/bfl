@@ -1,0 +1,4467 @@
+{
+  "synthetic_offline_only": true,
+  "remote_store_operations": 0,
+  "instruction_limit": 11000000,
+  "regression_ceiling": 8000000,
+  "input_limit_bytes": 128000,
+  "output_limit_bytes": 20000,
+  "functions": {
+    "pricing": {
+      "query_bytes": 1075,
+      "query_cost": 25,
+      "wasm_bytes": 77360,
+      "wasm_sha256": "eaf97a8a7326d4805f13a95137e09a087b663fe9afbd9d404276183a9d0b0ff8",
+      "cases": [
+        {
+          "case": "valid",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 149,
+          "instructionCount": 377664,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "eight-jobs",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 11759,
+          "output_bytes": 1080,
+          "instructionCount": 2233932,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "20-line-boundary",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 16801,
+          "output_bytes": 1080,
+          "instructionCount": 2486374,
+          "memoryUsageKiB": 1216,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "6000-byte-20-line-boundary",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 19103,
+          "output_bytes": 1080,
+          "instructionCount": 2586402,
+          "memoryUsageKiB": 1216,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-line-cart-denied",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 92673,
+          "output_bytes": 17,
+          "instructionCount": 23347,
+          "memoryUsageKiB": 1280,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "192-unrelated-lines",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 86489,
+          "output_bytes": 17,
+          "instructionCount": 3716407,
+          "memoryUsageKiB": 1856,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "customer",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2085,
+          "output_bytes": 149,
+          "instructionCount": 384405,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "cart-bootstrap",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 911,
+          "output_bytes": 17,
+          "instructionCount": 27417,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "checkout-interaction",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 911,
+          "output_bytes": 17,
+          "instructionCount": 27417,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "missing-authority",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 911,
+          "output_bytes": 17,
+          "instructionCount": 27417,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "expired",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 17,
+          "instructionCount": 205585,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "quantity-change",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 17,
+          "instructionCount": 232144,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "replay",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2027,
+          "output_bytes": 17,
+          "instructionCount": 208115,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "spec-change",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 17,
+          "instructionCount": 299383,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "no-price",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 149,
+          "instructionCount": 377664,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "no-lab-map",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 149,
+          "instructionCount": 377664,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "revoked",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1221,
+          "output_bytes": 17,
+          "instructionCount": 78811,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "unrelated",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1648,
+          "output_bytes": 17,
+          "instructionCount": 33156,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-flow",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2032,
+          "output_bytes": 17,
+          "instructionCount": 255454,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-job",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1999,
+          "output_bytes": 17,
+          "instructionCount": 260204,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-revision",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1971,
+          "output_bytes": 17,
+          "instructionCount": 265603,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-config",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2007,
+          "output_bytes": 17,
+          "instructionCount": 271665,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-signature",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1971,
+          "output_bytes": 17,
+          "instructionCount": 277294,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-service",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2030,
+          "output_bytes": 17,
+          "instructionCount": 283755,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-size",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2032,
+          "output_bytes": 17,
+          "instructionCount": 288831,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-paper",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2020,
+          "output_bytes": 17,
+          "instructionCount": 293419,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-lab",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2030,
+          "output_bytes": 17,
+          "instructionCount": 299360,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-message",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2020,
+          "output_bytes": 17,
+          "instructionCount": 304857,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-borders",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2043,
+          "output_bytes": 17,
+          "instructionCount": 327616,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-turnaround",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2043,
+          "output_bytes": 17,
+          "instructionCount": 331933,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-files",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2034,
+          "output_bytes": 17,
+          "instructionCount": 335809,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "duplicate-line",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2802,
+          "output_bytes": 17,
+          "instructionCount": 230414,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "wrong-variant",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2016,
+          "output_bytes": 17,
+          "instructionCount": 228424,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "wrong-product",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2016,
+          "output_bytes": 17,
+          "instructionCount": 229430,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "wrong-currency",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 17,
+          "instructionCount": 250690,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "selling-plan",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2077,
+          "output_bytes": 17,
+          "instructionCount": 243956,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "quantity-zero",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 17,
+          "instructionCount": 232144,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "quantity-negative",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2030,
+          "output_bytes": 17,
+          "instructionCount": 232148,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "quantity-overflow",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2033,
+          "output_bytes": 17,
+          "instructionCount": 232228,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "missing-journey-step",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 911,
+          "output_bytes": 17,
+          "instructionCount": 27417,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "guest-now-customer",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2059,
+          "output_bytes": 17,
+          "instructionCount": 218201,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "duplicate-lab-map",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 149,
+          "instructionCount": 377664,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "subtotal-negative",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 149,
+          "instructionCount": 377664,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "subtotal-exponent",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 149,
+          "instructionCount": 377664,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "subtotal-precision",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 149,
+          "instructionCount": 377664,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "subtotal-leading-zeros",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 149,
+          "instructionCount": 377664,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "subtotal-overflow",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 149,
+          "instructionCount": 377664,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "reordered-lines",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 11759,
+          "output_bytes": 1080,
+          "instructionCount": 2233932,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "customer-logged-out",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2086,
+          "output_bytes": 17,
+          "instructionCount": 221409,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "customer-wrong",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2085,
+          "output_bytes": 17,
+          "instructionCount": 223743,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "customer-absent",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2018,
+          "output_bytes": 17,
+          "instructionCount": 218811,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-schema",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 17,
+          "instructionCount": 144024,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-store",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2005,
+          "output_bytes": 17,
+          "instructionCount": 143377,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-hash",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 17,
+          "instructionCount": 150072,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-root-extra",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2044,
+          "output_bytes": 17,
+          "instructionCount": 142237,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-grant-extra",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2044,
+          "output_bytes": 17,
+          "instructionCount": 154368,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-line-extra",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2044,
+          "output_bytes": 17,
+          "instructionCount": 164050,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-claims-extra",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2045,
+          "output_bytes": 17,
+          "instructionCount": 171692,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-claims-missing",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1999,
+          "output_bytes": 17,
+          "instructionCount": 165255,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-owner",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1968,
+          "output_bytes": 17,
+          "instructionCount": 153206,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-cart",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1968,
+          "output_bytes": 17,
+          "instructionCount": 150769,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-customer",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2032,
+          "output_bytes": 17,
+          "instructionCount": 159970,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-duplicate-grant",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2838,
+          "output_bytes": 17,
+          "instructionCount": 286231,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-price-zero",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2027,
+          "output_bytes": 17,
+          "instructionCount": 161062,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-price-fractional",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 17,
+          "instructionCount": 161351,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-price-overflow",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2042,
+          "output_bytes": 17,
+          "instructionCount": 162409,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-quantity-fractional",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2031,
+          "output_bytes": 17,
+          "instructionCount": 160377,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-files-zero",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 17,
+          "instructionCount": 160537,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-files-mismatch",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 17,
+          "instructionCount": 191377,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-location",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1998,
+          "output_bytes": 17,
+          "instructionCount": 166309,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-line-id",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1995,
+          "output_bytes": 17,
+          "instructionCount": 163443,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-revision",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1968,
+          "output_bytes": 17,
+          "instructionCount": 180590,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-signature",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1968,
+          "output_bytes": 17,
+          "instructionCount": 183416,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-config-cutover",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 17,
+          "instructionCount": 191070,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-future",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 17,
+          "instructionCount": 205585,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-date-unicode",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2034,
+          "output_bytes": 17,
+          "instructionCount": 152676,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-service",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2032,
+          "output_bytes": 17,
+          "instructionCount": 193774,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-size",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2030,
+          "output_bytes": 17,
+          "instructionCount": 194177,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-message-length",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 4015,
+          "output_bytes": 17,
+          "instructionCount": 308911,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-message-type",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2012,
+          "output_bytes": 17,
+          "instructionCount": 176613,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-null-grant",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1225,
+          "output_bytes": 17,
+          "instructionCount": 69689,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-null-line",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1417,
+          "output_bytes": 17,
+          "instructionCount": 94064,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-null-claims",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1585,
+          "output_bytes": 17,
+          "instructionCount": 121317,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-malformed",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 927,
+          "output_bytes": 17,
+          "instructionCount": 29177,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-truncated",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 931,
+          "output_bytes": 17,
+          "instructionCount": 30917,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-array",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 921,
+          "output_bytes": 17,
+          "instructionCount": 28940,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-number",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 921,
+          "output_bytes": 17,
+          "instructionCount": 28894,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-empty",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 919,
+          "output_bytes": 17,
+          "instructionCount": 28471,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-oversize",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 6920,
+          "output_bytes": 17,
+          "instructionCount": 28433,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-deep",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1320,
+          "output_bytes": 17,
+          "instructionCount": 223889,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "aggregate-ceiling",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 11775,
+          "output_bytes": 17,
+          "instructionCount": 1100185,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "duplicate-job",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 11759,
+          "output_bytes": 17,
+          "instructionCount": 852422,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "missing-job-subset",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 10986,
+          "output_bytes": 17,
+          "instructionCount": 1086034,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "unicode-exact",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2058,
+          "output_bytes": 149,
+          "instructionCount": 382616,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "current-copies-reauthorized",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 149,
+          "instructionCount": 377664,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-target-last",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 92673,
+          "output_bytes": 17,
+          "instructionCount": 3731635,
+          "memoryUsageKiB": 1792,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "21-line-denied",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 17222,
+          "output_bytes": 17,
+          "instructionCount": 23484,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-unrelated-lines",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 89865,
+          "output_bytes": 17,
+          "instructionCount": 3870637,
+          "memoryUsageKiB": 1792,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "send-rolls-with-companion",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 978,
+          "output_bytes": 17,
+          "instructionCount": 54151,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "mixed-send-rolls-valid",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 16801,
+          "output_bytes": 1080,
+          "instructionCount": 2486374,
+          "memoryUsageKiB": 1216,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "delivery-unrelated-group",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 149,
+          "instructionCount": 377664,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-unrelated-deliverables",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 149,
+          "instructionCount": 377664,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-unrelated-full-mapping",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 89865,
+          "output_bytes": 17,
+          "instructionCount": 3870637,
+          "memoryUsageKiB": 1792,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-unrelated-100-groups",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 89865,
+          "output_bytes": 17,
+          "instructionCount": 3870637,
+          "memoryUsageKiB": 1792,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-unrelated-200-groups",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 82628,
+          "output_bytes": 17,
+          "instructionCount": 3867542,
+          "memoryUsageKiB": 1856,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "eight-grants-last-matches",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 7557,
+          "output_bytes": 149,
+          "instructionCount": 1287889,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "near-128k-valid-mixed",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 127900,
+          "output_bytes": 1080,
+          "instructionCount": 2526734,
+          "memoryUsageKiB": 1280,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "near-128k-unrelated",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 127900,
+          "output_bytes": 17,
+          "instructionCount": 3731940,
+          "memoryUsageKiB": 1920,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "near-128k-denied-target-last",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 127900,
+          "output_bytes": 17,
+          "instructionCount": 3744685,
+          "memoryUsageKiB": 1920,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "historical-f06a-golden",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2029,
+          "output_bytes": 149,
+          "instructionCount": 377403,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        }
+      ],
+      "target": "cart.transform.run",
+      "export": "cart_transform_run",
+      "query_sha256": "65d6f8cf6258de6b4e9ad8f13f4a0e2d3fe619e50932f1a3dd9b7b707a3b7cfb",
+      "schema_sha256": "4f5024326918113b836e52af66991ca0fd69884e18ca74a07a92fd57e64c2789",
+      "config_sha256": "47458aaa9e49eba875d66229ba9afc4e902d73117a02be117df917e36ff4d19e"
+    },
+    "validation": {
+      "query_bytes": 1196,
+      "query_cost": 29,
+      "wasm_bytes": 77360,
+      "wasm_sha256": "eaf97a8a7326d4805f13a95137e09a087b663fe9afbd9d404276183a9d0b0ff8",
+      "cases": [
+        {
+          "case": "valid",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2239,
+          "output_bytes": 17,
+          "instructionCount": 374483,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "eight-jobs",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 12970,
+          "output_bytes": 17,
+          "instructionCount": 2376200,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "20-line-boundary",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 18432,
+          "output_bytes": 17,
+          "instructionCount": 2650909,
+          "memoryUsageKiB": 1216,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "6000-byte-20-line-boundary",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 20734,
+          "output_bytes": 17,
+          "instructionCount": 2750534,
+          "memoryUsageKiB": 1216,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-line-cart-denied",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 100604,
+          "output_bytes": 168,
+          "instructionCount": 48452,
+          "memoryUsageKiB": 1280,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "192-unrelated-lines",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 93277,
+          "output_bytes": 17,
+          "instructionCount": 3939600,
+          "memoryUsageKiB": 1792,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "customer",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2295,
+          "output_bytes": 17,
+          "instructionCount": 380512,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "cart-bootstrap",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1118,
+          "output_bytes": 17,
+          "instructionCount": 8913,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "checkout-interaction",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1122,
+          "output_bytes": 168,
+          "instructionCount": 56372,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "missing-authority",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1121,
+          "output_bytes": 168,
+          "instructionCount": 56372,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "expired",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2239,
+          "output_bytes": 168,
+          "instructionCount": 230031,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "quantity-change",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2239,
+          "output_bytes": 168,
+          "instructionCount": 267074,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "replay",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2237,
+          "output_bytes": 168,
+          "instructionCount": 232561,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "spec-change",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2239,
+          "output_bytes": 168,
+          "instructionCount": 343004,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "no-price",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2239,
+          "output_bytes": 168,
+          "instructionCount": 387045,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "no-lab-map",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2132,
+          "output_bytes": 168,
+          "instructionCount": 390634,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "revoked",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1431,
+          "output_bytes": 168,
+          "instructionCount": 103536,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "unrelated",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1751,
+          "output_bytes": 17,
+          "instructionCount": 43426,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-flow",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2242,
+          "output_bytes": 168,
+          "instructionCount": 281790,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-job",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2209,
+          "output_bytes": 168,
+          "instructionCount": 286540,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-revision",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2181,
+          "output_bytes": 168,
+          "instructionCount": 292223,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-config",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2217,
+          "output_bytes": 168,
+          "instructionCount": 298518,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-signature",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2181,
+          "output_bytes": 168,
+          "instructionCount": 304147,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-service",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2240,
+          "output_bytes": 168,
+          "instructionCount": 310324,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-size",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2242,
+          "output_bytes": 168,
+          "instructionCount": 315884,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-paper",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2230,
+          "output_bytes": 168,
+          "instructionCount": 320685,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-lab",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2240,
+          "output_bytes": 168,
+          "instructionCount": 342981,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-message",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2230,
+          "output_bytes": 168,
+          "instructionCount": 348620,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-borders",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2253,
+          "output_bytes": 168,
+          "instructionCount": 354018,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-turnaround",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2253,
+          "output_bytes": 168,
+          "instructionCount": 358335,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-files",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2244,
+          "output_bytes": 168,
+          "instructionCount": 362719,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "duplicate-line",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 3047,
+          "output_bytes": 289,
+          "instructionCount": 269364,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "wrong-variant",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2226,
+          "output_bytes": 168,
+          "instructionCount": 262422,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "wrong-product",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2226,
+          "output_bytes": 168,
+          "instructionCount": 264360,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "wrong-currency",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2239,
+          "output_bytes": 168,
+          "instructionCount": 275858,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "selling-plan",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2287,
+          "output_bytes": 168,
+          "instructionCount": 270013,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "quantity-zero",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2239,
+          "output_bytes": 168,
+          "instructionCount": 267074,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "quantity-negative",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2240,
+          "output_bytes": 168,
+          "instructionCount": 267078,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "quantity-overflow",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2243,
+          "output_bytes": 168,
+          "instructionCount": 267158,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "missing-journey-step",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1104,
+          "output_bytes": 168,
+          "instructionCount": 56209,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "guest-now-customer",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2269,
+          "output_bytes": 168,
+          "instructionCount": 242758,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "duplicate-lab-map",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2347,
+          "output_bytes": 168,
+          "instructionCount": 402649,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "subtotal-negative",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2240,
+          "output_bytes": 168,
+          "instructionCount": 386675,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "subtotal-exponent",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2240,
+          "output_bytes": 168,
+          "instructionCount": 386782,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "subtotal-precision",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2240,
+          "output_bytes": 168,
+          "instructionCount": 386805,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "subtotal-leading-zeros",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2242,
+          "output_bytes": 17,
+          "instructionCount": 374717,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "subtotal-overflow",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2256,
+          "output_bytes": 168,
+          "instructionCount": 389280,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "reordered-lines",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 12970,
+          "output_bytes": 17,
+          "instructionCount": 2376200,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "customer-logged-out",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2296,
+          "output_bytes": 168,
+          "instructionCount": 246250,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "customer-wrong",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2295,
+          "output_bytes": 168,
+          "instructionCount": 248584,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "customer-absent",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2228,
+          "output_bytes": 168,
+          "instructionCount": 243368,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-schema",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2239,
+          "output_bytes": 168,
+          "instructionCount": 173317,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-store",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2215,
+          "output_bytes": 168,
+          "instructionCount": 172922,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-hash",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2239,
+          "output_bytes": 168,
+          "instructionCount": 179365,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-root-extra",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2254,
+          "output_bytes": 168,
+          "instructionCount": 171530,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-grant-extra",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2254,
+          "output_bytes": 168,
+          "instructionCount": 183661,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-line-extra",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2254,
+          "output_bytes": 168,
+          "instructionCount": 193343,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-claims-extra",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2255,
+          "output_bytes": 168,
+          "instructionCount": 201127,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-claims-missing",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2209,
+          "output_bytes": 168,
+          "instructionCount": 194827,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-owner",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2178,
+          "output_bytes": 168,
+          "instructionCount": 182499,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-cart",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2178,
+          "output_bytes": 168,
+          "instructionCount": 180062,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-customer",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2242,
+          "output_bytes": 168,
+          "instructionCount": 189268,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-duplicate-grant",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 3048,
+          "output_bytes": 168,
+          "instructionCount": 315823,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-price-zero",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2237,
+          "output_bytes": 168,
+          "instructionCount": 190355,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-price-fractional",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2239,
+          "output_bytes": 168,
+          "instructionCount": 190644,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-price-overflow",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2252,
+          "output_bytes": 168,
+          "instructionCount": 191702,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-quantity-fractional",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2241,
+          "output_bytes": 168,
+          "instructionCount": 189670,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-files-zero",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2239,
+          "output_bytes": 168,
+          "instructionCount": 189830,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-files-mismatch",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2239,
+          "output_bytes": 168,
+          "instructionCount": 220670,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-location",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2208,
+          "output_bytes": 168,
+          "instructionCount": 195602,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-line-id",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2205,
+          "output_bytes": 168,
+          "instructionCount": 192736,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-revision",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2178,
+          "output_bytes": 168,
+          "instructionCount": 209883,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-signature",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2178,
+          "output_bytes": 168,
+          "instructionCount": 212709,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-config-cutover",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2239,
+          "output_bytes": 168,
+          "instructionCount": 220363,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-future",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2239,
+          "output_bytes": 168,
+          "instructionCount": 230031,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-date-unicode",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2244,
+          "output_bytes": 168,
+          "instructionCount": 182034,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-service",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2242,
+          "output_bytes": 168,
+          "instructionCount": 223067,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-size",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2240,
+          "output_bytes": 168,
+          "instructionCount": 223470,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-message-length",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 4225,
+          "output_bytes": 168,
+          "instructionCount": 338199,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-message-type",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2222,
+          "output_bytes": 168,
+          "instructionCount": 205901,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-null-grant",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1435,
+          "output_bytes": 168,
+          "instructionCount": 99104,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-null-line",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1627,
+          "output_bytes": 168,
+          "instructionCount": 123347,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-null-claims",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1795,
+          "output_bytes": 168,
+          "instructionCount": 150889,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-malformed",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1137,
+          "output_bytes": 168,
+          "instructionCount": 58196,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-truncated",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1141,
+          "output_bytes": 168,
+          "instructionCount": 59807,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-array",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1131,
+          "output_bytes": 168,
+          "instructionCount": 57959,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-number",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1131,
+          "output_bytes": 168,
+          "instructionCount": 57913,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-empty",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1129,
+          "output_bytes": 168,
+          "instructionCount": 57490,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-oversize",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 7130,
+          "output_bytes": 168,
+          "instructionCount": 57737,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-deep",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1530,
+          "output_bytes": 168,
+          "instructionCount": 253193,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "aggregate-ceiling",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 12986,
+          "output_bytes": 1015,
+          "instructionCount": 1227217,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "duplicate-job",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 12970,
+          "output_bytes": 1015,
+          "instructionCount": 979454,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "missing-job-subset",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 12162,
+          "output_bytes": 894,
+          "instructionCount": 1193995,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "unicode-exact",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2268,
+          "output_bytes": 17,
+          "instructionCount": 377998,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "current-copies-reauthorized",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2239,
+          "output_bytes": 17,
+          "instructionCount": 374483,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-target-last",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 100604,
+          "output_bytes": 170,
+          "instructionCount": 3976907,
+          "memoryUsageKiB": 1920,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "21-line-denied",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 18888,
+          "output_bytes": 168,
+          "instructionCount": 48447,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-unrelated-lines",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 96933,
+          "output_bytes": 17,
+          "instructionCount": 4103322,
+          "memoryUsageKiB": 1920,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "send-rolls-with-companion",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1116,
+          "output_bytes": 17,
+          "instructionCount": 65301,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "mixed-send-rolls-valid",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 18432,
+          "output_bytes": 17,
+          "instructionCount": 2650909,
+          "memoryUsageKiB": 1216,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "delivery-unrelated-group",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2239,
+          "output_bytes": 17,
+          "instructionCount": 374483,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-unrelated-deliverables",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 15462,
+          "output_bytes": 17,
+          "instructionCount": 1198314,
+          "memoryUsageKiB": 1216,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-unrelated-full-mapping",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 110222,
+          "output_bytes": 17,
+          "instructionCount": 4103322,
+          "memoryUsageKiB": 1920,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-unrelated-100-groups",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 96933,
+          "output_bytes": 17,
+          "instructionCount": 4103322,
+          "memoryUsageKiB": 1920,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-unrelated-200-groups",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 89696,
+          "output_bytes": 17,
+          "instructionCount": 4098747,
+          "memoryUsageKiB": 1792,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "eight-grants-last-matches",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 7767,
+          "output_bytes": 17,
+          "instructionCount": 1284903,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "near-128k-valid-mixed",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 127900,
+          "output_bytes": 17,
+          "instructionCount": 2689701,
+          "memoryUsageKiB": 1280,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "near-128k-unrelated",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 127900,
+          "output_bytes": 17,
+          "instructionCount": 3952650,
+          "memoryUsageKiB": 1920,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "near-128k-denied-target-last",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 127900,
+          "output_bytes": 170,
+          "instructionCount": 3986931,
+          "memoryUsageKiB": 1920,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "historical-f06a-golden",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2239,
+          "output_bytes": 17,
+          "instructionCount": 374222,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        }
+      ],
+      "target": "cart.validations.generate.run",
+      "export": "cart_validations_generate_run",
+      "query_sha256": "a0823c28454d0b6e207518733a511f99b93eedb19462619a7e997641b00d52ab",
+      "schema_sha256": "a61f3c81e8529d48272eec407fdd776deb8a6cd887596ea600688c5b4e670787",
+      "config_sha256": "16f23fd3842d8be0607ab097256c8ae48fb61a63e0e141ad36b19b678175fa7e"
+    },
+    "lab": {
+      "query_bytes": 1140,
+      "query_cost": 27,
+      "wasm_bytes": 77360,
+      "wasm_sha256": "eaf97a8a7326d4805f13a95137e09a087b663fe9afbd9d404276183a9d0b0ff8",
+      "cases": [
+        {
+          "case": "valid",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2158,
+          "output_bytes": 179,
+          "instructionCount": 379508,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "eight-jobs",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 12644,
+          "output_bytes": 1320,
+          "instructionCount": 2446824,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "20-line-boundary",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 17686,
+          "output_bytes": 1320,
+          "instructionCount": 2704113,
+          "memoryUsageKiB": 1216,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "6000-byte-20-line-boundary",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 19988,
+          "output_bytes": 1320,
+          "instructionCount": 2803581,
+          "memoryUsageKiB": 1216,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-line-cart-denied",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 93558,
+          "output_bytes": 17,
+          "instructionCount": 23347,
+          "memoryUsageKiB": 1280,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "192-unrelated-lines",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 86511,
+          "output_bytes": 17,
+          "instructionCount": 3716391,
+          "memoryUsageKiB": 1856,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "customer",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2214,
+          "output_bytes": 179,
+          "instructionCount": 385936,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "cart-bootstrap",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1040,
+          "output_bytes": 17,
+          "instructionCount": 27271,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "checkout-interaction",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1040,
+          "output_bytes": 17,
+          "instructionCount": 27271,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "missing-authority",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1040,
+          "output_bytes": 17,
+          "instructionCount": 27271,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "expired",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2158,
+          "output_bytes": 17,
+          "instructionCount": 205443,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "quantity-change",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2158,
+          "output_bytes": 17,
+          "instructionCount": 232002,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "replay",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2156,
+          "output_bytes": 17,
+          "instructionCount": 208115,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "spec-change",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2158,
+          "output_bytes": 17,
+          "instructionCount": 299312,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "no-price",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2158,
+          "output_bytes": 179,
+          "instructionCount": 379508,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "no-lab-map",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2051,
+          "output_bytes": 17,
+          "instructionCount": 355002,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "revoked",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1350,
+          "output_bytes": 17,
+          "instructionCount": 78953,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "unrelated",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1670,
+          "output_bytes": 17,
+          "instructionCount": 33140,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-flow",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2161,
+          "output_bytes": 17,
+          "instructionCount": 255312,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-job",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2128,
+          "output_bytes": 17,
+          "instructionCount": 260062,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-revision",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2100,
+          "output_bytes": 17,
+          "instructionCount": 265603,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-config",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2136,
+          "output_bytes": 17,
+          "instructionCount": 271807,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-signature",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2100,
+          "output_bytes": 17,
+          "instructionCount": 277294,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-service",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2159,
+          "output_bytes": 17,
+          "instructionCount": 283613,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-size",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2161,
+          "output_bytes": 17,
+          "instructionCount": 288689,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-paper",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2149,
+          "output_bytes": 17,
+          "instructionCount": 293419,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-lab",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2159,
+          "output_bytes": 17,
+          "instructionCount": 299289,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-message",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2149,
+          "output_bytes": 17,
+          "instructionCount": 304857,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-borders",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2172,
+          "output_bytes": 17,
+          "instructionCount": 327616,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-turnaround",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2172,
+          "output_bytes": 17,
+          "instructionCount": 331933,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-files",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2163,
+          "output_bytes": 17,
+          "instructionCount": 335809,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "duplicate-line",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2931,
+          "output_bytes": 17,
+          "instructionCount": 230414,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "wrong-variant",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2145,
+          "output_bytes": 17,
+          "instructionCount": 228282,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "wrong-product",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2145,
+          "output_bytes": 17,
+          "instructionCount": 229288,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "wrong-currency",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2158,
+          "output_bytes": 17,
+          "instructionCount": 250548,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "selling-plan",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2206,
+          "output_bytes": 17,
+          "instructionCount": 243956,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "quantity-zero",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2158,
+          "output_bytes": 17,
+          "instructionCount": 232002,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "quantity-negative",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2159,
+          "output_bytes": 17,
+          "instructionCount": 232006,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "quantity-overflow",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2162,
+          "output_bytes": 17,
+          "instructionCount": 232086,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "missing-journey-step",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1040,
+          "output_bytes": 17,
+          "instructionCount": 27271,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "guest-now-customer",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2188,
+          "output_bytes": 17,
+          "instructionCount": 218201,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "duplicate-lab-map",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2266,
+          "output_bytes": 17,
+          "instructionCount": 369178,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "subtotal-negative",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2158,
+          "output_bytes": 179,
+          "instructionCount": 379508,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "subtotal-exponent",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2158,
+          "output_bytes": 179,
+          "instructionCount": 379508,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "subtotal-precision",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2158,
+          "output_bytes": 179,
+          "instructionCount": 379508,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "subtotal-leading-zeros",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2158,
+          "output_bytes": 179,
+          "instructionCount": 379508,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "subtotal-overflow",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2158,
+          "output_bytes": 179,
+          "instructionCount": 379508,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "reordered-lines",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 12644,
+          "output_bytes": 1320,
+          "instructionCount": 2446663,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "customer-logged-out",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2215,
+          "output_bytes": 17,
+          "instructionCount": 221409,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "customer-wrong",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2214,
+          "output_bytes": 17,
+          "instructionCount": 223743,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "customer-absent",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2147,
+          "output_bytes": 17,
+          "instructionCount": 218811,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-schema",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2158,
+          "output_bytes": 17,
+          "instructionCount": 143882,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-store",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2134,
+          "output_bytes": 17,
+          "instructionCount": 143519,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-hash",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2158,
+          "output_bytes": 17,
+          "instructionCount": 149930,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-root-extra",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2173,
+          "output_bytes": 17,
+          "instructionCount": 142237,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-grant-extra",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2173,
+          "output_bytes": 17,
+          "instructionCount": 154368,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-line-extra",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2173,
+          "output_bytes": 17,
+          "instructionCount": 164050,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-claims-extra",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2174,
+          "output_bytes": 17,
+          "instructionCount": 171692,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-claims-missing",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2128,
+          "output_bytes": 17,
+          "instructionCount": 165255,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-owner",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2097,
+          "output_bytes": 17,
+          "instructionCount": 153064,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-cart",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2097,
+          "output_bytes": 17,
+          "instructionCount": 150627,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-customer",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2161,
+          "output_bytes": 17,
+          "instructionCount": 159828,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-duplicate-grant",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2967,
+          "output_bytes": 17,
+          "instructionCount": 286373,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-price-zero",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2156,
+          "output_bytes": 17,
+          "instructionCount": 161062,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-price-fractional",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2158,
+          "output_bytes": 17,
+          "instructionCount": 161209,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-price-overflow",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2171,
+          "output_bytes": 17,
+          "instructionCount": 162409,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-quantity-fractional",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2160,
+          "output_bytes": 17,
+          "instructionCount": 160235,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-files-zero",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2158,
+          "output_bytes": 17,
+          "instructionCount": 160395,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-files-mismatch",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2158,
+          "output_bytes": 17,
+          "instructionCount": 191235,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-location",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2127,
+          "output_bytes": 17,
+          "instructionCount": 166167,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-line-id",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2124,
+          "output_bytes": 17,
+          "instructionCount": 163443,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-revision",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2097,
+          "output_bytes": 17,
+          "instructionCount": 180448,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-signature",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2097,
+          "output_bytes": 17,
+          "instructionCount": 183274,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-config-cutover",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2158,
+          "output_bytes": 17,
+          "instructionCount": 190928,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-future",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2158,
+          "output_bytes": 17,
+          "instructionCount": 205443,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-date-unicode",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2163,
+          "output_bytes": 17,
+          "instructionCount": 152676,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-service",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2161,
+          "output_bytes": 17,
+          "instructionCount": 193632,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-size",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2159,
+          "output_bytes": 17,
+          "instructionCount": 194035,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-message-length",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 4144,
+          "output_bytes": 17,
+          "instructionCount": 308769,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-message-type",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2141,
+          "output_bytes": 17,
+          "instructionCount": 176471,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-null-grant",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1354,
+          "output_bytes": 17,
+          "instructionCount": 69689,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-null-line",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1546,
+          "output_bytes": 17,
+          "instructionCount": 93922,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-null-claims",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1714,
+          "output_bytes": 17,
+          "instructionCount": 121459,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-malformed",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1056,
+          "output_bytes": 17,
+          "instructionCount": 28804,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-truncated",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1060,
+          "output_bytes": 17,
+          "instructionCount": 30544,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-array",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1050,
+          "output_bytes": 17,
+          "instructionCount": 28567,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-number",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1050,
+          "output_bytes": 17,
+          "instructionCount": 28521,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-empty",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1048,
+          "output_bytes": 17,
+          "instructionCount": 28098,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-oversize",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 7049,
+          "output_bytes": 17,
+          "instructionCount": 28291,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-deep",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1449,
+          "output_bytes": 17,
+          "instructionCount": 223747,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "aggregate-ceiling",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 12660,
+          "output_bytes": 17,
+          "instructionCount": 1100185,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "duplicate-job",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 12644,
+          "output_bytes": 17,
+          "instructionCount": 852422,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "missing-job-subset",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 11871,
+          "output_bytes": 17,
+          "instructionCount": 1086034,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "unicode-exact",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2187,
+          "output_bytes": 179,
+          "instructionCount": 382474,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "current-copies-reauthorized",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2158,
+          "output_bytes": 179,
+          "instructionCount": 379508,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-target-last",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 93558,
+          "output_bytes": 17,
+          "instructionCount": 3731635,
+          "memoryUsageKiB": 1792,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "21-line-denied",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 18107,
+          "output_bytes": 17,
+          "instructionCount": 23484,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-unrelated-lines",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 89887,
+          "output_bytes": 17,
+          "instructionCount": 3870621,
+          "memoryUsageKiB": 1792,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "send-rolls-with-companion",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1000,
+          "output_bytes": 17,
+          "instructionCount": 54132,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "mixed-send-rolls-valid",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 17686,
+          "output_bytes": 1320,
+          "instructionCount": 2704113,
+          "memoryUsageKiB": 1216,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "delivery-unrelated-group",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2158,
+          "output_bytes": 179,
+          "instructionCount": 379508,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-unrelated-deliverables",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 15381,
+          "output_bytes": 179,
+          "instructionCount": 1208527,
+          "memoryUsageKiB": 1216,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-unrelated-full-mapping",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 103176,
+          "output_bytes": 17,
+          "instructionCount": 3870783,
+          "memoryUsageKiB": 1920,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-unrelated-100-groups",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 89887,
+          "output_bytes": 17,
+          "instructionCount": 3870621,
+          "memoryUsageKiB": 1792,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-unrelated-200-groups",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 82650,
+          "output_bytes": 17,
+          "instructionCount": 3867526,
+          "memoryUsageKiB": 1856,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "eight-grants-last-matches",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 7686,
+          "output_bytes": 179,
+          "instructionCount": 1290100,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "near-128k-valid-mixed",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 127900,
+          "output_bytes": 1320,
+          "instructionCount": 2743331,
+          "memoryUsageKiB": 1280,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "near-128k-unrelated",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 127900,
+          "output_bytes": 17,
+          "instructionCount": 3731924,
+          "memoryUsageKiB": 1920,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "near-128k-denied-target-last",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 127900,
+          "output_bytes": 17,
+          "instructionCount": 3745130,
+          "memoryUsageKiB": 1920,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "historical-f06a-golden",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2158,
+          "output_bytes": 179,
+          "instructionCount": 379247,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        }
+      ],
+      "target": "cart.fulfillment-constraints.generate.run",
+      "export": "cart_fulfillment_constraints_generate_run",
+      "query_sha256": "d779a2b35acc3e36dad5c1c6758af583be142f73290c9bed0490225ec0f7cff3",
+      "schema_sha256": "59efbc9fa6f7a3065c364ed71fe50ba73c72061b4afff103867265e25a0347b8",
+      "config_sha256": "69f64d8e38bac3108dbe0fa11e9339c00b0aca1ddae27a6dd4e88ed64edab58d"
+    },
+    "delivery": {
+      "query_bytes": 1221,
+      "query_cost": 30,
+      "wasm_bytes": 77360,
+      "wasm_sha256": "eaf97a8a7326d4805f13a95137e09a087b663fe9afbd9d404276183a9d0b0ff8",
+      "cases": [
+        {
+          "case": "valid",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 129,
+          "instructionCount": 401108,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "eight-jobs",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 13328,
+          "output_bytes": 129,
+          "instructionCount": 2125233,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "20-line-boundary",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 18370,
+          "output_bytes": 129,
+          "instructionCount": 2385279,
+          "memoryUsageKiB": 1216,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "6000-byte-20-line-boundary",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 20672,
+          "output_bytes": 129,
+          "instructionCount": 2484515,
+          "memoryUsageKiB": 1216,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-line-cart-denied",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 94242,
+          "output_bytes": 186,
+          "instructionCount": 2663205,
+          "memoryUsageKiB": 1920,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "192-unrelated-lines",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 86842,
+          "output_bytes": 17,
+          "instructionCount": 3750112,
+          "memoryUsageKiB": 1856,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "customer",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2464,
+          "output_bytes": 129,
+          "instructionCount": 407470,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "cart-bootstrap",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1290,
+          "output_bytes": 186,
+          "instructionCount": 100021,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "checkout-interaction",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1290,
+          "output_bytes": 186,
+          "instructionCount": 100021,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "missing-authority",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1290,
+          "output_bytes": 186,
+          "instructionCount": 100021,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "expired",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 186,
+          "instructionCount": 272993,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "quantity-change",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 186,
+          "instructionCount": 307174,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "replay",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2406,
+          "output_bytes": 186,
+          "instructionCount": 278372,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "spec-change",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 186,
+          "instructionCount": 369683,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "no-price",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 129,
+          "instructionCount": 401108,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "no-lab-map",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 129,
+          "instructionCount": 401108,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "revoked",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1600,
+          "output_bytes": 186,
+          "instructionCount": 146574,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "unrelated",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1973,
+          "output_bytes": 17,
+          "instructionCount": 63051,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-flow",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2411,
+          "output_bytes": 186,
+          "instructionCount": 317083,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-job",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2378,
+          "output_bytes": 186,
+          "instructionCount": 320731,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-revision",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2350,
+          "output_bytes": 186,
+          "instructionCount": 325110,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-config",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2386,
+          "output_bytes": 186,
+          "instructionCount": 330097,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-signature",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2350,
+          "output_bytes": 186,
+          "instructionCount": 334553,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-service",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2409,
+          "output_bytes": 186,
+          "instructionCount": 339726,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-size",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2411,
+          "output_bytes": 186,
+          "instructionCount": 362189,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-paper",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2399,
+          "output_bytes": 186,
+          "instructionCount": 365614,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-lab",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2409,
+          "output_bytes": 186,
+          "instructionCount": 369660,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-message",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2399,
+          "output_bytes": 186,
+          "instructionCount": 374596,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-borders",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2422,
+          "output_bytes": 186,
+          "instructionCount": 379293,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-turnaround",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2422,
+          "output_bytes": 186,
+          "instructionCount": 383112,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "claim-files",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2413,
+          "output_bytes": 186,
+          "instructionCount": 385869,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "duplicate-line",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 3181,
+          "output_bytes": 186,
+          "instructionCount": 298867,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "wrong-variant",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2395,
+          "output_bytes": 186,
+          "instructionCount": 303484,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "wrong-product",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2395,
+          "output_bytes": 186,
+          "instructionCount": 304490,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "wrong-currency",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 186,
+          "instructionCount": 313540,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "selling-plan",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2456,
+          "output_bytes": 186,
+          "instructionCount": 310454,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "quantity-zero",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 186,
+          "instructionCount": 307174,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "quantity-negative",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2409,
+          "output_bytes": 186,
+          "instructionCount": 307178,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "quantity-overflow",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2412,
+          "output_bytes": 186,
+          "instructionCount": 307258,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "missing-journey-step",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1290,
+          "output_bytes": 186,
+          "instructionCount": 100021,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "guest-now-customer",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2438,
+          "output_bytes": 186,
+          "instructionCount": 293970,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "duplicate-lab-map",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 129,
+          "instructionCount": 401108,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "subtotal-negative",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 129,
+          "instructionCount": 401108,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "subtotal-exponent",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 129,
+          "instructionCount": 401108,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "subtotal-precision",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 129,
+          "instructionCount": 401108,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "subtotal-leading-zeros",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 129,
+          "instructionCount": 401108,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "subtotal-overflow",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 129,
+          "instructionCount": 401108,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "reordered-lines",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 13328,
+          "output_bytes": 129,
+          "instructionCount": 2130896,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "customer-logged-out",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2465,
+          "output_bytes": 186,
+          "instructionCount": 297533,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "customer-wrong",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2464,
+          "output_bytes": 186,
+          "instructionCount": 299867,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "customer-absent",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2397,
+          "output_bytes": 186,
+          "instructionCount": 294793,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-schema",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 186,
+          "instructionCount": 216306,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-store",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2384,
+          "output_bytes": 186,
+          "instructionCount": 216014,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-hash",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 186,
+          "instructionCount": 222354,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-root-extra",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2423,
+          "output_bytes": 186,
+          "instructionCount": 214732,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-grant-extra",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2423,
+          "output_bytes": 186,
+          "instructionCount": 226863,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-line-extra",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2423,
+          "output_bytes": 186,
+          "instructionCount": 236545,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-claims-extra",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2424,
+          "output_bytes": 186,
+          "instructionCount": 244187,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-claims-missing",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2378,
+          "output_bytes": 186,
+          "instructionCount": 237892,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-owner",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2347,
+          "output_bytes": 186,
+          "instructionCount": 225488,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-cart",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2347,
+          "output_bytes": 186,
+          "instructionCount": 223051,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-customer",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2411,
+          "output_bytes": 186,
+          "instructionCount": 232252,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-duplicate-grant",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 3217,
+          "output_bytes": 186,
+          "instructionCount": 358868,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-price-zero",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2406,
+          "output_bytes": 186,
+          "instructionCount": 233344,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-price-fractional",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 186,
+          "instructionCount": 233633,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-price-overflow",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2421,
+          "output_bytes": 186,
+          "instructionCount": 234904,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-quantity-fractional",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2410,
+          "output_bytes": 186,
+          "instructionCount": 232659,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-files-zero",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 186,
+          "instructionCount": 232819,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-files-mismatch",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 186,
+          "instructionCount": 263659,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-location",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2377,
+          "output_bytes": 186,
+          "instructionCount": 238591,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-line-id",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2374,
+          "output_bytes": 186,
+          "instructionCount": 235725,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-revision",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2347,
+          "output_bytes": 186,
+          "instructionCount": 252872,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-signature",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2347,
+          "output_bytes": 186,
+          "instructionCount": 255698,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-config-cutover",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 186,
+          "instructionCount": 263352,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-future",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 186,
+          "instructionCount": 272993,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-date-unicode",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2413,
+          "output_bytes": 186,
+          "instructionCount": 225100,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-service",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2411,
+          "output_bytes": 186,
+          "instructionCount": 266056,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-size",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2409,
+          "output_bytes": 186,
+          "instructionCount": 266459,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-message-length",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 4394,
+          "output_bytes": 186,
+          "instructionCount": 381193,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-message-type",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2391,
+          "output_bytes": 186,
+          "instructionCount": 248895,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-null-grant",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1604,
+          "output_bytes": 186,
+          "instructionCount": 142184,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-null-line",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1796,
+          "output_bytes": 186,
+          "instructionCount": 166346,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-null-claims",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1964,
+          "output_bytes": 186,
+          "instructionCount": 193954,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-malformed",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1306,
+          "output_bytes": 186,
+          "instructionCount": 101781,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-truncated",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1310,
+          "output_bytes": 186,
+          "instructionCount": 103521,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-array",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1300,
+          "output_bytes": 186,
+          "instructionCount": 101331,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-number",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1300,
+          "output_bytes": 186,
+          "instructionCount": 101285,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-empty",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1298,
+          "output_bytes": 186,
+          "instructionCount": 100862,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-oversize",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 7299,
+          "output_bytes": 186,
+          "instructionCount": 100715,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "authority-deep",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1699,
+          "output_bytes": 186,
+          "instructionCount": 296171,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "aggregate-ceiling",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 13344,
+          "output_bytes": 186,
+          "instructionCount": 1204914,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "duplicate-job",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 13328,
+          "output_bytes": 186,
+          "instructionCount": 957151,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "missing-job-subset",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 12555,
+          "output_bytes": 186,
+          "instructionCount": 1183237,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "unicode-exact",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2437,
+          "output_bytes": 129,
+          "instructionCount": 406004,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "current-copies-reauthorized",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 129,
+          "instructionCount": 401108,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-target-last",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 94242,
+          "output_bytes": 186,
+          "instructionCount": 3968280,
+          "memoryUsageKiB": 1920,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "21-line-denied",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 18791,
+          "output_bytes": 186,
+          "instructionCount": 420836,
+          "memoryUsageKiB": 1216,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-unrelated-lines",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 90218,
+          "output_bytes": 17,
+          "instructionCount": 3904342,
+          "memoryUsageKiB": 1792,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "send-rolls-with-companion",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 1331,
+          "output_bytes": 17,
+          "instructionCount": 83774,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "mixed-send-rolls-valid",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 18370,
+          "output_bytes": 129,
+          "instructionCount": 2385279,
+          "memoryUsageKiB": 1216,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "delivery-unrelated-group",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2626,
+          "output_bytes": 129,
+          "instructionCount": 416838,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-unrelated-deliverables",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 129,
+          "instructionCount": 401108,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-unrelated-full-mapping",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 119164,
+          "output_bytes": 17,
+          "instructionCount": 6535256,
+          "memoryUsageKiB": 1920,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-unrelated-100-groups",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 122674,
+          "output_bytes": 17,
+          "instructionCount": 6852252,
+          "memoryUsageKiB": 1920,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "200-unrelated-200-groups",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 126537,
+          "output_bytes": 17,
+          "instructionCount": 7453490,
+          "memoryUsageKiB": 1920,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "eight-grants-last-matches",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 7936,
+          "output_bytes": 129,
+          "instructionCount": 1312055,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "near-128k-valid-mixed",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 127900,
+          "output_bytes": 129,
+          "instructionCount": 2424497,
+          "memoryUsageKiB": 1280,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "near-128k-unrelated",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 127900,
+          "output_bytes": 17,
+          "instructionCount": 3765148,
+          "memoryUsageKiB": 1920,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "near-128k-denied-target-last",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 127900,
+          "output_bytes": 186,
+          "instructionCount": 3980949,
+          "memoryUsageKiB": 1920,
+          "moduleSizeKiB": 75
+        },
+        {
+          "case": "historical-f06a-golden",
+          "within_instruction_budget": true,
+          "within_regression_ceiling": true,
+          "input_bytes": 2408,
+          "output_bytes": 129,
+          "instructionCount": 400847,
+          "memoryUsageKiB": 1152,
+          "moduleSizeKiB": 75
+        }
+      ],
+      "target": "cart.delivery-options.transform.run",
+      "export": "cart_delivery_options_transform_run",
+      "query_sha256": "75045c8b505d45b313e8dc58456dd98654b577e29ea58931cf54a4edb18af766",
+      "schema_sha256": "4d88d5aa051ebfc40e7ee9d4ae97ab02ac542cc177dd5308b8fe13e763649c59",
+      "config_sha256": "e35f92d2d9575b4f8355bc715c29d6b200114d06840e363150173ae35cac77ba"
+    }
+  },
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "toolchain": "cargo 1.99.1 (5f94df478 2026-08-27)",
+  "raw_wasm_sha256": "66b201840ea79d602d7778e0acbc945e5384dee3ecaf4b09dff6487dd8a7a83a",
+  "cli_version": "4.9.4",
+  "runner": "function-runner 9.2.2"
+}

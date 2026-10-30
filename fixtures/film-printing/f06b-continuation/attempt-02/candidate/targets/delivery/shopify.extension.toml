@@ -1,0 +1,20 @@
+api_version = "2026-07"
+
+[[extensions]]
+name = "F06B unreleased delivery candidate"
+handle = "f06b-candidate-delivery"
+type = "function"
+description = "Unreleased F06B authority candidate; local build verification only"
+
+  [[extensions.targeting]]
+  target = "cart.delivery-options.transform.run"
+  input_query = "src/cart_delivery_options_transform_run.graphql"
+  export = "cart_delivery_options_transform_run"
+
+  [extensions.build]
+  command = "cp ../../checkout/rust/target/wasm32-unknown-unknown/release/bfl_checkout.wasm dist/function.wasm"
+  path = "dist/function.wasm"
+
+  [extensions.ui.paths]
+  create = "/"
+  details = "/"

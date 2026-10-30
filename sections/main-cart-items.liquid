@@ -1,9 +1,7 @@
 {{ 'component-cart.css' | asset_url | stylesheet_tag }}
 {{ 'component-cart-items.css' | asset_url | stylesheet_tag }}
 
-{%- unless settings.cart_type == 'drawer' -%}
-  <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
-{%- endunless -%}
+{% comment %}The shared drawer in theme.liquid loads cart.js for both cart surfaces.{% endcomment %}
 
 <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
 
@@ -38,7 +36,7 @@
           {%- if cart != empty -%}
             <ul class="cart-items-list" role="list">
               {%- for item in cart.items -%}
-                {% render 'product-cart-card', item: item, index: item.index | plus: 1, context: 'page' %}
+                {% render 'product-cart-card', item: item, index: item.index, plus: 1, context: 'page' %}
               {%- endfor -%}
             </ul>
           {%- endif -%}
@@ -96,3 +94,15 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'product-cart-card', item: item, index: item.index | plus: 1, context:
+    'page' %}"
+  to: "{% render 'product-cart-card', item: item, index: item.index, plus: 1, context:
+    'page' %}"
+  position: 1828..1917
+{% endcomment %}

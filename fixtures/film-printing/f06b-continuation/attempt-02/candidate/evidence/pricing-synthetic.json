@@ -1,0 +1,92 @@
+{
+  "synthetic_offline_only": true,
+  "fixture": {
+    "target": "cart.transform.run",
+    "export": "cart_transform_run",
+    "input": {
+      "shop": {
+        "authority": {
+          "value": "{\"schema\":1,\"store\":\"bellows-film-printing-staging.myshopify.com\",\"config_version\":\"f03-cb2926ab8b54dc2e18f8ef94\",\"config_sha256\":\"cb2926ab8b54dc2e18f8ef9464043b85ce665a328799590efbc78bdb2cd3ac6c\",\"price_version\":\"synthetic-offline-price-v1\",\"valid_on\":\"2026-10-21\",\"grants\":[{\"cart\":\"7972c052abe720cbe17c99741c7e980586cf502d59f9e277ca9a2db3a078e364\",\"owner\":\"564b7a4761f80678aa752dd5312c2cfa9c796100ac9b37889695a0cd6dfa6785\",\"customer_id\":null,\"lines\":[{\"id\":\"gid://shopify/CartLine/offline-line-0\",\"quantity\":4,\"unit_cents\":120,\"file_count\":3,\"location_id\":\"gid://shopify/Location/92443803759\",\"claims\":{\"flow\":\"f05\",\"job\":\"a8643101-6c7f-4415-a51c-e49a41ee5204\",\"revision\":\"ccea2c79cee9782ec22a33ef57a42dbf9bdfb91c14772310e7abc5527ee05fed\",\"config\":\"f03-cb2926ab8b54dc2e18f8ef94\",\"signature\":\"88623826dfbd27a670058e95ae6dfd9c0192aa9dd9eb90801e916518cce94a3f\",\"service\":\"photo\",\"size\":\"4x6\",\"paper\":\"synthetic-paper\",\"lab\":\"miami\",\"message\":\"Offline fixture\",\"borders\":\"\",\"turnaround\":\"\",\"files\":\"3\"}}]}]}"
+        },
+        "localTime": {
+          "date": "2026-10-21"
+        }
+      },
+      "cart": {
+        "buyerIdentity": {
+          "isAuthenticated": false,
+          "customer": null
+        },
+        "lines": [
+          {
+            "id": "gid://shopify/CartLine/offline-line-0",
+            "quantity": 4,
+            "merchandise": {
+              "id": "gid://shopify/ProductVariant/67852705202287",
+              "product": {
+                "id": "gid://shopify/Product/15620086005871"
+              }
+            },
+            "sellingPlanAllocation": null,
+            "cost": {
+              "amountPerQuantity": {
+                "currencyCode": "USD"
+              }
+            },
+            "flow": {
+              "value": "f05"
+            },
+            "job": {
+              "value": "a8643101-6c7f-4415-a51c-e49a41ee5204"
+            },
+            "revision": {
+              "value": "ccea2c79cee9782ec22a33ef57a42dbf9bdfb91c14772310e7abc5527ee05fed"
+            },
+            "config": {
+              "value": "f03-cb2926ab8b54dc2e18f8ef94"
+            },
+            "signature": {
+              "value": "88623826dfbd27a670058e95ae6dfd9c0192aa9dd9eb90801e916518cce94a3f"
+            },
+            "service": {
+              "value": "photo"
+            },
+            "size": {
+              "value": "4x6"
+            },
+            "paper": {
+              "value": "synthetic-paper"
+            },
+            "lab": {
+              "value": "miami"
+            },
+            "message": {
+              "value": "Offline fixture"
+            },
+            "borders": null,
+            "turnaround": null,
+            "files": {
+              "value": "3"
+            }
+          }
+        ]
+      }
+    },
+    "expectedOutput": {
+      "operations": [
+        {
+          "lineUpdate": {
+            "cartLineId": "gid://shopify/CartLine/offline-line-0",
+            "price": {
+              "adjustment": {
+                "fixedPricePerUnit": {
+                  "amount": "1.20"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

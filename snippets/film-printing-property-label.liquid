@@ -1,0 +1,54 @@
+{%- comment -%}
+  Display only: native attributes remain the exact signed job claims.
+  Labels match the original Film Printing form; other services use their existing renderer.
+{%- endcomment -%}
+{%- liquid
+  assign label = property.last
+  case property.first
+    when 'Service'
+      case property.last
+        when 'photo'
+          assign label = 'Photo Prints'
+        when 'fine_art'
+          assign label = 'Fine Arts'
+        when 'darkroom'
+          assign label = 'Darkroom Prints'
+      endcase
+    when 'Sizes'
+      if properties._bfl_size_mode == 'custom'
+        assign label = properties['Custom Width'] | append: '" × ' | append: properties['Custom Height'] | append: '" (Custom)'
+      else
+        assign dimensions = property.last | split: 'x'
+        if dimensions.size == 2
+          assign label = dimensions[0] | append: '” × ' | append: dimensions[1] | append: '”'
+        endif
+      endif
+    when 'Paper'
+      case property.last
+        when 'matte'
+          assign label = 'Matte'
+        when 'luster'
+          assign label = 'Luster'
+        when 'glossy'
+          assign label = 'Glossy'
+        when 'fibre-paper'
+          assign label = 'Fibre Paper'
+        when 'rc-matte'
+          assign label = 'RC Matte'
+        when 'rc-luster'
+          assign label = 'RC Luster'
+        when 'photo-premium-luster'
+          assign label = 'premium luster paper'
+      endcase
+    when 'Location'
+      case property.last
+        when 'miami', 'chicago', 'orlando', 'atlanta'
+          assign label = property.last | capitalize
+      endcase
+    when 'Custom Width', 'Custom Height'
+      if properties._bfl_size_mode == 'custom'
+        assign label = property.last | append: '"'
+      endif
+  endcase
+-%}
+{{- label | escape -}}

@@ -1,0 +1,26 @@
+query F06PvalidationInput {
+  buyerJourney { step }
+  shop { authority: metafield(namespace: "$app:bfl-checkout", key: "authority") { value } localTime { date } }
+  cart {
+    binding: metafield(namespace: "$app:bfl-checkout", key: "binding_v2") { value }
+    buyerIdentity { isAuthenticated customer { id } }
+    lines { id quantity merchandise { ... on ProductVariant { id product { id } } }
+      sellingPlanAllocation { __typename }
+      cost { amountPerQuantity { currencyCode } subtotalAmount { amount } }
+      flow: attribute(key: "_bfl_flow") { value }
+      job: attribute(key: "_bfl_job") { value }
+      revision: attribute(key: "_bfl_revision") { value }
+      config: attribute(key: "_bfl_config") { value }
+      signature: attribute(key: "_bfl_signature") { value }
+      service: attribute(key: "Service") { value }
+      size: attribute(key: "Sizes") { value }
+      paper: attribute(key: "Paper") { value }
+      lab: attribute(key: "Location") { value }
+      message: attribute(key: "Message") { value }
+      borders: attribute(key: "Borders") { value }
+      turnaround: attribute(key: "Turnaround") { value }
+      files: attribute(key: "Files Uploaded") { value }
+    }
+    deliverableLines { job: attribute(key: "_bfl_job") { value } }
+  }
+}

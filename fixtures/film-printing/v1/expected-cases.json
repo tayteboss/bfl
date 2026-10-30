@@ -1,0 +1,811 @@
+{
+  "schema_version": 1,
+  "fixture_version": "f01-examples-v1",
+  "evidence_kind": "synthetic_test_cases_unapproved",
+  "purpose": "Expected results for isolated arithmetic and matching contracts, not shipping quotes.",
+  "packing_cases": [
+    {
+      "id": "row-2-count-39",
+      "rule_id": "packaging-row-2",
+      "physical_count": 39,
+      "expected_package_print_counts": [
+        39
+      ],
+      "expected_total_weight_oz": "4.9",
+      "assumption": "Observed sheet values, pending merchant approval"
+    },
+    {
+      "id": "row-2-count-40",
+      "rule_id": "packaging-row-2",
+      "physical_count": 40,
+      "expected_package_print_counts": [
+        40
+      ],
+      "expected_total_weight_oz": "5",
+      "assumption": "Observed sheet values, pending merchant approval"
+    },
+    {
+      "id": "row-2-count-41",
+      "rule_id": "packaging-row-2",
+      "physical_count": 41,
+      "expected_package_print_counts": [
+        40,
+        1
+      ],
+      "expected_total_weight_oz": "6.1",
+      "assumption": "Observed sheet values, pending merchant approval"
+    },
+    {
+      "id": "row-2-count-81",
+      "rule_id": "packaging-row-2",
+      "physical_count": 81,
+      "expected_package_print_counts": [
+        40,
+        40,
+        1
+      ],
+      "expected_total_weight_oz": "11.1",
+      "assumption": "Observed sheet values, pending merchant approval"
+    },
+    {
+      "id": "row-3-count-39",
+      "rule_id": "packaging-row-3",
+      "physical_count": 39,
+      "expected_package_print_counts": [
+        39
+      ],
+      "expected_total_weight_oz": "4.9",
+      "assumption": "Observed sheet values, pending merchant approval"
+    },
+    {
+      "id": "row-3-count-40",
+      "rule_id": "packaging-row-3",
+      "physical_count": 40,
+      "expected_package_print_counts": [
+        40
+      ],
+      "expected_total_weight_oz": "5",
+      "assumption": "Observed sheet values, pending merchant approval"
+    },
+    {
+      "id": "row-3-count-41",
+      "rule_id": "packaging-row-3",
+      "physical_count": 41,
+      "expected_package_print_counts": [
+        40,
+        1
+      ],
+      "expected_total_weight_oz": "6.1",
+      "assumption": "Observed sheet values, pending merchant approval"
+    },
+    {
+      "id": "row-3-count-81",
+      "rule_id": "packaging-row-3",
+      "physical_count": 81,
+      "expected_package_print_counts": [
+        40,
+        40,
+        1
+      ],
+      "expected_total_weight_oz": "11.1",
+      "assumption": "Observed sheet values, pending merchant approval"
+    },
+    {
+      "id": "row-4-count-39",
+      "rule_id": "packaging-row-4",
+      "physical_count": 39,
+      "expected_package_print_counts": [
+        39
+      ],
+      "expected_total_weight_oz": "12.7",
+      "assumption": "Observed sheet values, pending merchant approval"
+    },
+    {
+      "id": "row-4-count-40",
+      "rule_id": "packaging-row-4",
+      "physical_count": 40,
+      "expected_package_print_counts": [
+        40
+      ],
+      "expected_total_weight_oz": "13",
+      "assumption": "Observed sheet values, pending merchant approval"
+    },
+    {
+      "id": "row-4-count-41",
+      "rule_id": "packaging-row-4",
+      "physical_count": 41,
+      "expected_package_print_counts": [
+        40,
+        1
+      ],
+      "expected_total_weight_oz": "14.3",
+      "assumption": "Observed sheet values, pending merchant approval"
+    },
+    {
+      "id": "row-4-count-81",
+      "rule_id": "packaging-row-4",
+      "physical_count": 81,
+      "expected_package_print_counts": [
+        40,
+        40,
+        1
+      ],
+      "expected_total_weight_oz": "27.3",
+      "assumption": "Observed sheet values, pending merchant approval"
+    },
+    {
+      "id": "row-5-count-19",
+      "rule_id": "packaging-row-5",
+      "physical_count": 19,
+      "expected_package_print_counts": [
+        19
+      ],
+      "expected_total_weight_oz": "10.6",
+      "assumption": "Observed sheet values, pending merchant approval"
+    },
+    {
+      "id": "row-5-count-20",
+      "rule_id": "packaging-row-5",
+      "physical_count": 20,
+      "expected_package_print_counts": [
+        20
+      ],
+      "expected_total_weight_oz": "11",
+      "assumption": "Observed sheet values, pending merchant approval"
+    },
+    {
+      "id": "row-5-count-21",
+      "rule_id": "packaging-row-5",
+      "physical_count": 21,
+      "expected_package_print_counts": [
+        20,
+        1
+      ],
+      "expected_total_weight_oz": "14.4",
+      "assumption": "Observed sheet values, pending merchant approval"
+    },
+    {
+      "id": "row-5-count-41",
+      "rule_id": "packaging-row-5",
+      "physical_count": 41,
+      "expected_package_print_counts": [
+        20,
+        20,
+        1
+      ],
+      "expected_total_weight_oz": "25.4",
+      "assumption": "Observed sheet values, pending merchant approval"
+    },
+    {
+      "id": "row-6-count-19",
+      "rule_id": "packaging-row-6",
+      "physical_count": 19,
+      "expected_package_print_counts": [
+        19
+      ],
+      "expected_total_weight_oz": "12.5",
+      "assumption": "Observed sheet values, pending merchant approval"
+    },
+    {
+      "id": "row-6-count-20",
+      "rule_id": "packaging-row-6",
+      "physical_count": 20,
+      "expected_package_print_counts": [
+        20
+      ],
+      "expected_total_weight_oz": "13",
+      "assumption": "Observed sheet values, pending merchant approval"
+    },
+    {
+      "id": "row-6-count-21",
+      "rule_id": "packaging-row-6",
+      "physical_count": 21,
+      "expected_package_print_counts": [
+        20,
+        1
+      ],
+      "expected_total_weight_oz": "16.5",
+      "assumption": "Observed sheet values, pending merchant approval"
+    },
+    {
+      "id": "row-6-count-41",
+      "rule_id": "packaging-row-6",
+      "physical_count": 41,
+      "expected_package_print_counts": [
+        20,
+        20,
+        1
+      ],
+      "expected_total_weight_oz": "29.5",
+      "assumption": "Observed sheet values, pending merchant approval"
+    },
+    {
+      "id": "row-7-count-2",
+      "rule_id": "packaging-row-7",
+      "physical_count": 2,
+      "expected_package_print_counts": [
+        2
+      ],
+      "expected_total_weight_oz": "8",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-7-count-3",
+      "rule_id": "packaging-row-7",
+      "physical_count": 3,
+      "expected_package_print_counts": [
+        3
+      ],
+      "expected_total_weight_oz": "9.5",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-7-count-4",
+      "rule_id": "packaging-row-7",
+      "physical_count": 4,
+      "expected_package_print_counts": [
+        3,
+        1
+      ],
+      "expected_total_weight_oz": "16",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-7-count-7",
+      "rule_id": "packaging-row-7",
+      "physical_count": 7,
+      "expected_package_print_counts": [
+        3,
+        3,
+        1
+      ],
+      "expected_total_weight_oz": "25.5",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-8-count-2",
+      "rule_id": "packaging-row-8",
+      "physical_count": 2,
+      "expected_package_print_counts": [
+        2
+      ],
+      "expected_total_weight_oz": "14",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-8-count-3",
+      "rule_id": "packaging-row-8",
+      "physical_count": 3,
+      "expected_package_print_counts": [
+        3
+      ],
+      "expected_total_weight_oz": "16",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-8-count-4",
+      "rule_id": "packaging-row-8",
+      "physical_count": 4,
+      "expected_package_print_counts": [
+        3,
+        1
+      ],
+      "expected_total_weight_oz": "28",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-8-count-7",
+      "rule_id": "packaging-row-8",
+      "physical_count": 7,
+      "expected_package_print_counts": [
+        3,
+        3,
+        1
+      ],
+      "expected_total_weight_oz": "44",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-9-count-2",
+      "rule_id": "packaging-row-9",
+      "physical_count": 2,
+      "expected_package_print_counts": [
+        2
+      ],
+      "expected_total_weight_oz": "16",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-9-count-3",
+      "rule_id": "packaging-row-9",
+      "physical_count": 3,
+      "expected_package_print_counts": [
+        3
+      ],
+      "expected_total_weight_oz": "19",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-9-count-4",
+      "rule_id": "packaging-row-9",
+      "physical_count": 4,
+      "expected_package_print_counts": [
+        3,
+        1
+      ],
+      "expected_total_weight_oz": "32",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-9-count-7",
+      "rule_id": "packaging-row-9",
+      "physical_count": 7,
+      "expected_package_print_counts": [
+        3,
+        3,
+        1
+      ],
+      "expected_total_weight_oz": "51",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-10-count-2",
+      "rule_id": "packaging-row-10",
+      "physical_count": 2,
+      "expected_package_print_counts": [
+        2
+      ],
+      "expected_total_weight_oz": "18",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-10-count-3",
+      "rule_id": "packaging-row-10",
+      "physical_count": 3,
+      "expected_package_print_counts": [
+        3
+      ],
+      "expected_total_weight_oz": "22",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-10-count-4",
+      "rule_id": "packaging-row-10",
+      "physical_count": 4,
+      "expected_package_print_counts": [
+        3,
+        1
+      ],
+      "expected_total_weight_oz": "36",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-10-count-7",
+      "rule_id": "packaging-row-10",
+      "physical_count": 7,
+      "expected_package_print_counts": [
+        3,
+        3,
+        1
+      ],
+      "expected_total_weight_oz": "58",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-11-count-2",
+      "rule_id": "packaging-row-11",
+      "physical_count": 2,
+      "expected_package_print_counts": [
+        2
+      ],
+      "expected_total_weight_oz": "25",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-11-count-3",
+      "rule_id": "packaging-row-11",
+      "physical_count": 3,
+      "expected_package_print_counts": [
+        3
+      ],
+      "expected_total_weight_oz": "29.5",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-11-count-4",
+      "rule_id": "packaging-row-11",
+      "physical_count": 4,
+      "expected_package_print_counts": [
+        3,
+        1
+      ],
+      "expected_total_weight_oz": "50",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-11-count-7",
+      "rule_id": "packaging-row-11",
+      "physical_count": 7,
+      "expected_package_print_counts": [
+        3,
+        3,
+        1
+      ],
+      "expected_total_weight_oz": "79.5",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-12-count-2",
+      "rule_id": "packaging-row-12",
+      "physical_count": 2,
+      "expected_package_print_counts": [
+        2
+      ],
+      "expected_total_weight_oz": "28",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-12-count-3",
+      "rule_id": "packaging-row-12",
+      "physical_count": 3,
+      "expected_package_print_counts": [
+        3
+      ],
+      "expected_total_weight_oz": "34",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-12-count-4",
+      "rule_id": "packaging-row-12",
+      "physical_count": 4,
+      "expected_package_print_counts": [
+        3,
+        1
+      ],
+      "expected_total_weight_oz": "56",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-12-count-7",
+      "rule_id": "packaging-row-12",
+      "physical_count": 7,
+      "expected_package_print_counts": [
+        3,
+        3,
+        1
+      ],
+      "expected_total_weight_oz": "90",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-13-count-3",
+      "rule_id": "packaging-row-13",
+      "physical_count": 3,
+      "expected_package_print_counts": [
+        3
+      ],
+      "expected_total_weight_oz": "100",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-13-count-4",
+      "rule_id": "packaging-row-13",
+      "physical_count": 4,
+      "expected_package_print_counts": [
+        4
+      ],
+      "expected_total_weight_oz": "112",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-13-count-5",
+      "rule_id": "packaging-row-13",
+      "physical_count": 5,
+      "expected_package_print_counts": [
+        4,
+        1
+      ],
+      "expected_total_weight_oz": "188",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-13-count-9",
+      "rule_id": "packaging-row-13",
+      "physical_count": 9,
+      "expected_package_print_counts": [
+        4,
+        4,
+        1
+      ],
+      "expected_total_weight_oz": "300",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-14-count-3",
+      "rule_id": "packaging-row-14",
+      "physical_count": 3,
+      "expected_package_print_counts": [
+        3
+      ],
+      "expected_total_weight_oz": "112",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-14-count-4",
+      "rule_id": "packaging-row-14",
+      "physical_count": 4,
+      "expected_package_print_counts": [
+        4
+      ],
+      "expected_total_weight_oz": "128",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-14-count-5",
+      "rule_id": "packaging-row-14",
+      "physical_count": 5,
+      "expected_package_print_counts": [
+        4,
+        1
+      ],
+      "expected_total_weight_oz": "208",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    },
+    {
+      "id": "row-14-count-9",
+      "rule_id": "packaging-row-14",
+      "physical_count": 9,
+      "expected_package_print_counts": [
+        4,
+        4,
+        1
+      ],
+      "expected_total_weight_oz": "336",
+      "assumption": "Numeric H cell only; D04 unresolved"
+    }
+  ],
+  "observed_order_check": {
+    "evidence_kind": "observed_workbook_example",
+    "source_range": "'Order Check'!B3:B11",
+    "rule_id": "packaging-row-3",
+    "physical_count": 24,
+    "expected_package_print_counts": [
+      24
+    ],
+    "expected_total_weight_oz": "3.4",
+    "expected_total_weight_lb_exact": "0.2125",
+    "sheet_display_weight_lb": "0.21"
+  },
+  "count_cases": [
+    {
+      "id": "three-files-four-copies",
+      "service": "photo",
+      "uploaded_count": 3,
+      "copies": 4,
+      "upload_state": "complete",
+      "expected_count": 12
+    },
+    {
+      "id": "fine-art-two-files-three-copies",
+      "service": "fine_art",
+      "uploaded_count": 2,
+      "copies": 3,
+      "upload_state": "complete",
+      "expected_count": 6
+    },
+    {
+      "id": "zero-upload",
+      "service": "photo",
+      "uploaded_count": 0,
+      "copies": 4,
+      "upload_state": "complete",
+      "expected_error": "invalid_uploaded_count"
+    },
+    {
+      "id": "failed-upload",
+      "service": "photo",
+      "uploaded_count": 3,
+      "copies": 4,
+      "upload_state": "failed",
+      "expected_error": "uploads_incomplete"
+    },
+    {
+      "id": "pending-upload",
+      "service": "photo",
+      "uploaded_count": 3,
+      "copies": 4,
+      "upload_state": "pending",
+      "expected_error": "uploads_incomplete"
+    },
+    {
+      "id": "fractional-copies",
+      "service": "photo",
+      "uploaded_count": 3,
+      "copies": 1.5,
+      "upload_state": "complete",
+      "expected_error": "invalid_copies"
+    },
+    {
+      "id": "negative-copies",
+      "service": "photo",
+      "uploaded_count": 3,
+      "copies": -1,
+      "upload_state": "complete",
+      "expected_error": "invalid_copies"
+    },
+    {
+      "id": "zero-copies",
+      "service": "photo",
+      "uploaded_count": 3,
+      "copies": 0,
+      "upload_state": "complete",
+      "expected_error": "invalid_copies"
+    },
+    {
+      "id": "boolean-count",
+      "service": "photo",
+      "uploaded_count": true,
+      "copies": 1,
+      "upload_state": "complete",
+      "expected_error": "invalid_uploaded_count"
+    },
+    {
+      "id": "string-count",
+      "service": "photo",
+      "uploaded_count": "3",
+      "copies": 1,
+      "upload_state": "complete",
+      "expected_error": "invalid_uploaded_count"
+    },
+    {
+      "id": "unsafe-integer-total",
+      "service": "photo",
+      "uploaded_count": 9007199254740991,
+      "copies": 2,
+      "upload_state": "complete",
+      "expected_error": "unsafe_total"
+    },
+    {
+      "id": "darkroom-explicit",
+      "service": "darkroom",
+      "uploaded_count": 0,
+      "physical_print_count": 6,
+      "expected_count": 6
+    },
+    {
+      "id": "darkroom-missing",
+      "service": "darkroom",
+      "uploaded_count": 0,
+      "copies": 6,
+      "expected_error": "invalid_physical_print_count"
+    },
+    {
+      "id": "darkroom-ignore-upload-count",
+      "service": "darkroom",
+      "uploaded_count": 9,
+      "copies": 9,
+      "physical_print_count": 2,
+      "expected_count": 2
+    },
+    {
+      "id": "unknown-service",
+      "service": "send_rolls",
+      "uploaded_count": 1,
+      "copies": 1,
+      "upload_state": "complete",
+      "expected_error": "unknown_service"
+    }
+  ],
+  "matching_cases": [
+    {
+      "service": "Photo Prints",
+      "size": "4” × 6”",
+      "lab": "Miami",
+      "expected_rule": "packaging-row-3"
+    },
+    {
+      "service": "Fine Arts",
+      "size": "14 x 11",
+      "lab": "Chicago",
+      "expected_rule": "packaging-row-7"
+    },
+    {
+      "service": "Darkroom Prints",
+      "size": "8 x 10",
+      "lab": "Miami",
+      "expected_error": "D07_darkroom"
+    },
+    {
+      "service": "Photo Prints",
+      "size": "11 x 14",
+      "lab": "Miami",
+      "expected_error": "missing_rule"
+    },
+    {
+      "service": "Fine Arts",
+      "size": "Custom",
+      "lab": "Miami",
+      "expected_error": "D06_custom"
+    },
+    {
+      "service": "Fine Arts",
+      "size": "Custom Size",
+      "lab": "Miami",
+      "expected_error": "D06_custom"
+    },
+    {
+      "service": "Fine Arts",
+      "size": "11 x 14",
+      "lab": "Miami",
+      "paper": "Matte",
+      "expected_error": "D07_paper_scope"
+    },
+    {
+      "service": "Photo Prints",
+      "size": "4 x 6",
+      "lab": "Unknown",
+      "expected_error": "unknown_lab"
+    },
+    {
+      "service": "Photo Prints",
+      "size": "4 x 6",
+      "lab": "all_labs",
+      "expected_error": "unknown_lab"
+    },
+    {
+      "service": "Photo Prints",
+      "size": "4 x 6 garbage",
+      "lab": "Miami",
+      "expected_error": "invalid_size"
+    },
+    {
+      "service": "Photo Prints",
+      "size": "-4 x 6",
+      "lab": "Miami",
+      "expected_error": "invalid_size"
+    },
+    {
+      "service": "Photo Prints",
+      "size": "0 x 6",
+      "lab": "Miami",
+      "expected_error": "invalid_size"
+    },
+    {
+      "service": "Photo Prints",
+      "size": "4 x 6 cm",
+      "lab": "Miami",
+      "expected_error": "invalid_size"
+    }
+  ],
+  "pending_integration_scenarios": [
+    {
+      "scenario": "Two configured lines of same base variant: 4x6 (3 uploads x 4 copies) and 8x10 (2 uploads x 3 copies)",
+      "expected_counts": [
+        12,
+        6
+      ],
+      "quote_status": "unavailable_pending_D05_D08_D09_D10",
+      "requirement": "Preserve line/job identity; never merge by variant ID alone."
+    },
+    {
+      "scenario": "Mixed sizes, papers, tube plus mailer, or two jobs of same size",
+      "quote_status": "unavailable_pending_D07_D08",
+      "requirement": "No package sharing or additive/combined price inferred."
+    },
+    {
+      "scenario": "Miami plus Chicago, or separate delivery groups at same lab",
+      "quote_status": "unavailable_pending_D09",
+      "requirement": "Never combine across fulfillment/delivery groups."
+    },
+    {
+      "scenario": "Printing plus unrelated retail item",
+      "quote_status": "defer_F02_F06",
+      "requirement": "Packing fixtures do not describe unrelated items or their shipping."
+    },
+    {
+      "scenario": "Calculator unavailable",
+      "quote_status": "unavailable_pending_D10",
+      "requirement": "Do not turn unknown rates into free or fixed-price delivery; final outage behavior needs approval."
+    }
+  ]
+}

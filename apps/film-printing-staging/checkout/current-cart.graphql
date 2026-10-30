@@ -1,0 +1,27 @@
+# Read-only Storefront 2026-07. Separate from the historical F06C proposal.
+# A full response is not proof of capability secrecy, owner or Function identity.
+query F06CCurrentCart($id: ID!) {
+  shop { id }
+  cart(id: $id) {
+    id
+    updatedAt
+    totalQuantity
+    buyerIdentity { customer { id } purchasingCompany { __typename } }
+    lines(first: 21) {
+      pageInfo { hasNextPage hasPreviousPage }
+      nodes {
+        __typename
+        id
+        quantity
+        attributes { key value }
+        sellingPlanAllocation { sellingPlan { id } }
+        cost { subtotalAmount { amount currencyCode } }
+        ... on CartLine { parentRelationship { parent { id } } }
+        merchandise {
+          __typename
+          ... on ProductVariant { id requiresComponents product { id } }
+        }
+      }
+    }
+  }
+}

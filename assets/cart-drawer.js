@@ -48,13 +48,15 @@ class CartDrawer extends HTMLElement {
     const cartDrawerNote = this.querySelector('[id^="Details-"] summary');
     if (cartDrawerNote && !cartDrawerNote.hasAttribute('role')) this.setSummaryAccessibility(cartDrawerNote);
     // here the animation doesn't seem to always get triggered. A timeout seem to help
-    setTimeout(() => {
+    clearTimeout(this.openTimer);
+    this.openTimer = setTimeout(() => {
       this.classList.add('animate', 'active');
     });
 
     this.addEventListener(
       'transitionend',
       () => {
+        if (!this.classList.contains('active')) return;
         const containerToTrapFocusOn = this.classList.contains('is-empty')
           ? this.querySelector('.drawer__inner-empty')
           : document.getElementById('CartDrawer');
@@ -70,11 +72,26 @@ class CartDrawer extends HTMLElement {
   }
 
   close() {
+    clearTimeout(this.openTimer);
     this.classList.remove('active');
     if (typeof removeTrapFocus === 'function') {
       removeTrapFocus(this.activeElement);
     }
     document.body.classList.remove('overflow-hidden');
+  }
+
+  setPending(pending, { failed = false, message = '' } = {}) {
+    this.classList.toggle('is-updating', pending);
+    this.classList.toggle('update-failed', failed);
+    this.setAttribute('aria-busy', String(pending));
+    const status = this.querySelector('#CartDrawer-LineItemStatus');
+    status?.setAttribute('aria-hidden', String(!pending));
+    const items = this.querySelector('.cart-items-list');
+    if (items) items.inert = pending || failed;
+    const checkout = this.querySelector('#CartDrawer-Checkout');
+    if (checkout) checkout.disabled = pending || failed;
+    const error = this.querySelector('#CartDrawer-CartErrors');
+    if (error) error.textContent = failed ? (message || 'The cart could not be confirmed. Please contact us before trying again.') : '';
   }
 
   setSummaryAccessibility(cartDrawerNote) {
@@ -285,21 +302,6 @@ class CartDrawer extends HTMLElement {
 
 customElements.define('cart-drawer', CartDrawer);
 
-class CartDrawerItems extends CartItems {
-  getSectionsToRender() {
-    return [
-      {
-        id: 'CartDrawer',
-        section: 'cart-drawer',
-        selector: '.drawer__inner',
-      },
-      {
-        id: 'cart-icon-bubble',
-        section: 'cart-icon-bubble',
-        selector: '.shopify-section',
-      },
-    ];
-  }
-}
+class CartDrawerItems extends CartItems {}
 
 customElements.define('cart-drawer-items', CartDrawerItems);

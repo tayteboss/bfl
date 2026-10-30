@@ -4,10 +4,28 @@
 {%- endcomment -%}
 
 {%- assign index = index | default: item.index | plus: 1 -%}
+{%- liquid
+  assign is_size_shipping_line = false
+  if item.properties._role == 'shipping_size' or item.product.handle == 'print-shipping' or item.product.handle == 'print-size-shipping-items'
+    assign is_size_shipping_line = true
+  endif
+
+  assign is_return_shipping = false
+  if item.properties._role == 'return_shipping'
+    assign is_return_shipping = true
+  endif
+
+  assign is_shipping_companion = false
+  if is_return_shipping or is_size_shipping_line
+    assign is_shipping_companion = true
+  endif
+-%}
 
 <div
   id="{% if context == 'page' %}CartItem-{{ index }}{% else %}CartDrawer-Item-{{ index }}{% endif %}"
   class="cart-item cart-card"
+  data-final-line-price="{{ item.final_line_price }}"
+  data-bfl-flow="{{ item.properties._bfl_flow | escape }}"
 >
   <div class="cart-card__inner">
     <div class="cart-item__media">
@@ -71,7 +89,19 @@
       {%- if item.original_line_price == 0 and item.product.title == 'Return Shipping (Negatives)' -%}
         {% assign is_zero_price_return_shipping = true %}
       {%- endif -%}
-      {% unless is_zero_price_return_shipping %}
+      {%- if is_size_shipping_line -%}
+        {%- comment -%}
+          Print Shipping companion: $0 line whose weight sets the shipping rate at checkout.
+          Show a note instead of a $0.00 price.
+        {%- endcomment -%}
+        <div class="cart-item__price-wrapper">
+          <span class="type-p-small" style="opacity: 0.7;">
+            {%- if item.quantity > 1 %}{{ item.quantity }} × {% endif -%}
+            {{ item.variant.title | escape }} &mdash; shipping calculated at checkout, free with in-store pickup
+          </span>
+        </div>
+      {%- endif -%}
+      {% unless is_zero_price_return_shipping or is_size_shipping_line %}
         <div class="cart-item__price-wrapper">
           {%- if item.quantity > 1 -%}
             <span class="cart-item__quantity-note type-p-small"> Qty: {{ item.quantity }} - </span>
@@ -131,12 +161,14 @@
         {%- endif -%}
       {% endcomment %}
 
-      {%- if item.product.has_only_default_variant == false
+      {%- if is_size_shipping_line -%}
+        {%- comment -%} Companion line: no options/properties to show. {%- endcomment -%}
+      {%- elsif item.product.has_only_default_variant == false
         or item.properties.size != 0
         or item.selling_plan_allocation != null
       -%}
         <dl style="margin-bottom: 16px;">
-          {%- if item.product.has_only_default_variant == false -%}
+          {%- if item.product.has_only_default_variant == false and item.properties._bfl_flow != 'f05' -%}
             {%- for option in item.options_with_values -%}
               {%- unless option.name == 'Step' or option.name == 'Total Price' -%}
                 <div class="product-option">
@@ -171,6 +203,8 @@
                     >
                       {{- property.last | split: '/' | last -}}
                     </a>
+                  {%- elsif item.properties._bfl_flow == 'f05' -%}
+                    {%- render 'film-printing-property-label', property: property, properties: item.properties -%}
                   {%- else -%}
                     {{ property.last }}
                   {%- endif -%}
@@ -184,7 +218,7 @@
         <p class="product-option type-p-small">{{ item.selling_plan_allocation.selling_plan.name }}</p>
       {%- endif -%}
 
-      {%- unless item.properties._role == 'return_shipping' -%}
+      {%- unless is_shipping_companion -%}
         <cart-remove-button
           class="cart-remove-button type-p-small"
           data-key="{{ item.key }}"
@@ -224,7 +258,12 @@
         {%- render 'loading-spinner' -%}
 
         {% unless is_zero_price_return_shipping %}
-          <div class="cart-item__quantity {% if has_qty_rules or has_vol_pricing %} cart-item__quantity--info{% endif %}">
+          <div
+            class="cart-item__quantity {% if has_qty_rules or has_vol_pricing %} cart-item__quantity--info{% endif %}"
+            {% if is_size_shipping_line %}
+              style="display:none;"
+            {% endif %}
+          >
             <quantity-popover>
               <div class="cart-item__quantity-wrapper quantity-popover-wrapper">
                 <div class="quantity-popover-container{% if has_qty_rules or has_vol_pricing %} quantity-popover-container--hover{% endif %}">
@@ -233,11 +272,11 @@
                   </label>
                   <quantity-input
                     class="quantity cart-quantity"
-                    {% if item.properties._role == 'return_shipping' %}
+                    {% if is_shipping_companion %}
                       style="pointer-events:none;"
                     {% endif %}
                   >
-                    {%- unless item.properties._role == 'return_shipping' -%}
+                    {%- unless is_shipping_companion -%}
                       <button class="quantity__button" name="minus" type="button">
                         <span class="visually-hidden">
                           {{- 'products.product.quantity.decrease' | t: product: item.product.title | escape -}}
@@ -263,11 +302,11 @@
                       aria-label="{{ 'products.product.quantity.input_label' | t: product: item.product.title | escape }}"
                       id="Quantity-{{ index }}"
                       data-index="{{ index }}"
-                      {% if item.properties._role == 'return_shipping' or item.product.handle == 'film-printing' or item.product.handle == 'film-service' %}
+                      {% if is_shipping_companion or item.product.handle == 'film-printing' or item.product.handle == 'film-service' %}
                         readonly
                       {% endif %}
                     >
-                    {%- unless item.properties._role == 'return_shipping' or item.product.handle == 'film-printing' or item.product.handle == 'film-service' -%}
+                    {%- unless is_shipping_companion or item.product.handle == 'film-printing' or item.product.handle == 'film-service' -%}
                       <button class="quantity__button" name="plus" type="button">
                         <span class="visually-hidden">
                           {{- 'products.product.quantity.increase' | t: product: item.product.title | escape -}}

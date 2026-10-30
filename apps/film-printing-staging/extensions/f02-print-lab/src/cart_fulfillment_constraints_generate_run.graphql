@@ -1,0 +1,19 @@
+query CartFulfillmentConstraintsGenerateRunInput {
+  cart {
+    deliverableLines {
+      id
+      quantity
+      merchandise { ... on ProductVariant { id } }
+      spec: attribute(key: "_bfl_spec") { value }
+      job: attribute(key: "_bfl_job_id") { value }
+      version: attribute(key: "_bfl_spec_version") { value }
+      service: attribute(key: "Service") { value }
+      size: attribute(key: "Sizes") { value }
+      lab: attribute(key: "Location") { value }
+      files: attribute(key: "Files Uploaded") { value }
+      upload1: attribute(key: "Uploaded File 1") { value }
+      upload2: attribute(key: "Uploaded File 2") { value }
+      upload3: attribute(key: "Uploaded File 3") { value }
+    }
+  }
+}

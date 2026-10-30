@@ -1,0 +1,47 @@
+{
+  "payload": {
+    "export": "cart-delivery-options-transform-run",
+    "target": "cart.delivery-options.transform.run",
+    "input": {
+      "cart": {
+        "deliveryGroups": [
+          {
+            "cartLines": [
+              {
+                "merchandise": {
+                  "id": "gid://shopify/ProductVariant/67852705202287"
+                }
+              }
+            ],
+            "deliveryOptions": [
+              {
+                "handle": "flat",
+                "code": "Standard",
+                "deliveryMethodType": "SHIPPING"
+              },
+              {
+                "handle": "carrier",
+                "code": "F02_TEST_PRINT",
+                "deliveryMethodType": "SHIPPING"
+              },
+              {
+                "handle": "pickup",
+                "code": null,
+                "deliveryMethodType": "PICK_UP"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "output": {
+      "operations": [
+        {
+          "deliveryOptionHide": {
+            "deliveryOptionHandle": "flat"
+          }
+        }
+      ]
+    }
+  }
+}

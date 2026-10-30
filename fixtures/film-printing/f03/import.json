@@ -1,0 +1,512 @@
+{
+  "schema_version": 1,
+  "store": "bellows-film-printing-staging.myshopify.com",
+  "packages": [
+    {
+      "id": "pkg-1",
+      "label": "Bubble Mailer pkg-1",
+      "enabled": false,
+      "disabled_reason": "Empty weight observed; carrier exterior dimensions/eligibility not yet verified.",
+      "provenance": {
+        "source": "fixtures/film-printing/v2/packing-rules.json",
+        "sha256": "a15de1878813e464d0ab55aabd7b890bfe6130d73896263e5e0fe81d1417fb4c",
+        "range": "Packaging!D2:I2",
+        "evidence": "Observed workbook values; WhatsApp 2026-10-19 confirms package dimensions and tube capacities 3/4 only."
+      },
+      "kind": "mailer",
+      "length_in": 11,
+      "width_in": 8.5,
+      "height_in": 0.5,
+      "empty_weight_oz": 1.0,
+      "dimensions_status": "confirmed",
+      "weight_status": "observed"
+    },
+    {
+      "id": "pkg-2",
+      "label": "Flat Box pkg-2",
+      "enabled": false,
+      "disabled_reason": "Empty weight observed; carrier exterior dimensions/eligibility not yet verified.",
+      "provenance": {
+        "source": "fixtures/film-printing/v2/packing-rules.json",
+        "sha256": "a15de1878813e464d0ab55aabd7b890bfe6130d73896263e5e0fe81d1417fb4c",
+        "range": "Packaging!D5:I5",
+        "evidence": "Observed workbook values; WhatsApp 2026-10-19 confirms package dimensions and tube capacities 3/4 only."
+      },
+      "kind": "box",
+      "length_in": 13,
+      "width_in": 10,
+      "height_in": 2,
+      "empty_weight_oz": 3.0,
+      "dimensions_status": "confirmed",
+      "weight_status": "observed"
+    },
+    {
+      "id": "pkg-3",
+      "label": "Tube pkg-3",
+      "enabled": false,
+      "disabled_reason": "Empty weight observed; carrier exterior dimensions/eligibility not yet verified.",
+      "provenance": {
+        "source": "fixtures/film-printing/v2/packing-rules.json",
+        "sha256": "a15de1878813e464d0ab55aabd7b890bfe6130d73896263e5e0fe81d1417fb4c",
+        "range": "Packaging!D7:I7",
+        "evidence": "Observed workbook values; WhatsApp 2026-10-19 confirms package dimensions and tube capacities 3/4 only."
+      },
+      "kind": "tube",
+      "length_in": 24,
+      "width_in": 2,
+      "height_in": 2,
+      "empty_weight_oz": 5.0,
+      "dimensions_status": "confirmed",
+      "weight_status": "observed"
+    },
+    {
+      "id": "pkg-4",
+      "label": "Tube pkg-4",
+      "enabled": false,
+      "disabled_reason": "Empty weight observed; carrier exterior dimensions/eligibility not yet verified.",
+      "provenance": {
+        "source": "fixtures/film-printing/v2/packing-rules.json",
+        "sha256": "a15de1878813e464d0ab55aabd7b890bfe6130d73896263e5e0fe81d1417fb4c",
+        "range": "Packaging!D8:I8",
+        "evidence": "Observed workbook values; WhatsApp 2026-10-19 confirms package dimensions and tube capacities 3/4 only."
+      },
+      "kind": "tube",
+      "length_in": 24,
+      "width_in": 3,
+      "height_in": 3,
+      "empty_weight_oz": 10.0,
+      "dimensions_status": "confirmed",
+      "weight_status": "observed"
+    },
+    {
+      "id": "pkg-5",
+      "label": "Tube pkg-5",
+      "enabled": false,
+      "disabled_reason": "Empty weight observed; carrier exterior dimensions/eligibility not yet verified.",
+      "provenance": {
+        "source": "fixtures/film-printing/v2/packing-rules.json",
+        "sha256": "a15de1878813e464d0ab55aabd7b890bfe6130d73896263e5e0fe81d1417fb4c",
+        "range": "Packaging!D11:I11",
+        "evidence": "Observed workbook values; WhatsApp 2026-10-19 confirms package dimensions and tube capacities 3/4 only."
+      },
+      "kind": "tube",
+      "length_in": 36,
+      "width_in": 3,
+      "height_in": 3,
+      "empty_weight_oz": 16.0,
+      "dimensions_status": "confirmed",
+      "weight_status": "observed"
+    },
+    {
+      "id": "pkg-6",
+      "label": "Tube pkg-6",
+      "enabled": false,
+      "disabled_reason": "Empty weight observed; carrier exterior dimensions/eligibility not yet verified.",
+      "provenance": {
+        "source": "fixtures/film-printing/v2/packing-rules.json",
+        "sha256": "a15de1878813e464d0ab55aabd7b890bfe6130d73896263e5e0fe81d1417fb4c",
+        "range": "Packaging!D13:I13",
+        "evidence": "Observed workbook values; WhatsApp 2026-10-19 confirms package dimensions and tube capacities 3/4 only."
+      },
+      "kind": "tube",
+      "length_in": 60,
+      "width_in": 5,
+      "height_in": 5,
+      "empty_weight_oz": 64.0,
+      "dimensions_status": "confirmed",
+      "weight_status": "observed"
+    }
+  ],
+  "rules": [
+    {
+      "id": "darkroom-unavailable",
+      "label": "Darkroom unavailable",
+      "enabled": false,
+      "disabled_reason": "D07: no darkroom count, paper or physical packing specification.",
+      "provenance": {
+        "source": "docs/film-printing-f01-packing-spec.md",
+        "evidence": "No darkroom rows in workbook."
+      },
+      "service": "darkroom",
+      "size_key": "unspecified",
+      "lab": "all_labs",
+      "capacity_status": "missing",
+      "weight_status": "missing"
+    },
+    {
+      "id": "packaging-row-10",
+      "label": "fine_art 20x30",
+      "enabled": false,
+      "disabled_reason": "D07: paper applicability and weights unresolved; no approved shipping rule. D06 also applies to custom sizes.",
+      "provenance": {
+        "source": "fixtures/film-printing/v2/packing-rules.json",
+        "sha256": "a15de1878813e464d0ab55aabd7b890bfe6130d73896263e5e0fe81d1417fb4c",
+        "range": "Packaging!A10:O10",
+        "evidence": "Observed workbook values; WhatsApp 2026-10-19 confirms package dimensions and tube capacities 3/4 only."
+      },
+      "service": "fine_art",
+      "size_key": "20x30",
+      "lab": "all_labs",
+      "capacity_status": "confirmed",
+      "weight_status": "observed",
+      "package_id": "pkg-4",
+      "capacity": 3,
+      "print_weight_oz": 4.0
+    },
+    {
+      "id": "packaging-row-11",
+      "label": "fine_art 24x30",
+      "enabled": false,
+      "disabled_reason": "D07: paper applicability and weights unresolved; no approved shipping rule. D06 also applies to custom sizes.",
+      "provenance": {
+        "source": "fixtures/film-printing/v2/packing-rules.json",
+        "sha256": "a15de1878813e464d0ab55aabd7b890bfe6130d73896263e5e0fe81d1417fb4c",
+        "range": "Packaging!A11:O11",
+        "evidence": "Observed workbook values; WhatsApp 2026-10-19 confirms package dimensions and tube capacities 3/4 only."
+      },
+      "service": "fine_art",
+      "size_key": "24x30",
+      "lab": "all_labs",
+      "capacity_status": "confirmed",
+      "weight_status": "observed",
+      "package_id": "pkg-5",
+      "capacity": 3,
+      "print_weight_oz": 4.5
+    },
+    {
+      "id": "packaging-row-12",
+      "label": "fine_art 30x40",
+      "enabled": false,
+      "disabled_reason": "D07: paper applicability and weights unresolved; no approved shipping rule. D06 also applies to custom sizes.",
+      "provenance": {
+        "source": "fixtures/film-printing/v2/packing-rules.json",
+        "sha256": "a15de1878813e464d0ab55aabd7b890bfe6130d73896263e5e0fe81d1417fb4c",
+        "range": "Packaging!A12:O12",
+        "evidence": "Observed workbook values; WhatsApp 2026-10-19 confirms package dimensions and tube capacities 3/4 only."
+      },
+      "service": "fine_art",
+      "size_key": "30x40",
+      "lab": "all_labs",
+      "capacity_status": "confirmed",
+      "weight_status": "observed",
+      "package_id": "pkg-5",
+      "capacity": 3,
+      "print_weight_oz": 6.0
+    },
+    {
+      "id": "packaging-row-13",
+      "label": "fine_art 40x50",
+      "enabled": false,
+      "disabled_reason": "D07: paper applicability and weights unresolved; no approved shipping rule. D06 also applies to custom sizes.",
+      "provenance": {
+        "source": "fixtures/film-printing/v2/packing-rules.json",
+        "sha256": "a15de1878813e464d0ab55aabd7b890bfe6130d73896263e5e0fe81d1417fb4c",
+        "range": "Packaging!A13:O13",
+        "evidence": "Observed workbook values; WhatsApp 2026-10-19 confirms package dimensions and tube capacities 3/4 only."
+      },
+      "service": "fine_art",
+      "size_key": "40x50",
+      "lab": "all_labs",
+      "capacity_status": "confirmed",
+      "weight_status": "observed",
+      "package_id": "pkg-6",
+      "capacity": 4,
+      "print_weight_oz": 12.0
+    },
+    {
+      "id": "packaging-row-14",
+      "label": "fine_art 44x60",
+      "enabled": false,
+      "disabled_reason": "D07: paper applicability and weights unresolved; no approved shipping rule. D06 also applies to custom sizes.",
+      "provenance": {
+        "source": "fixtures/film-printing/v2/packing-rules.json",
+        "sha256": "a15de1878813e464d0ab55aabd7b890bfe6130d73896263e5e0fe81d1417fb4c",
+        "range": "Packaging!A14:O14",
+        "evidence": "Observed workbook values; WhatsApp 2026-10-19 confirms package dimensions and tube capacities 3/4 only."
+      },
+      "service": "fine_art",
+      "size_key": "44x60",
+      "lab": "all_labs",
+      "capacity_status": "confirmed",
+      "weight_status": "observed",
+      "package_id": "pkg-6",
+      "capacity": 4,
+      "print_weight_oz": 16.0
+    },
+    {
+      "id": "packaging-row-15",
+      "label": "fine_art custom",
+      "enabled": false,
+      "disabled_reason": "D07: paper applicability and weights unresolved; no approved shipping rule. D06 also applies to custom sizes.",
+      "provenance": {
+        "source": "fixtures/film-printing/v2/packing-rules.json",
+        "sha256": "a15de1878813e464d0ab55aabd7b890bfe6130d73896263e5e0fe81d1417fb4c",
+        "range": "Packaging!A15:O15",
+        "evidence": "Observed workbook values; WhatsApp 2026-10-19 confirms package dimensions and tube capacities 3/4 only."
+      },
+      "service": "fine_art",
+      "size_key": "custom",
+      "lab": "all_labs",
+      "capacity_status": "missing",
+      "weight_status": "missing"
+    },
+    {
+      "id": "packaging-row-2",
+      "label": "photo 3.5x5",
+      "enabled": false,
+      "disabled_reason": "D07: paper applicability and weights unresolved; no approved shipping rule. D06 also applies to custom sizes.",
+      "provenance": {
+        "source": "fixtures/film-printing/v2/packing-rules.json",
+        "sha256": "a15de1878813e464d0ab55aabd7b890bfe6130d73896263e5e0fe81d1417fb4c",
+        "range": "Packaging!A2:O2",
+        "evidence": "Observed workbook values; WhatsApp 2026-10-19 confirms package dimensions and tube capacities 3/4 only."
+      },
+      "service": "photo",
+      "size_key": "3.5x5",
+      "lab": "all_labs",
+      "capacity_status": "observed",
+      "weight_status": "observed",
+      "package_id": "pkg-1",
+      "capacity": 40,
+      "print_weight_oz": 0.1
+    },
+    {
+      "id": "packaging-row-3",
+      "label": "photo 4x6",
+      "enabled": false,
+      "disabled_reason": "D07: paper applicability and weights unresolved; no approved shipping rule. D06 also applies to custom sizes.",
+      "provenance": {
+        "source": "fixtures/film-printing/v2/packing-rules.json",
+        "sha256": "a15de1878813e464d0ab55aabd7b890bfe6130d73896263e5e0fe81d1417fb4c",
+        "range": "Packaging!A3:O3",
+        "evidence": "Observed workbook values; WhatsApp 2026-10-19 confirms package dimensions and tube capacities 3/4 only."
+      },
+      "service": "photo",
+      "size_key": "4x6",
+      "lab": "all_labs",
+      "capacity_status": "observed",
+      "weight_status": "observed",
+      "package_id": "pkg-1",
+      "capacity": 40,
+      "print_weight_oz": 0.1
+    },
+    {
+      "id": "packaging-row-4",
+      "label": "photo 5x7",
+      "enabled": false,
+      "disabled_reason": "D07: paper applicability and weights unresolved; no approved shipping rule. D06 also applies to custom sizes.",
+      "provenance": {
+        "source": "fixtures/film-printing/v2/packing-rules.json",
+        "sha256": "a15de1878813e464d0ab55aabd7b890bfe6130d73896263e5e0fe81d1417fb4c",
+        "range": "Packaging!A4:O4",
+        "evidence": "Observed workbook values; WhatsApp 2026-10-19 confirms package dimensions and tube capacities 3/4 only."
+      },
+      "service": "photo",
+      "size_key": "5x7",
+      "lab": "all_labs",
+      "capacity_status": "observed",
+      "weight_status": "observed",
+      "package_id": "pkg-1",
+      "capacity": 40,
+      "print_weight_oz": 0.3
+    },
+    {
+      "id": "packaging-row-5",
+      "label": "photo 8x10",
+      "enabled": false,
+      "disabled_reason": "D07: paper applicability and weights unresolved; no approved shipping rule. D06 also applies to custom sizes.",
+      "provenance": {
+        "source": "fixtures/film-printing/v2/packing-rules.json",
+        "sha256": "a15de1878813e464d0ab55aabd7b890bfe6130d73896263e5e0fe81d1417fb4c",
+        "range": "Packaging!A5:O5",
+        "evidence": "Observed workbook values; WhatsApp 2026-10-19 confirms package dimensions and tube capacities 3/4 only."
+      },
+      "service": "photo",
+      "size_key": "8x10",
+      "lab": "all_labs",
+      "capacity_status": "observed",
+      "weight_status": "observed",
+      "package_id": "pkg-2",
+      "capacity": 20,
+      "print_weight_oz": 0.4
+    },
+    {
+      "id": "packaging-row-6",
+      "label": "photo 8x12",
+      "enabled": false,
+      "disabled_reason": "D07: paper applicability and weights unresolved; no approved shipping rule. D06 also applies to custom sizes.",
+      "provenance": {
+        "source": "fixtures/film-printing/v2/packing-rules.json",
+        "sha256": "a15de1878813e464d0ab55aabd7b890bfe6130d73896263e5e0fe81d1417fb4c",
+        "range": "Packaging!A6:O6",
+        "evidence": "Observed workbook values; WhatsApp 2026-10-19 confirms package dimensions and tube capacities 3/4 only."
+      },
+      "service": "photo",
+      "size_key": "8x12",
+      "lab": "all_labs",
+      "capacity_status": "observed",
+      "weight_status": "observed",
+      "package_id": "pkg-2",
+      "capacity": 20,
+      "print_weight_oz": 0.5
+    },
+    {
+      "id": "packaging-row-7",
+      "label": "fine_art 11x14",
+      "enabled": false,
+      "disabled_reason": "D07: paper applicability and weights unresolved; no approved shipping rule. D06 also applies to custom sizes.",
+      "provenance": {
+        "source": "fixtures/film-printing/v2/packing-rules.json",
+        "sha256": "a15de1878813e464d0ab55aabd7b890bfe6130d73896263e5e0fe81d1417fb4c",
+        "range": "Packaging!A7:O7",
+        "evidence": "Observed workbook values; WhatsApp 2026-10-19 confirms package dimensions and tube capacities 3/4 only."
+      },
+      "service": "fine_art",
+      "size_key": "11x14",
+      "lab": "all_labs",
+      "capacity_status": "confirmed",
+      "weight_status": "observed",
+      "package_id": "pkg-3",
+      "capacity": 3,
+      "print_weight_oz": 1.5
+    },
+    {
+      "id": "packaging-row-8",
+      "label": "fine_art 16x20",
+      "enabled": false,
+      "disabled_reason": "D07: paper applicability and weights unresolved; no approved shipping rule. D06 also applies to custom sizes.",
+      "provenance": {
+        "source": "fixtures/film-printing/v2/packing-rules.json",
+        "sha256": "a15de1878813e464d0ab55aabd7b890bfe6130d73896263e5e0fe81d1417fb4c",
+        "range": "Packaging!A8:O8",
+        "evidence": "Observed workbook values; WhatsApp 2026-10-19 confirms package dimensions and tube capacities 3/4 only."
+      },
+      "service": "fine_art",
+      "size_key": "16x20",
+      "lab": "all_labs",
+      "capacity_status": "confirmed",
+      "weight_status": "observed",
+      "package_id": "pkg-4",
+      "capacity": 3,
+      "print_weight_oz": 2.0
+    },
+    {
+      "id": "packaging-row-9",
+      "label": "fine_art 20x24",
+      "enabled": false,
+      "disabled_reason": "D07: paper applicability and weights unresolved; no approved shipping rule. D06 also applies to custom sizes.",
+      "provenance": {
+        "source": "fixtures/film-printing/v2/packing-rules.json",
+        "sha256": "a15de1878813e464d0ab55aabd7b890bfe6130d73896263e5e0fe81d1417fb4c",
+        "range": "Packaging!A9:O9",
+        "evidence": "Observed workbook values; WhatsApp 2026-10-19 confirms package dimensions and tube capacities 3/4 only."
+      },
+      "service": "fine_art",
+      "size_key": "20x24",
+      "lab": "all_labs",
+      "capacity_status": "confirmed",
+      "weight_status": "observed",
+      "package_id": "pkg-4",
+      "capacity": 3,
+      "print_weight_oz": 3.0
+    }
+  ],
+  "labs": [
+    {
+      "id": "alternate-test",
+      "label": "Alternate identity test",
+      "enabled": false,
+      "disabled_reason": "Not a verified real carrier origin; alternate location is identity-only and must never quote as a second real lab.",
+      "provenance": {
+        "source": "docs/film-printing-f02-checkout-proof.md",
+        "evidence": "2026-10-19 staging Admin API location readback; other labels from F01 only."
+      },
+      "origin_status": "identity_test_only",
+      "location_id": "gid://shopify/Location/92446294127",
+      "origin": {
+        "address1": "2051 NW 2nd Ave",
+        "address2": "",
+        "city": "Miami",
+        "province_code": "FL",
+        "country_code": "US",
+        "postal_code": "33127"
+      }
+    },
+    {
+      "id": "atlanta",
+      "label": "Atlanta",
+      "enabled": false,
+      "disabled_reason": "Not a verified real carrier origin; alternate location is identity-only and must never quote as a second real lab.",
+      "provenance": {
+        "source": "docs/film-printing-f02-checkout-proof.md",
+        "evidence": "2026-10-19 staging Admin API location readback; other labels from F01 only."
+      },
+      "origin_status": "unverified"
+    },
+    {
+      "id": "chicago",
+      "label": "Chicago",
+      "enabled": false,
+      "disabled_reason": "Not a verified real carrier origin; alternate location is identity-only and must never quote as a second real lab.",
+      "provenance": {
+        "source": "docs/film-printing-f02-checkout-proof.md",
+        "evidence": "2026-10-19 staging Admin API location readback; other labels from F01 only."
+      },
+      "origin_status": "unverified"
+    },
+    {
+      "id": "miami",
+      "label": "Miami",
+      "enabled": false,
+      "disabled_reason": "Not a verified real carrier origin; alternate location is identity-only and must never quote as a second real lab.",
+      "provenance": {
+        "source": "docs/film-printing-f02-checkout-proof.md",
+        "evidence": "2026-10-19 staging Admin API location readback; other labels from F01 only."
+      },
+      "origin_status": "staging_address_only",
+      "location_id": "gid://shopify/Location/92443803759",
+      "origin": {
+        "address1": "2051 NW 2nd Ave",
+        "address2": "",
+        "city": "Miami",
+        "province_code": "FL",
+        "country_code": "US",
+        "postal_code": "33127"
+      }
+    },
+    {
+      "id": "orlando",
+      "label": "Orlando",
+      "enabled": false,
+      "disabled_reason": "Not a verified real carrier origin; alternate location is identity-only and must never quote as a second real lab.",
+      "provenance": {
+        "source": "docs/film-printing-f02-checkout-proof.md",
+        "evidence": "2026-10-19 staging Admin API location readback; other labels from F01 only."
+      },
+      "origin_status": "unverified"
+    }
+  ],
+  "policies": [
+    {
+      "id": "film-printing",
+      "label": "Film Printing \u2014 FedEx 2Day",
+      "enabled": false,
+      "disabled_reason": "Policy approved; actual own-account rate access and packing/origins remain unverified.",
+      "provenance": {
+        "source": "docs/film-printing-shipping-tracker.md",
+        "evidence": "Tayte 2026-10-19 approved plan and staging reconstruction; D05/D09/D10 settled. Production print-policy inspection recorded in F01."
+      },
+      "provider": "fedex",
+      "service": "FEDEX_2_DAY",
+      "rate_source": "bellows_own_account",
+      "currency": "USD",
+      "markup_basis_points": 0,
+      "markup_cents": 0,
+      "coverage": "existing_us_62_regions_subject_to_carrier_eligibility",
+      "failure": "shipping_unavailable",
+      "pickup": "native_free",
+      "sharing": "unavailable",
+      "rate_access": "unverified"
+    }
+  ]
+}

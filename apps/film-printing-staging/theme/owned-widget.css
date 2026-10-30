@@ -1,0 +1,24 @@
+/* Match the supplied Uploadly modal; retain upstream license in the bundle. */
+.uploadcare--dialog__powered-by { display: none; }
+.uploadcare--button_primary,
+.uploadcare--button_primary:hover,
+.uploadcare--button_primary:focus,
+.uploadcare--button_primary:active { background: #000; border-color: #000; }
+.uploadcare--dialog__close { color: #000; }
+
+.bfl-selected-previews:not([hidden]) {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.bfl-selected-previews img {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+.bfl-selected-preview { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.bfl-selected-preview-remove { border: 0; padding: 2px 4px; background: transparent; color: inherit; font: inherit; font-size: 12px; text-decoration: underline; cursor: pointer; }

@@ -1,0 +1,142 @@
+{
+	admin off
+	log default {
+		output discard
+	}
+}
+film-printing-staging.bellowsfilmlab.com {
+	header {
+		Cache-Control "no-store"
+		Referrer-Policy "no-referrer"
+		X-Content-Type-Options "nosniff"
+	}
+	# One public basemap only; no credentials, arbitrary upstreams or full GETs.
+	handle /maps/bellows-us-basemap.pmtiles {
+		route {
+			@mapOriginDenied not header Origin https://bellows-film-printing-staging.myshopify.com
+			respond @mapOriginDenied 403
+			@mapMethodDenied not method GET HEAD OPTIONS
+			respond @mapMethodDenied 405
+			header {
+				>Access-Control-Allow-Origin https://bellows-film-printing-staging.myshopify.com
+				>Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
+				>Access-Control-Allow-Headers "Range, If-Match"
+				>Access-Control-Expose-Headers "ETag, Content-Range, Accept-Ranges"
+				>Vary Origin
+				-Access-Control-Allow-Credentials
+				-Set-Cookie
+			}
+			@mapOptions method OPTIONS
+			respond @mapOptions 204
+			@mapHead method HEAD
+			request_header @mapHead -Range
+			@mapGet method GET
+			route @mapGet {
+				@mapBadRange not header_regexp mapRange Range "^bytes=([0-9]{1,10})-([0-9]{1,10})$"
+				respond @mapBadRange 416
+				@mapBadBounds expression `int({re.mapRange.2}) < int({re.mapRange.1}) || int({re.mapRange.2}) - int({re.mapRange.1}) >= 8388608`
+				respond @mapBadBounds 416
+				request_header Range "bytes={re.mapRange.1}-{re.mapRange.2}"
+			}
+			reverse_proxy https://pub-3e7652e8ed6941fbbeac53bcc1d74504.r2.dev {
+				rewrite /bellows-us-basemap.pmtiles?
+				method {method}
+				header_up Host pub-3e7652e8ed6941fbbeac53bcc1d74504.r2.dev
+				header_up User-Agent BFL-staging-map-proxy/1.0
+				header_up Accept-Encoding identity
+				header_up -Cookie
+				header_up -Authorization
+				header_up -Proxy-Authorization
+				header_up -Origin
+				header_up -Referer
+				header_up -X-BFL-*
+				header_up -X-Forwarded-*
+				header_up -Forwarded
+				header_up -X-Real-IP
+				header_up -Shopify-Storefront-Buyer-IP
+				header_up -If-Range
+				header_up -If-None-Match
+				header_up -If-Modified-Since
+				transport http {
+					compression off
+					dial_timeout 5s
+					response_header_timeout 15s
+				}
+				@mapFullResponse status 200
+				handle_response @mapFullResponse {
+					route {
+						@mapFullGet method GET
+						respond @mapFullGet 502
+						copy_response
+					}
+				}
+			}
+		}
+	}
+	@checkout path /checkout/bind /checkout/install /checkout/current /checkout/resume /checkout/resume_uploads /checkout/eligible /checkout/cancel_preparation /checkout/continue /checkout/replace_session
+	handle @checkout {
+		@checkoutCookie header Cookie *
+		respond @checkoutCookie 403
+		reverse_proxy runtime:6076 {
+			header_up X-BFL-Direct-Peer {remote_host}
+			header_up -X-Forwarded-For
+			header_up -X-Real-IP
+			header_up -Forwarded
+			header_up -Shopify-Storefront-Buyer-IP
+			header_up -Cookie
+		}
+	}
+	@resources path /resource-proof/challenge /resource-proof/exchange /resource-sessions/issue /resource-sessions/revoke /jobs /uploads/intents
+	handle @resources {
+		@resourceCookie header Cookie *
+		respond @resourceCookie 403
+		reverse_proxy runtime:6076 {
+			header_up -X-BFL-Direct-Peer
+			header_up -X-Forwarded-For
+			header_up -X-Real-IP
+			header_up -Forwarded
+			header_up -Shopify-Storefront-Buyer-IP
+			header_up -Cookie
+		}
+	}
+	@upload path_regexp upload "^/uploads/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/(bytes|source|status|remove|preview|original)$"
+	handle @upload {
+		@uploadCookie header Cookie *
+		respond @uploadCookie 403
+		reverse_proxy runtime:6076 {
+			header_up -X-BFL-Direct-Peer
+			header_up -X-Forwarded-For
+			header_up -X-Real-IP
+			header_up -Forwarded
+			header_up -Shopify-Storefront-Buyer-IP
+			header_up -Cookie
+		}
+	}
+	@public path /healthz /readyz /proxy/bootstrap /proxy/resource-proof
+	handle @public {
+		reverse_proxy runtime:6076 {
+			header_up -Authorization
+			header_up -X-BFL-Direct-Peer
+			header_up -X-Forwarded-For
+			header_up -X-Real-IP
+			header_up -Forwarded
+			header_up -Shopify-Storefront-Buyer-IP
+			header_up -Cookie
+		}
+	}
+	@carrier path __PRIVATE_CARRIER_PATH__
+	handle @carrier {
+		reverse_proxy runtime:6076 {
+			header_up -Authorization
+			header_up -X-BFL-Direct-Peer
+			header_up -X-Forwarded-For
+			header_up -X-Real-IP
+			header_up -Forwarded
+			header_up -Shopify-Storefront-Buyer-IP
+			header_up -Cookie
+		}
+	}
+	handle {
+		respond 404
+	}
+}

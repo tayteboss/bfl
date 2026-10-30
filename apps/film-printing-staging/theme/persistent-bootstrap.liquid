@@ -1,0 +1,41 @@
+    {% if shop.permanent_domain == 'bellows-film-printing-staging.myshopify.com' and theme.id == 189196533871 %}
+      {% assign bfl_persistent_product = false %}
+      {% if product.id == 15620086005871 and template.suffix == 'film-printing-customer' %}
+        {% assign bfl_persistent_product = true %}
+        <link rel="stylesheet" href="{{ 'bfl-owned-widget.css' | asset_url }}">
+        <script src="{{ 'bfl-owned-widget-17e5c8aa0f05a3c8.js' | asset_url }}" defer></script>
+      {% endif %}
+      <script>
+        (() => {
+          const form = {% if bfl_persistent_product %}document.querySelector('[data-film-printing-form]'){% else %}null{% endif %};
+          const controls = [...(form?.querySelectorAll('button[type="submit"],[data-uploadly-fallback-button]') ?? [])];
+          const disabled = controls.map(button => button.disabled);
+          let ready = false;
+          const lock = () => { if (!ready) for (const button of controls) button.disabled = true; };
+          const block = event => { if (!ready) { event.preventDefault(); event.stopImmediatePropagation(); } };
+          const changed = () => queueMicrotask(lock);
+          lock();
+          form?.addEventListener('submit', block, true);
+          form?.addEventListener('change', changed);
+          const start = async () => {
+            try {
+              if (form && !window.BFLOwnedWidget) throw Error('FORM_UNAVAILABLE');
+              const {mountPersistentCustomer} = await import({{ '__BFL_PERSISTENT_ENTRY__' | asset_url | json }});
+              const flow = await mountPersistentCustomer({form, widget: window.BFLOwnedWidget, publicKey: '3c958e674d1b0653284b'});
+              await flow.ready;
+              ready = true;
+              form?.removeEventListener('submit', block, true);
+              form?.removeEventListener('change', changed);
+              for (const [index, button] of controls.entries()) button.disabled = disabled[index];
+            } catch (error) {
+              lock();
+              const message = window.BFLPrintJob?.customerError(error,{persistent:true}) ?? 'The print service could not be loaded. Please refresh the page.';
+              const nodes = form?.querySelectorAll('[data-film-service-error],[data-film-service-error-bottom]') ?? document.querySelectorAll('#cart-errors,#CartDrawer-CartErrors');
+              for (const node of nodes) { node.textContent = message; node.style.display = ''; }
+            }
+          };
+          if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, {once: true});
+          else start();
+        })();
+      </script>
+    {% endif %}

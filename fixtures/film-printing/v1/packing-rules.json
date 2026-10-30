@@ -1,0 +1,653 @@
+{
+  "schema_version": 1,
+  "fixture_version": "f01-observed-v1",
+  "purpose": "Local specification fixtures only; never runtime shipping configuration.",
+  "source_snapshot": "source-workbook.json",
+  "source_sha256": "bae789c7380fcd87947ebe733e3ddbf2cf33f7e512f5f46adcf43acbf1c69358",
+  "units": {
+    "dimensions": "in",
+    "weight": "oz",
+    "pounds_conversion": "16 oz = 1 lb",
+    "currency": "USD",
+    "price_amounts": "integer cents"
+  },
+  "approval_policy": "Observed cells and successful tests do not establish merchant approval. All runtime paths remain disabled.",
+  "services": {
+    "photo": {
+      "aliases": [
+        "Photo Printing",
+        "Photo Prints"
+      ],
+      "count_mode": "completed_uploads_times_copies"
+    },
+    "fine_art": {
+      "aliases": [
+        "Fine Art Printing",
+        "Fine Arts"
+      ],
+      "count_mode": "completed_uploads_times_copies"
+    },
+    "darkroom": {
+      "aliases": [
+        "Darkroom Prints"
+      ],
+      "count_mode": "explicit_physical_print_count",
+      "approval_status": "pending_D07"
+    }
+  },
+  "observed_theme_labs": [
+    "Miami",
+    "Chicago",
+    "Orlando",
+    "Atlanta"
+  ],
+  "lab_status": "Theme labels only, not verified fulfillment or coverage. all_labs is a rule wildcard, never a checkout lab.",
+  "packages": [
+    {
+      "id": "pkg-1",
+      "type": "Bubble Mailer",
+      "dimensions_in": [
+        11,
+        8.5,
+        0.5
+      ],
+      "empty_weight_oz": "1",
+      "source_range": "Packaging!D2:I2",
+      "evidence_status": "observed_unapproved",
+      "shipping_category_id": null,
+      "category_approval_status": "pending_D05",
+      "enabled_for_shipping": false
+    },
+    {
+      "id": "pkg-2",
+      "type": "Flat Box",
+      "dimensions_in": [
+        13,
+        10,
+        2
+      ],
+      "empty_weight_oz": "3",
+      "source_range": "Packaging!D5:I5",
+      "evidence_status": "observed_unapproved",
+      "shipping_category_id": null,
+      "category_approval_status": "pending_D05",
+      "enabled_for_shipping": false
+    },
+    {
+      "id": "pkg-3",
+      "type": "Tube",
+      "dimensions_in": [
+        24,
+        2,
+        2
+      ],
+      "empty_weight_oz": "5",
+      "source_range": "Packaging!D7:I7",
+      "evidence_status": "observed_unapproved",
+      "shipping_category_id": null,
+      "category_approval_status": "pending_D05",
+      "enabled_for_shipping": false
+    },
+    {
+      "id": "pkg-4",
+      "type": "Tube",
+      "dimensions_in": [
+        24,
+        3,
+        3
+      ],
+      "empty_weight_oz": "10",
+      "source_range": "Packaging!D8:I8",
+      "evidence_status": "observed_unapproved",
+      "shipping_category_id": null,
+      "category_approval_status": "pending_D05",
+      "enabled_for_shipping": false
+    },
+    {
+      "id": "pkg-5",
+      "type": "Tube",
+      "dimensions_in": [
+        36,
+        3,
+        3
+      ],
+      "empty_weight_oz": "16",
+      "source_range": "Packaging!D11:I11",
+      "evidence_status": "observed_unapproved",
+      "shipping_category_id": null,
+      "category_approval_status": "pending_D05",
+      "enabled_for_shipping": false
+    },
+    {
+      "id": "pkg-6",
+      "type": "Tube",
+      "dimensions_in": [
+        60,
+        5,
+        5
+      ],
+      "empty_weight_oz": "64",
+      "source_range": "Packaging!D13:I13",
+      "evidence_status": "observed_unapproved",
+      "shipping_category_id": null,
+      "category_approval_status": "pending_D05",
+      "enabled_for_shipping": false
+    }
+  ],
+  "rules": [
+    {
+      "id": "packaging-row-2",
+      "service": "photo",
+      "size_key": "3.5x5",
+      "print_dimensions_in": [
+        3.5,
+        5.0
+      ],
+      "lab": "all_labs",
+      "paper_scope": null,
+      "package_id": "pkg-1",
+      "observed_package_type": "Bubble Mailer",
+      "observed_capacity": 40,
+      "approved_capacity": null,
+      "capacity_status": "observed_unapproved",
+      "per_print_weight_oz": "0.1",
+      "observed_full_weight_oz": "5",
+      "observed_full_weight_lb_rounded": "0.31",
+      "source_range": "Packaging!A2:O2",
+      "source_filled_by": "Kyle",
+      "source_checked_date": "2026-10-12",
+      "source_note": null,
+      "approval_status": "pending_merchant",
+      "enabled_for_shipping": false,
+      "pending_decisions": [
+        "D05",
+        "D07",
+        "D08",
+        "D09",
+        "D10"
+      ]
+    },
+    {
+      "id": "packaging-row-3",
+      "service": "photo",
+      "size_key": "4x6",
+      "print_dimensions_in": [
+        4.0,
+        6.0
+      ],
+      "lab": "all_labs",
+      "paper_scope": null,
+      "package_id": "pkg-1",
+      "observed_package_type": "Bubble Mailer",
+      "observed_capacity": 40,
+      "approved_capacity": null,
+      "capacity_status": "observed_unapproved",
+      "per_print_weight_oz": "0.1",
+      "observed_full_weight_oz": "5",
+      "observed_full_weight_lb_rounded": "0.31",
+      "source_range": "Packaging!A3:O3",
+      "source_filled_by": "Kyle",
+      "source_checked_date": "2026-10-12",
+      "source_note": null,
+      "approval_status": "pending_merchant",
+      "enabled_for_shipping": false,
+      "pending_decisions": [
+        "D05",
+        "D07",
+        "D08",
+        "D09",
+        "D10"
+      ]
+    },
+    {
+      "id": "packaging-row-4",
+      "service": "photo",
+      "size_key": "5x7",
+      "print_dimensions_in": [
+        5.0,
+        7.0
+      ],
+      "lab": "all_labs",
+      "paper_scope": null,
+      "package_id": "pkg-1",
+      "observed_package_type": "Bubble Mailer",
+      "observed_capacity": 40,
+      "approved_capacity": null,
+      "capacity_status": "observed_unapproved",
+      "per_print_weight_oz": "0.3",
+      "observed_full_weight_oz": "13",
+      "observed_full_weight_lb_rounded": "0.81",
+      "source_range": "Packaging!A4:O4",
+      "source_filled_by": "Kyle",
+      "source_checked_date": "2026-10-12",
+      "source_note": null,
+      "approval_status": "pending_merchant",
+      "enabled_for_shipping": false,
+      "pending_decisions": [
+        "D05",
+        "D07",
+        "D08",
+        "D09",
+        "D10"
+      ]
+    },
+    {
+      "id": "packaging-row-5",
+      "service": "photo",
+      "size_key": "8x10",
+      "print_dimensions_in": [
+        8.0,
+        10.0
+      ],
+      "lab": "all_labs",
+      "paper_scope": null,
+      "package_id": "pkg-2",
+      "observed_package_type": "Flat Box",
+      "observed_capacity": 20,
+      "approved_capacity": null,
+      "capacity_status": "observed_unapproved",
+      "per_print_weight_oz": "0.4",
+      "observed_full_weight_oz": "11",
+      "observed_full_weight_lb_rounded": "0.69",
+      "source_range": "Packaging!A5:O5",
+      "source_filled_by": "Kyle",
+      "source_checked_date": "2026-10-12",
+      "source_note": null,
+      "approval_status": "pending_merchant",
+      "enabled_for_shipping": false,
+      "pending_decisions": [
+        "D05",
+        "D07",
+        "D08",
+        "D09",
+        "D10"
+      ]
+    },
+    {
+      "id": "packaging-row-6",
+      "service": "photo",
+      "size_key": "8x12",
+      "print_dimensions_in": [
+        8.0,
+        12.0
+      ],
+      "lab": "all_labs",
+      "paper_scope": null,
+      "package_id": "pkg-2",
+      "observed_package_type": "Flat Box",
+      "observed_capacity": 20,
+      "approved_capacity": null,
+      "capacity_status": "observed_unapproved",
+      "per_print_weight_oz": "0.5",
+      "observed_full_weight_oz": "13",
+      "observed_full_weight_lb_rounded": "0.81",
+      "source_range": "Packaging!A6:O6",
+      "source_filled_by": "Kyle",
+      "source_checked_date": "2026-10-12",
+      "source_note": null,
+      "approval_status": "pending_merchant",
+      "enabled_for_shipping": false,
+      "pending_decisions": [
+        "D05",
+        "D07",
+        "D08",
+        "D09",
+        "D10"
+      ]
+    },
+    {
+      "id": "packaging-row-7",
+      "service": "fine_art",
+      "size_key": "11x14",
+      "print_dimensions_in": [
+        11.0,
+        14.0
+      ],
+      "lab": "all_labs",
+      "paper_scope": null,
+      "package_id": "pkg-3",
+      "observed_package_type": "Tube",
+      "observed_capacity": 3,
+      "approved_capacity": null,
+      "capacity_status": "conflicting_D04",
+      "per_print_weight_oz": "1.5",
+      "observed_full_weight_oz": "9.5",
+      "observed_full_weight_lb_rounded": "0.59",
+      "source_range": "Packaging!A7:O7",
+      "source_filled_by": "Kyle",
+      "source_checked_date": "2026-10-12",
+      "source_note": "Large prints ship in their own tube; 8 prints fit in a tube — confirm",
+      "approval_status": "pending_merchant",
+      "enabled_for_shipping": false,
+      "pending_decisions": [
+        "D04",
+        "D05",
+        "D07",
+        "D08",
+        "D09",
+        "D10"
+      ]
+    },
+    {
+      "id": "packaging-row-8",
+      "service": "fine_art",
+      "size_key": "16x20",
+      "print_dimensions_in": [
+        16.0,
+        20.0
+      ],
+      "lab": "all_labs",
+      "paper_scope": null,
+      "package_id": "pkg-4",
+      "observed_package_type": "Tube",
+      "observed_capacity": 3,
+      "approved_capacity": null,
+      "capacity_status": "conflicting_D04",
+      "per_print_weight_oz": "2",
+      "observed_full_weight_oz": "16",
+      "observed_full_weight_lb_rounded": "1",
+      "source_range": "Packaging!A8:O8",
+      "source_filled_by": "Kyle",
+      "source_checked_date": "2026-10-12",
+      "source_note": "Large prints ship in their own tube; 8 prints fit in a tube — confirm",
+      "approval_status": "pending_merchant",
+      "enabled_for_shipping": false,
+      "pending_decisions": [
+        "D04",
+        "D05",
+        "D07",
+        "D08",
+        "D09",
+        "D10"
+      ]
+    },
+    {
+      "id": "packaging-row-9",
+      "service": "fine_art",
+      "size_key": "20x24",
+      "print_dimensions_in": [
+        20.0,
+        24.0
+      ],
+      "lab": "all_labs",
+      "paper_scope": null,
+      "package_id": "pkg-4",
+      "observed_package_type": "Tube",
+      "observed_capacity": 3,
+      "approved_capacity": null,
+      "capacity_status": "conflicting_D04",
+      "per_print_weight_oz": "3",
+      "observed_full_weight_oz": "19",
+      "observed_full_weight_lb_rounded": "1.19",
+      "source_range": "Packaging!A9:O9",
+      "source_filled_by": "Kyle",
+      "source_checked_date": "2026-10-12",
+      "source_note": "Large prints ship in their own tube; 8 prints fit in a tube — confirm",
+      "approval_status": "pending_merchant",
+      "enabled_for_shipping": false,
+      "pending_decisions": [
+        "D04",
+        "D05",
+        "D07",
+        "D08",
+        "D09",
+        "D10"
+      ]
+    },
+    {
+      "id": "packaging-row-10",
+      "service": "fine_art",
+      "size_key": "20x30",
+      "print_dimensions_in": [
+        20.0,
+        30.0
+      ],
+      "lab": "all_labs",
+      "paper_scope": null,
+      "package_id": "pkg-4",
+      "observed_package_type": "Tube",
+      "observed_capacity": 3,
+      "approved_capacity": null,
+      "capacity_status": "conflicting_D04",
+      "per_print_weight_oz": "4",
+      "observed_full_weight_oz": "22",
+      "observed_full_weight_lb_rounded": "1.38",
+      "source_range": "Packaging!A10:O10",
+      "source_filled_by": "Kyle",
+      "source_checked_date": "2026-10-12",
+      "source_note": "Large prints ship in their own tube; 8 prints fit in a tube — confirm",
+      "approval_status": "pending_merchant",
+      "enabled_for_shipping": false,
+      "pending_decisions": [
+        "D04",
+        "D05",
+        "D07",
+        "D08",
+        "D09",
+        "D10"
+      ]
+    },
+    {
+      "id": "packaging-row-11",
+      "service": "fine_art",
+      "size_key": "24x30",
+      "print_dimensions_in": [
+        24.0,
+        30.0
+      ],
+      "lab": "all_labs",
+      "paper_scope": null,
+      "package_id": "pkg-5",
+      "observed_package_type": "Tube",
+      "observed_capacity": 3,
+      "approved_capacity": null,
+      "capacity_status": "conflicting_D04",
+      "per_print_weight_oz": "4.5",
+      "observed_full_weight_oz": "29.5",
+      "observed_full_weight_lb_rounded": "1.84",
+      "source_range": "Packaging!A11:O11",
+      "source_filled_by": "Kyle",
+      "source_checked_date": "2026-10-12",
+      "source_note": "Large prints ship in their own tube; 8 prints fit in a tube — confirm",
+      "approval_status": "pending_merchant",
+      "enabled_for_shipping": false,
+      "pending_decisions": [
+        "D04",
+        "D05",
+        "D07",
+        "D08",
+        "D09",
+        "D10"
+      ]
+    },
+    {
+      "id": "packaging-row-12",
+      "service": "fine_art",
+      "size_key": "30x40",
+      "print_dimensions_in": [
+        30.0,
+        40.0
+      ],
+      "lab": "all_labs",
+      "paper_scope": null,
+      "package_id": "pkg-5",
+      "observed_package_type": "Tube",
+      "observed_capacity": 3,
+      "approved_capacity": null,
+      "capacity_status": "conflicting_D04",
+      "per_print_weight_oz": "6",
+      "observed_full_weight_oz": "34",
+      "observed_full_weight_lb_rounded": "2.13",
+      "source_range": "Packaging!A12:O12",
+      "source_filled_by": "Kyle",
+      "source_checked_date": "2026-10-12",
+      "source_note": "Large prints ship in their own tube; 8 prints fit in a tube — confirm",
+      "approval_status": "pending_merchant",
+      "enabled_for_shipping": false,
+      "pending_decisions": [
+        "D04",
+        "D05",
+        "D07",
+        "D08",
+        "D09",
+        "D10"
+      ]
+    },
+    {
+      "id": "packaging-row-13",
+      "service": "fine_art",
+      "size_key": "40x50",
+      "print_dimensions_in": [
+        40.0,
+        50.0
+      ],
+      "lab": "all_labs",
+      "paper_scope": null,
+      "package_id": "pkg-6",
+      "observed_package_type": "Tube",
+      "observed_capacity": 4,
+      "approved_capacity": null,
+      "capacity_status": "conflicting_D04",
+      "per_print_weight_oz": "12",
+      "observed_full_weight_oz": "112",
+      "observed_full_weight_lb_rounded": "7",
+      "source_range": "Packaging!A13:O13",
+      "source_filled_by": "Kyle",
+      "source_checked_date": "2026-10-12",
+      "source_note": "Large prints ship in their own tube; 8 prints fit in a tube — confirm",
+      "approval_status": "pending_merchant",
+      "enabled_for_shipping": false,
+      "pending_decisions": [
+        "D04",
+        "D05",
+        "D07",
+        "D08",
+        "D09",
+        "D10"
+      ]
+    },
+    {
+      "id": "packaging-row-14",
+      "service": "fine_art",
+      "size_key": "44x60",
+      "print_dimensions_in": [
+        44.0,
+        60.0
+      ],
+      "lab": "all_labs",
+      "paper_scope": null,
+      "package_id": "pkg-6",
+      "observed_package_type": "Tube",
+      "observed_capacity": 4,
+      "approved_capacity": null,
+      "capacity_status": "conflicting_D04",
+      "per_print_weight_oz": "16",
+      "observed_full_weight_oz": "128",
+      "observed_full_weight_lb_rounded": "8",
+      "source_range": "Packaging!A14:O14",
+      "source_filled_by": "Kyle",
+      "source_checked_date": "2026-10-12",
+      "source_note": "Large prints ship in their own tube; 8 prints fit in a tube — confirm",
+      "approval_status": "pending_merchant",
+      "enabled_for_shipping": false,
+      "pending_decisions": [
+        "D04",
+        "D05",
+        "D07",
+        "D08",
+        "D09",
+        "D10"
+      ]
+    },
+    {
+      "id": "packaging-row-15",
+      "service": "fine_art",
+      "size_key": "custom",
+      "print_dimensions_in": null,
+      "lab": "all_labs",
+      "paper_scope": null,
+      "package_id": null,
+      "observed_package_type": "Tube",
+      "observed_capacity": null,
+      "approved_capacity": null,
+      "capacity_status": "incomplete",
+      "per_print_weight_oz": null,
+      "observed_full_weight_oz": null,
+      "observed_full_weight_lb_rounded": null,
+      "source_range": "Packaging!A15:O15",
+      "source_filled_by": null,
+      "source_checked_date": null,
+      "source_note": "Large prints ship in their own tube; 8 prints fit in a tube — confirm",
+      "approval_status": "pending_merchant",
+      "enabled_for_shipping": false,
+      "pending_decisions": [
+        "D06",
+        "D05",
+        "D07",
+        "D08",
+        "D09",
+        "D10"
+      ]
+    }
+  ],
+  "shipping_categories": [
+    {
+      "id": "small_flat",
+      "label": "Small flat mailer",
+      "baseline_price_cents": 1300,
+      "currency": "USD",
+      "approval_status": "baseline_only_pending_D05_D08_D09",
+      "source": "docs/film-printing-shipping-plan.md: Current implementation; not in workbook",
+      "legacy_billing_code_lb": 1
+    },
+    {
+      "id": "medium_flat",
+      "label": "Medium flat mailer",
+      "baseline_price_cents": 1600,
+      "currency": "USD",
+      "approval_status": "baseline_only_pending_D05_D08_D09",
+      "source": "docs/film-printing-shipping-plan.md: Current implementation; not in workbook",
+      "legacy_billing_code_lb": 2
+    },
+    {
+      "id": "large_flat",
+      "label": "Large flat mailer",
+      "baseline_price_cents": 2200,
+      "currency": "USD",
+      "approval_status": "baseline_only_pending_D05_D08_D09",
+      "source": "docs/film-printing-shipping-plan.md: Current implementation; not in workbook",
+      "legacy_billing_code_lb": 4
+    },
+    {
+      "id": "small_tube",
+      "label": "Small tube",
+      "baseline_price_cents": 2200,
+      "currency": "USD",
+      "approval_status": "baseline_only_pending_D05_D08_D09",
+      "source": "docs/film-printing-shipping-plan.md: Current implementation; not in workbook",
+      "legacy_billing_code_lb": 10
+    },
+    {
+      "id": "large_tube",
+      "label": "Large tube",
+      "baseline_price_cents": 3300,
+      "currency": "USD",
+      "approval_status": "baseline_only_pending_D05_D08_D09",
+      "source": "docs/film-printing-shipping-plan.md: Current implementation; not in workbook",
+      "legacy_billing_code_lb": 40
+    }
+  ],
+  "approved_packing_rule_ids": [],
+  "approved_directions": [
+    {
+      "decision": "D01",
+      "value": "One printing product, variable shipping and free pickup",
+      "source": "docs/film-printing-shipping-tracker.md: D01"
+    },
+    {
+      "decision": "D02",
+      "value": "Preserve supplied form composition",
+      "source": "AGENTS.md"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "path": "fixture-1.png",
+    "mime": "image/png",
+    "bytes": 79,
+    "width": 16,
+    "height": 16,
+    "sha256": "9cd01d72a2a97ef31d52f8b7a72108153bc5568e86cffc1095cd8325d50a94a2"
+  },
+  {
+    "path": "fixture-2.png",
+    "mime": "image/png",
+    "bytes": 79,
+    "width": 16,
+    "height": 16,
+    "sha256": "f788f06fc09ab5e9dec68269f287058ad124c89d0b998a4bf4950563decea26d"
+  },
+  {
+    "path": "fixture-3.png",
+    "mime": "image/png",
+    "bytes": 79,
+    "width": 16,
+    "height": 16,
+    "sha256": "17e127d82cbd05129a553652ac36829016ef4ac1cb58a291bb7c1427aa07a0f0"
+  }
+]

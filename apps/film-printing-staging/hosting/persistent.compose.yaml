@@ -1,0 +1,13 @@
+# Merge with the existing hosting/compose.yaml; create exactly one runtime.
+# systemd supervises that existing container ID. Never use Compose's auto-restart
+# or recreate it while the supervisor is active.
+services:
+  runtime:
+    entrypoint: [node, backend/staging-main.mjs]
+    command: [serve, /run/staging/service.json, '${BFL_STAGING_MANIFEST_SHA256:?Pin the reviewed private service manifest}']
+    env_file:
+      - /etc/bfl-staging/runtime.env
+      - /etc/bfl-staging/persistent/runtime.env
+    volumes:
+      - /etc/bfl-staging/persistent:/run/staging:ro
+    restart: 'no'

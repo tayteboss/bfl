@@ -1,0 +1,24 @@
+query F06FOrder($id: ID!) {
+  shop { id myshopifyDomain }
+  currentAppInstallation { id app { id apiKey } accessScopes { handle } }
+  order(id: $id) {
+    id legacyResourceId createdAt updatedAt cartToken customer { id }
+    edited cancelledAt currencyCode
+    lineItems(first: 20) {
+      pageInfo { hasNextPage hasPreviousPage }
+      nodes { id quantity currentQuantity requiresShipping customAttributes { key value }
+        product { id } variant { id } sellingPlan { name } lineItemGroup { id }
+        originalUnitPriceSet { shopMoney { amount currencyCode } }
+      }
+    }
+    fulfillmentOrders(first: 20) {
+      pageInfo { hasNextPage hasPreviousPage }
+      nodes { id status assignedLocation { location { id } } deliveryMethod { methodType }
+        lineItems(first: 20) {
+          pageInfo { hasNextPage hasPreviousPage }
+          nodes { id totalQuantity remainingQuantity lineItem { id } }
+        }
+      }
+    }
+  }
+}

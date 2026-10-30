@@ -1,0 +1,27 @@
+[Unit]
+Description=BFL persistent isolated staging
+After=docker.service network-online.target
+Wants=docker.service network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=root
+UMask=0077
+ExecStart=/usr/bin/python3 /opt/bfl-staging/persistent-supervisor.py run
+ExecStop=/usr/bin/python3 /opt/bfl-staging/persistent-supervisor.py stop
+Restart=always
+RestartSec=10
+RestartPreventExitStatus=78
+TimeoutStartSec=60
+TimeoutStopSec=50
+KillMode=control-group
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/bfl-staging/data /run/lock /run/docker.sock
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

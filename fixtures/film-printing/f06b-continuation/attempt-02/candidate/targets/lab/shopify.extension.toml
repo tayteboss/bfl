@@ -1,0 +1,20 @@
+api_version = "2026-07"
+
+[[extensions]]
+name = "F06B unreleased lab candidate"
+handle = "f06b-candidate-lab"
+type = "function"
+description = "Unreleased F06B authority candidate; local build verification only"
+
+  [[extensions.targeting]]
+  target = "cart.fulfillment-constraints.generate.run"
+  input_query = "src/cart_fulfillment_constraints_generate_run.graphql"
+  export = "cart_fulfillment_constraints_generate_run"
+
+  [extensions.build]
+  command = "cp ../../checkout/rust/target/wasm32-unknown-unknown/release/bfl_checkout.wasm dist/function.wasm"
+  path = "dist/function.wasm"
+
+  [extensions.ui.paths]
+  create = "/"
+  details = "/"

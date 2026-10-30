@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "status": "reviewed_staging_identity_mapping_only",
+  "source_sha256": "9d3131ef27637a2031de72ab2c96d0d9570928ceb4aba24fe6fdeb1dae0056d1",
+  "store": "bellows-film-printing-staging.myshopify.com",
+  "product_id": "15620086005871",
+  "variant_id": "67852705202287",
+  "physical": true,
+  "evidence": "docs/film-printing-f03-configuration.md; fixtures/film-printing/f05/staging-product.json; docs/film-printing-f05a-pricing-catalog.md",
+  "labs": [
+    {
+      "input": "Miami",
+      "lab": "miami",
+      "location_id": "92443803759",
+      "evidence": "docs/film-printing-f03-configuration.md#records-and-source-of-truth"
+    }
+  ],
+  "photo_paper": {
+    "input": null,
+    "paper": "photo-premium-luster",
+    "evidence": "source-export.json: product9425818484991 custom.film_services_json /Photo Prints/description (premium luster paper); no Paper control"
+  },
+  "fine_art_papers": [
+    {
+      "input": "Matte",
+      "paper": "matte",
+      "evidence": "source-export.json: /Fine Arts/Paper/options/0"
+    },
+    {
+      "input": "Luster",
+      "paper": "luster",
+      "evidence": "source-export.json: /Fine Arts/Paper/options/1"
+    },
+    {
+      "input": "Glossy",
+      "paper": "glossy",
+      "evidence": "source-export.json: /Fine Arts/Paper/options/2"
+    },
+    {
+      "input": "Fibre Paper",
+      "paper": "fibre-paper",
+      "evidence": "source-export.json: /Fine Arts/Paper/options/3"
+    }
+  ]
+}

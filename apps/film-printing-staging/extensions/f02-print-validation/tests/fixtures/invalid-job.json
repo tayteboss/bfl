@@ -1,0 +1,67 @@
+{
+  "payload": {
+    "export": "cart-validations-generate-run",
+    "target": "cart.validations.generate.run",
+    "input": {
+      "cart": {
+        "lines": [
+          {
+            "quantity": 4,
+            "merchandise": {
+              "id": "gid://shopify/ProductVariant/67852705202287"
+            },
+            "spec": null,
+            "job": {
+              "value": "f02-A"
+            },
+            "version": {
+              "value": "f02-synthetic-v1"
+            },
+            "service": {
+              "value": "Photo Prints"
+            },
+            "size": {
+              "value": "4\" x 6\""
+            },
+            "lab": {
+              "value": "Miami"
+            },
+            "files": {
+              "value": "3"
+            },
+            "upload1": {
+              "value": "https://example.invalid/f02/a.jpg"
+            },
+            "upload2": {
+              "value": "https://example.invalid/f02/b.jpg"
+            },
+            "upload3": {
+              "value": "https://example.invalid/f02/c.jpg"
+            },
+            "id": "gid://shopify/CartLine/test",
+            "cost": {
+              "amountPerQuantity": {
+                "currencyCode": "USD"
+              }
+            },
+            "sellingPlanAllocation": null
+          }
+        ]
+      }
+    },
+    "output": {
+      "operations": [
+        {
+          "validationAdd": {
+            "errors": [
+              {
+                "message": "This staging print job is incomplete or invalid. Return to the print form.",
+                "target": "$.cart.lines[0]"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

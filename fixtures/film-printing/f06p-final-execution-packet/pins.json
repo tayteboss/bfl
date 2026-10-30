@@ -1,0 +1,12 @@
+{
+  "apps/film-printing-staging/theme/checkout-diagnostic.js": "8d9b126a9ef95f5813918b0c7285fbd2ccd59f8e8490528e5e379255dd837ebc",
+  "apps/film-printing-staging/tests/diagnostic-keyboard.test.mjs": "3b08aaec267c9d9b9fe15fc5ee955acce8540a6c47ec341c0c5d67b7d9dbf001",
+  "apps/film-printing-staging/tests/diagnostic-bootstrap.test.mjs": "80f602f2e9dc0838fa843165f701f14523ed91707d6439fc11a9075442349ed8",
+  "docs/film-printing-f06p-final-execution-packet.md": "916b37b0a756ee4d8789ca37a7c04dedf443afa3524e78b612964fa46fdebbff",
+  "fixtures/film-printing/f06p-final-execution-packet/bootstrap.proposal.liquid": "95c03f5be0bd6c144f2680603944e25ed13488a33059caaff47b77e4f907c811",
+  "fixtures/film-printing/f06p-final-execution-packet/h11b_publication.py": "52a0c0660dcd007aa748a3b6ff1d3a8995103ec6d4b625b47b2b1e2cf9ccfeb9",
+  "fixtures/film-printing/f06p-final-execution-packet/test_h11b.py": "3f71734284c883e16c4186e1d1e354096c3e649a3e5596535698efaeb9b60d2f",
+  "fixtures/film-printing/f06p-final-execution-packet/execution-packet.md": "5f14126ccbec1f512083bc64216f3a649016a25ee0aa9a232e6ee4841d058616",
+  "fixtures/film-printing/f06p-final-execution-packet/proposed-ledger.json": "ccb23f3aba6e91b53ae20deaa7c761d8ef6fd94fd711b1c60908ac1b658f7d81",
+  "fixtures/film-printing/f06p-final-execution-packet/dependency-pins.json": "5fa8c75bfc7dc9b8663f9be1808949c314e3f55a9a95e787da56e103fb17a924"
+}

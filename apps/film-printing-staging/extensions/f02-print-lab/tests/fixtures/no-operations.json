@@ -1,0 +1,14 @@
+{
+  "payload": {
+    "export": "cart-fulfillment-constraints-generate-run",
+    "target": "cart.fulfillment-constraints.generate.run",
+    "input": {
+      "cart": {
+        "deliverableLines": []
+      }
+    },
+    "output": {
+      "operations": []
+    }
+  }
+}

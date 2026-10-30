@@ -1,0 +1,12 @@
+{
+  "name": "bellows-film-shipping-staging",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "extensions/*"
+  ],
+  "scripts": {
+    "test": "node --test tests/*.test.mjs"
+  }
+}
